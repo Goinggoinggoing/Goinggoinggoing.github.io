@@ -23,15 +23,15 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="原文链接：高性能短链设计 - 掘金 (juejin.cn) 介绍将长连接转为一个短连接，并且再访问时再转换回来 短链：   最终长链  可以看到，短信中的是短链，但最后变成了长链；使用短链的好处  再具有文字限制的地方（微博），用短链可以占据更少的文字 短链对应转的二维码不密集，更容易识别  跳转的基本实现：请求短链时，会返回状态码302（临时重定向：每次都使用短链请求，易于点击数统计）以及长链的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
 <meta property="article:published_time" content="2023-12-27T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-24T11:28:25.963Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.971Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="文章精读">
 <meta property="article:tag" content="项目">
 <meta property="article:tag" content="系统架构">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
   
   
   
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -319,10 +319,10 @@
                 <p>原文链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904090602848270">高性能短链设计 - 掘金 (juejin.cn)</a></p>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>将长连接转为一个短连接，并且再访问时再转换回来</p>
 <p>短链：</p>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png" srcset="/img/loading.gif" lazyload alt="image-20240318150323802" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png" srcset="/img/loading.gif" lazyload alt="image-20240318150323802" style="zoom:50%;" />
 
 <p>最终长链</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150335744.png" srcset="/img/loading.gif" lazyload alt="image-20240318150335744"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150335744.png" srcset="/img/loading.gif" lazyload alt="image-20240318150335744"></p>
 <p>可以看到，短信中的是短链，但最后变成了长链；使用短链的好处</p>
 <ol>
 <li>再具有文字限制的地方（微博），用短链可以占据更少的文字</li>
@@ -337,7 +337,7 @@
 <p>这里我们当然选择非加密的Hash算法，例如MurmurHash</p>
 <p>MurmurHash 提供了两种长度的哈希值，32 bit，128 bit，为了让网址尽可通地短，我们选择 32 bit 的哈希值，32 bit 能表示的最大值近 43 亿，对于中小型公司的业务而言绰绰有余。对上文提到的极客长链做 MurmurHash 计算，得到的哈希值为 3002604296</p>
 <h4 id="缩短长度："><a href="#缩短长度：" class="headerlink" title="缩短长度："></a>缩短长度：</h4><p>这里的数字都是十进制的表示，我们可以将10进制转为62进制（10+26+26；比base64少 + 和 &#x2F;，以及填充字符&#x3D;）</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318151541698.png" srcset="/img/loading.gif" lazyload alt="image-20240318151541698"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318151541698.png" srcset="/img/loading.gif" lazyload alt="image-20240318151541698"></p>
 <h4 id="解决哈希冲突并存储"><a href="#解决哈希冲突并存储" class="headerlink" title="解决哈希冲突并存储"></a>解决哈希冲突并存储</h4><p>短链映射长链：使用mysql 或 redis，配合唯一索引</p>
 <p>此外，为了同一个长链不重复生成短链，需要将长链建议索引，为了索引不要太长使用长链的MD5建索引</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE `short_url_map` (<br>  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,<br>  `lurl` varchar(160) DEFAULT NULL COMMENT &#x27;长地址&#x27;,<br>   `md5` char(32) DEFAULT NULL COMMENT &#x27;长链md5&#x27;,<br>  `surl` varchar(10) DEFAULT NULL COMMENT &#x27;短地址&#x27;,<br>  `gmt_create` int(11) DEFAULT NULL COMMENT &#x27;创建时间&#x27;,<br>  PRIMARY KEY (`id`)<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;<br></code></pre></td></tr></table></figure>
@@ -351,11 +351,11 @@
 </li>
 </ol>
 <p>此外，快速有效判断一个元素是否存在可以使用布隆过滤器，先经过布隆过滤器再插入数据库</p>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318152646488.png" srcset="/img/loading.gif" lazyload alt="image-20240318152646488" style="zoom:67%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318152646488.png" srcset="/img/loading.gif" lazyload alt="image-20240318152646488" style="zoom:67%;" />
 
 
 
-<h3 id="2-自增序列"><a href="#2-自增序列" class="headerlink" title="2.自增序列"></a>2.自增序列</h3><h4 id="方案选择"><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h4><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318154514607.png" srcset="/img/loading.gif" lazyload alt="image-20240318154514607" style="zoom:67%;" />
+<h3 id="2-自增序列"><a href="#2-自增序列" class="headerlink" title="2.自增序列"></a>2.自增序列</h3><h4 id="方案选择"><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318154514607.png" srcset="/img/loading.gif" lazyload alt="image-20240318154514607" style="zoom:67%;" />
 
 <ol>
 <li><p><strong>uuid</strong></p>
@@ -364,7 +364,7 @@
 <li><p><strong>redis</strong></p>
 <p><code>INCR</code>：性能好，单机可支撑 10 w+ 请求，还可以做分布式</p>
 <p>缺点：需要考虑持久化（短链 ID 总不能一样吧），灾备，成本有点高。</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318153824226.png" srcset="/img/loading.gif" lazyload alt="image-20240318153824226"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318153824226.png" srcset="/img/loading.gif" lazyload alt="image-20240318153824226"></p>
 </li>
 <li><p><strong>Snowflake</strong></p>
 <p>时钟回拨：抛出异常；延时等待（阻塞3ms）；序列号（增加序列号避免冲突）</p>
@@ -376,8 +376,8 @@
 <h4 id="mysql优化"><a href="#mysql优化" class="headerlink" title="mysql优化"></a>mysql优化</h4><p>如果用 Mysql 自增 id 作为短链 ID，在高并发下，db 的写压力会很大，这种情况该怎么办呢。</p>
 <p>考虑一下，一定要在用到的时候去生成 id 吗，是否可以提前生成这些自增 id ?</p>
 <p>发号表：代表已经发出去的id，每行为一个区间，给一台机器</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318154839222.png" srcset="/img/loading.gif" lazyload alt="image-20240318154839222"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318155037597.png" srcset="/img/loading.gif" lazyload alt="image-20240318155037597"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318154839222.png" srcset="/img/loading.gif" lazyload alt="image-20240318154839222"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318155037597.png" srcset="/img/loading.gif" lazyload alt="image-20240318155037597"></p>
 <p>或者直接一行为一个业务</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE `sequence_id_generator` (<br>  `id` int(10) NOT NULL,<br>  `current_max_id` bigint(20) NOT NULL COMMENT &#x27;当前最大id&#x27;,<br>  `step` int(10) NOT NULL COMMENT &#x27;号段的长度&#x27;,<br>  `version` int(20) NOT NULL COMMENT &#x27;版本号&#x27;,<br>  `biz_type`    int(20) NOT NULL COMMENT &#x27;业务类型&#x27;,<br>   PRIMARY KEY (`id`)<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;<br><br>current_max_id ~ current_max_id + step已经被取走了<br></code></pre></td></tr></table></figure>
 
@@ -475,7 +475,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

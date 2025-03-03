@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="引入什么是中断？ 为什么需要中断？ 中断是操作系统中一种重要的机制，可以让处理器中断当前的执行程序，转向另外一个特定的程序，并在处理完成后返回当前执行程序。 123while(true)&amp;#123;	dosomething();&amp;#125;  如果没有中断，处理器只能完全处理完一个任务后，才能处理下一个任务，无法实现任务切换和多任务并发(我如果键盘按下一个按钮，系统可能很久后才能反应) 中断根据实">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png">
 <meta property="article:published_time" content="2024-04-12T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-04-19T09:13:37.501Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:43.002Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png">
   
   
   
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -345,7 +345,7 @@
 <li>当外部设备触发中断时，中断控制器将<strong>对应中断号</strong>保存到端口上，并给CPU的INTR引脚一个信号（有中断来咯快来读取）。</li>
 <li>CPU在执行完当前指令后发现INTR有信号，说明产生了中断，就去端口读取中断号</li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121729555.png" srcset="/img/loading.gif" lazyload alt="image-20240412172932052"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121729555.png" srcset="/img/loading.gif" lazyload alt="image-20240412172932052"></p>
 <h5 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h5><ul>
 <li><strong>faults</strong> ：在faults场景中，就更简单了，cpu当前就在执行指令，如果检测到了一些异常，直接自己给自己一个中断号就好了（异常对应的中断号是提前写死的）</li>
 <li><strong>traps</strong> ：CPU在指令中给自己一个中断号 <code>INT n</code>  , <code>INT 0x80</code> 执行系统调用（执行前会设置系统调用号）</li>
@@ -398,13 +398,13 @@
 <p><code>softirq_vec</code>在初始化时被设置，例如想要网络收发，就需要注册网络的中断处理函数 <code>net_dev_init</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// file: kernel/softirg</span><br> <span class="hljs-type">void</span> <span class="hljs-title function_">open_softirg</span><span class="hljs-params">(<span class="hljs-type">int</span> nr, <span class="hljs-type">void</span> (*action)(<span class="hljs-keyword">struct</span> softirg_action *))</span><br> &#123;<br>     softirq_vec[nr].action = action;<br> &#125;<br></code></pre></td></tr></table></figure>
 
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121647174.png" srcset="/img/loading.gif" lazyload alt="image-20240412164734608"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121647174.png" srcset="/img/loading.gif" lazyload alt="image-20240412164734608"></p>
 <h3 id="结合使用"><a href="#结合使用" class="headerlink" title="结合使用"></a>结合使用</h3><ul>
 <li>⽹卡收到数据以后，以DMA的⽅式把⽹卡收到的帧写到内存⾥，再向CPU发起⼀ 个中断，以通知CPU有数据到达。</li>
 <li>当CPU收到中断请求后，会去调⽤⽹络设备驱动注册 的中断处理函数。⽹卡的中断处理函数并 不做过多⼯作（查数据包完整性），发出软中断请求，然后尽快释 放CPU资源。</li>
 <li>ksoftirad内核线程检测到有软中断请求到达，调⽤poll开始轮询收包，收到后交由各级协议栈处理。对于TCP包来说，会被放到⽤户socker的接收队列中。</li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png" srcset="/img/loading.gif" lazyload alt="image-20240412164216556"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png" srcset="/img/loading.gif" lazyload alt="image-20240412164216556"></p>
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>硬中断是通过给CPU物理引脚施加电压变化实现的，而软中断是通过给内存中的⼀个变量赋予⼆进制值以标记有软中断发⽣。</li>
 <li>硬中断表：<code>IDT</code>，软中断表：<code>softirq_vec</code></li>
@@ -500,7 +500,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

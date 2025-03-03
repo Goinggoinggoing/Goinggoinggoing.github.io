@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="BUG处理feature还是bug 大规模项目，沉淀所有的feature也有难度，需求也是不断变化的（QA） bug紧急程度、bug负责团队以及人员  处理步骤 紧急止损：根据 bug 的严重性，判断是否需要快速下线相关功能或回滚版本。对于影响较大的 bug，应优先考虑通过回滚代码或关闭功能模块来避免对用户产生进一步影响。 问题排查 事后复盘  排查基本解决思路 清缓存：对象加了字段，数据库用脚本">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625641.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625641.png">
 <meta property="article:published_time" content="2024-07-27T12:33:46.000Z">
-<meta property="article:modified_time" content="2024-10-29T08:27:49.963Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.972Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="线上处理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625641.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625641.png">
   
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -347,7 +347,7 @@
 <li>生产环境复现</li>
 <li>打印入参出参：开关</li>
 </ul>
-<h2 id="CPU占用高"><a href="#CPU占用高" class="headerlink" title="CPU占用高"></a>CPU占用高</h2><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625637.png" srcset="/img/loading.gif" lazyload alt="image-20241029154240811"></p>
+<h2 id="CPU占用高"><a href="#CPU占用高" class="headerlink" title="CPU占用高"></a>CPU占用高</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625637.png" srcset="/img/loading.gif" lazyload alt="image-20241029154240811"></p>
 <h3 id="业务问题"><a href="#业务问题" class="headerlink" title="业务问题"></a>业务问题</h3><h4 id="死循环"><a href="#死循环" class="headerlink" title="死循环"></a>死循环</h4><p>例如：我们有一段代码用来检查文件的更新状态，但由于逻辑错误，条件永远无法满足，结果程序进入了死循环。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>    <span class="hljs-keyword">if</span> (file.isUpdated()) &#123;<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -357,7 +357,7 @@
 <li>如果是自旋等待，就会耗尽CPU</li>
 <li>如果是休眠等待，例如synchronized ，会耗尽系统资源（线程、内存、锁、数据库连接、文件句柄）</li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625640.png" srcset="/img/loading.gif" lazyload alt="image-20241029154327812"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410291625640.png" srcset="/img/loading.gif" lazyload alt="image-20241029154327812"></p>
 <h3 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h3><p>使用线程池来管理线程资源，设置合理的线程数量</p>
 <h3 id="内存问题"><a href="#内存问题" class="headerlink" title="内存问题"></a>内存问题</h3><h4 id="内存不足"><a href="#内存不足" class="headerlink" title="内存不足"></a>内存不足</h4><p>当系统内存不足时，就会将磁盘存储作为虚拟内存使用，而虚拟内存的运行速度要慢得多。</p>
 <blockquote>
@@ -466,7 +466,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

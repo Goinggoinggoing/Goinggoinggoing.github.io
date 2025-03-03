@@ -23,17 +23,17 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="层次结构  MAC首部 + IP首部 + TCP首部 + TCP数据 物理层：通过媒介传输比特,确定机械及电气规范（比特Bit）数据链路层：将比特组装成帧和点到点的传递（帧Frame）网络层：负责数据包从源到宿的传递和网际互连（包PackeT）传输层：提供端到端的可靠报文传递和错误恢复（段Segment）会话层：建立、管理和终止会话（会话协议数据单元SPDU）表示层：对数据进行翻译、加密和压缩（表">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213424.png">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213425.png">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213426.png">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213427.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213424.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213425.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213426.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213427.png">
 <meta property="article:published_time" content="2021-09-09T12:33:46.000Z">
-<meta property="article:modified_time" content="2024-04-19T09:13:37.319Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.946Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机基础">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png">
   
   
   
@@ -75,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -318,11 +318,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h3><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png" srcset="/img/loading.gif" lazyload alt="image-20210808133147935" style="zoom:67%;" />
+                <h3 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png" srcset="/img/loading.gif" lazyload alt="image-20210808133147935" style="zoom:67%;" />
 
 <p>MAC首部 + IP首部 + TCP首部 + TCP数据</p>
 <p>物理层：通过媒介传输比特,确定机械及电气规范（比特Bit）<br>数据链路层：将比特组装成帧和点到点的传递（帧Frame）<br>网络层：负责数据包从源到宿的传递和网际互连（包PackeT）<br>传输层：提供端到端的可靠报文传递和错误恢复（段Segment）<br>会话层：建立、管理和终止会话（会话协议数据单元SPDU）<br>表示层：对数据进行翻译、加密和压缩（表示协议数据单元PPDU）<br>应用层：允许访问OSI环境的手段（应用协议数据单元APDU）</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213424.png" srcset="/img/loading.gif" lazyload alt="image-20230408150044809"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213424.png" srcset="/img/loading.gif" lazyload alt="image-20230408150044809"></p>
 <h3 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h3><p>多台机器如何传输： 数据要有标识来源MAC地址(from to)</p>
 <ul>
 <li>HUB集线器：直接转发给全部机器，不能同时发送，需要CSMA&#x2F;CD，半双工</li>
@@ -362,9 +362,9 @@
 <li>对某些实时性要求比较高的情况，选择UDP，比如游戏，媒体通信，实时视频流（直播），即使出现传输错误也可以容忍；其它大部分情况下，HTTP都是用TCP，因为要求传输的内容可靠，不出现丢失</li>
 </ol>
 <h4 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h4><p><strong>三次握手</strong>：防止假如a发了两次请求，第一次以为失败了，而b接受了两次请求，第二次一直在等a浪费时间。</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213425.png" srcset="/img/loading.gif" lazyload alt="image-20230419102228437"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213425.png" srcset="/img/loading.gif" lazyload alt="image-20230419102228437"></p>
 <p><strong>四次挥手</strong>：1 a发出关闭请求，2 b发出响应确认，并半关闭状态不断发送信息， 3 最后发送关闭请求。a确认关闭请求</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213426.png" srcset="/img/loading.gif" lazyload alt="image-20230419102236858"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213426.png" srcset="/img/loading.gif" lazyload alt="image-20230419102236858"></p>
 <h4 id="可靠传输"><a href="#可靠传输" class="headerlink" title="可靠传输"></a>可靠传输</h4><p>可靠传输通过<strong>发送需要确认</strong>(确认序号)和<strong>超时重传</strong>来实现，为提高效率使用滑动窗口</p>
 <ul>
 <li><strong>滑动窗口</strong>：以发送但未确认的最大字节数。接收方接受窗口如果接受到无序的数据先缓存</li>
@@ -372,7 +372,7 @@
 </ul>
 <h4 id="流量拥塞控制"><a href="#流量拥塞控制" class="headerlink" title="流量拥塞控制"></a>流量拥塞控制</h4><p><strong>流量控制:</strong> 不断回发<strong>接收方</strong>的窗口大小</p>
 <p><strong>拥塞控制</strong>（拥塞窗口大小）：<strong>慢启动（指数）、拥塞避免（线性）、快重传 （3个ack后立即重发）、快恢复（对于快重传情况，拥塞后直接从新门限开始）</strong></p>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213427.png" srcset="/img/loading.gif" lazyload alt="image-20210808142023374" style="zoom: 80%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213427.png" srcset="/img/loading.gif" lazyload alt="image-20210808142023374" style="zoom: 80%;" />
 
 <p>发送窗口 &#x3D; min(接收窗口，拥塞窗口)</p>
 <h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p><strong>应用  					应用层					运输层</strong></p>
@@ -497,7 +497,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

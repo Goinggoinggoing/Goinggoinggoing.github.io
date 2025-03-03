@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="GPT摘要 文章主要介绍了非可逆加密算法和可逆加密算法的原理和应用。在非可逆加密算法部分，介绍了MD5和SHA系列算法，以及它们在密码保存、文件完整性校验等方面的应用。同时提到了MAC和HMAC-SHA-256在确认消息完整性和身份认证中的作用。在可逆加密算法部分，介绍了凯撒密码和enigma机的原理，以及对称加密算法AES和非对称加密算法RSA的基本原理和应用场景。文章还简要讨论了密码攻击方法">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
 <meta property="article:published_time" content="2024-04-08T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-12T05:30:40.351Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.990Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="加密">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
   
   
   
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -358,7 +358,7 @@
 <li><p>每512bit为一个块，再拆分成4B一小块（16块）<code>X[i]</code>，更新幻数64次；更新函数每次更新第一个数</p>
 </li>
 <li><p>重复N轮512bit，最后4个幻数就是结果 </p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141875.png" srcset="/img/loading.gif" lazyload alt="image-20240227194554575"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141875.png" srcset="/img/loading.gif" lazyload alt="image-20240227194554575"></p>
 </li>
 </ol>
 <h4 id="攻击"><a href="#攻击" class="headerlink" title="攻击"></a>攻击</h4><ol>
@@ -382,7 +382,7 @@
 </ul>
 <h3 id="MAC"><a href="#MAC" class="headerlink" title="MAC"></a>MAC</h3><p>message authentication code：确认完整性并进行身份认证，密钥+hash</p>
 <p>HMAC：Hash-based</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141879.png" srcset="/img/loading.gif" lazyload alt="image-20240408212345680"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141879.png" srcset="/img/loading.gif" lazyload alt="image-20240408212345680"></p>
 <ul>
 <li>非可逆加密可以验证文件的完整性，例如从官网下载文件，但前提是官网提供了正确文件的md5</li>
 <li>a、b之间通信，如果a发送的消息被替换了，单纯使用hash b并不知道消息是否被替换，因为hash也能同时被替换</li>
@@ -401,32 +401,32 @@
 </ul>
 <p><strong>实践</strong>：强hash函数（SHA-256） + 盐 + 循环hash</p>
 <p>现在主流密码处理方式的算法是PBKDF2，流程简述起来是随机生成一个高熵（意思是真的随机而且复杂）Salt，把你的密码和这个Salt连接在一起当作一个整体做一次哈希运算，哈希算法为安全的SHA-256，可以避免哈希碰撞，得到的这个哈希值和你的密码连接在一起再做一次哈希运算，以此类推，重复非常多次，次数越多越安全，但是服务器负担也就越重，一般在10万次以上。最后服务器存储Salt和最后一次得出的哈希值，这样服务器不知道你的密码，但是可以验证你输入的密码是否正确，即使被拖库也不用担心密码被暴力破解，因为随机Salt的引入让彩虹表攻击失效，单独针对你的密码暴力破解要付出遍历密码空间（比如说4位纯数字密码的密码空间是10000，指所有可能的密码组合的个数）所需时间的10万倍以上，比普通的算法要安全许多。在安全性更高的服务器上甚至还会结合硬件密钥来进一步增强安全性，那就是在以上的基础上得出的最后一次哈希值再和硬件密钥作为PBKDF2算法的输入，最终只存储Salt和结合了硬件密钥的最终哈希值，这样子就不给一点暴力攻击的机会了，因为硬件密钥永远不会脱离安全硬件，把相应的硬件断电就一点办法也没有了</p>
-<h2 id="可逆加密算法"><a href="#可逆加密算法" class="headerlink" title="可逆加密算法"></a>可逆加密算法</h2><h3 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h3><h4 id="移位替换"><a href="#移位替换" class="headerlink" title="移位替换"></a>移位替换</h4><p>公元前1世纪，移位替换<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141880.png" srcset="/img/loading.gif" lazyload alt="image-20240408104931318"></p>
-<h4 id="随机替换"><a href="#随机替换" class="headerlink" title="随机替换"></a>随机替换</h4><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141881.png" srcset="/img/loading.gif" lazyload alt="image-20240408105059470"></p>
+<h2 id="可逆加密算法"><a href="#可逆加密算法" class="headerlink" title="可逆加密算法"></a>可逆加密算法</h2><h3 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h3><h4 id="移位替换"><a href="#移位替换" class="headerlink" title="移位替换"></a>移位替换</h4><p>公元前1世纪，移位替换<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141880.png" srcset="/img/loading.gif" lazyload alt="image-20240408104931318"></p>
+<h4 id="随机替换"><a href="#随机替换" class="headerlink" title="随机替换"></a>随机替换</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141881.png" srcset="/img/loading.gif" lazyload alt="image-20240408105059470"></p>
 <p>用统计的方法就可以破解，出现最多的e倍替换成了l</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141882.png" srcset="/img/loading.gif" lazyload alt="image-20240408105137344"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141882.png" srcset="/img/loading.gif" lazyload alt="image-20240408105137344"></p>
 <h4 id="多替换表"><a href="#多替换表" class="headerlink" title="多替换表"></a>多替换表</h4><p>增加字母替换表，轮换使用替换表进行加密，加密表越多，统计特征慢慢消失</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141884.png" srcset="/img/loading.gif" lazyload alt="image-20240408105310020"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141885.png" srcset="/img/loading.gif" lazyload alt="image-20240408113434326"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141884.png" srcset="/img/loading.gif" lazyload alt="image-20240408105310020"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141885.png" srcset="/img/loading.gif" lazyload alt="image-20240408113434326"></p>
 <p>麻烦，enigma就是自动实现了字母表的替换</p>
 <h3 id="enigma"><a href="#enigma" class="headerlink" title="enigma"></a>enigma</h3><p>1926年开始，德国升级了加密系统，enigma机</p>
 <ul>
 <li><strong>字母替换</strong>的加密方法，输入o，输出c；再次输入时，输出会不同</li>
 <li>解密时直接输入密码可以得到原文，也就是自反的</li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141886.png" srcset="/img/loading.gif" lazyload alt="image-20240408104801371"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141886.png" srcset="/img/loading.gif" lazyload alt="image-20240408104801371"></p>
 <h4 id="内部结构"><a href="#内部结构" class="headerlink" title="内部结构"></a>内部结构</h4><ul>
 <li><p>一个转子相当于一个替换表，内部的接线是出厂固定的，但是按下后会转动转动，转动后替换表变了 <code>26*26*26</code>个</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141887.png" srcset="/img/loading.gif" lazyload alt="image-20240408112159790"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141888.png" srcset="/img/loading.gif" lazyload alt="image-20240408112219190"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141887.png" srcset="/img/loading.gif" lazyload alt="image-20240408112159790"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141888.png" srcset="/img/loading.gif" lazyload alt="image-20240408112219190"></p>
 </li>
 <li><p>反射板将信号反射回去（两两连接），使得型号可以<strong>自反</strong> + <strong>排己</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141889.png" srcset="/img/loading.gif" lazyload alt="image-20240408111708118"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141889.png" srcset="/img/loading.gif" lazyload alt="image-20240408111708118"></p>
 </li>
 <li><p>解密时转轮的初始位置需要一样，这个相当于是密钥（德军每天更新），也就是破解必须要<strong>密钥+同一批次机器</strong></p>
 </li>
 <li><p>最后是接线板，可以实现交换两个字母 如果12对  有一千多亿种</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141890.png" srcset="/img/loading.gif" lazyload alt="image-20240408112439109"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141890.png" srcset="/img/loading.gif" lazyload alt="image-20240408112439109"></p>
 </li>
 </ul>
 <h4 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h4><p><strong>密钥+同一批次机器+接线板</strong>  机器可以被缴获，密钥每天都更新</p>
@@ -436,20 +436,20 @@
 <li>解密时用统一密钥解密开头，获取随机密钥，再用随机密钥解密内容</li>
 </ul>
 <p>大量的内容都是用不同的密钥加密的（减少重复），少量的无意义信息是用统一密钥加密的</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141891.png" srcset="/img/loading.gif" lazyload alt="image-20240408113818917"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141891.png" srcset="/img/loading.gif" lazyload alt="image-20240408113818917"></p>
 <p>前六个字符是破译的关键！重复输入的<strong>随机密钥相当于漏洞</strong></p>
-<h5 id="破解初始密钥"><a href="#破解初始密钥" class="headerlink" title="破解初始密钥"></a>破解初始密钥</h5><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141892.png" srcset="/img/loading.gif" lazyload alt="image-20240408140327786"></p>
+<h5 id="破解初始密钥"><a href="#破解初始密钥" class="headerlink" title="破解初始密钥"></a>破解初始密钥</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141892.png" srcset="/img/loading.gif" lazyload alt="image-20240408140327786"></p>
 <p>又因为自反性，D(A(F)) &#x3D; G  把DA（EB、FG）看成一个整体函数 ，使得F-&gt;G</p>
 <p>当天的密文有很多，可以把3个函数的26个字母的映射关系都列出</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141893.png" srcset="/img/loading.gif" lazyload alt="image-20240408140625913"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141893.png" srcset="/img/loading.gif" lazyload alt="image-20240408140625913"></p>
 <ol>
 <li>这些映射存在环</li>
 <li>环的数量集合就是一个**特征(指纹)**，代表着转子的初始位子</li>
 <li>特征集合很少重复，如果构造了特征目录，就可以得到转子的初始位置</li>
 </ol>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141894.png" srcset="/img/loading.gif" lazyload alt="image-20240408140914606"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141894.png" srcset="/img/loading.gif" lazyload alt="image-20240408140914606"></p>
 <h5 id="构造目录表"><a href="#构造目录表" class="headerlink" title="构造目录表"></a>构造目录表</h5><p>一对函数的映射存在环，一次循环的数量2x代表一对环特征x,x</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141895.png" srcset="/img/loading.gif" lazyload alt="image-20240408141100019"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141895.png" srcset="/img/loading.gif" lazyload alt="image-20240408141100019"></p>
 <p><strong>循环测定仪</strong></p>
 <p>现在想构建AAA的特征</p>
 <ol>
@@ -463,7 +463,7 @@
 <li>设置AAC，另一个设置为AAF   用于输出FC函数特征</li>
 <li>结合三个特征，组合成AAA转子的特征</li>
 </ol>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141896.png" srcset="/img/loading.gif" lazyload alt="image-20240408141257098"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141896.png" srcset="/img/loading.gif" lazyload alt="image-20240408141257098"></p>
 <h5 id="目录表数量"><a href="#目录表数量" class="headerlink" title="目录表数量"></a>目录表数量</h5><ul>
 <li>三个随机排列：<code>26*26*26  *  A33</code>  大概10w，构造需要1年</li>
 <li>五个随机选择3个：10年！</li>
@@ -474,7 +474,7 @@
 <li>bombe machine</li>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PL4y1H77Z">https://www.bilibili.com/video/BV1PL4y1H77Z</a></li>
 </ul>
-<h3 id="对称加密AES"><a href="#对称加密AES" class="headerlink" title="对称加密AES"></a>对称加密AES</h3><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141897.png" srcset="/img/loading.gif" lazyload alt="image-20240408204133847"></p>
+<h3 id="对称加密AES"><a href="#对称加密AES" class="headerlink" title="对称加密AES"></a>对称加密AES</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141897.png" srcset="/img/loading.gif" lazyload alt="image-20240408204133847"></p>
 <ul>
 <li><p>对称加密用一个相同的密钥进行加密解密，适合1对1的加密方式，但浏览器和服务器之间不能单纯使用同一个密钥，否者大家都一样用户之间相当于没有加密。（握手后随机生成一个传输也不行，因为会被中间人窃取）</p>
 </li>
@@ -494,8 +494,8 @@
 <li>私钥加密只能公钥解密</li>
 <li><strong>计算复杂度高</strong></li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141898.png" srcset="/img/loading.gif" lazyload alt="image-20240408160753423"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141900.png" srcset="/img/loading.gif" lazyload alt="image-20240408161058177"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141898.png" srcset="/img/loading.gif" lazyload alt="image-20240408160753423"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141900.png" srcset="/img/loading.gif" lazyload alt="image-20240408161058177"></p>
 <ol>
 <li><strong>选择两个大质数p和q</strong>：这两个质数需要足够大，以确保其乘积n的位数可以满足安全需求。通常，p和q的位数应该在100位以上。</li>
 <li>**计算n和φ(n)**：n是p和q的乘积，φ(n)是n的欧拉函数，对于n&#x3D;pq，φ(n)&#x3D;(p-1)(q-1)。</li>
@@ -518,8 +518,8 @@
 <li><strong>Finishd</strong>：私钥解密获得传说密钥，最后对握手数据进行摘要并且加密，用于验证加密是否可用以及是否被篡改</li>
 </ol>
 <h3 id="ECDHE握手"><a href="#ECDHE握手" class="headerlink" title="ECDHE握手"></a>ECDHE握手</h3><p>RSA不具备前向安全！</p>
-<h4 id="Diffie-Hellman密钥交换协议"><a href="#Diffie-Hellman密钥交换协议" class="headerlink" title="Diffie-Hellman密钥交换协议"></a><strong>Diffie-Hellman密钥交换协议</strong></h4><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111615446.png" srcset="/img/loading.gif" lazyload alt="image-20240411161319844"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png" srcset="/img/loading.gif" lazyload alt="image-20240411161548610"></p>
+<h4 id="Diffie-Hellman密钥交换协议"><a href="#Diffie-Hellman密钥交换协议" class="headerlink" title="Diffie-Hellman密钥交换协议"></a><strong>Diffie-Hellman密钥交换协议</strong></h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111615446.png" srcset="/img/loading.gif" lazyload alt="image-20240411161319844"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png" srcset="/img/loading.gif" lazyload alt="image-20240411161548610"></p>
 <p>根据私钥生成的方式，DH 算法分为两种实现：</p>
 <ul>
 <li>static DH 算法，这个是已经被废弃了；可能被暴力破解, 不具备前向安全性</li>
@@ -543,7 +543,7 @@
 <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PL4y1H77Z">https://www.bilibili.com/video/BV1PL4y1H77Z</a>
 <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1S541127qR">MD5为何不再安全</a>
 <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_ecdhe.html#dh-%E7%AE%97%E6%B3%95">3.4 HTTPS ECDHE 握手解析 | 小林coding (xiaolincoding.com)</a>
-<a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png">DH算法</a>
+<a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png">DH算法</a>
 <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
                 
               </div>
@@ -625,7 +625,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

@@ -23,14 +23,14 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="基础网络传输需要知道目的ip地址，并附带上源ip地址使得数据包可以返回 基本知识：全球的ipv4的数量是有限的，在局域网内并没有一个公网ip，而是局域网的私网IP。在网络到达路由器时，路由器通过NAT分配一个公网ip从而实现网路的传输。  NAT 是一种网络技术，用于在私有网络和公共网络之间转换IP地址。它允许多个设备共享一个公共IP地址，是解决IPv4地址耗尽问题的一种方法。网络层 NAPT 是">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png">
 <meta property="article:published_time" content="2024-04-20T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-04-22T09:07:10.083Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.990Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="IO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png">
   
   
   
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -328,29 +328,29 @@
 <li>将 <code>192.168.1.101:80</code> 的流量映射到 <code>12.0.2.1:10001</code></li>
 </ul>
 </blockquote>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221026164.png" srcset="/img/loading.gif" lazyload alt="image-20240422102615340"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220102520.png" srcset="/img/loading.gif" lazyload alt="image-20240422010212314"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221026164.png" srcset="/img/loading.gif" lazyload alt="image-20240422102615340"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220102520.png" srcset="/img/loading.gif" lazyload alt="image-20240422010212314"></p>
 <p>同时路由器记录下一个ip端口映射表，根据映射表将8.8.8.8:800再转换回10.10.10.10:1000</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220106320.png" srcset="/img/loading.gif" lazyload alt="image-20240422010639177"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220106320.png" srcset="/img/loading.gif" lazyload alt="image-20240422010639177"></p>
 <p>所以私网可以轻松访问公网，但公网访问私网的前提是建立好了端口映射规则</p>
 <h3 id="公网IP-DDNS"><a href="#公网IP-DDNS" class="headerlink" title="公网IP+DDNS"></a>公网IP+DDNS</h3><p>手动建立端口映射规则</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220111006.png" srcset="/img/loading.gif" lazyload alt="image-20240422011135737"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220111006.png" srcset="/img/loading.gif" lazyload alt="image-20240422011135737"></p>
 <ul>
 <li><p>在光猫处，可以设置为<strong>桥接模式</strong>，使得光猫只负责光电信号转换，不负责nat和拨号</p>
 </li>
 <li><p>在运营商处，我们没有操作权限，只能向运营商申请一个<strong>公网ip</strong>（不一定是固定的，重启后可能会变，但一定要是公网ip，而不是10.这种私网ip）</p>
 </li>
 <li><p>最后，手动设置<strong>路由器的端口转发</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220117356.png" srcset="/img/loading.gif" lazyload alt="image-20240422011754041"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220128322.png" srcset="/img/loading.gif" lazyload alt="image-20240422012853045"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220117356.png" srcset="/img/loading.gif" lazyload alt="image-20240422011754041"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220128322.png" srcset="/img/loading.gif" lazyload alt="image-20240422012853045"></p>
 </li>
 </ul>
 <h4 id="DDNS"><a href="#DDNS" class="headerlink" title="DDNS"></a>DDNS</h4><p>公网IP：重启后可能跟会变，想要更好的访问需要DDNS</p>
 <p>DNS：记录下域名和ip的对应关系，但无法动态更新</p>
 <p>DDNS：额外引入一个服务器，路由器客户端有一个监控负责监控ip变化，变化后通知DDNS，DDNS通知DNS</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220123730.png" srcset="/img/loading.gif" lazyload alt="image-20240422012322564"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220123730.png" srcset="/img/loading.gif" lazyload alt="image-20240422012322564"></p>
 <p>需要购买DDNS服务（花生壳、ddns-go、路由器厂商、NAS），并在路由器配置DDNS</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220126868.png" srcset="/img/loading.gif" lazyload alt="image-20240422012630536"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404220126868.png" srcset="/img/loading.gif" lazyload alt="image-20240422012630536"></p>
 <p>IPV6公网，很容易申请，缺点是难记，并且部分网络可能不支持IPV6</p>
 <ul>
 <li>上面的方案是基于公网实现设备间访问，下面的通常都需要一个中转的服务器（公网）来搭桥</li>
@@ -365,14 +365,14 @@
 </ul>
 <h4 id="蒲公英："><a href="#蒲公英：" class="headerlink" title="蒲公英："></a><strong>蒲公英</strong>：</h4><p>用起来很简单，打洞成功率不如后两者，但哪怕打洞失败，也有保底的服务器中转，缺点是免费套餐可用设备数量太少</p>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yq4y1c7GU">内网穿透 异地组网 端口映射 蒲公英x1</a></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221641368.png" srcset="/img/loading.gif" lazyload alt="image-20240422164122349"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221641368.png" srcset="/img/loading.gif" lazyload alt="image-20240422164122349"></p>
 <h4 id="zerotier："><a href="#zerotier：" class="headerlink" title="zerotier："></a><strong>zerotier</strong>：</h4><ul>
 <li>各方面都不错，但会被部分地区的运营商限制，nas、电脑都需要安装客户端；</li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eac4067b2aa1">Zerotier——免费的虚拟局域网 | 内网穿透 | 解决方案 - 简书 (jianshu.com)</a>  <a target="_blank" rel="noopener" href="https://imnks.com/3175.html">群晖DSM7.x使用ZeroTier套件的简单办法 - 我不是矿神 (imnks.com)</a></li>
 <li><a target="_blank" rel="noopener" href="https://my.zerotier.com/">https://my.zerotier.com/</a></li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221052439.png" srcset="/img/loading.gif" lazyload alt="image-20240422105218332"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221642488.png" srcset="/img/loading.gif" lazyload alt="image-20240422164157388"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221052439.png" srcset="/img/loading.gif" lazyload alt="image-20240422105218332"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221642488.png" srcset="/img/loading.gif" lazyload alt="image-20240422164157388"></p>
 <p>0.1mbps  太慢了</p>
 <p>③tailscale：基于wg，和zerotier差不多，哪个好用用哪个</p>
 <p>在自己有服务器的情况下，也可以自建其他方案</p>
@@ -383,7 +383,7 @@
 </ul>
 <h4 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h4><p>frp：知名的内网穿透方案，<strong>需要有一个拥有公网IP的服务端</strong>，可以自建，也可以用别人搭好的，比如说樱花frp。缺点是每次更改配置文件都需要重启，在我这里连接效果不如nps</p>
 <p>FRP 的客户端（frpc）在内部网络中运行，与服务器（frps）之间建立连接，用于建立隧道。通过这些隧道，FRP 服务器将接收到的公网请求转发到内部网络中的服务。</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png" srcset="/img/loading.gif" lazyload alt="image-20240422160813814"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png" srcset="/img/loading.gif" lazyload alt="image-20240422160813814"></p>
 <h4 id="CloudFare"><a href="#CloudFare" class="headerlink" title="CloudFare"></a>CloudFare</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/591320825">如何利用Cloudflare实现低成本群辉NAS内网穿透【原创】</a></p>
 <ul>
 <li><strong>建立隧道</strong>：在内部网络中运行 Cloudflare Tunnel 的客户端（<code>cloudflared</code>），该客户端与 Cloudflare 的服务器建立一个安全的长连接。</li>
@@ -391,7 +391,7 @@
 <li><strong>请求转发</strong>：所有公网的请求首先到达 Cloudflare，Cloudflare 再通过已建立的安全隧道转发到内网服务。</li>
 </ul>
 <h4 id="ngrok"><a href="#ngrok" class="headerlink" title="ngrok"></a>ngrok</h4><p>可以使用官方的免费服务器，暴露80端，然后服务器会分配一个域名就可以访问到内网80的服务</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221650897.png" srcset="/img/loading.gif" lazyload alt="image-20240422165051957"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221650897.png" srcset="/img/loading.gif" lazyload alt="image-20240422165051957"></p>
 <h4 id="nps"><a href="#nps" class="headerlink" title="nps"></a>nps</h4><p>nps：知名的内网穿透方案，需要有一个拥有公网IP的服务端，可以自建，也可以用别人搭好的。优点是有良好的web管理界面，每次添加穿透的隧道也不需要重启，在我这里的连接效果也比frp更好，官方仓库（<a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps%EF%BC%89%E5%A5%BD%E4%B9%85%E6%B2%A1%E6%9B%B4%E6%96%B0%E4%BA%86%EF%BC%8C%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E5%88%86%E6%94%AF%E5%BA%93%EF%BC%9Ahttps://github.com/yisier/nps%EF%BC%8C%E4%B8%AA%E4%BA%BA%E6%B5%8B%E8%AF%95linux%E4%B8%8B%E6%95%88%E6%9E%9C%E6%AF%94windows%E4%B8%8B%E6%9B%B4%E5%A5%BD%EF%BC%8C%E6%89%80%E4%BB%A5%E6%8E%A8%E8%8D%90%E9%83%A8%E7%BD%B2%E5%9C%A8linux%E8%AE%BE%E5%A4%87%E4%B8%8A">https://github.com/ehang-io/nps）好久没更新了，推荐使用第三方分支库：https://github.com/yisier/nps，个人测试linux下效果比windows下更好，所以推荐部署在linux设备上</a></p>
 <h3 id="nat打洞"><a href="#nat打洞" class="headerlink" title="nat打洞"></a>nat打洞</h3><p>natmap，lucky（大吉），natter等，请自行前往github搜索，本方案的所有软件都需要自家网络的nat类型为全锥型（fullcone）</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1NV4y197TX">DDNS 端口映射 内网穿透 NAT 公网IP</a>
@@ -487,7 +487,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

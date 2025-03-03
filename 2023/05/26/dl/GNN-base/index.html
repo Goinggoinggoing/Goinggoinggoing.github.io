@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="https:&#x2F;&#x2F;distill.pub&#x2F;2021&#x2F;gnn-intro&#x2F;  图的矩阵表示 邻接矩阵 邻接表：稀疏性   聚合操作：实现层间的信息传递 层内：池化 层间：GCN邻域聚合、考虑邻接节点的权重（attention）  先采样再聚合     什么数据会用图表示  图数据有什么特点区别，构建一个GNN，提供一个GNN playground 图表示顶点、边、全局  用向量来表示。内部有信息，通过">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png">
 <meta property="article:published_time" content="2023-05-26T03:00:00.000Z">
-<meta property="article:modified_time" content="2024-04-19T09:13:37.561Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:43.015Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="GNN">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png">
   
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -327,88 +327,88 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png" srcset="/img/loading.gif" lazyload alt="image-20230524214233460"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056327.png" srcset="/img/loading.gif" lazyload alt="image-20230524214233460"></p>
 <p>什么数据会用图表示  图数据有什么特点区别，构建一个GNN，提供一个GNN playground</p>
 <h3 id="图表示"><a href="#图表示" class="headerlink" title="图表示"></a>图表示</h3><p>顶点、边、全局  用向量来表示。内部有信息，通过向量存储</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056329.png" srcset="/img/loading.gif" lazyload alt="image-20230524214810624"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056330.png" srcset="/img/loading.gif" lazyload alt="image-20230524215123040"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056329.png" srcset="/img/loading.gif" lazyload alt="image-20230524214810624"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056330.png" srcset="/img/loading.gif" lazyload alt="image-20230524215123040"></p>
 <h3 id="什么能被表示为图"><a href="#什么能被表示为图" class="headerlink" title="什么能被表示为图"></a>什么能被表示为图</h3><p><strong>图片表示为图</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056331.png" srcset="/img/loading.gif" lazyload alt="image-20230524215156969"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056331.png" srcset="/img/loading.gif" lazyload alt="image-20230524215156969"></p>
 <p><strong>文本</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056332.png" srcset="/img/loading.gif" lazyload alt="image-20230524215642756"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056332.png" srcset="/img/loading.gif" lazyload alt="image-20230524215642756"></p>
 <p><strong>分子 Molecules</strong> </p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056333.png" srcset="/img/loading.gif" lazyload alt="image-20230525095851988"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056333.png" srcset="/img/loading.gif" lazyload alt="image-20230525095851988"></p>
 <p><strong>社交关系图</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056334.png" srcset="/img/loading.gif" lazyload alt="image-20230524215744881"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056334.png" srcset="/img/loading.gif" lazyload alt="image-20230524215744881"></p>
 <h3 id="引出什么问题"><a href="#引出什么问题" class="headerlink" title="引出什么问题"></a>引出什么问题</h3><p>graph-level, node-level, and edge-level</p>
 <ul>
 <li>对整个图判断：是否有环</li>
 </ul>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056335.png" srcset="/img/loading.gif" lazyload alt="image-20230525100550222" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056335.png" srcset="/img/loading.gif" lazyload alt="image-20230525100550222" style="zoom:50%;" />
 
 <ul>
 <li>对顶点判断：社交网络有两个老师分开了，学生跟随谁</li>
 </ul>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056336.png" srcset="/img/loading.gif" lazyload alt="image-20230525100534543" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056336.png" srcset="/img/loading.gif" lazyload alt="image-20230525100534543" style="zoom:50%;" />
 
 <ul>
 <li>对边判断：顶点是图中的物体，判断物体和物体间关系</li>
 </ul>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056337.png" srcset="/img/loading.gif" lazyload alt="image-20230525100522460" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056337.png" srcset="/img/loading.gif" lazyload alt="image-20230525100522460" style="zoom:50%;" />
 
 <h3 id="represent-graphs"><a href="#represent-graphs" class="headerlink" title="represent graphs"></a>represent graphs</h3><ul>
 <li><strong>顶点 边 全局信息</strong>：直接用向量，比较简单</li>
 <li><strong>连接信息</strong>：邻接矩阵，比较大浪费空间、同一图交换两行会影响矩阵形状；邻接表</li>
 </ul>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056338.png" srcset="/img/loading.gif" lazyload alt="image-20230524220829767" style="zoom:67%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056338.png" srcset="/img/loading.gif" lazyload alt="image-20230524220829767" style="zoom:67%;" />
 
 <p>这里用标量表示的，可替换向量</p>
 <h3 id="GNN："><a href="#GNN：" class="headerlink" title="GNN："></a>GNN：</h3><p><strong>Define</strong>：对顶点、边、全局进行变换，变换满足置换不变性。输入输出都是图，对顶点、边进行变化但不改变连接性</p>
 <p>message passing neural network</p>
 <p>通过MLP更新顶点向量，最后对单个顶点的向量就可以通过softmax分类</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056339.png" srcset="/img/loading.gif" lazyload alt="image-20230524221712195"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056339.png" srcset="/img/loading.gif" lazyload alt="image-20230524221712195"></p>
 <h4 id="pool"><a href="#pool" class="headerlink" title="pool"></a>pool</h4><p>可能点没有信息，但边有，在最后一层pool。pool: 边-&gt;点   。同理可以点到边</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056340.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056340.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="Passing-messages"><a href="#Passing-messages" class="headerlink" title="Passing messages"></a>Passing messages</h4><p>问题：我们没有使用图的信息(除了最后一次)，顶点和哪些边相连的。我想在GNN层中使用池化来做出更复杂的预测</p>
 <h5 id="点-点-或-边-边"><a href="#点-点-或-边-边" class="headerlink" title="点-点 或 边-边"></a>点-点 或 边-边</h5><p>消息传递：进入mlp前，当前顶点会加上所有相邻的点，如果很多层就可以看到全局的点，如第一张图所示（像感受野）</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056341.png" srcset="/img/loading.gif" lazyload alt="image-20230524222021997"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056342.png" srcset="/img/loading.gif" lazyload alt="image-20230525094552106"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056341.png" srcset="/img/loading.gif" lazyload alt="image-20230524222021997"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056342.png" srcset="/img/loading.gif" lazyload alt="image-20230525094552106"></p>
 <h5 id="点-边"><a href="#点-边" class="headerlink" title="点-边"></a>点-边</h5><p>顶点信息给边，再给边信息给点（相加、concat）</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056343.png" srcset="/img/loading.gif" lazyload alt="image-20230524222504445"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056343.png" srcset="/img/loading.gif" lazyload alt="image-20230524222504445"></p>
 <h5 id="全局信息"><a href="#全局信息" class="headerlink" title="全局信息"></a>全局信息</h5><p>解决很远的节点间的消息传递问题</p>
 <p>master node：<strong>和所有点和边相连</strong> 包含全局信息，更新时需要点边信息，点边更新时会额外加入全局</p>
 <p>先更E(包含V，U)，再更新点（包含E，U），最后更新U（包含V，E）</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056344.png" srcset="/img/loading.gif" lazyload alt="image-20230524224543319"></p>
-<h3 id="PlayGround"><a href="#PlayGround" class="headerlink" title="PlayGround"></a>PlayGround</h3><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056345.png" srcset="/img/loading.gif" lazyload alt="image-20230525104435625"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056344.png" srcset="/img/loading.gif" lazyload alt="image-20230524224543319"></p>
+<h3 id="PlayGround"><a href="#PlayGround" class="headerlink" title="PlayGround"></a>PlayGround</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056345.png" srcset="/img/loading.gif" lazyload alt="image-20230525104435625"></p>
 <p><strong>hyperparameters</strong>：</p>
 <ul>
 <li><p>Style of message passing   明显全部消息传递效果最优</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056347.png" srcset="/img/loading.gif" lazyload alt="image-20230525104737176"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056347.png" srcset="/img/loading.gif" lazyload alt="image-20230525104737176"></p>
 </li>
 <li><p>the dimensionality of embeddings</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056348.png" srcset="/img/loading.gif" lazyload alt="image-20230525104343737"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056348.png" srcset="/img/loading.gif" lazyload alt="image-20230525104343737"></p>
 </li>
 <li><p>number of layers</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056349.png" srcset="/img/loading.gif" lazyload alt="image-20230525104804863"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056349.png" srcset="/img/loading.gif" lazyload alt="image-20230525104804863"></p>
 </li>
 <li><p>aggregation operation type</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056350.png" srcset="/img/loading.gif" lazyload alt="image-20230525104615998"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056350.png" srcset="/img/loading.gif" lazyload alt="image-20230525104615998"></p>
 </li>
 </ul>
 <h3 id="Into-the-Weeds"><a href="#Into-the-Weeds" class="headerlink" title="Into the Weeds"></a>Into the Weeds</h3><h4 id="Other-types-of-graphs"><a href="#Other-types-of-graphs" class="headerlink" title="**Other types of graphs **"></a>**Other types of graphs **</h4><p><strong>(multigraphs, hypergraphs, hypernodes, hierarchical graphs)</strong></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056351.png" srcset="/img/loading.gif" lazyload alt="image-20230525110752250"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056351.png" srcset="/img/loading.gif" lazyload alt="image-20230525110752250"></p>
 <h4 id="Sampling-Graphs-and-Batching"><a href="#Sampling-Graphs-and-Batching" class="headerlink" title="Sampling Graphs and Batching"></a><strong>Sampling Graphs and Batching</strong></h4><p>随机子图，随机游走多少步，随机游走再加邻居，单点BFS多少步</p>
 <h4 id="GCN"><a href="#GCN" class="headerlink" title="GCN"></a><strong>GCN</strong></h4><p><code>GCNConv</code> 是 PyTorch Geometric 中实现 GCN 的模块，它的内部实现如下：<code>GCNConv(x, edge_index)</code></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056352.png" srcset="/img/loading.gif" lazyload alt="image-20230525213032091"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056352.png" srcset="/img/loading.gif" lazyload alt="image-20230525213032091"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GCN</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, input_dim, hidden_dim, output_dim</span>):<br>        <span class="hljs-built_in">super</span>(GCN, self).__init__()<br>        self.fc1 = nn.Linear(input_dim, hidden_dim)<br>        self.fc2 = nn.Linear(hidden_dim, output_dim)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, adj</span>):<br>        <span class="hljs-comment"># 计算规范化的邻接矩阵</span><br>        adj = adj + torch.eye(adj.size(<span class="hljs-number">0</span>))  <span class="hljs-comment"># 加上自环</span><br>        degree = torch.<span class="hljs-built_in">sum</span>(adj, dim=<span class="hljs-number">1</span>)<br>        degree_sqrt = torch.sqrt(degree)<br>        adj_normalized = adj / degree_sqrt.unsqueeze(<span class="hljs-number">1</span>) / degree_sqrt.unsqueeze(<span class="hljs-number">0</span>)<br><br>        <span class="hljs-comment"># 计算GCN层的输出</span><br>        x = self.fc1(adj_normalized @ x)<br>        x = torch.relu(x)<br>        x = self.fc2(adj_normalized @ x)<br><br>        <span class="hljs-keyword">return</span> x<br><br><span class="hljs-comment"># 定义输入数据和邻接矩阵</span><br>x = torch.randn(<span class="hljs-number">10</span>, <span class="hljs-number">5</span>)  <span class="hljs-comment"># 10个节点，每个节点5维特征</span><br>adj = torch.randn(<span class="hljs-number">10</span>, <span class="hljs-number">10</span>)  <span class="hljs-comment"># 10个节点的邻接矩阵</span><br><br><span class="hljs-comment"># 创建GCN网络实例</span><br>gcn = GCN(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">2</span>)  <span class="hljs-comment"># 输入特征维度为5，隐藏层维度为10，输出维度为2</span><br><br><span class="hljs-comment"># 计算GCN的输出</span><br>output = gcn(x, adj)<br><br><span class="hljs-comment"># 定义损失函数和优化器</span><br>criterion = nn.CrossEntropyLoss()<br>optimizer = torch.optim.Adam(gcn.parameters(), lr=<span class="hljs-number">0.01</span>)<br><br><span class="hljs-comment"># 训练GCN网络</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">100</span>):<br>    optimizer.zero_grad()<br>    output = gcn(x, adj)<br>    loss = criterion(output, torch.tensor([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]))  <span class="hljs-comment"># 10个节点分为两类</span><br>    loss.backward()<br>    optimizer.step()<br><br></code></pre></td></tr></table></figure>
 
 
 
 <h4 id="Graph-Attention-Networks"><a href="#Graph-Attention-Networks" class="headerlink" title="Graph Attention Networks"></a><strong>Graph Attention Networks</strong></h4><p>当我们考虑一个节点及其1度相邻节点的和聚合时，我们也可以考虑使用加权和</p>
 <p>常用的评分函数是<strong>内积</strong>，评分前常通过<strong>线性映射</strong>将节点转换为查询和关键向量，以提高评分机制的表现力。</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056353.png" srcset="/img/loading.gif" lazyload alt="image-20230525111909292"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056353.png" srcset="/img/loading.gif" lazyload alt="image-20230525111909292"></p>
 <p>a(l)代表着注意力分数向量；W(l)是对当前层特征做一个映射，相当于一个MLP</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056354.png" srcset="/img/loading.gif" lazyload alt="image-20230525122735492"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305261056354.png" srcset="/img/loading.gif" lazyload alt="image-20230525122735492"></p>
 
                 
               </div>
@@ -495,7 +495,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

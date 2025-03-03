@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="原文链接：订单超时处理的几种方案及分析-阿里云开发者社区 (aliyun.com) 介绍在电商场景下，买卖双方没有面对面交易，许多情况下需要通过超时处理自动关闭订单，如：  买家超时未付款 卖家超时未发货 买家超时自动收货  JDK自带DelayQueue处理流程  把订单插入DelayQueue中，以超时时间作为排序条件，将订单按照超时时间从小到大排序。 起一个线程不停轮询队列的头部，如果订单的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png">
 <meta property="article:published_time" content="2023-12-15T12:00:00.000Z">
-<meta property="article:modified_time" content="2024-04-19T09:13:37.494Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:42.990Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="文章精读">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png">
   
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -321,7 +321,7 @@
 <li>卖家超时未发货</li>
 <li>买家超时自动收货</li>
 </ul>
-<h2 id="JDK自带DelayQueue"><a href="#JDK自带DelayQueue" class="headerlink" title="JDK自带DelayQueue"></a>JDK自带DelayQueue</h2><h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png" srcset="/img/loading.gif" lazyload alt="image-20240319124145733"></p>
+<h2 id="JDK自带DelayQueue"><a href="#JDK自带DelayQueue" class="headerlink" title="JDK自带DelayQueue"></a>JDK自带DelayQueue</h2><h3 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png" srcset="/img/loading.gif" lazyload alt="image-20240319124145733"></p>
 <ol>
 <li>把订单插入DelayQueue中，以超时时间作为排序条件，将订单按照超时时间从小到大排序。</li>
 <li>起一个线程不停轮询队列的头部，如果订单的超时时间到了，就出队进行超时处理，并更新订单状态到数据库中。</li>
@@ -356,8 +356,8 @@
 <li>RabbitMQ Delayed Message Plugin（非高可用）</li>
 <li>消息的TTL+死信Exchange</li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124838271.png" srcset="/img/loading.gif" lazyload alt="image-20240319124838271"></p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240326121154965.png" srcset="/img/loading.gif" lazyload alt="image-20240326121154965"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124838271.png" srcset="/img/loading.gif" lazyload alt="image-20240319124838271"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240326121154965.png" srcset="/img/loading.gif" lazyload alt="image-20240326121154965"></p>
 <ol>
 <li>定义一个BizQueue，用来接收死信消息，并进行业务消费。</li>
 <li>定义一个死信交换机(DLXExchange)，绑定BizQueue，接收延时队列的消息，并转发给BizQueue。</li>
@@ -376,7 +376,7 @@
 </li>
 <li></li>
 </ul>
-<h2 id="RocketMQ的定时消息"><a href="#RocketMQ的定时消息" class="headerlink" title="RocketMQ的定时消息"></a>RocketMQ的定时消息</h2><h3 id="时间轮算法"><a href="#时间轮算法" class="headerlink" title="时间轮算法"></a>时间轮算法</h3><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319130800851.png" srcset="/img/loading.gif" lazyload alt="image-20240319130800851"></p>
+<h2 id="RocketMQ的定时消息"><a href="#RocketMQ的定时消息" class="headerlink" title="RocketMQ的定时消息"></a>RocketMQ的定时消息</h2><h3 id="时间轮算法"><a href="#时间轮算法" class="headerlink" title="时间轮算法"></a>时间轮算法</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319130800851.png" srcset="/img/loading.gif" lazyload alt="image-20240319130800851"></p>
 <p>指针代表当前时刻，slot上有每个时刻上等待的任务，链表串起来</p>
 <ul>
 <li>时间转一下代表过去1s</li>
@@ -384,7 +384,7 @@
 <li>新消息到达 Slot&#x3D;(curTime + delay) mod total_slot，round &#x3D; (curTime + delay) &#x2F; total_slot</li>
 </ul>
 <h3 id="延时最大限制"><a href="#延时最大限制" class="headerlink" title="延时最大限制"></a>延时最大限制</h3><p>定时时长最大值24小时，使用循环处理实现大延时</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319131311872.png" srcset="/img/loading.gif" lazyload alt="image-20240319131311872"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319131311872.png" srcset="/img/loading.gif" lazyload alt="image-20240319131311872"></p>
 <ul>
 <li><p>优点</p>
 </li>
@@ -411,14 +411,14 @@
 
 
 <p><strong>问题：</strong>redis的key是惰性删除+定期删除，延时不正确</p>
-<h2 id="定时任务分布式批处理"><a href="#定时任务分布式批处理" class="headerlink" title="定时任务分布式批处理"></a>定时任务分布式批处理</h2><p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319135208503.png" srcset="/img/loading.gif" lazyload alt="image-20240319135208503"></p>
+<h2 id="定时任务分布式批处理"><a href="#定时任务分布式批处理" class="headerlink" title="定时任务分布式批处理"></a>定时任务分布式批处理</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319135208503.png" srcset="/img/loading.gif" lazyload alt="image-20240319135208503"></p>
 <ul>
 <li>稳定性强：没有引入额外中间件</li>
 <li>效率高：批处理</li>
 </ul>
 <p>但是使用<strong>定时任务</strong>有个天然的<strong>缺点</strong>：没法做到精度很高。定时任务的延迟时间，由定时任务的调度周期决定。如果把频率设置很小，就会导致数据库的qps比较高，容易造成数据库压力过大，从而影响线上的正常业务。</p>
 <p>所以一般需要抽离出超时中心和超时库来单独做订单的超时调度，在阿里内部，几乎所有的业务都使用<strong>基于定时任务分布式批处理的超时中心来做订单超时处理</strong>，SLA可以做到30秒以内：</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319135535171.png" srcset="/img/loading.gif" lazyload alt="image-20240319135535171"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319135535171.png" srcset="/img/loading.gif" lazyload alt="image-20240319135535171"></p>
 
                 
               </div>
@@ -505,7 +505,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname

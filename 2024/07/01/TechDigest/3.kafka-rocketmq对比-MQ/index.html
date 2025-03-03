@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="底层存储kafkaKafka部分名词解释如下：  Broker：消息中间件处理结点，一个Kafka节点就是一个broker，多个broker可以组成一个Kafka集群。  Topic：一类消息，例如page view日志、click日志等都可以以topic的形式存在，Kafka集群能够同时负责多个topic的分发。  Partition：topic物理上的分组，一个topic可以分为多个parti">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png">
 <meta property="article:published_time" content="2024-07-01T12:33:46.000Z">
-<meta property="article:modified_time" content="2024-09-23T11:26:44.825Z">
+<meta property="article:modified_time" content="2025-03-03T08:01:43.014Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png">
   
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.gogoes.buzz/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -327,10 +327,10 @@
 <li><p>offset：每个partition都由一系列有序的、不可变的消息组成，这些消息被连续的追加到partition中。partition中的每个消息都有一个连续的序列号叫做offset,用于partition<strong>唯一标识</strong>一条消息.（只在partition下唯一）</p>
 </li>
 <li><p>同一个topic下有多个不同partition，每个partition为一个目录，命名规则为topic名称+partition的有序序号</p>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111352406.png" srcset="/img/loading.gif" lazyload alt="image-20240923111352406" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111352406.png" srcset="/img/loading.gif" lazyload alt="image-20240923111352406" style="zoom:50%;" />
 </li>
 <li><p>一个partition相当于一个巨型文件，被顺序分配到了多个segment文件中，文件名为当前第一条消息的offset</p>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111647323.png" srcset="/img/loading.gif" lazyload alt="image-20240923111647323"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111647323.png" srcset="/img/loading.gif" lazyload alt="image-20240923111647323"></p>
 </li>
 <li><p>segment文件组成</p>
 <ul>
@@ -339,7 +339,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111653552.png" srcset="/img/loading.gif" lazyload alt="image-20240923111653552"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923111653552.png" srcset="/img/loading.gif" lazyload alt="image-20240923111653552"></p>
 <p>当消费者给出一个offset，需要查找该消息：</p>
 <p>例如读取offset&#x3D;368776的message，需要通过下面2个步骤查找。</p>
 <ul>
@@ -362,10 +362,10 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">ssize_t</span> <span class="hljs-title function_">sendfile</span><span class="hljs-params">(<span class="hljs-type">int</span> out_fd, <span class="hljs-type">int</span> in_fd, <span class="hljs-type">off_t</span> *offset, <span class="hljs-type">size_t</span> count)</span>;<br><span class="hljs-comment">// 单次系统调用，以及3 or 2 次数据拷贝</span><br></code></pre></td></tr></table></figure>
 
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923115252328.png" srcset="/img/loading.gif" lazyload alt="image-20240923115252328"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923115252328.png" srcset="/img/loading.gif" lazyload alt="image-20240923115252328"></p>
 <p><strong>存在问题：</strong></p>
 <p>在Kafka文件读写中，针对segment文件写入是采用<strong>顺序write</strong>的，但是如果<strong>topic数量以及下面parition数量</strong>一多，从操作系统的角度看就变成了随机写入，导致写入性能下降。</p>
-<img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923113541061.png" srcset="/img/loading.gif" lazyload alt="image-20240923113541061" style="zoom:50%;" />
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923113541061.png" srcset="/img/loading.gif" lazyload alt="image-20240923113541061" style="zoom:50%;" />
 
 
 
@@ -374,7 +374,7 @@
 <li>为了加速消费消息，建立轻量级索引，为每个队列新增ConsumeQueue文件，存储消息在CommitLog中的文件偏移量，而不是像kafka一样存储完整的消息内容  topic&#x2F;queue&#x2F;file</li>
 <li>现在读取变成了两次，先去queue读偏移，再去CommitLog读数据</li>
 </ol>
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png" srcset="/img/loading.gif" lazyload alt="image-20240923191338314"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923191338314.png" srcset="/img/loading.gif" lazyload alt="image-20240923191338314"></p>
 <p>写（生产）消息：</p>
 <ul>
 <li>无论是ConsumeQueue还是CommitLog都使用mmap进行写</li>
@@ -385,7 +385,7 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">buf = mmap(file, len);<br>write(sockfd, buf, len);<br><br><span class="hljs-comment">// 两次系统调用 3次数据拷贝（减少一次内核到用户拷贝）</span><br></code></pre></td></tr></table></figure>
 
-<p><img src="https://proxy.gogoes.buzz/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923115304549.png" srcset="/img/loading.gif" lazyload alt="image-20240923115304549"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240923115304549.png" srcset="/img/loading.gif" lazyload alt="image-20240923115304549"></p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
 <thead>
 <tr>
@@ -519,7 +519,7 @@
       Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.min.css')
       Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.gogoes.buzz/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
           {
             el: '#waline',
             path: window.location.pathname
