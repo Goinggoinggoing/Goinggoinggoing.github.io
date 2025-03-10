@@ -235,6 +235,377 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/10/TechDigest/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202409231924366.png" srcset="/img/loading.gif" lazyload alt="1.为什么要引入MQ-MQ">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/06/10/TechDigest/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
+          1.为什么要引入MQ-MQ
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2024/06/10/TechDigest/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
+        <div>
+          MQ有哪些优点，为什么需要MQ？ 优点异步一个秒杀系统包含很多步骤，有的很重要，有的不重要。借助MQ可以只保留核心流程，提升系统性能  流量扩展流量：web前端可以上千万请求，但数据库（分库分表）是万级别水平 简单实现，压测评估流量，并引入限流算法：  固定窗口 滑动窗口 漏桶算法 令牌桶算法  加入异步后，秒杀流程  收到请求后，将整个请求加入MQ MQ消费者异步完成秒杀过程，处理响应 轮询秒杀
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-10 20:33" pubdate>
+              2024-06-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BC%80%E5%8F%91/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="category-chain-item">中间件</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/05/10/TechDigest/TL_ITL_TTL%E5%8E%9F%E7%90%86/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240812172504429.png" srcset="/img/loading.gif" lazyload alt="TL_ITL_TTL原理">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/05/10/TechDigest/TL_ITL_TTL%E5%8E%9F%E7%90%86/" target="_self">
+          TL_ITL_TTL原理
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2024/05/10/TechDigest/TL_ITL_TTL%E5%8E%9F%E7%90%86/" target="_self">
+        <div>
+          ThreadLocal 为每一个线程开辟了一个空间Map，用于存储变量 用额外的空间使得线程之间互不影响 用途：在一个线程中，存储用户的信息，使得整个线程链路都可以访问到，并且线程之间互不影响  1234567891011121314151617181920public void set(T value) &#123;    Thread t = Thread.currentThread();
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-05-10 20:00" pubdate>
+              2024-05-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">#java</a>
+            
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/04/22/TechDigest/nas%E5%85%A5%E9%97%A8/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221725956.png" srcset="/img/loading.gif" lazyload alt="nas入门">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/22/TechDigest/nas%E5%85%A5%E9%97%A8/" target="_self">
+          nas入门
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2024/04/22/TechDigest/nas%E5%85%A5%E9%97%A8/" target="_self">
+        <div>
+          引入 硬件选择 安装 半洗白：黑群晖激活Advanced Media Extensions（AME）解码HEVC视频和HEIC图片|美的|补丁_新浪新闻 (sina.com.cn)  图片备份 群晖NAS 11期-使用群晖套件Photos进行家庭相册管理 图片备份注意事项：dsm7 群晖synology photos备份照片的坑(备份方法 人脸 视频缩略图） - 知乎 (zhihu.com) 官网
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-22 20:00" pubdate>
+              2024-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/nas/" class="category-chain-item">nas</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/IO/">#IO</a>
+            
+              <a href="/tags/nas/">#nas</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/04/20/TechDigest/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%8A%80%E6%9C%AF/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221608170.png" srcset="/img/loading.gif" lazyload alt="内网穿透技术">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/20/TechDigest/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%8A%80%E6%9C%AF/" target="_self">
+          内网穿透技术
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2024/04/20/TechDigest/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%8A%80%E6%9C%AF/" target="_self">
+        <div>
+          基础网络传输需要知道目的ip地址，并附带上源ip地址使得数据包可以返回 基本知识：全球的ipv4的数量是有限的，在局域网内并没有一个公网ip，而是局域网的私网IP。在网络到达路由器时，路由器通过NAT分配一个公网ip从而实现网路的传输。  NAT 是一种网络技术，用于在私有网络和公共网络之间转换IP地址。它允许多个设备共享一个公共IP地址，是解决IPv4地址耗尽问题的一种方法。网络层 NAPT 是
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-20 20:00" pubdate>
+              2024-04-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+            
+              <a href="/tags/IO/">#IO</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/04/14/TechDigest/IO%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png" srcset="/img/loading.gif" lazyload alt="IO模型介绍">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/14/TechDigest/IO%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/" target="_self">
+          IO模型介绍
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt " href="/2024/04/14/TechDigest/IO%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/" target="_self">
+        <div>
+          引入什么是IO？：输入输出模型，常见包含磁盘IO、网络IO 流程一次IO包含以下过程：  应用程序向操作系统发起IO请求，等待数据就绪（等待到网卡&amp;网卡到达内核缓冲区） 操作系统拷贝内核数据到用户缓冲区   分类 同步和异步关注的是消息通信机制.  同步：就是在发出一个调用时，自己需要参与等待结果的过程,则为同步,前面四个 IO 都自己参与了,所以也称为同步 IO. 异步：则指出发出调用以
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-14 20:33" pubdate>
+              2024-04-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+            
+              <a href="/tags/IO/">#IO</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2024/04/12/TechDigest/linux%E4%B8%AD%E6%96%AD%E5%8E%9F%E7%90%86/" target="_self">
           <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png" srcset="/img/loading.gif" lazyload alt="Linux中断原理">
         </a>
@@ -593,385 +964,6 @@
               <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">#设计模式</a>
             
               <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">#系统架构</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png" srcset="/img/loading.gif" lazyload alt="高性能短链设计">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
-          高性能短链设计
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
-        <div>
-          原文链接：高性能短链设计 - 掘金 (juejin.cn) 介绍将长连接转为一个短连接，并且再访问时再转换回来 短链：   最终长链  可以看到，短信中的是短链，但最后变成了长链；使用短链的好处  再具有文字限制的地方（微博），用短链可以占据更少的文字 短链对应转的二维码不密集，更容易识别  跳转的基本实现：请求短链时，会返回状态码302（临时重定向：每次都使用短链请求，易于点击数统计）以及长链的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-12-27 20:00" pubdate>
-              2023-12-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/">#文章精读</a>
-            
-              <a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>
-            
-              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">#系统架构</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2023/12/17/CPU%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312251349397.png" srcset="/img/loading.gif" lazyload alt="CPU故障排查">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/12/17/CPU%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/" target="_self">
-          CPU故障排查
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2023/12/17/CPU%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/" target="_self">
-        <div>
-          CPU故障排查背景在压测考试的时候，无意间看到resource、teacher-admin等微服务CPU利用率百分之百，询问相关负责同学并不了解，于是自己寻找了一下原因。   方法jstack​	jstack可以定位线程的执行情况，因此直接进入pod内部执行，发现并没有找到此命令，查看dockerfile打包文件发现打包时是基于jre镜像构建的，并没有jdk中的其他工具，因此需要先安装工具。此外T
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-12-17 20:00" pubdate>
-              2023-12-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BC%80%E5%8F%91/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%90%8E%E7%AB%AF/">#后端</a>
-            
-              <a href="/tags/java/">#java</a>
-            
-              <a href="/tags/%E4%BC%98%E5%8C%96/">#优化</a>
-            
-              <a href="/tags/%E6%B0%B4%E6%9D%89/">#水杉</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2023/12/15/TechDigest/%E8%AE%A2%E5%8D%95%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240319124145733.png" srcset="/img/loading.gif" lazyload alt="订单超时处理">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/12/15/TechDigest/%E8%AE%A2%E5%8D%95%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86/" target="_self">
-          订单超时处理
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2023/12/15/TechDigest/%E8%AE%A2%E5%8D%95%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86/" target="_self">
-        <div>
-          原文链接：订单超时处理的几种方案及分析-阿里云开发者社区 (aliyun.com) 介绍在电商场景下，买卖双方没有面对面交易，许多情况下需要通过超时处理自动关闭订单，如：  买家超时未付款 卖家超时未发货 买家超时自动收货  JDK自带DelayQueue处理流程  把订单插入DelayQueue中，以超时时间作为排序条件，将订单按照超时时间从小到大排序。 起一个线程不停轮询队列的头部，如果订单的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-12-15 20:00" pubdate>
-              2023-12-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" class="category-chain-item">系统架构</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E8%AE%BE%E8%AE%A1/" class="category-chain-item">设计</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/">#文章精读</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202455624.png" srcset="/img/loading.gif" lazyload alt="考试重构-压测">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/" target="_self">
-          考试重构-压测
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/" target="_self">
-        <div>
-          11&#x2F;10 ~ 11&#x2F;23 重构原因 原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况 原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方  重构基本思想 考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-23 19:33" pubdate>
-              2023-11-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BC%80%E5%8F%91/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%90%8E%E7%AB%AF/">#后端</a>
-            
-              <a href="/tags/java/">#java</a>
-            
-              <a href="/tags/%E4%BC%98%E5%8C%96/">#优化</a>
-            
-              <a href="/tags/%E6%B0%B4%E6%9D%89/">#水杉</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2023/11/15/TechDigest/%E5%AF%B9%E8%B4%A6%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202607297.png" srcset="/img/loading.gif" lazyload alt="对账体系建设">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/11/15/TechDigest/%E5%AF%B9%E8%B4%A6%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE/" target="_self">
-          对账体系建设
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt " href="/2023/11/15/TechDigest/%E5%AF%B9%E8%B4%A6%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE/" target="_self">
-        <div>
-          原文链接：https://tech.meituan.com/2018/03/21/balance-accounts.html 引入业务复杂性高：场景多、链路长、数据量大，给资金安全带来了巨大挑战 可能出现问题的场景：  可以看出，这些都是一些上下游交互的边界场景，以及遇到的问题。当然不仅限于这些场景，凡是有系统交互、数据交互边界的场景，都会出现此类问题，我们称之为“一致性问题”。经粗略统计，我们清
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-15 20:00" pubdate>
-              2023-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" class="category-chain-item">系统架构</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A8%B3%E5%AE%9A%E6%80%A7/" class="category-chain-item">稳定性</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/">#文章精读</a>
             
           </div>
         
