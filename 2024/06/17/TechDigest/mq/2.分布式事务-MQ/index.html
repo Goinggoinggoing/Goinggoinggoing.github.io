@@ -19,7 +19,7 @@
     <meta name="description" content="分布式事务产生原因？分布式系统拆分导致的 存储拆分分库分表  服务拆分 每个服务有自己的库，不能跨库访问 用户再下单时，创建订单和扣减库存，需要同时对订单DB和库存DB进行操作。两步操作必须同时成功，否则就会造成业务混乱，可此时我们只能保证自己服务的数据一致性，无法保证调用其他服务的操作是否成功，所以为了保证整个下单流程的数据一致性，就需要分布式事务介入。 分布式系统中，通常谈论一致性，都是最终一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2.分布式事务-MQ">
-<meta property="og:url" content="http://example.com/2024/06/17/TechDigest/2.%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-MQ/index.html">
+<meta property="og:url" content="http://example.com/2024/06/17/TechDigest/mq/2.%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-MQ/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
 <meta property="og:description" content="分布式事务产生原因？分布式系统拆分导致的 存储拆分分库分表  服务拆分 每个服务有自己的库，不能跨库访问 用户再下单时，创建订单和扣减库存，需要同时对订单DB和库存DB进行操作。两步操作必须同时成功，否则就会造成业务混乱，可此时我们只能保证自己服务的数据一致性，无法保证调用其他服务的操作是否成功，所以为了保证整个下单流程的数据一致性，就需要分布式事务介入。 分布式系统中，通常谈论一致性，都是最终一">
 <meta property="og:locale" content="zh_CN">
@@ -633,7 +633,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/07/01/TechDigest/3.kafka-rocketmq%E5%AF%B9%E6%AF%94-MQ/" title="3.kafka-rocketmq对比-MQ">
+                      <a href="/2024/07/01/TechDigest/mq/3.kafka-rocketmq%E5%AF%B9%E6%AF%94-MQ/" title="3.kafka-rocketmq对比-MQ">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">3.kafka-rocketmq对比-MQ</span>
                         <span class="visible-mobile">上一篇</span>
@@ -643,7 +643,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/06/10/TechDigest/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" title="1.为什么要引入MQ-MQ">
+                      <a href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" title="1.为什么要引入MQ-MQ">
                         <span class="hidden-mobile">1.为什么要引入MQ-MQ</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
