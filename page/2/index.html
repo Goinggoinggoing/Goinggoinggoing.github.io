@@ -234,80 +234,6 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202409231924366.png" srcset="/img/loading.gif" lazyload alt="1.为什么要引入MQ-MQ">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-          1.为什么要引入MQ-MQ
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-        <div>
-          MQ有哪些优点，为什么需要MQ？ 优点异步一个秒杀系统包含很多步骤，有的很重要，有的不重要。借助MQ可以只保留核心流程，提升系统性能  流量扩展流量：web前端可以上千万请求，但数据库（分库分表）是万级别水平 简单实现，压测评估流量，并引入限流算法：  固定窗口 滑动窗口 漏桶算法 令牌桶算法  加入异步后，秒杀流程  收到请求后，将整个请求加入MQ MQ消费者异步完成秒杀过程，处理响应 轮询秒杀
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-06-10 20:33" pubdate>
-              2024-06-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BC%80%E5%8F%91/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="category-chain-item">中间件</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2024/05/10/TechDigest/TL_ITL_TTL%E5%8E%9F%E7%90%86/" target="_self">
           <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240812172504429.png" srcset="/img/loading.gif" lazyload alt="TL_ITL_TTL原理">
         </a>
@@ -963,6 +889,77 @@
               <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">#设计模式</a>
             
               <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">#系统架构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
+          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png" srcset="/img/loading.gif" lazyload alt="高性能短链设计">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
+          高性能短链设计
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/" target="_self">
+        <div>
+          原文链接：高性能短链设计 - 掘金 (juejin.cn) 介绍将长连接转为一个短连接，并且再访问时再转换回来 短链：   最终长链  可以看到，短信中的是短链，但最后变成了长链；使用短链的好处  再具有文字限制的地方（微博），用短链可以占据更少的文字 短链对应转的二维码不密集，更容易识别  跳转的基本实现：请求短链时，会返回状态码302（临时重定向：每次都使用短链请求，易于点击数统计）以及长链的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-27 20:00" pubdate>
+              2023-12-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/">#文章精读</a>
+            
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">#系统架构</a>
+            
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/">#项目</a>
             
           </div>
         
