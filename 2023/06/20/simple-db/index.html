@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="simple-dbcode：Goinggoinggoing&#x2F;simple-db-hw-2021 (github.com) 基于java语言，实现一个简易事务支持的关系型数据库 难度：lab4 &#x3D; lab5 &gt; lab6 &gt;&gt;&gt;&gt;&gt;&gt; lab3 &gt; lab2 &gt; lab1   lab1 实现基本的数据结构tuple, page">
+<meta property="og:type" content="article">
+<meta property="og:title" content="simple-db">
+<meta property="og:url" content="http://example.com/2023/06/20/simple-db/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="simple-dbcode：Goinggoinggoing&#x2F;simple-db-hw-2021 (github.com) 基于java语言，实现一个简易事务支持的关系型数据库 难度：lab4 &#x3D; lab5 &gt; lab6 &gt;&gt;&gt;&gt;&gt;&gt; lab3 &gt; lab2 &gt; lab1   lab1 实现基本的数据结构tuple, page">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653182.png">
+<meta property="article:published_time" content="2023-06-20T12:33:46.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java项目">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653182.png">
+  
+  
+  
+  <title>simple-db - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">simple-db</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-20 20:33" pubdate>
+          2023年6月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">simple-db</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="simple-db"><a href="#simple-db" class="headerlink" title="simple-db"></a>simple-db</h1><p>code：<a target="_blank" rel="noopener" href="https://github.com/Goinggoinggoing/simple-db-hw-2021">Goinggoinggoing&#x2F;simple-db-hw-2021 (github.com)</a></p>
+<p>基于java语言，实现一个简易事务支持的关系型数据库</p>
+<p>难度：lab4 &#x3D; lab5 &gt; lab6 &gt;&gt;&gt;&gt;&gt;&gt; lab3 &gt; lab2 &gt; lab1 </p>
+<ul>
+<li><p>lab1 实现基本的数据结构<br>tuple, page, tupleDesc, iterator等等，难度不大</p>
+</li>
+<li><p>lab2 实现scan iterator</p>
+<p>​	基于scan iterator 来实现各种聚合函数，比如avg，count，sum，join等</p>
+</li>
+<li><p>lab3 join 优化</p>
+<p>​	建立一个优化模型， 按照主键，非主键，scan 表代价，直方图等进行成本估计，根据估计值来确定多表join的顺序</p>
+</li>
+<li><p>lab 4 事务以及锁</p>
+<p>​	这一章相对较难，要自己实现一个简单的读写锁，但是6.830中简化了，实现了page-level的锁，粒度比较粗，还有多种死锁的情况，test很给力，建议在写的时候一定要看清楚是哪个transaction 拿到了哪些page的哪些lock，而且这里的代码会影响到后面的lab 5、6，这里主要是按照两阶段锁协议并且no steal &#x2F; force 的策略</p>
+<p>​	代码中实现基于<strong>Timeout</strong>、<strong>Wait-for Graph</strong> 、 <strong>Global Orderings</strong>(wait-die)死锁检测算法</p>
+</li>
+<li><p>lab 5 B+ 树索引（TODO）</p>
+<p>​	实现B+树索引，插入、删除、修改，难点在于要把B+树结构以及这三种操作逻辑要捋清楚，还有父节点，子节点；叶子兄弟节点，非叶子节点的指针问题，以及一些边界条件。</p>
+</li>
+<li><p>lab 6 实现基于 log的rollback 和 recover</p>
+<p>​	lab中并没有真正存在undo log 和redo log，日志结构比较简单，只需要根据偏移处理即可，可以理解成是逻辑上的undo log 和 redo log。基于UNDO日志实现<strong>STEAL&#x2F;NO FORCE</strong>策略，提供更灵活的缓冲区管理；实现基本的WAL(Write-Ahead Logging)策略实现<strong>事务回滚与恢复</strong></p>
+</li>
+</ul>
+<h3 id="lab1"><a href="#lab1" class="headerlink" title="lab1"></a>lab1</h3><p>Database Catalog Table(DbFile，多个page)  HeapPage( []Tuple ) Tuple( []Field) Field    </p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653182.png" srcset="/img/loading.gif" lazyload alt="image-20230601175517493" style="zoom: 67%;" />
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs java">Tuple：一行记录的内容<br>	<span class="hljs-keyword">private</span> TupleDesc tupleDesc;<br>	<span class="hljs-keyword">private</span> Field[] fields;<br>	<span class="hljs-keyword">private</span> RecordId recordId; table-page-slot<br><br>TupleDesc： 单表或单行每列的类别信息<br>    <span class="hljs-keyword">private</span> List&lt;TDItem&gt; tdItems;   TDItem（fieldType, fieldName）<br><br>Catalog: 所有表信息，加载时载入内存<br>    <span class="hljs-keyword">public</span> HashMap&lt;Integer, Table&gt; tables;  key是DbFile.getId() 也就是tableid，hash(path)<br>		Table：DbFile file, String name, String pkeyField   文件、表名、主键<br>             DbFile（HeapFile）: tableid 、TupleDesc、File(文件路径)<br>                  HeapFile：单张表 <br>                 		包含多个page, readPage(pid)获得;读入单个page时，seek跳过前面<br>					<br><br><br>BufferPool: 缓存的page<br>    <span class="hljs-keyword">private</span> Map&lt;PageId, Page&gt; pageCache;<br>		PageId：tableId、pgNo  哪张表的第几个page<br>         map中没有则调用dbFile.readPage(pid);  dbFile被catalog存下了<br>                   <br>            <br>            <br>HeapPageId： tableId pgNo 哪个表的第几page<br>            <br>RecordId： PageId tupleno 哪个page哪一个slot<br>            <br>HeapPage： (HeapPageId, data[])  从data[]中读取数据,转为一个page，data包含header data来自HeapFile.read<br>         HeapPageId 哪个表的第几page<br>         header[getHeaderSize()] 每个slot是否有数据<br>		Tuple[numSlots]  每一行内容，每一行包含rid ,也就是(pid, slotId)<br>         td 行结构<br>            <br>     f:<br>		getNumTuples(): floor((_page size_ * <span class="hljs-number">8</span>) / (_tuple size_ * <span class="hljs-number">8</span> + <span class="hljs-number">1</span>))<br>         getHeaderSize(): Math.ceil(getNumTuples() * <span class="hljs-number">1.0</span> / <span class="hljs-number">8</span>);<br><br>		iterator() 返回数据tuple的迭代，基于List的Iterator<br>            <br>ex5       <br>HeapFile <span class="hljs-title function_">HeapFile</span><span class="hljs-params">(File f, TupleDesc td)</span>;<br>		readPage(PageId pid) BufferPool会调用<br>            	randomAccess.seek(pageSize * pageNumber);<br>            	randomAccess.read(buffer);<br>            	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeapPage</span>((HeapPageId) pid, buffer);<br><br>		writePage(page) 修改磁盘内容，写入page，如果pagenum&gt;当前则相当于插入<br>		iterator(tid)返回整个表的迭代，一页一页从bufferpool中读，每页内部会调用heappage.iterator<br>            <br><br><br>ex6<br>SeqScan <span class="hljs-keyword">implements</span> <span class="hljs-title class_">OpIterator</span>  对HeapFile包装, 为最基础的select * <br>	TransactionId tid, <span class="hljs-type">int</span> tableid, String tableAlias;   包含别名,<br>	之后的操作都是这样的，包含next hashnext  每次取出tuple<br><br>运算符是基于迭代器的；每个运算符都实现了 DbIterator 接口。<br>较低级别的运算符传递到较高级别运算符的构造函数中,使他们串联起来。叶子节点<br>Operators are connected together into a plan by passing lower-level operators into the constructors of higher-level operators, i.e., by <span class="hljs-string">&#x27;chaining them together.&#x27;</span> Special access method operators at the leaves of the plan are responsible <span class="hljs-keyword">for</span> reading data from the <span class="hljs-title function_">disk</span> <span class="hljs-params">(and hence <span class="hljs-keyword">do</span> not have any operators below them)</span>.<br><br>At the top of the plan, the program interacting with SimpleDB simply calls getNext on the root operator; <span class="hljs-built_in">this</span> operator then calls getNext on its children, and so on, until these leaf operators are called. They fetch tuples from disk and pass them up the <span class="hljs-title function_">tree</span> <span class="hljs-params">(as return arguments to getNext)</span>; tuples propagate up the plan in <span class="hljs-built_in">this</span> way until they are output at the root or combined or rejected by another operator in the plan.<br><br>For <span class="hljs-built_in">this</span> lab, you will only need to implement one SimpleDB operator.<br></code></pre></td></tr></table></figure>
+
+<p>HeapPage:</p>
+<p>对于一个只有两个int的表，单个page中，共4096B的数据，Tuple行数为4096* 8 &#x2F; 8*8+1 &#x3D; 504行，headsize&#x3D;504&#x2F;8&#x3D; 63B</p>
+<p>也就是前63B都是head(484个空)，数据为00007cbd、7fffffff。创建过程在<code>HeapPageReadTest.java</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653183.png" srcset="/img/loading.gif" lazyload alt="image-20230420143257673"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>数据获取，txt转为HeapPage可读取的文件格式</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-number">4066</span><span class="hljs-string">*8/3*4*8+1</span> <span class="hljs-string">=</span> <span class="hljs-number">337</span>   <span class="hljs-number">337</span><span class="hljs-string">/8</span> <span class="hljs-string">=</span> <span class="hljs-string">43B</span><br><span class="hljs-string">原始数据</span> <span class="hljs-string">java</span> <span class="hljs-string">-jar</span> <span class="hljs-string">dist/simpledb.jar</span> <span class="hljs-string">convert</span> <span class="hljs-string">some_data_file.txt</span> <span class="hljs-number">3</span>  <br><span class="hljs-number">1</span><span class="hljs-string">,1,1</span><br><span class="hljs-number">2</span><span class="hljs-string">,2,2</span> <br><span class="hljs-number">3</span><span class="hljs-string">,4,4</span><br><br><span class="hljs-string">.bat</span> <span class="hljs-number">0000 </span><span class="hljs-number">0111</span> <span class="hljs-string">第一个byte低三位代表有三个tuple</span><br><span class="hljs-number">0700 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000</span><br><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000</span><br><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">00</span><span class="hljs-string">|00</span> <span class="hljs-number">0000 </span><span class="hljs-number">0100</span><br><span class="hljs-number">0000 </span><span class="hljs-number">0100 </span><span class="hljs-number">0000 </span><span class="hljs-number">0100 </span><span class="hljs-number">0000 </span><span class="hljs-number">0200 </span><span class="hljs-number">0000 </span><span class="hljs-number">0200</span><br><span class="hljs-number">0000 </span><span class="hljs-number">0200 </span><span class="hljs-number">0000 </span><span class="hljs-number">0300 </span><span class="hljs-number">0000 </span><span class="hljs-number">0400 </span><span class="hljs-number">0000 </span><span class="hljs-number">0400</span><br><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000 </span><span class="hljs-number">0000</span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] argv)</span> &#123;<br>    <span class="hljs-comment">// construct a 3-column table schema</span><br>    Type types[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Type</span>[]&#123; Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE &#125;;<br>    String names[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123; <span class="hljs-string">&quot;field0&quot;</span>, <span class="hljs-string">&quot;field1&quot;</span>, <span class="hljs-string">&quot;field2&quot;</span> &#125;;<br>    <span class="hljs-type">TupleDesc</span> <span class="hljs-variable">descriptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TupleDesc</span>(types, names);<br><br>    <span class="hljs-comment">// create the table, associate it with some_data_file.dat</span><br>    <span class="hljs-comment">// and tell the catalog about the schema of this table.</span><br>    <span class="hljs-type">HeapFile</span> <span class="hljs-variable">table1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeapFile</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;some_data_file.dat&quot;</span>), descriptor);<br>    Database.getCatalog().addTable(table1, <span class="hljs-string">&quot;test&quot;</span>);<br><br>    <span class="hljs-comment">// construct the query: we use a simple SeqScan, which spoonfeeds</span><br>    <span class="hljs-comment">// tuples via its iterator.</span><br>    <span class="hljs-type">TransactionId</span> <span class="hljs-variable">tid</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransactionId</span>();<br>    <span class="hljs-type">SeqScan</span> <span class="hljs-variable">f</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SeqScan</span>(tid, table1.getId());<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// and run it</span><br>        f.open();<br>        <span class="hljs-keyword">while</span> (f.hasNext()) &#123;<br>            <span class="hljs-type">Tuple</span> <span class="hljs-variable">tup</span> <span class="hljs-operator">=</span> f.next();<br>            System.out.println(tup);<br>        &#125;<br>        f.close();<br>        Database.getBufferPool().transactionComplete(tid);<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        System.out.println (<span class="hljs-string">&quot;Exception : &quot;</span> + e);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="lab2"><a href="#lab2" class="headerlink" title="lab2"></a>lab2</h3><p>基本操作，需要继承Operator，实现<code>fetchNext</code>， Operator implements OpIterator</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653184.png" srcset="/img/loading.gif" lazyload alt="image-20230426164343396"></p>
+<p>基于装饰器模式，</p>
+<h4 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h4><p>和某个field比较，并过滤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java">Predicate(<span class="hljs-type">int</span> field, Op op, Field operand)<br>	<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">filter</span><span class="hljs-params">(Tuple t)</span>  将传入的tuple和构造函数中的值比较<br><br>Filter(Predicate p, OpIterator child)  对child(SeqScan)进行predicte过滤，只保留<span class="hljs-literal">true</span><br>    <span class="hljs-title function_">next</span><span class="hljs-params">()</span>方法获取下一个，依靠fetchNext，需要重写<br>    	fetchNext:<br>            <span class="hljs-keyword">while</span> (child.hasNext())&#123;<br>                <span class="hljs-type">Tuple</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> child.next();<br>                <span class="hljs-keyword">if</span> (predicate.filter(next))&#123;<br>                    <span class="hljs-keyword">return</span> next;<br>                &#125;<br>            &#125;<br>		   <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br><span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">filterSomeLessThan</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>    <span class="hljs-built_in">this</span>.scan = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TestUtil</span>.MockScan(-<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, testWidth); <span class="hljs-comment">// -5~5</span><br>    Predicate pred;<br>    pred = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>(<span class="hljs-number">0</span>, Predicate.Op.LESS_THAN, TestUtil.getField(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 过滤到-5~2</span><br>    <span class="hljs-type">Filter</span> <span class="hljs-variable">op</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Filter</span>(pred, scan);<br>    TestUtil.<span class="hljs-type">MockScan</span> <span class="hljs-variable">expectedOut</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TestUtil</span>.MockScan(-<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, testWidth);<br>    op.open();<br>    TestUtil.compareDbIterators(op, expectedOut);<br>    op.close();<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h4><p>根据JoinPredicate规定的列是否满足op</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java">JoinPredicate(<span class="hljs-type">int</span> field1, Predicate.Op op, <span class="hljs-type">int</span> field2)<br>	filter(Tuple t1, Tuple t2); 用于判断两个tuple的特定field是否相等（满足op），join时需要<br><br>Join(JoinPredicate p, OpIterator child1, OpIterator child2)<br>    fetchNext:<br>		双重<span class="hljs-keyword">for</span>遍历child1 child2，留下满足条件的。为了配合实现迭代器，需要额外记录下外层tuple1<br>        <span class="hljs-title function_">while</span><span class="hljs-params">(child1.hasNext()</span> || tuple1 != <span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">if</span> (tuple1 == <span class="hljs-literal">null</span>)&#123;<br>                tuple1 = child1.next();<br>            &#125;<br>            <span class="hljs-keyword">while</span>(child2.hasNext())&#123;<br>                <span class="hljs-type">Tuple</span> <span class="hljs-variable">t2</span> <span class="hljs-operator">=</span> child2.next();<br>                <span class="hljs-keyword">if</span>(joinPredicate.filter(tuple1, t2))&#123;<br>                    <span class="hljs-type">Tuple</span> <span class="hljs-variable">tuple</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Tuple</span>(getTupleDesc());<br>                    Iterator&lt;Field&gt; fields = tuple1.fields();<br>                    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>                    <span class="hljs-keyword">while</span>(fields.hasNext())&#123;<br>                        tuple.setField(i++, fields.next());<br>                    &#125;<br>                    fields = t2.fields();<br>                    <span class="hljs-keyword">while</span>(fields.hasNext())&#123;<br>                        tuple.setField(i++, fields.next());<br>                    &#125;<br>                    <span class="hljs-keyword">return</span> tuple;<br>                &#125;<br>            &#125;<br>            child2.rewind();<br>            tuple1 = <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br><br>scancost(t1) + ntups(t1) x <span class="hljs-title function_">scancost</span><span class="hljs-params">(t2)</span> <span class="hljs-comment">//IO cost </span><br>+ ntups(t1) x <span class="hljs-title function_">ntups</span><span class="hljs-params">(t2)</span>  <span class="hljs-comment">//CPU cost</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="Aggregate"><a href="#Aggregate" class="headerlink" title="Aggregate"></a>Aggregate</h4><p>min max sum count  avg</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">IntegerAggregator(<span class="hljs-type">int</span> gbfield, Type gbfieldtype, <span class="hljs-type">int</span> afield, Op what) 分组idx 分组类型 聚合idx<br>    HashMap&lt;Field, Tuple&gt; aggregate;   Field是分组的，映射到结果tuple<br>       <span class="hljs-string">&#x27;male&#x27;</span> -&gt; (<span class="hljs-string">&#x27;male&#x27;</span>, <span class="hljs-number">10</span>)<br>       <span class="hljs-string">&#x27;female&#x27;</span> -&gt; (<span class="hljs-string">&#x27;female&#x27;</span>, <span class="hljs-number">8</span>)<br>    min max sum count 直接在上面的映射里修改<br>    avg 需要额外维护sum count<br>        HashMap&lt;Field, Integer&gt; countsMap;<br>        HashMap&lt;Field, Integer&gt; sumMap;<br><br><span class="hljs-comment">// 不断传入tuple，并在agg中计算，iterator返回计算结果</span><br><span class="hljs-type">IntegerAggregator</span> <span class="hljs-variable">agg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IntegerAggregator</span>(<span class="hljs-number">0</span>, Type.INT_TYPE, <span class="hljs-number">1</span>, Aggregator.Op.SUM);<br>agg.mergeTupleIntoGroup(scan1.next());<br>agg.iterator();<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Aggregate(OpIterator child, <span class="hljs-type">int</span> afield, <span class="hljs-type">int</span> gfield, Aggregator.Op aop);<br>	调用Aggregator的聚合 实现基本的Operator，策略模式<br><span class="hljs-type">Aggregate</span> <span class="hljs-variable">op</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Aggregate</span>(scan1, afield=<span class="hljs-number">0</span>, gfield=<span class="hljs-number">0</span>,<br>            Aggregator.Op.MIN);<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="insert-delete"><a href="#insert-delete" class="headerlink" title="insert delete"></a>insert delete</h4><p>共HeapPage HeapFile BufferPool三层</p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sas">HeapPage: Tuple<br>	Tuple t 插入当前<span class="hljs-keyword">page</span>，所以pid要改成当前HeapPage的，slot按插入的位置来<br><br>HeapFile: tid Tuple   返回被操作的DirtyPage ArrayList&lt;<span class="hljs-keyword">Page</span>&gt;  (注意操作的<span class="hljs-keyword">page</span>是从pool中拿，会修改pool 但不修改文件)<br>	删除：直接调用HeapPage  <br>	插入：先选择一个插入，都满了就增加一个<span class="hljs-keyword">page</span>(需要修改<span class="hljs-keyword">file</span>文件的大小，也就是写入空数据，然后再从pool中拿)    实验中tuple2int，一个page504条，超出后自动增一<span class="hljs-keyword">page</span><br>	<br>BufferPool: tid Tuple。  去Catalog拿表信息 Database.getCata<span class="hljs-meta">log</span>().getDatabaseFile(tableid);   需要把设置返回的为dirty 事务层面<br>	删除：直接调用<br>	插入：需要额外tableId代表插入到哪个表<br>	<br>	<br>Database.getBufferPool().insertTuple(tid, empty.getId(), t);<br><br>HeapWriteTest 2个int一个<span class="hljs-keyword">page</span>可以写504条数据<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="Page-eviction"><a href="#Page-eviction" class="headerlink" title="Page eviction"></a>Page eviction</h4><p>对于一个2个int的表，共1024*504条数据，也就是1024个page，没有eviction全部存入时<code>63MB</code> ，50pages <code>3MB</code></p>
+<p>evictPage：扔掉前flush</p>
+<h5 id="随机"><a href="#随机" class="headerlink" title="随机"></a>随机</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">synchronized</span>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">evictPage</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> DbException &#123;<br>Iterator&lt;Map.Entry&lt;PageId, Page&gt;&gt; iterator = pageCache.entrySet().iterator();<br>    <span class="hljs-keyword">if</span> (iterator.hasNext())&#123;<br>        Map.Entry&lt;PageId, Page&gt; next = iterator.next();<br>        <span class="hljs-type">PageId</span> <span class="hljs-variable">pid</span> <span class="hljs-operator">=</span> next.getKey();<br>        <span class="hljs-type">Page</span> <span class="hljs-variable">page</span> <span class="hljs-operator">=</span> next.getValue();<br>        <span class="hljs-keyword">if</span> (page.isDirty() != <span class="hljs-literal">null</span>)&#123;<br>            flushPage(pid);<br>        &#125;<br>        iterator.remove();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">modifyData</span><span class="hljs-params">(PageId pageId)</span> &#123;<br>        <span class="hljs-keyword">if</span> (set.contains(pageId)) <span class="hljs-keyword">return</span> ;<br>        queue.offer(pageId);<br>        set.add(pageId);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> PageId <span class="hljs-title function_">getEvictPageId</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">PageId</span> <span class="hljs-variable">peek</span> <span class="hljs-operator">=</span> queue.poll();<br>        set.remove(peek);<br>        <span class="hljs-keyword">return</span> peek;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="LRU："><a href="#LRU：" class="headerlink" title="LRU："></a>LRU：</h5><p>双向链表+Hash</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUEvict</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">EvictStrategy</span>&#123;<br><br>    Node tail;<br>    Node head;<br>    HashMap&lt;PageId, Node&gt; hashMap;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">LRUEvict</span><span class="hljs-params">()</span>&#123;<br>        hashMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        tail = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(<span class="hljs-literal">null</span>);<br>        head = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(<span class="hljs-literal">null</span>);<br>        head.next = tail;<br>        tail.prev = head;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">modifyData</span><span class="hljs-params">(PageId pageId)</span> &#123;<br>        <span class="hljs-keyword">if</span>(hashMap.containsKey(pageId))&#123;<br>            <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> hashMap.get(pageId);<br>            moveToHead(node);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(pageId);<br>            addHead(node);<br>            hashMap.put(pageId, node);<br>        &#125;<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> PageId <span class="hljs-title function_">getEvictPageId</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Node</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> tail.prev;<br>        hashMap.remove(prev.pageId);<br>        removeNode(prev);<br><br>        <span class="hljs-keyword">return</span> prev.pageId;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addHead</span><span class="hljs-params">(Node node)</span>&#123;<br>        node.next = head.next;<br>        head.next.prev = node;<br>        node.prev = head;<br>        head.next = node;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">moveToHead</span><span class="hljs-params">(Node node)</span>&#123;<br>        removeNode(node);<br>        addHead(node);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeNode</span><span class="hljs-params">(Node node)</span> &#123;<br>        node.prev.next = node.next;<br>        node.next.prev = node.prev;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> &#123;<br>        PageId pageId;<br>        Node prev;<br>        Node next;<br>        <span class="hljs-keyword">public</span> <span class="hljs-title function_">Node</span><span class="hljs-params">(PageId pageId)</span> &#123;<br>            <span class="hljs-built_in">this</span>.pageId = pageId;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>flushPage(pid)</code>：  如果pid脏的，就写回磁盘</li>
+<li><code>discardPage(pid)</code>：直接扔掉某一个page</li>
+</ul>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> some_data_file1,<br>     some_data_file2<br><span class="hljs-keyword">WHERE</span> some_data_file1.field1 <span class="hljs-operator">=</span> some_data_file2.field1<br>  <span class="hljs-keyword">AND</span> some_data_file1.id <span class="hljs-operator">&gt;</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// construct a 3-column table schema</span><br>        Type types[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Type</span>[]&#123;Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE&#125;;<br>        String names[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123;<span class="hljs-string">&quot;field0&quot;</span>, <span class="hljs-string">&quot;field1&quot;</span>, <span class="hljs-string">&quot;field2&quot;</span>&#125;;<br><br>        <span class="hljs-type">TupleDesc</span> <span class="hljs-variable">td</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TupleDesc</span>(types, names);<br><br>        <span class="hljs-comment">// create the tables, associate them with the data files</span><br>        <span class="hljs-comment">// and tell the catalog about the schema  the tables.</span><br>        <span class="hljs-type">HeapFile</span> <span class="hljs-variable">table1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeapFile</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;lab2_file1.dat&quot;</span>), td);<br>        Database.getCatalog().addTable(table1, <span class="hljs-string">&quot;t1&quot;</span>);<br><br>        <span class="hljs-type">HeapFile</span> <span class="hljs-variable">table2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeapFile</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;lab2_file2.dat&quot;</span>), td);<br>        Database.getCatalog().addTable(table2, <span class="hljs-string">&quot;t2&quot;</span>);<br>    <br>    	<span class="hljs-comment">// 上面的是加载数据库表信息到Catalog，运行在数据库系统启动时</span><br>    <span class="hljs-comment">// ------------------------------------------------------------------------------</span><br>    	<span class="hljs-comment">// 下面是用户执行查询请求</span><br><br>        <span class="hljs-comment">// construct the query: we use two SeqScans, which spoonfeed</span><br>        <span class="hljs-comment">// tuples via iterators into join</span><br>        <span class="hljs-type">TransactionId</span> <span class="hljs-variable">tid</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransactionId</span>();<br><br>        <span class="hljs-type">SeqScan</span> <span class="hljs-variable">ss1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SeqScan</span>(tid, table1.getId(), <span class="hljs-string">&quot;t1&quot;</span>);<br>        <span class="hljs-type">SeqScan</span> <span class="hljs-variable">ss2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SeqScan</span>(tid, table2.getId(), <span class="hljs-string">&quot;t2&quot;</span>);<br><br>        <span class="hljs-comment">// create a filter for the where condition</span><br>        <span class="hljs-type">Filter</span> <span class="hljs-variable">sf1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Filter</span>(<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>(<span class="hljs-number">0</span>,<br>                        Predicate.Op.GREATER_THAN, <span class="hljs-keyword">new</span> <span class="hljs-title class_">IntField</span>(<span class="hljs-number">1</span>)), ss1);<br><br>        <span class="hljs-type">JoinPredicate</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JoinPredicate</span>(<span class="hljs-number">1</span>, Predicate.Op.EQUALS, <span class="hljs-number">1</span>);<br>        <span class="hljs-type">Join</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Join</span>(p, sf1, ss2);<br><br>        <span class="hljs-comment">// and run it</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            j.open();<br>            <span class="hljs-keyword">while</span> (j.hasNext()) &#123;<br>                <span class="hljs-type">Tuple</span> <span class="hljs-variable">tup</span> <span class="hljs-operator">=</span> j.next();<br>                System.out.println(tup);<br>            &#125;<br>            j.close();<br>            Database.getBufferPool().transactionComplete(tid);<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">table1Id</span> <span class="hljs-operator">=</span> Database.getCatalog().getTableId(<span class="hljs-string">&quot;t1&quot;</span>)<br><br><span class="hljs-comment">// inset到t1表中</span><br>Database.getBufferPool().insertTuple(tid, table1Id, tuple);<br><br><span class="hljs-comment">// delete tuple中PageId 下 第TupleNumber slot的数据</span><br>Database.getBufferPool().deleteTuple(tid, tuple);<br><br><span class="hljs-comment">// 先读取全部数据</span><br><span class="hljs-type">SeqScan</span> <span class="hljs-variable">ss1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SeqScan</span>(tid, table1Id, <span class="hljs-string">&quot;t1&quot;</span>);<br><br><span class="hljs-comment">// 过滤field0小于1的行</span><br><span class="hljs-type">Filter</span> <span class="hljs-variable">sf1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Filter</span>(<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>(<span class="hljs-number">0</span>,<br>                        Predicate.Op.GREATER_THAN, <span class="hljs-keyword">new</span> <span class="hljs-title class_">IntField</span>(<span class="hljs-number">1</span>)), ss1);<br><br><span class="hljs-comment">// aggregate afiele=1; gfield=2</span><br><span class="hljs-type">Aggregate</span> <span class="hljs-variable">ag</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Aggregate</span>(sf1, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, Aggregator.Op.SUM);<br><br><span class="hljs-comment">// join  field1和field1</span><br><span class="hljs-type">JoinPredicate</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JoinPredicate</span>(<span class="hljs-number">1</span>, Predicate.Op.EQUALS, <span class="hljs-number">1</span>);<br><span class="hljs-type">Join</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Join</span>(p, sf1, ss2);<br></code></pre></td></tr></table></figure>
+
+<h4 id="Query-Parser"><a href="#Query-Parser" class="headerlink" title="Query Parser"></a>Query Parser</h4><p>读取表数据 并运行</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp">java -jar dist/simpledb.jar parser catalog.<span class="hljs-function">txt</span><br><span class="hljs-function">	<span class="hljs-title">lab2_file1</span> (<span class="hljs-params">f1 <span class="hljs-built_in">int</span>, f2 <span class="hljs-built_in">int</span>, f3 <span class="hljs-built_in">int</span></span>)</span><br><span class="hljs-function">	<span class="hljs-title">lab2_file2</span> (<span class="hljs-params">f1 <span class="hljs-built_in">int</span>, f2 <span class="hljs-built_in">int</span>, f3 <span class="hljs-built_in">int</span></span>)</span><br><span class="hljs-function">	</span><br><span class="hljs-function">	</span><br><span class="hljs-function"><span class="hljs-keyword">select</span> d.f1, d.f2 <span class="hljs-keyword">from</span> lab2_file1 d</span>;<br><br><span class="hljs-keyword">where</span>语句报错？<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="lab3"><a href="#lab3" class="headerlink" title="lab3"></a>lab3</h3><ul>
+<li>通过分析表的统计信息，可以估算不同查询计划的成本。计划的成本与中间连接和选择的元组数量、过滤器和连接谓词的选择性相关。</li>
+<li>使用这些统计数据  order joins and selections  to get an <strong>optimal</strong> way</li>
+</ul>
+<p>selectivity: 筛选比例</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653185.png" srcset="/img/loading.gif" lazyload alt="image-20230606152332166"></p>
+<p>在这个实验中，我们只关注连接和基本表访问序列的成本。我们不必担心访问方法的选择（因为我们只有一种访问方法，即表扫描），也不必考虑其他操作符（如聚合）的成本。</p>
+<h4 id="Filter-Selectivity"><a href="#Filter-Selectivity" class="headerlink" title="Filter Selectivity"></a>Filter Selectivity</h4><p>base on histogram，to get <code>ntups</code> with one or more predicates </p>
+<ul>
+<li><em>f&#x3D;const</em>：<em>h&#x2F;w</em></li>
+<li><em>f&gt;const</em>：<em>h_b x   (b_right - const) &#x2F; w_b   + buckets( b+1…NumB-1)</em></li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653186.png" srcset="/img/loading.gif" lazyload alt="image-20230606161236443"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] buckets;<br><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">IntHistogram</span><span class="hljs-params">(<span class="hljs-type">int</span> buckets, <span class="hljs-type">int</span> min, <span class="hljs-type">int</span> max)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addValue</span><span class="hljs-params">(<span class="hljs-type">int</span> v)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 对于某一个tableid，创建从下标到Histogram的映射</span><br><span class="hljs-comment">// 扫描两次 第一次求出最大最小，第二次添加</span><br><span class="hljs-keyword">private</span> Map&lt;Integer, IntHistogram&gt; intHistogramMap;<br><span class="hljs-keyword">private</span> Map&lt;Integer, StringHistogram&gt; stringHistogramMap;<br><br><span class="hljs-keyword">public</span> <span class="hljs-title function_">TableStats</span><span class="hljs-params">(<span class="hljs-type">int</span> tableid, <span class="hljs-type">int</span> ioCostPerPage)</span><br>    <br><span class="hljs-comment">// 返回某一个fieldid相对于某个值的比较</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">estimateSelectivity</span><span class="hljs-params">(<span class="hljs-type">int</span> field, Predicate.Op op, Field constant)</span><br>    intHistogramMap.get(field).estimateSelectivity(op, ((IntField) constant).getValue())<br>    <br><span class="hljs-comment">// 全表扫描代价 没有寻道时间 且 都不在pool中 IO_COST = 71</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">estimateScanCost</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> numPage * ioCostPerPage;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 最后每一个table都生成一个TableStats</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ConcurrentMap&lt;String, TableStats&gt; statsMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();<br></code></pre></td></tr></table></figure>
+
+<h4 id="Join-cardinality"><a href="#Join-cardinality" class="headerlink" title="Join cardinality"></a>Join cardinality</h4><p> estimate the size (<code>ntups</code>) of <code>t1 join t2</code></p>
+<ul>
+<li>for equality joins, primary key &gt; non-primary key</li>
+<li>For range scans  &gt;  non-primary key equality     估值product*0.3</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">estimateJoinCardinality</span><span class="hljs-params">(LogicalJoinNode j, <span class="hljs-type">int</span> card1, <span class="hljs-type">int</span> card2,</span><br><span class="hljs-params">                                   <span class="hljs-type">boolean</span> t1pkey, <span class="hljs-type">boolean</span> t2pkey, Map&lt;String, TableStats&gt; stats)</span> &#123;<br><span class="hljs-keyword">switch</span> (joinOp) &#123;<br>    <span class="hljs-keyword">case</span> EQUALS:<br>        <span class="hljs-keyword">if</span> (t1pkey &amp;&amp; !t2pkey) &#123;<br>            card = card2;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!t1pkey &amp;&amp; t2pkey) &#123;<br>            card = card1;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t1pkey &amp;&amp; t2pkey) &#123;<br>            card = Math.min(card1, card2);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            card = Math.max(card1, card2);<br>        &#125;<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> NOT_EQUALS:<br>        <span class="hljs-comment">// 记录总数-等值记录数</span><br>        <span class="hljs-keyword">if</span> (t1pkey &amp;&amp; !t2pkey) &#123;<br>            card = card1 * card2 - card2;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!t1pkey &amp;&amp; t2pkey) &#123;<br>            card = card1 * card2 - card1;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t1pkey &amp;&amp; t2pkey) &#123;<br>            card = card1 * card2 - Math.min(card1, card2);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            card = card1 * card2 - Math.max(card1, card2);<br>        &#125;<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-comment">// 其他记录按范围查询计算</span><br>        card = (<span class="hljs-type">int</span>) (<span class="hljs-number">0.3</span> * card1 * card2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Join-cost"><a href="#Join-cost" class="headerlink" title="Join cost"></a>Join cost</h4><p><code>p=t1 join t2 join ... tn</code></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">scancost(t1) </span>+ <span class="hljs-keyword">scancost(t2) </span>+ <span class="hljs-keyword">joincost(t1 </span><span class="hljs-keyword">join </span><span class="hljs-built_in">t2</span>) +<br><span class="hljs-keyword">scancost(t3) </span>+ <span class="hljs-keyword">joincost((t1 </span><span class="hljs-keyword">join </span><span class="hljs-built_in">t2</span>) <span class="hljs-keyword">join </span><span class="hljs-built_in">t3</span>) +<br>... <br></code></pre></td></tr></table></figure>
+
+<p><code>scancost(t1)</code> ：  the number of pages in t1 x <code>SCALING_FACTOR</code></p>
+<p><code>joincost(t1 join t2)</code>： &#x3D; scancost(t1) + ntups(t1) x scancost(t2) &#x2F;&#x2F;IO cost </p>
+<p>​										+ ntups(t1) x ntups(t2)  &#x2F;&#x2F;CPU cost</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">estimateJoinCost</span><span class="hljs-params">(LogicalJoinNode j, <span class="hljs-type">int</span> card1, <span class="hljs-type">int</span> card2,</span><br><span class="hljs-params">            <span class="hljs-type">double</span> cost1, <span class="hljs-type">double</span> cost2)</span><br>	cost1 + card1 * cost2 + card1 * card2;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="Join-order"><a href="#Join-order" class="headerlink" title="Join order"></a>Join order</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CostCard</span> &#123;<br>    <span class="hljs-comment">/** The cost of the optimal subplan */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> cost;<br>    <span class="hljs-comment">/** The cardinality of the optimal subplan */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> card;<br>    <span class="hljs-comment">/** The optimal subplan */</span><br>    <span class="hljs-keyword">public</span> List&lt;LogicalJoinNode&gt; plan;<br>&#125;<br><br><span class="hljs-keyword">public</span> List&lt;LogicalJoinNode&gt; <span class="hljs-title function_">orderJoins</span><span class="hljs-params">(</span><br><span class="hljs-params">    Map&lt;String, TableStats&gt; stats,</span><br><span class="hljs-params">    Map&lt;String, Double&gt; filterSelectivities, <span class="hljs-type">boolean</span> explain)</span><br>    <span class="hljs-keyword">throws</span> ParsingException &#123;<br><br>    <span class="hljs-comment">// some code goes here</span><br>    <span class="hljs-comment">//Replace the following</span><br>    <span class="hljs-comment">// some code goes here</span><br>    <span class="hljs-comment">//Replace the following</span><br>    <span class="hljs-type">PlanCache</span> <span class="hljs-variable">planCache</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PlanCache</span>();<br>    <span class="hljs-type">CostCard</span> <span class="hljs-variable">bestCostCard</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CostCard</span>();<br>    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> joins.size();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= size; i++) &#123;<br>        <span class="hljs-comment">// 找出给定size的所有子集</span><br>        Set&lt;Set&lt;LogicalJoinNode&gt;&gt; subsets = enumerateSubsets(joins, i);<br>        <span class="hljs-keyword">for</span> (Set&lt;LogicalJoinNode&gt; subset : subsets) &#123;<br>            <span class="hljs-type">double</span> <span class="hljs-variable">bestCostSoFar</span> <span class="hljs-operator">=</span> Double.MAX_VALUE;<br>            <span class="hljs-keyword">for</span> (LogicalJoinNode joinNode : subset) &#123;<br>                <span class="hljs-type">CostCard</span> <span class="hljs-variable">costCard</span> <span class="hljs-operator">=</span><br>                    computeCostAndCardOfSubplan(stats, filterSelectivities, joinNode, subset, bestCostSoFar, planCache);<br>                <span class="hljs-keyword">if</span> (costCard == <span class="hljs-literal">null</span>) &#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<br>                bestCostSoFar = costCard.cost;<br>                bestCostCard = costCard;<br>            &#125;<br>            <span class="hljs-keyword">if</span> (bestCostSoFar != Double.MAX_VALUE) &#123;<br>                planCache.addPlan(subset, bestCostCard.cost, bestCostCard.card, bestCostCard.plan);<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (explain) &#123;<br>        printJoins(bestCostCard.plan, planCache, stats, filterSelectivities);<br>    &#125;<br>    <span class="hljs-keyword">return</span> bestCostCard.plan;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>&quot;SELECT * FROM emp,dept,hobbies,hobby WHERE emp.c1 = dept.c0 AND hobbies.c0 = emp.c2 AND hobbies.c1 = hobby.c0 AND emp.c3 &lt; 1000;&quot;</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312181653187.png" srcset="/img/loading.gif" lazyload alt="image-20230607161413205"></p>
+<p>emp过滤后1500： 随机数最大值65530，1500≈（1000&#x2F;65535*10w）</p>
+<h3 id="lab4"><a href="#lab4" class="headerlink" title="lab4"></a>lab4</h3><p>A <strong>transaction</strong> is a group of database actions (e.g., inserts, deletes, and reads) that are executed <em>atomically</em>;</p>
+<ul>
+<li><strong>Atomicity</strong>: Strict two-phase locking and careful buffer management ensure atomicity.</li>
+<li><strong>Consistency</strong>: The database is transaction consistent by virtue of atomicity. Other consistency issues (e.g., key constraints) are not addressed in SimpleDB.</li>
+<li><strong>Isolation</strong>: Strict two-phase locking provides isolation.</li>
+<li><strong>Durability</strong>: A FORCE buffer management policy ensures durability (see Section 2.3 below).</li>
+</ul>
+<p>核心思想：<strong>NO STEAL&#x2F;FORCE</strong></p>
+<p>To simplify your job, we recommend that you implement a <strong>NO STEAL&#x2F;FORCE</strong> buffer management policy.</p>
+<ul>
+<li>You shouldn’t evict dirty (updated) pages from the buffer pool if they are locked by an uncommitted transaction (this is NO STEAL).  <ul>
+<li>由于只在最后刷盘，不需要undo了，失败只要重新从磁盘加载page即可</li>
+</ul>
+</li>
+<li>On transaction commit, you should force dirty pages to disk (e.g., write the pages out) (this is FORCE). <ul>
+<li>假设<code>transactionComplete</code>不会失败，这样就不需要redo log</li>
+</ul>
+</li>
+</ul>
+<h4 id="lock-acquire"><a href="#lock-acquire" class="headerlink" title="lock acquire"></a>lock acquire</h4><p>acquire and release locks in BufferPool</p>
+<ul>
+<li>Modify <code>getPage()</code> to block and acquire the desired lock before returning a page. 核心方法，阻塞获取锁</li>
+<li>Implement <code>unsafeReleasePage(tid, pid)</code>. This method is primarily used for testing, and at the end of transactions. 释放tid在pid上的锁</li>
+<li>Implement <code>holdsLock(tid, pid)</code> so that logic in Exercise 2 can determine whether a page is already locked by a transaction. tid是否锁住pid</li>
+</ul>
+<p>create data structures that keep track of which locks each transaction holds and check to see if a lock should be granted to a transaction when it is requested：<code>hashmap: pageid-&gt;locks</code></p>
+<ul>
+<li>插入 删除 查找都是调用pool的getPage，需要传入正确的permission</li>
+<li>被操作的页置为dirty</li>
+<li>插入时创建了新的page，能否正常锁定</li>
+</ul>
+<h4 id="release"><a href="#release" class="headerlink" title="release"></a>release</h4><p><code>strict two-phase locking</code>：This means that transactions should acquire the appropriate type of lock on any object before accessing that object and shouldn’t release any locks until after the transaction commits.</p>
+<p>release a shared lock on a page after scanning it to find empty slots</p>
+<h4 id="NO-STEAL"><a href="#NO-STEAL" class="headerlink" title="NO STEAL"></a>NO STEAL</h4><p>只evict非脏页，都是脏页就抛出异常。<code>AbortEvictionTest </code>  <code>testAllDirtyFails()</code>测试</p>
+<h4 id="transactionComplete"><a href="#transactionComplete" class="headerlink" title="transactionComplete"></a>transactionComplete</h4><p><em>commits</em> or <em>aborts</em></p>
+<p>途中可能抛出<code>TransactionAbortedException</code> 请求超时，死锁  如readpage</p>
+<ul>
+<li>commit：写回磁盘 释放锁</li>
+<li>abort：重新从磁盘加载page  释放锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transactionComplete</span><span class="hljs-params">(TransactionId tid, <span class="hljs-type">boolean</span> commit)</span> &#123;	<br>    <span class="hljs-keyword">if</span> (commit) &#123;<br>        flushPages(tid);<br>    &#125;<span class="hljs-keyword">else</span> &#123;<br>        recoverPages(tid);<br>    &#125;<br>    lockManager.completeTransaction(tid);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>AbortEvictionTest</code>测试 ：如果abort 插入的行是否还能找到</p>
+<h4 id="Deadlocks-and-Aborts"><a href="#Deadlocks-and-Aborts" class="headerlink" title="Deadlocks and Aborts"></a>Deadlocks and Aborts</h4><p> detect <code>deadlock</code> and throw a <code>TransactionAbortedException</code>，被捕获后调用<code>transactionComplete</code></p>
+<ol>
+<li>a simple timeout policy（或者retry次数过多）</li>
+<li>check for cycles in a dependency graph</li>
+<li>全局排序：每个事务分配一个全局序号  <strong>WAIT-DIE</strong>(当前高就wait、否则rollback；保证环路中优先级最低的一定die) <strong>WOUND-WAIT</strong><ul>
+<li>或者资源分配一个序号 哲学家，在这里代表着pageid 不好实现 因为pageid的读取顺序和业务相关</li>
+<li>可能会中止本该成功的事务</li>
+</ul>
+</li>
+</ol>
+<p><code>DeadlockTest.java</code></p>
+<p>t1读p1 t2读p2，然后t1写p2(等t2)  t2写p1(等t1)，就死锁了</p>
+<p><code>TransactionTest.java</code></p>
+<p>n个进程，首先都获取读锁，然后再进行一次删除和插入</p>
+<p>锁升级时就会出现死锁等待</p>
+<h5 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">long</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> System.currentTimeMillis();<br><span class="hljs-type">long</span> <span class="hljs-variable">timeout</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>().nextInt(<span class="hljs-number">2000</span>) + <span class="hljs-number">1000</span>;<br><br><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>    <span class="hljs-keyword">if</span> (lockManager.acquire(pid, tid, perm)) &#123;<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();<br>    <span class="hljs-keyword">if</span> (now - start &gt; timeout) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransactionAbortedException</span>();<br>    &#125;<br>    Thread.sleep(<span class="hljs-number">100</span>); <span class="hljs-comment">// 睡眠可以减少竞争 否则肯定过不了测试  但加了也很慢</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="cycle-check"><a href="#cycle-check" class="headerlink" title="cycle check"></a>cycle check</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">while</span>(!lockManager.acquire(pid, tid, perm))&#123;<br>    Thread.sleep(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>().nextInt(<span class="hljs-number">10</span>));  <span class="hljs-comment">// 不加很慢 加了很快</span><br>&#125;<br><br><br><span class="hljs-comment">// acquire：</span><br><span class="hljs-comment">// 在获取锁失败时，检测有没有环</span><br><span class="hljs-keyword">if</span> (next.getValue().getLockType() == LockType.EXCLUSIVE || perm == Permissions.READ_WRITE)&#123;<br>    <span class="hljs-type">TidNode</span> <span class="hljs-variable">tidNow</span> <span class="hljs-operator">=</span> tidMap.getOrDefault(tid, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TidNode</span>(tid));<br>    tidNow.next = tidMap.get(next.getValue().getTid());<br>    checkCycle(<span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;TidNode&gt;(), tidNow);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">checkCycle</span><span class="hljs-params">(HashSet&lt;TidNode&gt; visited, TidNode tidNode)</span> <span class="hljs-keyword">throws</span> TransactionAbortedException &#123;<br>    <span class="hljs-keyword">if</span>(visited.contains(tidNode))&#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransactionAbortedException</span>();<br>    &#125;<br>    visited.add(tidNode);<br>    <span class="hljs-keyword">if</span>(tidNode.next != <span class="hljs-literal">null</span>)&#123;<br>        checkCycle(visited, tidNode.next);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="wait-die"><a href="#wait-die" class="headerlink" title="wait-die"></a>wait-die</h5><p>可以保证环路中，优先级最低的一定die</p>
+<p>需要遍历全部资源冲突的(否则会失效)，如果存在优先级高的则die</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">unlock</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br><br><span class="hljs-keyword">while</span> (iterator.hasNext())&#123;<br>    Map.Entry&lt;TransactionId, LockInfo&gt; next = iterator.next();<br>    <span class="hljs-keyword">if</span> (next.getKey().equals(tid))&#123;<br>        <span class="hljs-keyword">continue</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (next.getValue().getLockType() == LockType.EXCLUSIVE || perm == Permissions.READ_WRITE)&#123;<br><br>        <span class="hljs-keyword">if</span>(tid.getId() &gt; next.getValue().getTid().getId())&#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransactionAbortedException</span>();<br>        &#125;<br><br>        unlock = <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">if</span> (!unlock)&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>进阶：能否在获取失败后wait而不是自旋？    wait的锁住的对象不好处理    用map&lt;PageId, PageId&gt;尝试失败</p>
+<h3 id="lab5"><a href="#lab5" class="headerlink" title="lab5"></a>lab5</h3><h3 id="lab6"><a href="#lab6" class="headerlink" title="lab6"></a>lab6</h3><ul>
+<li>之前的pool中的脏页不能写回磁盘（NO STEAL），现在提供undo解决这一问题</li>
+<li>commit后如果宕机怎么办？先写入日志，日志实现恢复</li>
+</ul>
+<p>You will implement rollback and recovery using the contents of the log file.</p>
+<ul>
+<li>undo：记录下修改 用于 abort</li>
+<li>redo：恢复成功的事务</li>
+</ul>
+<p>STEAL and NO-FORCE：提供更灵活的缓冲区管理，允许commit前写回磁盘</p>
+<p>​	abort时，先根据日志把磁盘中的数据还原，再删除pool中的该页面，最后把pool中的脏页recover</p>
+<h4 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h4><p>因为可能没有commit就写回了（缓存空间不足 ，测试中通过<code>flushAllPages</code>模拟），需要写回前记录下写回前后的内容信息。当commit后，需要更新旧的信息</p>
+<ol>
+<li><p>Insert the following lines into <code>BufferPool.flushPage()</code> before your call to <code>writePage(p)</code>, where <code>p</code> is a reference to the page being written: 在page写回磁盘前，先将log写回，包含最开始的内容(<code>BeforeImage</code>)以及当前内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// append an update record to the log, with </span><br><span class="hljs-comment">// a before-image and after-image.</span><br><span class="hljs-type">TransactionId</span> <span class="hljs-variable">dirtier</span> <span class="hljs-operator">=</span> p.isDirty();<br><span class="hljs-keyword">if</span> (dirtier != <span class="hljs-literal">null</span>)&#123;<br>  Database.getLogFile().logWrite(dirtier, p.getBeforeImage(), p);<br>  Database.getLogFile().force();<br>&#125;<br><span class="hljs-keyword">if</span> (page.isDirty() != <span class="hljs-literal">null</span>)&#123;<br>    table.writePage(page);<br>    page.markDirty(<span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在commit并刷盘后，更新<code>BeforeImage</code>，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">flushPages(tid)<br>    flushPage(pageId);<br>    <span class="hljs-comment">// use current page contents as the before-image</span><br>    <span class="hljs-comment">// for the next transaction that modifies this page.</span><br>    page.setBeforeImage();<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>先debug，查看在什么情况下会写log</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">ABORT_RECORD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">COMMIT_RECORD</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">UPDATE_RECORD</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">BEGIN_RECORD</span> <span class="hljs-operator">=</span> <span class="hljs-number">4</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CHECKPOINT_RECORD</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;<br><span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">NO_CHECKPOINT_ID</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;  日志文件开始<br>    <br>preAppend() 每次都调用 记录加一 或者重置日志<br><br>logXactionBegin(tid) 事务开始<br><br>logWrite(TransactionId tid, Page before, Page after) <br>	page写回磁盘前，记录下写回前后的page<br><br><span class="hljs-title function_">logCommit</span><span class="hljs-params">(tid)</span> 提交事务<br><br>logAbort(tid) 回滚 <br>    需要rollback()<br>	<br>shutdown() 优雅关闭系统 记录下状态<br>	logCheckpoint 关闭前记录下 tidToFirstLogRecord， 并在开头写入startCpOffset  <br>    	写回所有脏页，log中只保存正在运行的tid的内容 minLogRecord 节约空间<br>		logTruncate 截断以及commit的log内容，只保留正在运行的， 修改raf的指向<br><br></code></pre></td></tr></table></figure>
+
+<p>log格式：type 和 tid，  内容  ,   最后写offset</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">raf.writeInt(ABORT_RECORD);<br>raf.writeLong(tid.getId());<br><br>...<br>raf.writeLong(currentOffset);<br>currentOffset = raf.getFilePointer();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="RollBack"><a href="#RollBack" class="headerlink" title="RollBack"></a>RollBack</h4><p><code>logFile/rollback()</code>：事务回滚后，把改事务修改的page还原到之前的状态</p>
+<ol>
+<li><p>修改了但已经写回磁盘：pool中存在但已经不是dirty(flushPage会写回磁盘并删除脏页标记)</p>
+<ul>
+<li>根据log找到该事务修改的pageId，读出before-image， 并写回（ tidToFirstLogRecord map到第一个log）</li>
+<li>删除pool中的页面(这里丢弃了页面，注意evict中没丢会空指针，所以evict多加一个判断)</li>
+<li>同一个pageId可能有多条log，最老的beforeimage才是正确的（page出去过后before就错了）</li>
+</ul>
+</li>
+<li><p>修改了还在pool中的（No steal时只有这一个），直接recoverPages(tid) 对dirty把磁盘中读出来并覆盖</p>
+</li>
+</ol>
+<p><code>TestAbort</code> and <code>TestAbortCommitInterleaved</code> sub-tests of the LogTest system test.</p>
+<h4 id="Recovery"><a href="#Recovery" class="headerlink" title="Recovery"></a>Recovery</h4><ol>
+<li>针对未commit的事务，回滚这些事务</li>
+<li>针对已commit但可能还没同步写入磁盘，再次写回以确定一致性</li>
+</ol>
+<p>问题：flushAllPages中flushPage时会清除Dirty标记，清除后事务commit时<code>flushPages(tid)</code>就不会再次移出该page，导致pool中的beforeimage并不会更新  <code>TestCommitAbortCommitCrash</code>测出来的（第二次看，最简单的方法就是把setbeforeimage放到flushPage的结尾）</p>
+<ul>
+<li>开源代码在commit时<code>flushPages(tid)</code>更新所有的old，该方案应该是错的，会影响还在进行中的其他事务</li>
+<li>pool什么时候会被移出？ 页面不足时  也就是正常情况下是会在evict调用flushpage，之后一定会removepage，之后再次读入时oldpage就是最新的(对于进行中的当前事务oldpage是错的，但log中存了正确的)；也就是正常逻辑下不会出错，但flushAllPages会。所以需要在flushAllPages调用flushpage后也强制removepage一次就可以了</li>
+</ul>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p>基于java语言，实现一个简易事务支持的关系型数据库</p>
+<ul>
+<li>实现基本的遍历、连接、聚合和删除等基本<strong>操作算子</strong>，以及基于直方图的查询优化</li>
+<li>实现BufferPool缓存Page，且实现基于<strong>LRU</strong>的页面淘汰机制</li>
+<li>实现<strong>页面级</strong>的共享锁、排他锁和锁升级，实现<strong>可串行化</strong>的并发策略</li>
+<li>实现多种死锁检测算法：<strong>Timeout</strong>、<strong>Wait-for Graph</strong> 、 <strong>Global Orderings</strong>(wait-die)</li>
+<li>基于UNDO日志实现<strong>STEAL&#x2F;NO FORCE</strong>策略，提供更灵活的缓冲区管理</li>
+<li>实现基本的WAL(Write-Ahead Logging)策略实现<strong>事务回滚与恢复</strong></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Cscprx/article/details/123418692">https://blog.csdn.net/Cscprx/article/details/123418692</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MIT-DB-Class/simple-db-hw-2021/blob/master">github</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wygandwind/simple-db/">Code</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wygandwind/simple-db/tree/master/src/java/simpledb/storage">wind&#x2F;SimpleDB - 码云 - 开源中国 (gitee.com)</a> <a target="_blank" rel="noopener" href="https://www.wygandwdn.cn/article/62">风在哪个人博客 (wygandwdn.cn)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45834777/article/details/120595851">SimpleDb 实验报告_simpledb实验_跳着迪斯科学Java的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/402325847">MIT6.830 SimpleDB Lab1</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java%E9%A1%B9%E7%9B%AE/" class="print-no-link">#java项目</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/23/book/%E8%BF%9B%E5%85%A5%E5%86%85%E6%A0%B8%E5%89%8D%E7%9A%84%E8%8B%A6%E5%8A%9B%E6%B4%BB%5Blinux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB%5D/" title="进入内核前的苦力活[linux源码趣读]">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">进入内核前的苦力活[linux源码趣读]</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式">
+                        <span class="hidden-mobile">设计模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

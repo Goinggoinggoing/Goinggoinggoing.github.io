@@ -1,0 +1,2027 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MySQL视频 下面是对章节与视频的对应关系和学习建议 【MySQL上篇：基础篇】【第1子篇：数据库概述与MySQL安装篇】p01-p11学习建议：零基础同学必看，涉及理解和Windows系统下MySQL安装 【第2子篇：SQL之SELECT使用篇】p12-p48学习建议：学习SQL的重点，必须重点掌握，建议课后练习多写 【第3子篇：SQL之DDL、DML、DCL使用篇】p49-p73学习建议：学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql">
+<meta property="og:url" content="http://example.com/2023/03/17/mysql/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="MySQL视频 下面是对章节与视频的对应关系和学习建议 【MySQL上篇：基础篇】【第1子篇：数据库概述与MySQL安装篇】p01-p11学习建议：零基础同学必看，涉及理解和Windows系统下MySQL安装 【第2子篇：SQL之SELECT使用篇】p12-p48学习建议：学习SQL的重点，必须重点掌握，建议课后练习多写 【第3子篇：SQL之DDL、DML、DCL使用篇】p49-p73学习建议：学">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055458.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055459.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055460.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055461.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055462.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055463.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055464.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055465.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055466.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055467.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055468.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055470.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055471.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055472.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055473.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055474.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055475.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055476.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055477.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055478.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055479.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055480.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055481.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055482.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055483.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055484.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055485.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055486.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055487.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055488.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055489.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055490.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055491.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055491.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055492.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055493.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055494.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055495.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055496.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055497.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055498.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055499.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055500.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055501.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055502.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055503.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055505.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055506.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055507.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055508.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055509.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055510.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055511.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055512.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055513.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055514.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055515.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055516.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055517.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055518.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055519.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055520.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055521.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055522.png">
+<meta property="article:published_time" content="2023-03-17T13:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="后端">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055458.png">
+  
+  
+  
+  <title>mysql - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">mysql</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-17 21:00" pubdate>
+          2023年3月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          19k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          161 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mysql</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iq4y1u7vj">MySQL视频</a></p>
+<p>下面是对章节与视频的对应关系和学习建议</p>
+<p>【MySQL上篇：基础篇】<br>【第1子篇：数据库概述与MySQL安装篇】<br>p01-p11<br>学习建议：零基础同学必看，涉及理解和Windows系统下MySQL安装</p>
+<p>【第2子篇：SQL之SELECT使用篇】<br>p12-p48<br>学习建议：学习SQL的重点，必须重点掌握，建议课后练习多写</p>
+<p>【第3子篇：SQL之DDL、DML、DCL使用篇】<br>p49-p73<br>学习建议：学习SQL的重点，难度较SELECT低，练习写写就能掌握</p>
+<p>【第4子篇：其它数据库对象篇】<br>p74-p93<br>学习建议：对于希望早点学完MySQL基础，开始后续内容的同学，这个子篇可以略过。<br>在工作中，根据公司需要进行学习即可。</p>
+<p>【第5子篇：MySQL8新特性篇】<br>p94-p95<br>学习建议：对于希望早点学完MySQL基础，开始后续内容的同学，这个子篇可以略过。<br>在工作中，根据公司需要进行学习即可。</p>
+<p>【MySQL下篇：高级篇】<br>【第1子篇：MySQL架构篇】<br>p96-p114<br>学习建议：涉及Linux平台安装及一些基本问题，基础不牢固同学需要学习</p>
+<p>【第2子篇：索引及调优篇】<br>p115-p160<br>学习建议：面试和开发的重点，也是重灾区，需要全面细致的学习和掌握</p>
+<p>【第3子篇：事务篇】<br>p161-p186<br>学习建议：面试和开发的重点，需要全面细致的学习和掌握</p>
+<p>【第4子篇：日志与备份篇】<br>p187-p199<br>学习建议：根据实际开发需要，进行相应内容的学习</p>
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#方式1：也是执行顺序<br>SELECT ...,....,...<br>FROM ...,...,....<br>WHERE 多表的连接条件<br>AND 不包含组函数的过滤条件<br>GROUP BY ...,...<br>HAVING 包含组函数的过滤条件<br>ORDER BY ... ASC/DESC<br>LIMIT ...,...<br>#方式2：<br>SELECT ...,....,...<br>FROM ... JOIN ...<br>ON 多表的连接条件<br>JOIN ...<br>ON ...<br>WHERE 不包含组函数的过滤条件<br>AND/OR 不包含组函数的过滤条件<br>GROUP BY ...,...<br>HAVING 包含组函数的过滤条件<br>ORDER BY ... ASC/DESC<br>LIMIT ...,...<br></code></pre></td></tr></table></figure>
+
+<h3 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h3><p>SELECT 是先执行 FROM 这一步的。在这个阶段，如果是多张表联查，还会经历下面的几个步骤：</p>
+<ol>
+<li>首先先通过 CROSS JOIN 求笛卡尔积，相当于得到虚拟表 vt（virtual table）1-1；</li>
+<li>通过 ON 进行筛选，在虚拟表 vt1-1 的基础上进行筛选，得到虚拟表 vt1-2；</li>
+<li>添加外部行。如果我们使用的是左连接、右链接或者全连接，就会涉及到外部行，也就是在虚拟 表 vt1-2 的基础上增加外部行，得到虚拟表 vt1-3。</li>
+</ol>
+<ul>
+<li>当然如果我们操作的是两张以上的表，还会重复上面的步骤，直到所有表都被处理完为止。这个过程得 到是我们的原始数据。</li>
+<li>然后进入第三步和第四步，也就是 GROUP 和 HAVING 阶段 。在这个阶段中，实际上是在虚拟表 vt2 的 基础上进行分组和分组过滤，得到中间的虚拟表 vt3 和 vt4 。</li>
+<li>当我们完成了条件筛选部分之后，就可以筛选表中提取的字段，也就是进入到 SELECT 和 DISTINCT 阶段 。</li>
+<li>首先在 SELECT 阶段会提取想要的字段，然后在 DISTINCT 阶段过滤掉重复的行，分别得到中间的虚拟表 vt5-1 和 vt5-2 。</li>
+<li>当我们提取了想要的字段数据之后，就可以按照指定的字段进行排序，也就是 ORDER BY 阶段 ，得到 虚拟表 vt6 。</li>
+<li>最后在 vt6 的基础上，取出指定行的记录，也就是 LIMIT 阶段 ，得到最终的结果，对应的是虚拟表 vt7 。</li>
+<li>当然我们在写 SELECT 语句的时候，不一定存在所有的关键字，相应的阶段就会省略。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">FROM -&gt; WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT 的字段 -&gt; DISTINCT -&gt; ORDER BY -&gt; LIMIT<br><br>SELECT DISTINCT player_id, player_name, count(*) as num # 顺序 5<br>FROM player JOIN team ON player.team_id = team.team_id # 顺序 1<br>WHERE height &gt; 1.80 # 顺序 2<br>GROUP BY player.team_id # 顺序 3<br>HAVING num &gt; 2 # 顺序 4<br>ORDER BY num DESC # 顺序 6<br>LIMIT 2 # 顺序 7<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="基础select"><a href="#基础select" class="headerlink" title="基础select"></a>基础select</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs mysql">别名：空行 或 as<br>DISTINCT 去重<br>空值：null <br>着重号：`order`<br>显示表结构：desc employees; <br><br>比较运算符：<br>	= ：<br>	1 = &#x27;1&#x27;  字符串会被转为整数<br>	都是字符串会比较ANSI编码<br>	!=<br>    ISNULL<br>    IS Not NULL<br>    BETWEEN x AND y<br>    IN<br>    NOT IN<br>    LIKE  % _<br>	RLIKE 正则表达式<br>逻辑运算符<br>	NOT 或 !<br>	AND 或 &amp;&amp;<br>	OR 或 ||<br>	XOR<br>	<br>排序<br>	ORDER BY x ASC(DESC), y ASC  多列排序在x相同才比y<br>分页<br>	LIMIT [位置偏移量,] 行数     LIMIT 20,10; <br>UNION<br>	连接两次查询<br><br>连接<br>	SELECT emp.employee_id, dep.department_name<br>    FROM employee emp, department dep<br>    WHERE emp.`department_id` = dep.`department_id`;<br><br>	JOIN / INNER JOIN   <br>    LEFT JOIN<br>    RIGHT JOIN<br>    FULL JOIN<br>    最后加上<br>    	ON 条件<br>    	USING 名称要对应并且值相等<br>    	<br>    	<br>    还有连接方式是直接选出来后where =条件连接，inner join（inner join即join）和=等号结果一样，但实现原理完全不同，join是基于hashtable连接比较，而=直接就是取笛卡尔集再过滤，所以后者效率低，是O(N^2)，前者是O(LogN)<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs mysql">聚合函数<br>	AVG()<br>	SUM()<br>	MAX()<br>	MIN()<br>	count(*) count(1) count(列名)<br>		MyISAM引擎的表是没有区别的。这种引擎内部有一计数器在维护着行数。 <br>		Innodb引擎的表用count(*),count(1)直接读行数，复杂度是O(n)，因为innodb真的要去数一遍。但好于具体的count(列名)。<br>	<br>GROUP BY 分组<br>	SELECT的字段必须声明在GROUP BY或者聚合函数<br>	HAVING 过滤分组<br>	WITH ROLLUP 对统计出来的结果再求和，多一行<br>	<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="文件目录"><a href="#文件目录" class="headerlink" title="~文件目录"></a>~文件目录</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055458.png" srcset="/img/loading.gif" lazyload alt="image-20230224113320725"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055459.png" srcset="/img/loading.gif" lazyload alt="image-20230225090438227"></p>
+<ul>
+<li>Mysql5.7：ibd默认96KB，6个页</li>
+<li>Mysql8.0：ibd默认112KB，结合了frm</li>
+</ul>
+<h2 id="逻辑架构"><a href="#逻辑架构" class="headerlink" title="~逻辑架构"></a>~逻辑架构</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055460.png" srcset="/img/loading.gif" lazyload alt="image-20230222201134751"></p>
+<ol>
+<li><strong>连接层</strong>TCP握手建立连接，确认账号密码。通过线程池分配线程</li>
+<li><strong>服务层</strong>生成解析树，优化器生成执行计划完成优化 &#x3D;&#x3D;选取-投影-连接&#x3D;&#x3D;</li>
+<li><strong>引擎层</strong>插件式存储引擎层，负责数据的提取和存储  show engines；</li>
+</ol>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055461.png" srcset="/img/loading.gif" lazyload alt="image-20230222202520557" style="zoom: 80%;" />
+
+<ol>
+<li><p><strong>缓存</strong></p>
+<p>缓存必须一模一样，命中率低；更新后还可能失效</p>
+<p><code>show global variables like &quot;%query_cache_type%&quot;;  show status like &#39;%Qcache%&#39;;</code></p>
+</li>
+<li><p><strong>解析器</strong></p>
+<p><strong>词法分析</strong>识别关键字</p>
+<p><strong>语法分析</strong>查看是否满足mysql语法，然后生成语法树</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055462.png" srcset="/img/loading.gif" lazyload alt="image-20230222203631132"></p>
+</li>
+<li><p><strong>优化器</strong></p>
+<p>找到这其中最好的执行计划。</p>
+<p>比如：优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联 (join) 的时候，决定各个表的连接顺序，还有表达式简化、子查询转为连接、外连接转为内连接等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from test1 join test2 using(ID)<br>where test1.name=&#x27;zhangwei&#x27; and test2.name=&#x27;mysql高级课程&#x27;;<br><br>方案1：可以先从表 test1 里面取出 name=&#x27;zhangwei&#x27;的记录的 ID 值，再根据 ID 值关联到表 test2，再判<br>断 test2 里面 name的值是否等于 &#x27;mysql高级课程&#x27;。<br><br>方案2：可以先从表 test2 里面取出 name=&#x27;mysql高级课程&#x27; 的记录的 ID 值，再根据 ID 值关联到 test1，<br>再判断 test1 里面 name的值是否等于 zhangwei。<br><br>这两种执行方法的逻辑结果是一样的，但是执行的效率会有不同，而优化器的作用就是决定选择使用哪一个方案。优化<br>器阶段完成后，这个语句的执行方案就确定下来了，然后进入执行器阶段。<br>如果你还有一些疑问，比如优化器是怎么选择索引的，有没有可能选择错等。后面讲到索引我们再谈。<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行器</p>
+</li>
+</ol>
+<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="~存储引擎"></a>~存储引擎</h2><h3 id="①引擎"><a href="#①引擎" class="headerlink" title="①引擎"></a>①引擎</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show engines;<br>show variables like &#x27;%storage_engine%&#x27; 或 SELECT @@default_storage_engine;<br>SET DEFAULT_STORAGE_ENGINE=MyISAM;   修改 my.cnf 文件：default-storage-engine=MyISAM<br><br></code></pre></td></tr></table></figure>
+
+<p>不同的表可以设置不同的存储引擎</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">创建<br>CREATE TABLE 表名(<br>建表语句;<br>) ENGINE = 存储引擎名称;<br>修改<br>ALTER TABLE 表名 ENGINE = 存储引擎名称;<br></code></pre></td></tr></table></figure>
+
+<h3 id="②引擎介绍"><a href="#②引擎介绍" class="headerlink" title="②引擎介绍"></a>②引擎介绍</h3><p> 5.5之后，默认InnoDB </p>
+<h4 id="1-InnoDB-引擎：具备外键支持功能的事务存储引擎"><a href="#1-InnoDB-引擎：具备外键支持功能的事务存储引擎" class="headerlink" title="1 InnoDB 引擎：具备外键支持功能的事务存储引擎"></a>1 InnoDB 引擎：具备外键支持功能的事务存储引擎</h4><ul>
+<li>事务型引擎。确保事务的完整提交(Commit)和回滚(Rollback)。 </li>
+<li>行锁，更新一条数据只锁定一行</li>
+<li>更新和删除效率高</li>
+<li>外键</li>
+<li><code>处理效率差一些，对内存要求(索引即数据，索引和数据存储在一起)</code></li>
+</ul>
+<h4 id="2-MyISAM-引擎：主要的非事务处理存储引擎"><a href="#2-MyISAM-引擎：主要的非事务处理存储引擎" class="headerlink" title="2 MyISAM 引擎：主要的非事务处理存储引擎"></a>2 MyISAM 引擎：主要的非事务处理存储引擎</h4><ul>
+<li>读速度快，针对select insert</li>
+<li>count(*)等数据有额外存储</li>
+</ul>
+<h4 id="3-Archive-引擎：用于数据存档"><a href="#3-Archive-引擎：用于数据存档" class="headerlink" title="3 Archive 引擎：用于数据存档"></a>3 Archive 引擎：用于数据存档</h4><ul>
+<li>只有插入和查询，适合存储大量独立历史记录</li>
+<li>数据压缩，比MyISAM小75&amp;</li>
+</ul>
+<h4 id="4-Blackhole-引擎：丢弃写操作，读操作会返回空内容"><a href="#4-Blackhole-引擎：丢弃写操作，读操作会返回空内容" class="headerlink" title="4 Blackhole 引擎：丢弃写操作，读操作会返回空内容"></a>4 Blackhole 引擎：丢弃写操作，读操作会返回空内容</h4><h4 id="5-CSV-引擎：存储数据时，以逗号分隔各个数据项"><a href="#5-CSV-引擎：存储数据时，以逗号分隔各个数据项" class="headerlink" title="5 CSV 引擎：存储数据时，以逗号分隔各个数据项"></a>5 CSV 引擎：存储数据时，以逗号分隔各个数据项</h4><h4 id="6-Memory-引擎：置于内存的表"><a href="#6-Memory-引擎：置于内存的表" class="headerlink" title="6 Memory 引擎：置于内存的表"></a>6 Memory 引擎：置于内存的表</h4><p>索引数据结构(B+) InnoDB数据结构  设计原则 性能分析工具 优化 数据库设计</p>
+<h2 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="~索引的数据结构"></a>~索引的数据结构</h2><h3 id="①-索引介绍"><a href="#①-索引介绍" class="headerlink" title="① 索引介绍"></a>① 索引介绍</h3><p>查找一个数据：遍历 索引二叉树(保存value, 地址)  减少磁盘IO</p>
+<p><strong>定义</strong>：为了高效获取数据的数据结构  </p>
+<p>在存储引擎中实现，不同引擎可以不一样结构</p>
+<p><strong>优点</strong>：</p>
+<ol>
+<li><p>类似大学图书馆建书目索引，提高数据检索的效率，降低 <strong>数据库的IO成本</strong> ，这也是创建索引最主 要的原因。 </p>
+</li>
+<li><p>通过创建唯一索引，可以保证数据库表中每一行 <strong>数据的唯一性</strong> 。 </p>
+</li>
+<li><p>在实现数据的 参考完整性方面，可以 <strong>加速表和表之间的连接</strong> 。换句话说，对于有依赖关系的子表和父表联合查询时， 可以提高查询速度。 </p>
+</li>
+<li><p>在使用分组和排序子句进行数据查询时，可以显著 <strong>减少查询中分组和排序的时间</strong> ，降低了CPU的消耗。‘</p>
+</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>创建和维护需要时间</li>
+<li>索引需要磁盘空间</li>
+<li>提高查询速度 但 降低 &#x3D;&#x3D;更新速度&#x3D;&#x3D;</li>
+</ol>
+<blockquote>
+<p>频繁更新，最好的办法是先删除表中的索引，然后插入数据，插入完成后再创建索引。</p>
+</blockquote>
+<h3 id="②-InnoDB中的索引"><a href="#②-InnoDB中的索引" class="headerlink" title="② InnoDB中的索引"></a>② InnoDB中的索引</h3><h4 id="普通查找"><a href="#普通查找" class="headerlink" title="普通查找"></a>普通查找</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT [列名列表] FROM 表名 WHERE 列名 = xxx;<br></code></pre></td></tr></table></figure>
+
+<p>数据以页的形式存储，一页默认为16KB，查找时按照页逐步加载到内存</p>
+<ol>
+<li>数据在一页中（记录物理不连续，单链表，通过页目录实现二分）<ul>
+<li>以主键搜索条件：主键通常为递增的 -&gt; 在 &#x3D;&#x3D;页目录 二分&#x3D;&#x3D; 定位对应槽 ，然后对槽内遍历</li>
+<li>其他列：每一条记录为单链表连接(<strong>逻辑上连续</strong>)， 依次遍历</li>
+</ul>
+</li>
+<li>很多页（页间双向链表连接）<ol>
+<li>首先遍历页。<strong>没有索引无法快速定位</strong></li>
+<li>再查找相应记录</li>
+</ol>
+</li>
+</ol>
+<h4 id="索引雏形"><a href="#索引雏形" class="headerlink" title="索引雏形"></a>索引雏形</h4><p>以<code>ROW_FORMAT = Compact </code>行格式创建表，表的每一条记录处理基本信息还有 是否最大 下一条地址 其他等，以下一条地址串联记录。</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055463.png" srcset="/img/loading.gif" lazyload alt="image-20230223094205438" style="zoom: 50%;" />
+
+<p>为了针对主键设计索引，需要实现主键递增（主键不是自增的有个隐藏主键）</p>
+<ul>
+<li><p>页内是递增的，&#x3D;&#x3D;单向链表&#x3D;&#x3D;</p>
+</li>
+<li><p>页之间主键也是递增的，&#x3D;&#x3D;双向链表&#x3D;&#x3D;</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055464.png" srcset="/img/loading.gif" lazyload alt="image-20230223094947963"></p>
+</li>
+</ul>
+<blockquote>
+<p>如果具体查找某一个主键还是得遍历全部页，然后页内二分，因此加一层。<br>加一个目录（目录可以连续存放）保存最小值，两次查找</p>
+</blockquote>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055465.png" srcset="/img/loading.gif" lazyload alt="image-20230223095322576" style="zoom: 67%;" />
+
+<h5 id="迭代1"><a href="#迭代1" class="headerlink" title="迭代1"></a>迭代1</h5><p>将目录转为页，<strong>实现快速定位数据页。</strong>目录也是页，用record_type&#x3D;1.通过&#x3D;&#x3D;页目录&#x3D;&#x3D;实现二分</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055466.png" srcset="/img/loading.gif" lazyload alt="image-20230223100558168"></p>
+<h5 id="迭代2"><a href="#迭代2" class="headerlink" title="迭代2"></a>迭代2</h5><p>一个目录页放不下，多个目录页。具体哪一个目录页要遍历，下面优化</p>
+<h5 id="迭代3"><a href="#迭代3" class="headerlink" title="迭代3"></a>迭代3</h5><p>再往上迭代套娃，<strong>实现快速定位是哪个目录页</strong>。一个页为一次IO。总共3次IO</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055467.png" srcset="/img/loading.gif" lazyload alt="image-20230223101559060"></p>
+<h5 id="B-TreeB-Tree"><a href="#B-TreeB-Tree" class="headerlink" title="B+TreeB+Tree"></a>B+TreeB+Tree</h5><p>上面的结构就是3层的B+树，可以迭代任意层，但最多不超过4层（最多4次IO）</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055468.png" srcset="/img/loading.gif" lazyload alt="image-20230223102937530" style="zoom: 33%;" />
+
+<p>假设存放记录的页可以100条，目录项的页为1000（页大小16KB，一条记录包含指针8KB主键8KB）条：</p>
+<ul>
+<li>如果B+树只有1层，也就是只有1个用于存放用户记录的节点，最多能存放 100 条记录。</li>
+<li>如果B+树有2层，最多能存放 1000×100&#x3D;10,0000 条记录。 </li>
+<li>如果B+树有3层，最多能存放 1000×1000×100&#x3D;1,0000,0000 条记录。 </li>
+<li>如果B+树有4层，最多能存放 1000×1000×1000×100&#x3D;1000,0000,0000 条记录。相当多的记录！</li>
+<li>一般2-4层，根节点常驻内存，所以1-3次磁盘操作</li>
+</ul>
+<p>页内数据通过&#x3D;&#x3D;链表&#x3D;&#x3D;连接，使用页目录实现&#x3D;&#x3D;二分法&#x3D;&#x3D;定位</p>
+<p>同行页间通过&#x3D;&#x3D;双向链表&#x3D;&#x3D;连接</p>
+<h4 id="常见索引"><a href="#常见索引" class="headerlink" title="常见索引"></a>常见索引</h4><h5 id="1-聚簇索引"><a href="#1-聚簇索引" class="headerlink" title="1. 聚簇索引"></a>1. 聚簇索引</h5><p><strong>基本的数据存储方式</strong>（叶子节点存放全部记录）。 <code>索引即数据，数据即索引   .ibd文件</code></p>
+<p>在创建时自动构建出来–B+树。</p>
+<blockquote>
+<p> 术语”聚簇”表示当前数据行和相邻的键值聚簇的存储在一起，只有一种存储方式所以聚簇索引只有一个</p>
+</blockquote>
+<ul>
+<li><code>数据访问更快</code> ，因为聚簇索引将索引和数据保存在同一个B+树中，因此从聚簇索引中获取数据比非聚簇索引更快 </li>
+<li>聚簇索引对于主键的 <code>排序查找</code> 和 <code>范围查找</code> 速度非常快</li>
+</ul>
+<ul>
+<li><code>插入速度严重依赖于插入顺序</code> ，按照主键的顺序插入是最快的方式(<del>UUID MD5 HASH</del>)，否则将会出现页分裂</li>
+<li><code>更新主键的代价很高</code> ，一般定义<strong>主键为不可更新</strong></li>
+<li><code>二级索引访问需要两次索引查找</code> ，第一次找到主键值，第二次根据主键值找到行数据</li>
+</ul>
+<h5 id="2-二级索引（辅助索引、非聚簇索引）"><a href="#2-二级索引（辅助索引、非聚簇索引）" class="headerlink" title="2. 二级索引（辅助索引、非聚簇索引）"></a>2. 二级索引（辅助索引、非聚簇索引）</h5><p>想以别的列作为搜索条件，需要以别的列构建B+树。</p>
+<p>叶子节点存储<strong>索引列</strong>和<strong>主键</strong>。目录项存储<strong>索引列</strong>和<strong>页号</strong>（实际上是索引列和主键联合，后面会说 为保证唯一）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055470.png" srcset="/img/loading.gif" lazyload alt="image-20230223154220793"></p>
+<p>查询要查两次（<strong>回表</strong>）：先根据筛选条件在普通索引上定位id，再拿id再聚集索引上定位行</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055471.png" srcset="/img/loading.gif" lazyload alt="image-20230223153459920" style="zoom:50%;" />
+
+<h5 id="3-联合索引"><a href="#3-联合索引" class="headerlink" title="3.联合索引"></a>3.联合索引</h5><p>以c2和c3同时作为排列规则，优先c2，然后c3。别的和二级索引等价</p>
+<h4 id="InnoDB注意事项"><a href="#InnoDB注意事项" class="headerlink" title="InnoDB注意事项"></a>InnoDB注意事项</h4><p><strong>1.根节点位置不变</strong><br>一开始根节点存放数据，满了后复制一份数据存储到别的地址，然后根节点升一级。此外，根节点常驻内存</p>
+<p><strong>2.目录项记录的唯一性</strong><br>二级索引中<code>索引列 + 页号</code>搭配，索引列不唯一插入走哪条路就不知道了。所以默认会将<code>索引列+主键+页号</code>搭配，索引列和主键类似构建了一个联合索引。</p>
+<p><strong>3.一个页面至少两条数据</strong></p>
+<h3 id="③-MyISAM中索引"><a href="#③-MyISAM中索引" class="headerlink" title="③ MyISAM中索引"></a>③ MyISAM中索引</h3><p>索引与数据<strong>分离</strong> .myd存储数据（无序）， .myi存储索引</p>
+<p>B树索引使用存储引擎如表所示：</p>
+<table>
+<thead>
+<tr>
+<th>索引 &#x2F; 存储引擎</th>
+<th>MyISAM</th>
+<th>InnoDB</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B-Tree索引</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<p>即使多个存储引擎支持同一种类型的索引，但是他们的实现原理也是不同的。Innodb和MyISAM默认的索引是Btree索引；而Memory默认的索引是Hash索引。</p>
+<p>MyISAM引擎使用 B+Tree 作为索引结构，叶子节点的data域存放的是 <strong>地址</strong> 。&#x3D;&#x3D;相当于二级索引，但第二次是直接去磁盘&#x3D;&#x3D;</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055472.png" srcset="/img/loading.gif" lazyload alt="image-20230223160434464" style="zoom: 67%;" />
+
+<p>​										<code>这里是针对主键构建的，还可以根据c2，c3都构建。</code></p>
+<p><strong>对比：</strong></p>
+<ul>
+<li>InnoDB对聚簇索引只需要查找一次，二级索引需要两次。MYISAM都是两次，但第二次很快</li>
+<li>MYISAM索引文件分离</li>
+<li>MYISAM可以没有主键</li>
+</ul>
+<h3 id="④-索引的代价"><a href="#④-索引的代价" class="headerlink" title="④ 索引的代价"></a>④ 索引的代价</h3><ul>
+<li>空间：每一个索引都是一颗b+树</li>
+<li>时间：增删改需要额外维护树结构</li>
+</ul>
+<h3 id="⑤-数据结构选择"><a href="#⑤-数据结构选择" class="headerlink" title="⑤ 数据结构选择"></a>⑤ 数据结构选择</h3><h4 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h4><p>hashmap O(1)</p>
+<ol>
+<li>Hash只能进行&#x3D;和in的查询，不能进行范围查询(退化到O n)</li>
+<li>无序 不能order by</li>
+<li>联合索引时，hash值是一起构建的，无法拆开利用</li>
+<li>重复值过多，冲突很多</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>索引 &#x2F; 存储引擎</th>
+<th>MyISAM</th>
+<th>InnoDB</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HASH索引</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<p>但Innodb也可以结合Hash，例如当某个条件WHERE a &#x3D; XXX经常访问时，将该条件对应地址直接存在hash中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">mysql&gt; show variables like &#x27;%adaptive_hash_index&#x27;;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h4><ul>
+<li>一个节点只能有两个子节点</li>
+<li>左子节点 &lt; 本节点; 右子节点 &gt;&#x3D; 本节点</li>
+<li>不平衡时退化</li>
+</ul>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055473.png" srcset="/img/loading.gif" lazyload alt="image-20230223163719556" style="zoom:50%;" />
+
+<h4 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h4><p>平衡二叉树且高度差小于1</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055474.png" srcset="/img/loading.gif" lazyload alt="image-20230223163957242"></p>
+<p>还可以变成多叉树来降低高度</p>
+<h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>每一个节点最多M个子节点，M称为树的阶。<strong>非叶子节点也存放数据</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055475.png" srcset="/img/loading.gif" lazyload alt="image-20230223164347661"></p>
+<p>一个 M 阶的 B 树（M&gt;2）有以下的特性：</p>
+<ol>
+<li>根节点的儿子数的范围是 [2,M]。 </li>
+<li>每个中间节点包含 k-1 个关键字和 k 个孩子，孩子的数量 &#x3D; 关键字的数量 +1，k 的取值范围为 [ceil(M&#x2F;2), M]。 </li>
+<li>叶子节点包括 k-1 个关键字（叶子节点没有孩子），k 的取值范围为 [ceil(M&#x2F;2), M]。 </li>
+<li>假设中间节点节点的关键字为：Key[1], Key[2], …, Key[k-1]，且关键字按照升序排序，即 Key[i]&lt;Key[i+1]。此时 k-1 个关键字相当于划分了 k 个范围，也就是对应着 k 个指针，即为：P[1], P[2], …, P[k]，其中 P[1] 指向关键字小于 Key[1] 的子树，P[i] 指向关键字属于 (Key[i-1], Key[i]) 的子树，P[k] 指向关键字大于 Key[k-1] 的子树。</li>
+<li>所有叶子节点位于同一层。</li>
+</ol>
+<p> 数据是一块的实现相比于平衡二叉树来说磁盘 I&#x2F;O 操作要少</p>
+<h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4><p><strong>B+ 树和 B 树的<code>差异</code>在于以下几点：</strong></p>
+<ol>
+<li>有 k 个孩子的节点就有 k 个关键字。也就是孩子数量 &#x3D; 关键字数，而 B 树中，孩子数量 &#x3D; 关键字数 +1。</li>
+<li>非叶子节点的关键字也会同时存在在子节点中，并且是在子节点中所有关键字的最大（或最 小）。 </li>
+<li>非叶子节点仅用于索引，不保存数据记录，跟记录有关的信息都放在叶子节点中（小从小到大顺序链接）。而 B 树中， 非 叶子节点既保存索引，也保存数据记录 。</li>
+</ol>
+<p><strong>不在中间节点放数据，好处</strong></p>
+<ul>
+<li>数据都在叶子，查询效率稳定</li>
+<li>非叶子无数据，可以存储更多数据，<strong>更矮胖</strong></li>
+<li><strong>范围查找</strong>：叶子节点上直接进行范围查找效率高</li>
+</ul>
+<p>B树层数与节点数关系见：<a href="#B+Tree">B+Tree</a>，整课树能达到GB，不会全部加载到内存，只有根节点是常驻内存的</p>
+<h2 id="InnoDB数据存储结构"><a href="#InnoDB数据存储结构" class="headerlink" title="~InnoDB数据存储结构"></a>~InnoDB数据存储结构</h2><p>索引是在存储引擎中实现的，存储引擎<strong>负责数据的读取和写入</strong></p>
+<p>InnoDB将<strong>数据划分为页</strong>（16KB），页是磁盘和内存交换的&#x3D;&#x3D;基本单位&#x3D;&#x3D;，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show variables like &#x27;%innodb_page_size%&#x27;;<br></code></pre></td></tr></table></figure>
+
+<p>SQL Server 中页的大小为 <code>8KB</code>，而在 Oracle 中我们用术语 “<code>块</code>“ （Block）来表示 “页”，Oracle 支持的快大小为2KB, 4KB, 8KB, 16KB, 32KB 和 64KB。</p>
+<ul>
+<li>页和页间<code>双向链表</code></li>
+<li>页内数据按主键值<code>单向链表</code></li>
+</ul>
+<h3 id="①-上层结构"><a href="#①-上层结构" class="headerlink" title="① 上层结构"></a>① 上层结构</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055476.png" srcset="/img/loading.gif" lazyload alt="image-20230224111638558" style="zoom:67%;" />
+
+<ul>
+<li><p><strong>区</strong>：包含64个&#x3D;&#x3D;<strong>连续</strong>&#x3D;&#x3D;的页，<code>16*16KB = 1MB</code></p>
+<p>范围查询时需要连续访问多个页，通过数据连续<strong>减少磁盘读取时间</strong> 10ms -&gt; 0.4ms</p>
+<ul>
+<li>随机读取 <code>单页10ms</code>(6ms寻道3ms等待1ms传输)</li>
+<li>顺序读取 40MB&#x2F;s吞吐量，40&#x2F;16kb可以读取2560页，<code>单页0.4ms</code></li>
+</ul>
+</li>
+<li><p><strong>段</strong>：多个区，数据库分配的基本单位：创建表、索引时分配。逻辑概念</p>
+<p><strong>叶子节点</strong>放在一个区里，<strong>非叶子节点</strong>页在一个区里，区的集合叫做段</p>
+</li>
+<li><p><strong>碎片区：</strong>每次创建索引都会申请两整块区，太浪费。为了节约空间<code>碎片区内的页</code>可以服务于不同的段，当达到<code>32个碎片区</code>页面后，就申请完整的区。</p>
+</li>
+<li><p><strong>表空间</strong>：最高层逻辑容器，一个数据库由多个表空间：系统表空间、用户表空间等</p>
+<ul>
+<li><p>独立表空间: 即每张表有一个独立的表空间 .ibd  show variables like ‘innodb_file_per_table’</p>
+</li>
+<li><p>系统表空间 : 系统中所有表的索引外键路径等信息，也用B+树整合为表：<code>数据字典</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055477.png" srcset="/img/loading.gif" lazyload alt="image-20230225102558798"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="②-页内结构"><a href="#②-页内结构" class="headerlink" title="② 页内结构"></a>② 页内结构</h3><p>数据页的 <code>16KB</code> 大小的存储空间被划分为<strong>七个部分</strong>：</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055478.png" srcset="/img/loading.gif" lazyload alt="image-20230224113534470" style="zoom:67%;" />
+
+<h4 id="第一部分：File-Header-文件头部-和-File-Trailer-文件尾部"><a href="#第一部分：File-Header-文件头部-和-File-Trailer-文件尾部" class="headerlink" title="第一部分：File Header (文件头部) 和 File Trailer (文件尾部)"></a>第一部分：File Header (文件头部) 和 File Trailer (文件尾部)</h4><p>File Header：页编号、页类型（Undo日志 数据页等）、上一页下一页、校验和（hash 文件-&gt;checksum）、日志位置</p>
+<p>File Trailer：校验和（头尾一样代表完整）、日志位置</p>
+<h4 id="第二部分：User-Records-用户记录-、最大最小记录、Free-Space-空闲空间"><a href="#第二部分：User-Records-用户记录-、最大最小记录、Free-Space-空闲空间" class="headerlink" title="第二部分：User Records (用户记录)、最大最小记录、Free Space (空闲空间)"></a>第二部分：User Records (用户记录)、最大最小记录、Free Space (空闲空间)</h4><p><strong>数据记录：</strong> 空闲空间-&gt;用户记录</p>
+<p>最大最小记录：为了能构建B+树，同时是整个链表的首尾</p>
+<h4 id="第三部分：Page-Directory-页目录-和-Page-Header-页面头部"><a href="#第三部分：Page-Directory-页目录-和-Page-Header-页面头部" class="headerlink" title="第三部分：Page Directory (页目录) 和 Page Header (页面头部)"></a>第三部分：Page Directory (页目录) 和 Page Header (页面头部)</h4><p><strong>页目录</strong>：记录分组（<code>直接二分空间太大，跳表</code>），每组4-8个(一个槽)，每个组拿出一个最大值排列出来，然后二分。</p>
+<ul>
+<li>最小记录单成组，最大记录4-8个</li>
+<li>满9就拆分，所以很多都是4个</li>
+</ul>
+<p>页目录就负责记录下每组最大记录的（<code>地址偏移、最大值</code>）</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055479.png" srcset="/img/loading.gif" lazyload alt="image-20230224121819782" style="zoom:67%;" />
+
+<p><strong>页面头部</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055480.png" srcset="/img/loading.gif" lazyload alt="image-20230224122712920" style="zoom: 33%;" />
+
+<h3 id="③-行格式"><a href="#③-行格式" class="headerlink" title="③ 行格式"></a>③ 行格式</h3><p>链表记录的组合方式，为了链表有效组合，需要提供一定的额外信息，<strong>变长字段长度</strong>和<strong>NULL</strong>在&#x3D;&#x3D;InnoDB行格式&#x3D;&#x3D;讲</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055481.png" srcset="/img/loading.gif" lazyload alt="image-20230224120801440" style="zoom: 50%;" />
+
+<p><strong>记录头信息</strong>(5bit)</p>
+<ul>
+<li>delete_mask 是否删除。逻辑删除，同时链表跳过它，并且修改组的数量最值。如果有新数据进来就覆盖一下</li>
+<li>n_owned 每一组最后一条记录负责记下组内的记录个数</li>
+<li>heap_no 页内位置编号  01是最小和最大记录</li>
+<li>record_type 是否为叶子节点</li>
+<li>next_record 链表next，记录偏移量</li>
+</ul>
+<h3 id="④-InnoDB行格式"><a href="#④-InnoDB行格式" class="headerlink" title="④ InnoDB行格式"></a>④ InnoDB行格式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">create table emp3(id int)  row_format=compact;<br>alter table emp3 row_format=compact;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><p>COMPACT</p>
+<ul>
+<li><strong>变长字段长度列表</strong>：对于变长字段不知道实际的长度<code>VARCHAR(8)</code>，需要有一个位子记录下实际上的长度 逆序</li>
+<li><strong>NULL值列</strong>：对于可能为NULL的列，NULL在存储中如果用特殊字符表示会浪费空间，直接用bit位来标识是不是NULL</li>
+<li><strong>记录头信息</strong>：同上</li>
+<li><strong>隐藏列</strong>：<strong>row_id</strong>(行ID，无主键和Unique键时生成)  <strong>transaction_id</strong>(事务ID)  <strong>roll_pointer</strong>(回滚指针)</li>
+</ul>
+<p>.ibd文件讲解</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055482.png" srcset="/img/loading.gif" lazyload alt="image-20230225091537989"></p>
+<p><strong>行溢出：</strong></p>
+<p>​	对于varchar，最长共65535字节: 65532 + 2(长度值) + 1(null值)</p>
+<p>​	16KB&#x3D;16384字节，存不下varchar，所以compact存一部分然后存在别的地方，保存下地址</p>
+</li>
+<li><p>Dynamic(MySQL5.7)和Compressed</p>
+<p>Dynamic行溢出只存地址不存数据，Compressed还会用zlib压缩数据</p>
+</li>
+<li><p>Redundant</p>
+<p>字段偏移列表：所有列的偏移地址，等价于变长+NULL，但纯在冗余（对于非varchar）</p>
+</li>
+</ol>
+<h2 id="索引创建"><a href="#索引创建" class="headerlink" title="~索引创建"></a>~索引创建</h2><p>创建完成，.ibd文件会增大</p>
+<h3 id="①-索引基本操作"><a href="#①-索引基本操作" class="headerlink" title="① 索引基本操作"></a>① 索引基本操作</h3><p>MySQL的索引包括普通索引、唯一性索引、全文索引、单列索引、多列索引和空间索引等。</p>
+<ul>
+<li><p>从<code>功能逻辑</code>上说，索引主要有 4 种，分别是<strong>普通索引</strong>、<strong>唯一索引</strong>（UNIQUE）、<strong>主键索引</strong>(UNIQUE+NOT NULL 唯一)、<strong>全文索引</strong>（提高大数据量的检索速度，被solr、ElasticSearch代替）。 </p>
+</li>
+<li><p>按照<code>物理实现</code>方式 ，索引可以分为 2 种：<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>。 </p>
+</li>
+<li><p>按照<code>作用字段个数</code> 进行划分，分成<strong>单列索引</strong>和<strong>联合索引</strong>。</p>
+</li>
+</ul>
+<h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><p><strong>隐式：</strong><code>主键、Unique、外键</code> 会自动添加索引</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE dept(<br>dept_id INT PRIMARY KEY AUTO_INCREMENT, # <br>dept_name VARCHAR(20)<br>);<br><br>CREATE TABLE emp(<br>emp_id INT PRIMARY KEY AUTO_INCREMENT, # 主键<br>emp_name VARCHAR(20) UNIQUE, # unique<br>dept_id INT,<br>CONSTRAINT emp_dept_id_fk FOREIGN KEY(dept_id) REFERENCES dept(dept_id) # 外键<br>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>显式：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE table_name [col_name data_type]<br>[UNIQUE | FULLTEXT | SPATIAL] [INDEX | KEY] [index_name] (col_name [length]) [ASC |<br>DESC]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>UNIQUE 、 FULLTEXT 和 SPATIAL 为可选参数，分别表示唯一索引、全文索引和空间索引； </li>
+<li>INDEX 与 KEY 为同义词，两者的作用相同，用来指定创建索引； </li>
+<li>index_name 指定索引的名称，为可选参数，如果不指定，那么MySQL默认col_name为索引名； </li>
+<li>col_name 为需要创建索引的字段列，该列必须从数据表中定义的多个列中选择； </li>
+<li>length 为可选参数，表示索引的长度，只有字符串类型的字段才能指定索引长度； </li>
+<li>ASC 或 DESC 指定升序或者降序的索引值存储。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">INDEX (book_name)<br>INDEX multi_idx(book_id, book_name)<br>UNIQUE INDEX book_n(book_name)<br><br>SHOW INDEX FROM test3 \G # 查看全部索引<br><br>EXPLAIN select * from book where book_name = &quot;mysql&quot; # 查看是否用上索引<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="添加删除索引"><a href="#添加删除索引" class="headerlink" title="添加删除索引"></a>添加删除索引</h4><p><strong>添加</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE table_na ADD [UNIQUE | FULLTEXT | SPATIAL] [INDEX | KEY]<br>[index_name] (col_name[length],...) [ASC | DESC]<br>	ALTER TABLE book5 ADD INDEX book_n (book_name) ;<br><br>CREATE [UNIQUE | FULLTEXT | SPATIAL] INDEX index_name<br>ON table_name (col_name[length],...) [ASC | DESC]<br></code></pre></td></tr></table></figure>
+
+<p><strong>删除</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE table_na DROP INDEX index_name;<br><br>DROP INDEX index_name ON table_na;<br><br># 唯一索引不能删除 起约束作用<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="②-8-0索引新特性"><a href="#②-8-0索引新特性" class="headerlink" title="② 8.0索引新特性"></a>② 8.0索引新特性</h3><h4 id="降序索引"><a href="#降序索引" class="headerlink" title="降序索引"></a>降序索引</h4><p>MySQL 8.x开始支持降序 DESC，之前版本的会被忽略。<code>多个列排序</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE ts1(a int,b int,index idx_a_b(a,b desc));<br></code></pre></td></tr></table></figure>
+
+<p>查询时<code>order by a,b desc</code>，没有降序的化效果很差，需要文件排序</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055483.png" srcset="/img/loading.gif" lazyload alt="image-20230226085758361"></p>
+<h4 id="隐藏索引"><a href="#隐藏索引" class="headerlink" title="隐藏索引"></a>隐藏索引</h4><p>索引设置为隐藏索引，查询优化器<code>忽略这个索引</code>（更新时索引树还是会更新）。可以用来<code>验证某个索引性能</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE tablename<br>ADD INDEX indexname (propname [(length)]) INVISIBLE; # 添加隐藏索引<br><br>ALTER TABLE tablename ALTER INDEX index_name INVISIBLE; #切换成隐藏索引<br>ALTER TABLE tablename ALTER INDEX index_name VISIBLE; #切换成非隐藏索引<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="③-索引的设计原则"><a href="#③-索引的设计原则" class="headerlink" title="③ 索引的设计原则"></a>③ 索引的设计原则</h3><p>数据准备 100W条</p>
+<h4 id="适合创建索引"><a href="#适合创建索引" class="headerlink" title="适合创建索引!"></a>适合创建索引!</h4><h5 id="唯一字段"><a href="#唯一字段" class="headerlink" title="唯一字段"></a>唯一字段</h5><p>业务上具有唯一特性的字段，即使是组合字段，也<code>必须建成唯一索引</code>。</p>
+<blockquote>
+<p>不要以为唯一索引影响了 insert 速度，这个速度损耗可以忽略，但提高查找速度是明显的。（来源：Alibaba） </p>
+</blockquote>
+<h5 id="频繁where字段"><a href="#频繁where字段" class="headerlink" title="频繁where字段"></a>频繁where字段</h5><p>277ms-&gt;20ms</p>
+<h5 id="经常-GROUP-BY-和-ORDER-BY-的列"><a href="#经常-GROUP-BY-和-ORDER-BY-的列" class="headerlink" title="经常 GROUP BY 和 ORDER BY 的列"></a>经常 GROUP BY 和 ORDER BY 的列</h5><h5 id="DISTINCT-字段"><a href="#DISTINCT-字段" class="headerlink" title="DISTINCT 字段"></a>DISTINCT 字段</h5><h5 id="多表JOIN时"><a href="#多表JOIN时" class="headerlink" title="多表JOIN时"></a>多表JOIN时</h5><ul>
+<li><code>连接表的数量尽量不要超过 3 张</code></li>
+<li><code>对 WHERE 条件创建索引</code></li>
+<li><code>对用于连接的字段创建索引</code></li>
+</ul>
+<h5 id="使用前缀创建索引"><a href="#使用前缀创建索引" class="headerlink" title="使用前缀创建索引"></a>使用前缀创建索引</h5><p>不使用整个字符串构建。虽然不能精确查询，但查个大概然后回表查询完整的字符串。<strong>排序时用不上</strong></p>
+<ul>
+<li><code>太长存储空间太大</code></li>
+<li><code>太长比较时需要占用更多时间</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 截取长度的选择：根据区分度    一般20 就可以达到90%以上<br>select count(distinct left(address,10)) / count(*) as sub10, -- 截取前10个字符的选择度<br>count(distinct left(address,15)) / count(*) as sub11, -- 截取前15个字符的选择度<br>from shop<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="区分度高-散列性高"><a href="#区分度高-散列性高" class="headerlink" title="区分度高(散列性高)"></a>区分度高(散列性高)</h5><p><code>select count(distinct a) / count(*) from t1</code>，超过33%就不错的索引了</p>
+<p>相对应的，像性别字段就不要添加索引</p>
+<h5 id="最频繁的列放到联合索引的左侧"><a href="#最频繁的列放到联合索引的左侧" class="headerlink" title="最频繁的列放到联合索引的左侧"></a>最频繁的列放到联合索引的左侧</h5><p>对应最左前缀原则。</p>
+<h5 id="多个字段都要创建时，联合索引更优"><a href="#多个字段都要创建时，联合索引更优" class="headerlink" title="多个字段都要创建时，联合索引更优"></a>多个字段都要创建时，联合索引更优</h5><ul>
+<li>减少开销：一个联合索引<code>(c1,c2,c3)</code>，相当于<code>(c1)</code>,<code>(c1,c2)</code>,<code>(c1,c2,c3)</code>三个索引</li>
+<li>覆盖索引：<code> select col1,col2,col3 from test where col1=1 and col2=2</code>，无需回表</li>
+<li>效率高：索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select from table where col1&#x3D;1 and col2&#x3D;2 and  col3&#x3D;3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W10%&#x3D;100w条数据，然后再回表从100w条数据中找到符合col2&#x3D;2 and col3&#x3D; 3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w * (10% *10% *10%)&#x3D;1w，效率提升可想而知！</li>
+</ul>
+<h4 id="限制索引数量"><a href="#限制索引数量" class="headerlink" title="限制索引数量"></a>限制索引数量</h4><p>单表不超过六个：</p>
+<ul>
+<li>索引占用空间</li>
+<li>更新时间</li>
+<li>查询时，优化器需要对可能用到的索引进行比较，太多会降低性能</li>
+</ul>
+<h2 id="性能分析工具"><a href="#性能分析工具" class="headerlink" title="~性能分析工具"></a>~性能分析工具</h2><h3 id="①-优化步骤"><a href="#①-优化步骤" class="headerlink" title="① 优化步骤"></a>① 优化步骤</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055484.png" srcset="/img/loading.gif" lazyload alt="image-20220627162248635"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055485.png" srcset="/img/loading.gif" lazyload alt="image-20220627162345815"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055486.png" srcset="/img/loading.gif" lazyload alt="image-20230226135825018" style="zoom:50%;" />
+
+<h3 id="②-查看系统性能-status"><a href="#②-查看系统性能-status" class="headerlink" title="② 查看系统性能 status"></a>② 查看系统性能 status</h3><p><code>SHOW STATUS</code> ：查询一些MySQL数据库服务器的<code>性能参数、执行频率</code>。 %是通配符任意匹配</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW [GLOBAL|SESSION] STATUS LIKE &#x27;参数&#x27;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Connections：连接MySQL服务器的次数。 </p>
+</li>
+<li><p>Uptime：MySQL服务器的上线时间。 </p>
+</li>
+<li><p>&#x3D;&#x3D;Slow_queries&#x3D;&#x3D;：慢查询的次数。 </p>
+</li>
+<li><p>Innodb_rows_read：Select查询返回的行数 </p>
+</li>
+<li><p>Innodb_rows_inserted：执行INSERT操作插入的行数 </p>
+</li>
+<li><p>Innodb_rows_updated：执行UPDATE操作更新的 行数 </p>
+</li>
+<li><p>Innodb_rows_deleted：执行DELETE操作删除的行数 </p>
+</li>
+<li><p>Com_select：查询操作的次数。 </p>
+</li>
+<li><p>Com_insert：插入操作的次数。对于批量插入的 INSERT 操作，只累加一次。 </p>
+</li>
+<li><p>Com_update：更新操作 的次数。 </p>
+</li>
+<li><p>Com_delete：删除操作的次数。</p>
+</li>
+<li><p>&#x3D;&#x3D;last_query_cost&#x3D;&#x3D;：查看最后一次操作查询了多少张<strong>数据页</strong>。</p>
+<ul>
+<li>建立了索引，可以有效减少访问的页数。回表的化页数还要增加</li>
+<li>页数多页不用担心，1.页可以在缓冲池或内存中、2.批量顺序读取速度也很快</li>
+</ul>
+</li>
+</ul>
+<h3 id="③-定位执行慢的-SQL：慢查询日志"><a href="#③-定位执行慢的-SQL：慢查询日志" class="headerlink" title="③ 定位执行慢的 SQL：慢查询日志"></a>③ 定位执行慢的 SQL：慢查询日志</h3><p>超过<code>long_query_time</code>的SQL会记录下，默认10s</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show variables like &#x27;%slow_query_log%&#x27;; # 是否打开 以及 保存地址<br>set global slow_query_log=&#x27;ON&#x27;; # 打开<br><br> show variables like &#x27;%long_query_time%&#x27;; # 时间阈值<br> <br> # 设置时间<br> #测试发现：设置global的方式对当前session的long_query_time失效。对新连接的客户端有效。所以可以一并<br>mysql &gt; set global long_query_time = 1;<br>mysql&gt; show global variables like &#x27;%long_query_time%&#x27;;<br>mysql&gt; set long_query_time=1;<br>mysql&gt; show variables like &#x27;%long_query_time%&#x27;;<br></code></pre></td></tr></table></figure>
+
+<p><code>show status like &#39;slow_queries&#39;</code> 显示有多少sql超时了</p>
+<p> <code>mysqldumpslow</code> ：日志分析工具，给日志文件就可以定位sql。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#得到返回记录集最多的10个SQL<br>mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log<br><br>#得到访问次数最多的10个SQL<br>mysqldumpslow -s c -t 10 /var/lib/mysql/atguigu-slow.log<br><br>#得到按照时间排序的前10条里面含有左连接的查询语句<br>mysqldumpslow -s t -t 10 -g &quot;left join&quot; /var/lib/mysql/atguigu-slow.log<br><br>#另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现爆屏情况<br>mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log | more<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="④-PROFILE"><a href="#④-PROFILE" class="headerlink" title="④ PROFILE"></a>④ PROFILE</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show variables like &#x27;profiling&#x27;;<br>set profiling = &#x27;ON&#x27;;<br>show profiles; # 近几个查询<br>show profile; # 最近一个的细节   各个阶段耗时<br>show profile cpu,block io for query 2<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑤-EXPLAIN"><a href="#⑤-EXPLAIN" class="headerlink" title="⑤ EXPLAIN"></a>⑤ EXPLAIN</h3><p>不考虑各种Cache、不能显示优化工作、不会告诉你关于触发器、存储过程的信息或用户自定义函数对查询的影响情况 </p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055487.png" srcset="/img/loading.gif" lazyload alt="image-20220628212049096" style="zoom: 80%;" />
+
+<h4 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE s1 (<br>    id INT AUTO_INCREMENT,<br>    key1 VARCHAR(100),<br>    key2 INT,<br>    key3 VARCHAR(100),<br>    key_part1 VARCHAR(100),<br>    key_part2 VARCHAR(100),<br>    key_part3 VARCHAR(100),<br>    common_field VARCHAR(100),<br>    PRIMARY KEY (id),<br>    INDEX idx_key1 (key1),<br>    UNIQUE INDEX idx_key2 (key2),<br>    INDEX idx_key3 (key3),<br>    INDEX idx_key_part(key_part1, key_part2, key_part3)<br>) ENGINE=INNODB CHARSET=utf8;<br><br>CREATE TABLE s2 (<br>    id INT AUTO_INCREMENT,<br>    key1 VARCHAR(100),<br>    key2 INT,<br>    key3 VARCHAR(100),<br>    key_part1 VARCHAR(100),<br>    key_part2 VARCHAR(100),<br>    key_part3 VARCHAR(100),<br>    common_field VARCHAR(100),<br>    PRIMARY KEY (id),<br>    INDEX idx_key1 (key1),<br>    UNIQUE INDEX idx_key2 (key2),<br>    INDEX idx_key3 (key3),<br>    INDEX idx_key_part(key_part1, key_part2, key_part3)<br>) ENGINE=INNODB CHARSET=utf8;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs mysql">set global log_bin_trust_function_creators=1; # 不加global只是当前窗口有效。<br># Function<br>DELIMITER //<br>CREATE FUNCTION rand_string1(n INT)<br>	RETURNS VARCHAR(255) #该函数会返回一个字符串<br>BEGIN<br>	DECLARE chars_str VARCHAR(100) DEFAULT<br>&#x27;abcdefghijklmnopqrstuvwxyzABCDEFJHIJKLMNOPQRSTUVWXYZ&#x27;;<br>    DECLARE return_str VARCHAR(255) DEFAULT &#x27;&#x27;;<br>    DECLARE i INT DEFAULT 0;<br>    WHILE i &lt; n DO<br>        SET return_str =CONCAT(return_str,SUBSTRING(chars_str,FLOOR(1+RAND()*52),1));<br>        SET i = i + 1;<br>    END WHILE;<br>    RETURN return_str;<br>END //<br>DELIMITER ;<br><br># 存储过程<br>DELIMITER //<br>CREATE PROCEDURE insert_s1 (IN min_num INT (10),IN max_num INT (10))<br>BEGIN<br>    DECLARE i INT DEFAULT 0;<br>    SET autocommit = 0;<br>    REPEAT<br>    SET i = i + 1;<br>    INSERT INTO s1 VALUES(<br>        (min_num + i),<br>        rand_string1(6),<br>        (min_num + 30 * i + 5),<br>        rand_string1(6),<br>        rand_string1(10),<br>        rand_string1(5),<br>        rand_string1(10),<br>        rand_string1(10));<br>    UNTIL i = max_num<br>    END REPEAT;<br>    COMMIT;<br>END //<br>DELIMITER ;<br><br>DELIMITER //<br>CREATE PROCEDURE insert_s2 (IN min_num INT (10),IN max_num INT (10))<br>BEGIN<br>    DECLARE i INT DEFAULT 0;<br>    SET autocommit = 0;<br>    REPEAT<br>    SET i = i + 1;<br>    INSERT INTO s2 VALUES(<br>        (min_num + i),<br>        rand_string1(6),<br>        (min_num + 30 * i + 5),<br>        rand_string1(6),<br>        rand_string1(10),<br>        rand_string1(5),<br>        rand_string1(10),<br>        rand_string1(10));<br>    UNTIL i = max_num<br>    END REPEAT;<br>    COMMIT;<br>END //<br>DELIMITER ;<br><br># 调用<br>CALL insert_s1(10001,10000);<br>CALL insert_s2(10001,10000);<br></code></pre></td></tr></table></figure>
+
+<h4 id="各列作用☆"><a href="#各列作用☆" class="headerlink" title="各列作用☆"></a>各列作用☆</h4><p>一条语句可多个select，一个select可from多个表，一个表一行记录</p>
+<ol>
+<li><p>&#x3D;&#x3D;<strong>table</strong>&#x3D;&#x3D;</p>
+<p>对应表，每行记录都对应一个表。可能有临时表</p>
+<p><code>EXPLAIN SELECT * FROM s1 UNION SELECT * FROM s2;</code> Union会构建临时表去重，一共3个</p>
+</li>
+<li><p>&#x3D;&#x3D;<strong>id</strong>&#x3D;&#x3D;</p>
+<p>对应select个数，如子查询就有多个select</p>
+<p>按照id从小到大执行，同一id前面的是驱动表</p>
+</li>
+<li><p><strong>&#x3D;&#x3D;select_type&#x3D;&#x3D;</strong>  小查询在整个大查询扮演的角色</p>
+<ol>
+<li>simple：简单 以及JOIN <code>EXPLAIN SELECT * FROM s1;</code>  <code>EXPLAIN SELECT * FROM s1 INNER JOIN s2;</code> </li>
+<li>PRIMARY ：UNION最左边，子查询最外面的 <code>EXPLAIN SELECT * FROM s1 UNION SELECT * FROM s2;</code> s1</li>
+<li>UNION：UNION剩下的 s2</li>
+<li>UNION RESULT：UNION产生的临时表</li>
+<li>SUBQUERY ：子查询里面<code>EXPLAIN SELECT * FROM s1 WHERE key1 IN (SELECT key1 FROM s2) OR key3 = &#39;a&#39;;</code></li>
+<li>等等p137</li>
+</ol>
+</li>
+<li><p>&#x3D;&#x3D;partition&#x3D;&#x3D;(分区相关)</p>
+</li>
+<li><p>&#x3D;&#x3D;type&#x3D;&#x3D; ☆</p>
+<p>执行查询时的访问方法：<code>system ， const ， eq_ref ， ref ， fulltext ， ref_or_null ， index_merge ， unique_subquery ， index_subquery ， range ， index ， ALL</code> 。</p>
+<ul>
+<li><p><code>system</code> 一条记录且数据统计精准（MyISAM、Memory）</p>
+</li>
+<li><p><code>const</code> 主键或唯一二级索引与常数等值匹配</p>
+</li>
+<li><p><code>eq_ref</code> 连接时，被驱动表是通过主键或者唯一二级索引列</p>
+</li>
+<li><p><code>ref</code> 普通的二级索引列与常量进行等值匹配</p>
+</li>
+<li><p><code>index_merge</code> 条件为or时，同时用上多个索引</p>
+</li>
+<li><p>…</p>
+</li>
+<li><p><code>range</code> 索引的范围查询  <code>c1 IN (&#39;a&#39;, &#39;b&#39;)</code>   <code>c1 &gt; &#39;a&#39;</code>  <code>c1 LIKE &#39;abc%&#39;;</code></p>
+</li>
+<li><p><code>index</code> 索引覆盖，但需要扫描全部记录  <code>EXPLAIN SELECT key_part2 FROM s1 WHERE key_part3 = &#39;a&#39;;</code></p>
+<p>​				原因：扫描二级索引的代价比直接全表扫描，也就是扫描聚簇索引的代价更低一些。</p>
+</li>
+<li><p><code>ALL</code> 全表扫描</p>
+<p><strong>system &gt; const &gt; eq_ref &gt; ref</strong> &gt; fulltext &gt; ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt; index &gt; ALL </p>
+<p>SQL 性能优化的目标：<strong>至少要达到 range 级别，要求是 ref 级别，最好是 consts级别。</strong>（阿里巴巴 开发手册要求）</p>
+</li>
+</ul>
+</li>
+<li><p>&#x3D;&#x3D;possible_keys&#x3D;&#x3D;和&#x3D;&#x3D;key&#x3D;&#x3D;</p>
+<p><code>可能用到的索引</code> 和 <code>实际用的</code>   ：<code>EXPLAIN SELECT * FROM s1 WHERE key1 &gt; &#39;z&#39; AND key3 = &#39;a&#39;;</code></p>
+</li>
+<li><p>&#x3D;&#x3D;key_len&#x3D;&#x3D; ☆</p>
+<p>用上的索引字节长度，<strong>检查是否充分利用索引</strong>，主要针对联合索引。加上了变长和null</p>
+<p>长度为 2个索引列 * （数据长度<em>3 utf-8 + 2变长字段 + 1null）  606 &#x3D; 2 * （100</em>3+2+1）</p>
+<p><code>EXPLAIN SELECT * FROM s1 WHERE key_part1 = &#39;a&#39; AND key_part2 = &#39;b&#39;; </code>   606 </p>
+</li>
+<li><p>&#x3D;&#x3D;ref&#x3D;&#x3D;</p>
+<p>和索引列比较的结构是什么：const、s1.id、func等</p>
+<p><code>WHERE s2 = &#39;a&#39;;</code>  <code>s1 INNER JOIN s2 ON s1.id = s2.id;</code>    <code>INNER JOIN s2 ON s2.key1 = UPPER(s1.key1);</code></p>
+</li>
+<li><p>&#x3D;&#x3D;rows&#x3D;&#x3D;☆</p>
+<p>预估的需要读取的记录条数，<code>值越小越好</code>。</p>
+</li>
+<li><p>&#x3D;&#x3D;filtered&#x3D;&#x3D;</p>
+<p>加入条件时，剩下数据的比例。在驱动表中剩下越少，循环下一张表次数也就越少</p>
+</li>
+<li><p>&#x3D;&#x3D;Extra&#x3D;&#x3D;☆</p>
+<ul>
+<li><p><code>No tables used</code> </p>
+</li>
+<li><p><code>Impossible WHERE</code> where 永远false</p>
+</li>
+<li><p><code>Using where</code> 普通列</p>
+</li>
+<li><p><code>No matching min/max row</code> 有聚合函数但没有数据</p>
+</li>
+<li><p><code>Using index</code> 索引覆盖</p>
+</li>
+<li><p><code>Using index condition</code>   索引完后，先过滤key1 LIKE ‘%a’再去主表查询，<code>索引条件下推</code></p>
+<p>​	SELECT * FROM s1 WHERE key1 &gt; ‘z’ AND key1 LIKE ‘%a’; </p>
+</li>
+<li><p><code>Using join buffer (Block Nested Loop)</code>  被驱动表无索引，使用内存加速 <code>基于块的嵌套循环算法</code></p>
+</li>
+<li><p><code>Using filesort</code> 对普通列order by，需在内存或磁盘排序。慢！</p>
+</li>
+<li><p><code>Using temporary</code> 使用临时表：DISTINCT、 GROUP BY、UNION。<code>代价很大，最好使用索引来替代临时表</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><ol>
+<li>传统格式</li>
+<li>JSON格式  EXPLAIN FORMAT&#x3D;JSON</li>
+<li>TREE格式  EXPLAIN FORMAT&#x3D;tree</li>
+<li>Workbench可视化  快速查看</li>
+</ol>
+<h3 id="⑥-SHOW-WARNINGS"><a href="#⑥-SHOW-WARNINGS" class="headerlink" title="⑥ SHOW WARNINGS"></a>⑥ SHOW WARNINGS</h3><p><strong>查看完整SQL语句</strong>，涉及到内查询等优化器可能会帮我们优化掉</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT * from s1 where key1 in (select key2 from s2 where common_field = &#x27;a&#x27;);<br>show warnings; # 内查询优化成了连接<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑦-trace：分析优化器执行"><a href="#⑦-trace：分析优化器执行" class="headerlink" title="⑦ trace：分析优化器执行"></a>⑦ trace：分析优化器执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 开启，结果保存到information_schema.optimizer_trace中<br>SET optimizer_trace=&quot;enabled=on&quot;,end_markers_in_json=on;<br>set optimizer_trace_max_mem_size=1000000;<br><br>select * from student where id &lt; 10;<br><br>select * from information_schema.optimizer_trace\G<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑧-sys-schema-：MySQL监控分析视图"><a href="#⑧-sys-schema-：MySQL监控分析视图" class="headerlink" title="⑧ sys schema ：MySQL监控分析视图"></a>⑧ sys schema ：MySQL监控分析视图</h3><p>查询需要消耗大量资源。查询结果来自  全部的数据库  的 全部的表</p>
+<p>索引情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#1. 查询冗余索引<br>select * from sys.schema_redundant_indexes;<br>#2. 查询未使用过的索引<br>select * from sys.schema_unused_indexes;<br>#3. 查询索引的使用情况<br>select index_name,rows_selected,rows_inserted,rows_updated,rows_deleted<br>from sys.schema_index_statistics where table_schema=&#x27;dbname&#x27;;<br></code></pre></td></tr></table></figure>
+
+<p>表相关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 1. 查询表的访问量<br>select table_schema,table_name,sum(io_read_requests+io_write_requests) as io from<br>sys.schema_table_statistics group by table_schema,table_name order by io desc;<br># 2. 查询占用bufferpool较多的表<br>select object_schema,object_name,allocated,data<br>from sys.innodb_buffer_stats_by_table order by allocated limit 10;<br># 3. 查看表的全表扫描情况<br>select * from sys.statements_with_full_table_scans where db=&#x27;dbname&#x27;;<br></code></pre></td></tr></table></figure>
+
+<p>语句相关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#1. 监控SQL执行的频率<br>select db,exec_count,query from sys.statement_analysis<br>order by exec_count desc;<br>#2. 监控使用了排序的SQL<br>select db,exec_count,first_seen,last_seen,query<br>from sys.statements_with_sorting limit 1;<br>#3. 监控使用了临时表或者磁盘临时表的SQL<br>select db,exec_count,tmp_tables,tmp_disk_tables,query<br>from sys.statement_analysis where tmp_tables&gt;0 or tmp_disk_tables &gt;0<br>order by (tmp_tables+tmp_disk_tables) desc;<br></code></pre></td></tr></table></figure>
+
+<p>IO相关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#1. 查看消耗磁盘IO的文件<br>select file,avg_read,avg_write,avg_read+avg_write as avg_io<br>from sys.io_global_by_file_by_bytes order by avg_read limit 10;<br></code></pre></td></tr></table></figure>
+
+<p>Innodb 相关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#1. 行锁阻塞情况<br>select * from sys.innodb_lock_waits;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="索引优化与查询优化"><a href="#索引优化与查询优化" class="headerlink" title="~索引优化与查询优化"></a>~索引优化与查询优化</h2><p>需要调优的角度：</p>
+<ul>
+<li>索引失效、没有充分利用到索引——建立索引  <code>物理查询优化</code></li>
+<li>关联查询太多JOIN（设计缺陷或不得已的需求）——SQL优化 <code>逻辑查询优化</code></li>
+<li>服务器调优及各个参数设置（缓冲、线程数等）——调整my.cnf</li>
+<li>数据过多——分库分表</li>
+</ul>
+<h3 id="①-数据准备"><a href="#①-数据准备" class="headerlink" title="① 数据准备"></a>① 数据准备</h3><p><code>学员表</code> 插 <code>50万</code> 条，<code> 班级表</code> 插 <code>1万</code> 条。</p>
+<h3 id="②-索引失效案例☆"><a href="#②-索引失效案例☆" class="headerlink" title="② 索引失效案例☆"></a>② 索引失效案例☆</h3><p>用B+树推理出来即可！</p>
+<h4 id="2-1-全值匹配我最爱"><a href="#2-1-全值匹配我最爱" class="headerlink" title="2.1 全值匹配我最爱"></a>2.1 全值匹配我最爱</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 没有索引时全部遍历<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE age=30;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-最佳左前缀法则"><a href="#2-2-最佳左前缀法则" class="headerlink" title="2.2 最佳左前缀法则"></a>2.2 最佳左前缀法则</h4><p>最左边能匹配就能用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE INDEX idx_age_classid_name ON student(age,classId,name);<br><br># 能用<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE student.age=30 AND student.classId=4;<br><br># 不能用<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE student.classId=4 AND student.age=30 AND student.name = &#x27;abcd&#x27;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-主键插入顺序"><a href="#2-3-主键插入顺序" class="headerlink" title="2.3 主键插入顺序"></a>2.3 主键插入顺序</h4><p>主键<code>AUTO_INCREMENT</code> ，防止<strong>页面分裂</strong>：把本页中的一些记录移动到新创建的这个页中</p>
+<h4 id="2-4-计算、函数、类型转换-自动或手动-导致索引失效"><a href="#2-4-计算、函数、类型转换-自动或手动-导致索引失效" class="headerlink" title="2.4 计算、函数、类型转换(自动或手动)导致索引失效"></a>2.4 计算、函数、类型转换(自动或手动)导致索引失效</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE INDEX idx_name ON student(NAME);<br># 可以用上<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE student.name LIKE &#x27;abc%&#x27;;<br><br># 函数千奇百怪，不知道返回什么，所以用不上<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE LEFT(student.name,3) = &#x27;abc&#x27;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-5-类型转换导致索引失效"><a href="#2-5-类型转换导致索引失效" class="headerlink" title="2.5 类型转换导致索引失效"></a>2.5 类型转换导致索引失效</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 未使用到索引<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE name=123;<br># 使用到索引<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE name=&#x27;123&#x27;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-6-范围条件右边的列索引失效"><a href="#2-6-范围条件右边的列索引失效" class="headerlink" title="2.6 范围条件右边的列索引失效"></a>2.6 范围条件右边的列索引失效</h4><p>联合索引，范围查询的后面列无法用上索引。但<code>c2 like &#39;c%&#39;</code>后面的可以用上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CAll proc_drop_index(&#x27;atguigudb2&#x27;, &#x27;student&#x27;);<br>CREATE INDEX idx_age_classid_name ON student(age,name,classId);<br><br># 用不上 key_len=68<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE age = 3 and name &gt; &#x27;c&#x27; and classId = 20;<br># 用得上 key_len=73<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE age = 3 and name like &#x27;c%&#x27; and classId = 20;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>应用开发中范围查询，例如：金额查询，日期查询往往都是范围查询。创建的联合索引中，务必把范围涉及到的字段写在最后</p>
+</blockquote>
+<h4 id="2-7-不等于-或者-索引失效"><a href="#2-7-不等于-或者-索引失效" class="headerlink" title="2.7 不等于(!&#x3D; 或者&lt;&gt;)索引失效"></a>2.7 不等于(!&#x3D; 或者&lt;&gt;)索引失效</h4><p>不等于不能用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE student.name &lt;&gt; &#x27;abc&#x27;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-8-is-null可以使用索引，is-not-null无法使用索引"><a href="#2-8-is-null可以使用索引，is-not-null无法使用索引" class="headerlink" title="2.8 is null可以使用索引，is not null无法使用索引"></a>2.8 is null可以使用索引，is not null无法使用索引</h4><p>道理同上</p>
+<blockquote>
+<p>结论：最好在设计数据库的时候就将<code>字段设置为 NOT NULL 约束</code>，比如你可以将 INT 类型的字段，默认值设置为0。将字符类型的默认值设置为空字符串(‘’)。</p>
+<p>扩展：同理，在查询中使用<code>not like</code>也无法使用索引，导致全表扫描。</p>
+</blockquote>
+<h4 id="2-9-like以通配符-开头索引失效"><a href="#2-9-like以通配符-开头索引失效" class="headerlink" title="2.9 like以通配符%开头索引失效"></a>2.9 like以通配符%开头索引失效</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE name LIKE &#x27;%ab&#x27;;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>拓展：Alibaba《Java开发手册》 </p>
+<p>【强制】页面搜索严禁左模糊或者全模糊，如果需要请走搜索引擎来解决。</p>
+</blockquote>
+<h4 id="2-10-OR-前后存在非索引的列，索引失效"><a href="#2-10-OR-前后存在非索引的列，索引失效" class="headerlink" title="2.10 OR 前后存在非索引的列，索引失效"></a>2.10 OR 前后存在非索引的列，索引失效</h4><p>or纯在非索引导致失效，and不会</p>
+<p>因为OR的含义就是两个只要满足一个即可，因此<code>只有一个条件列进行了索引是没有意义的</code>，只要有条件列没有进行索引，就会进行<code>全表扫描</code>，因此所以的条件列也会失效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 加入只有age有索引<br># 未使用到索引<br>EXPLAIN SELECT SQL_NO_CACHE * FROM student WHERE age = 10 OR classid = 100;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-11-数据库和表的字符集统一使用utf8mb4"><a href="#2-11-数据库和表的字符集统一使用utf8mb4" class="headerlink" title="2.11 数据库和表的字符集统一使用utf8mb4"></a>2.11 数据库和表的字符集统一使用utf8mb4</h4><p>统一使用utf8mb4( 5.5.3版本以上支持)兼容性更好，统一字符集可以避免由于字符集转换产生的乱码。不 同的 <code>字符集</code> 进行比较前需要进行 <code>转换</code> 会造成索引失效。</p>
+<h3 id="③-关联查询优化"><a href="#③-关联查询优化" class="headerlink" title="③ 关联查询优化"></a>③ 关联查询优化</h3><h4 id="数据准备-1"><a href="#数据准备-1" class="headerlink" title="数据准备"></a>数据准备</h4><h4 id="LEFT-JOIN"><a href="#LEFT-JOIN" class="headerlink" title="LEFT JOIN"></a>LEFT JOIN</h4><p>不是绝对的左边为驱动表，如果左边有索引可能会变成被驱动表</p>
+<p>驱动表<code>Using joion buffer</code> 使用缓存；添加索引被驱表可以走索引。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT SQL_NO_CACHE * FROM `type` LEFT JOIN book ON type.card = book.card;<br></code></pre></td></tr></table></figure>
+
+<h4 id="INNER-JOIN"><a href="#INNER-JOIN" class="headerlink" title="INNER JOIN"></a>INNER JOIN</h4><p>优化器选择驱动表，选择有索引的或者大表作为被驱动表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT SQL_NO_CACHE * FROM type INNER JOIN book ON type.card=book.card;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="JOIN原理"><a href="#JOIN原理" class="headerlink" title="JOIN原理"></a>JOIN原理</h4><p>MySQL5.5版本之前，只有嵌套循环。后来引入BNLJ算法优化嵌套查询。8.0.18引入Hash Join</p>
+<h5 id="1-Simple-Nested-Loop-Join"><a href="#1-Simple-Nested-Loop-Join" class="headerlink" title="1.Simple Nested-Loop Join"></a>1.Simple Nested-Loop Join</h5><p>简单嵌套循环连接：相当于两层循环。比较了<code>A * B</code>次，读取了A+AB次记录。</p>
+<h5 id="2-Index-Nested-Loop-Join"><a href="#2-Index-Nested-Loop-Join" class="headerlink" title="2. Index Nested-Loop Join"></a>2. Index Nested-Loop Join</h5><p>索引嵌套循环连接：被驱表走索引然后回表。比较<code>A*height</code>，读取了<code>A+B(match)</code></p>
+<h5 id="3-Block-Nested-Loop-Join"><a href="#3-Block-Nested-Loop-Join" class="headerlink" title="3.Block Nested-Loop Join"></a>3.Block Nested-Loop Join</h5><p>块嵌套循环连接：引入块join buffer，把驱动表（分成一个个块）放在缓存中。被驱动一次比较一块驱动表记录，相当于外层循环变小了</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055488.png" srcset="/img/loading.gif" lazyload alt="image-20230304103951379"></p>
+<p>通过<code>show variables like &#39;%optimizer_switch%&#39;</code> 查看 <code>block_nested_loop</code>状态。默认是开启的。</p>
+<p>这里缓存的不只是关联表的列，select后面的列也会缓存起来。</p>
+<p>比较了<code>A * B</code>，读取了 <code>A + 块数*B</code>，访问磁盘次数少了</p>
+<blockquote>
+<p> join_buffer_size的最大值在32位操作系统可以申请4G，而在64位操作系统下可以申请大于4G的Join Buffer空间（64位Windows除外，其大值会被截断为4GB并发出警告）。</p>
+</blockquote>
+<h5 id="4-Hash-Join"><a href="#4-Hash-Join" class="headerlink" title="4. Hash Join"></a>4. Hash Join</h5><p><strong>等值连接</strong>。对BNLJ进一步优化，针对小表直接建立Hash表，大表每一条比较时间降低到O1</p>
+<p>如果能完全放下小表，时间为A+B。如果不能放下需分块，相当于大表还是一次比较一整块记录，但时间优化到O1</p>
+<h3 id="④-子查询"><a href="#④-子查询" class="headerlink" title="④ 子查询"></a>④ 子查询</h3><p><strong>在MySQL中，可以使用连接（JOIN）查询来替代子查询。</strong>连接查询 <code>不需要建立临时表</code> ，其 <code>速度比子查询</code> 要快 ，如果查询中使用索引的话，性能就会更好。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">EXPLAIN SELECT * FROM student stu1<br>WHERE stu1.`stuno` IN (<br>SELECT monitor<br>FROM class c<br>WHERE monitor IS NOT NULL<br>)<br># 优化<br>EXPLAIN SELECT stu1.* FROM student stu1 JOIN class c<br>ON stu1.`stuno` = c.`monitor`<br>WHERE c.`monitor` is NOT NULL;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑤-排序"><a href="#⑤-排序" class="headerlink" title="⑤ 排序"></a>⑤ 排序</h3><p><code>FileSort</code> （内存中，占CPU）或 <code>Index</code> 排序。</p>
+<p>还可以使用联合索引，where用一部分，order后一部分， <code>WHERE a = const AND b = const ORDER BY c</code></p>
+<p>是否用所以还需要看排序代价，不大可以直接排序</p>
+<h4 id="双路和单路排序"><a href="#双路和单路排序" class="headerlink" title="双路和单路排序"></a>双路和单路排序</h4><p>双路：只拿排序列数据，排完序后再全部遍历取出需要列。</p>
+<p>单路：直接所有需要列区排序，但需要更多<code>sort_buffer_size</code>，默认1MB。如果数据量大于<code>max_length_for_sort_data</code>（1024~8192B）转用单路。</p>
+<p>所以select * 在这是大忌。</p>
+<ul>
+<li>where效率高于having，能写在where限定的条件就不要写在having中了 </li>
+<li>包含了order by、group by、distinct这些查询的语句，where条件过滤出来的结果集请保持在1000行以内</li>
+</ul>
+<h3 id="⑥-优化分页查询"><a href="#⑥-优化分页查询" class="headerlink" title="⑥ 优化分页查询"></a>⑥ 优化分页查询</h3><p><code>select * from sutdent limit 1000000,10</code>这种头疼问题</p>
+<p>本来需要回表&gt;1000000，现在只需要回表10；使用连接优化子查询</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055489.png" srcset="/img/loading.gif" lazyload alt="image-20230304122824862"></p>
+<h3 id="⑦-索引覆盖"><a href="#⑦-索引覆盖" class="headerlink" title="⑦ 索引覆盖"></a>⑦ 索引覆盖</h3><p><code>索引列+主键</code> 包含 <code>SELECT 到 FROM之间查询的列</code> </p>
+<p>索引覆盖可以提高速度，回表的IO很可能是随机IO（数据不连续）。但有维护代价，业务DBA（业务数据架构师）的工作。</p>
+<p>此外，就算使用！&#x3D;导致索引失效，如果可以索引覆盖还是会去使用索引，因为二级索引更小遍历代价更低。</p>
+<h3 id="⑧-索引条件下推"><a href="#⑧-索引条件下推" class="headerlink" title="⑧ 索引条件下推"></a>⑧ 索引条件下推</h3><p>​	&#x3D;&#x3D;先过滤再回表&#x3D;&#x3D;</p>
+<p>通常针对联合索引，(c1, c2, c3)   c1能使用但c2 c3用不了。c1用完索引后先c2 c3遍历过滤后再回表。</p>
+<p>ICP的开启和关闭</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">set optimizer_switch = &#x27;index_condition_pushdown=on&#x27;  或者off<br><br>执行语句时关闭<br>select /*+ no_icp (table_name) */ * from table_name  where ...<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑨-其他优化策略"><a href="#⑨-其他优化策略" class="headerlink" title="⑨ 其他优化策略"></a>⑨ 其他优化策略</h3><h4 id="exists-和-in"><a href="#exists-和-in" class="headerlink" title="exists 和 in"></a>exists 和 in</h4><p>exists用外表驱动内表，拿一条条外表数据去内表查（相关子查询）       适合外小内大<br>in反过来，先查询内表，再拿数据去外表走索引                        </p>
+<h4 id="COUNT"><a href="#COUNT" class="headerlink" title="COUNT(*)"></a>COUNT(*)</h4><p><code>SELECT COUNT(*) 、 SELECT COUNT(1)</code>基本等价，效率相等，&#x3D;&#x3D;自动选取小空间的二级索引&#x3D;&#x3D;。MyISAM维护了变量</p>
+<p><code>SELECT COUNT(具体字段)</code>尽量建立二级索引。</p>
+<h4 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT(*)"></a>SELECT(*)</h4><ul>
+<li>需要先查询数据字典将*转换为列名</li>
+<li>无法使用覆盖索引</li>
+<li>空间更大</li>
+</ul>
+<h4 id="LIMIT-1"><a href="#LIMIT-1" class="headerlink" title="LIMIT 1"></a>LIMIT 1</h4><p>在确定数据唯一，并且无唯一索引时，可以提前结束扫描，加速。</p>
+<h4 id="多使用COMMIT"><a href="#多使用COMMIT" class="headerlink" title="多使用COMMIT"></a>多使用COMMIT</h4><p>COMMIT 所释放的资源： </p>
+<ul>
+<li>回滚段上用于恢复数据的信息 </li>
+<li>被程序语句获得的锁 </li>
+<li>redo &#x2F; undo log buffer 中的空间 </li>
+<li>管理上述 3 种资源中的内部花费</li>
+</ul>
+<h3 id="⑩-淘宝数据库，主键如何设计的？"><a href="#⑩-淘宝数据库，主键如何设计的？" class="headerlink" title="⑩ 淘宝数据库，主键如何设计的？"></a>⑩ 淘宝数据库，主键如何设计的？</h3><h4 id="自增ID的问题"><a href="#自增ID的问题" class="headerlink" title="自增ID的问题"></a>自增ID的问题</h4><p>自增ID做主键，简单易懂，几乎所有数据库都支持自增类型，只是实现上各自有所不同而已。自增ID除 了简单，其他都是缺点，总体来看存在以下几方面的问题：</p>
+<ol>
+<li><p><strong>可靠性不高</strong></p>
+<p>存在自增ID回溯的问题，这个问题直到最新版本的MySQL 8.0才修复。 </p>
+</li>
+<li><p>**安全性不高 **</p>
+<p>对外暴露的接口可以非常容易猜测对应的信息。比如：&#x2F;User&#x2F;1&#x2F;这样的接口，可以非常容易猜测用户ID的 值为多少，总用户数量有多少，也可以非常容易地通过接口进行数据的爬取。 </p>
+</li>
+<li><p><strong>性能差</strong> </p>
+<p>自增ID的性能较差，需要在数据库服务器端生成。 </p>
+</li>
+<li><p><strong>交互多</strong> </p>
+<p>业务还需要额外执行一次类似 last_insert_id() 的函数才能知道刚才插入的自增值，这需要多一次的 网络交互。在海量并发的系统中，多1条SQL，就多一次性能上的开销。 </p>
+</li>
+<li><p>**局部唯一性 **</p>
+<p>最重要的一点，自增ID是局部唯一，只在当前数据库实例中唯一，而不是全局唯一，在任意服务器间都 是唯一的。对于目前分布式系统来说，这简直就是噩梦。</p>
+</li>
+</ol>
+<h4 id="业务字段做主键"><a href="#业务字段做主键" class="headerlink" title="业务字段做主键"></a>业务字段做主键</h4><p>会员卡中的卡号：但如果用户注销了，购买记录还会给新的人。</p>
+<p>身份证号：隐私问题等</p>
+<blockquote>
+<p>经验： 刚开始使用 MySQL 时，很多人都很容易犯的错误是喜欢用业务字段做主键，想当然地认为了解业 务需求，但实际情况往往出乎意料，而更改主键设置的成本非常高。</p>
+</blockquote>
+<h4 id="淘宝的主键设计"><a href="#淘宝的主键设计" class="headerlink" title="淘宝的主键设计"></a>淘宝的主键设计</h4><p>淘宝的订单号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">1550672064762308113<br>1481195847180308113<br>1431156171142308113<br>1431146631521308113<br><br>猜测：订单ID = 时间 + 去重字段 + 用户ID后6位尾号<br></code></pre></td></tr></table></figure>
+
+<h4 id="推荐主键设计"><a href="#推荐主键设计" class="headerlink" title="推荐主键设计"></a>推荐主键设计</h4><p><strong>非核心业务</strong> ：对应表的主键自增ID，如告警、日志、监控等信息。</p>
+<p><strong>核心业务</strong> ：<code>主键设计至少应该是全局唯一且是单调递增</code>。全局唯一保证在各系统之间都是唯一的，单调递增是希望插入时不影响数据库性能。</p>
+<h5 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h5><p>32个16进制数，纯数占用16B。实际占用36B</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">UUID = 时间+UUID版本（16字节）- 时钟序列（4字节） - MAC地址（12字节）<br><br>时间：100ns区别。秒在前面所以不是自增<br>36字节：字符串存储，且带有无用字符-<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055490.png" srcset="/img/loading.gif" lazyload alt="image-20230305102015371"></p>
+<h5 id="改造UUID"><a href="#改造UUID" class="headerlink" title="改造UUID"></a><strong>改造UUID</strong></h5><p>若将时间高低位互换，则时间就是单调递增的了，也就变得单调递增了。MySQL 8.0</p>
+<p>MySQL 8.0还解决了UUID存在的空间占用的问题，除去了UUID字符串中无意义的<code>-</code>字符串，并且将字符串用二进制类型保存，这样存储空间降低为了16字节。</p>
+<p>MySQL8.0提供<code>uuid_to_bin</code>，<code>bin_to_uuid</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SET @uuid = UUID();<br>SELECT @uuid,uuid_to_bin(@uuid),uuid_to_bin(@uuid,TRUE);<br></code></pre></td></tr></table></figure>
+
+<h5 id="雪花算法"><a href="#雪花算法" class="headerlink" title="雪花算法"></a>雪花算法</h5><p>mybatis-plus默认，并且会将id自动set到实体对象中</p>
+<ol>
+<li>能满足高并发分布式系统环境下ID不重复</li>
+<li>基于时间戳，可以保证基本有序递增</li>
+<li>不依赖第三方的库或者中间件</li>
+<li>生成效率极高</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-number">0</span> - <span class="hljs-number">0000000000</span> <span class="hljs-number">0000000000</span> <span class="hljs-number">0000000000</span> <span class="hljs-number">0000000000</span> <span class="hljs-number">0</span> - <span class="hljs-number">0000000000</span> - <span class="hljs-number">000000000000</span><br><br>符号位             时间戳                                机器码      序列号<br><span class="hljs-keyword">return</span> ((timestamp - twepoch) &lt;&lt; timestampLeftShift) <span class="hljs-comment">//</span><br>                | (workerId &lt;&lt; workerIdShift) <span class="hljs-comment">//</span><br>                | sequence;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>41位存储毫秒级时间戳，这个时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截) * 得到的值），这里的的开始时间截，一般是我们的ID生成器开始使用的时间，一般为项目创建时间，就是下面实现中代码的twepoch 属性，生成器根据时间戳插值进行初次尝试创建ID。</li>
+<li>10位存储机器码，最多支持1024台机器，当并发量非常高，同时有多个请求在同一毫秒到达，可以根据机器码进行第二次生成。机器码可以根据实际需求进行二次划分，比如两个机房操作可以一个机房分配5位机器码。</li>
+<li>12位存储序列号，当同一毫秒有多个请求访问到了同一台机器后，此时序列号就派上了用场，为这些请求进行第三次创建，最多每毫秒每台机器产生2的12次方也就是4096个id，满足了大部分场景的需求。</li>
+</ul>
+<blockquote>
+<p>在Web开发中需要跟js打交道，而js支持最大的整型范围为53位，超过这个范围就会丢失精度，53之内可以直接由js读取，超过53位就需要转换成字符串才能保证js处理正确。</p>
+<p>或者53位存储的话，32位存储秒级时间戳，5位存储机器码，16位存储序列化，这样每台机器每秒可以生产65536个不重复的id。</p>
+</blockquote>
+<h2 id="数据库设计规则"><a href="#数据库设计规则" class="headerlink" title="~数据库设计规则"></a>~数据库设计规则</h2><p>什么数据 什么表、crud时的约束检查、减低数据冗余度、方便数据库维护使用</p>
+<p>表结构的调整代价很大</p>
+<h3 id="①-范数"><a href="#①-范数" class="headerlink" title="① 范数"></a>① 范数</h3><p>关系型数据库的基本原则。但有时为了提高性能还会破坏规则，反规范化（降低冗余度，但业务可能复杂了）</p>
+<p>六种：</p>
+<ul>
+<li>第一范式：列不能再分</li>
+<li>第二范式：非主属性消除部分依赖</li>
+<li>第三范式：非主属性消除传递依赖（平衡）</li>
+<li>巴斯-科德范式：候选键只有一个，或者每个候选键都是单属性。主属性消除部分依赖</li>
+<li>第四范式：不存在多组 多值依赖（一对多）：职工表（职工id，孩子姓名，职工课程），需要拆开</li>
+<li>第五范式：理论研究</li>
+</ul>
+<p>找出所有码 -&gt; 主属性、非主属性 -&gt; 检查部分函数依赖 -&gt; 检查传递函数依赖</p>
+<h4 id="键和相关概念"><a href="#键和相关概念" class="headerlink" title="键和相关概念"></a>键和相关概念</h4><ul>
+<li><code>超键</code>：能唯一标识元组的属性集</li>
+<li><code>候选键</code>：超键且不包括多余属性，可以多个 ；码</li>
+<li><code>主键</code>：从候选键中选一个</li>
+<li><code>外键</code>：R1中的属性不是R1的主键，而是R2的</li>
+<li><code>主属性</code>：所有候选键中的所有属性</li>
+<li><code>非主属性</code></li>
+</ul>
+<h4 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h4><p>每个字段都<strong>不能拆分</strong>了，如不能把电话、姓名、地址都放到一个字段中。</p>
+<p>first name，lastname是否拆分要看具体的业务需求</p>
+<h4 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h4><p><strong>所有非主键完全依赖于候选键</strong>，如果存在<code>部分依赖，则抽出来新建表</code></p>
+<p>成绩表：要想知道成绩，完全依赖于（学号、课程号）</p>
+<p>在学生的成绩表中，不再放学生的地址等信息</p>
+<h4 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h4><p>非主属性C直接相关于主属性A，而不能依赖于其他非主属性B：主属性A-&gt;非主属性B-&gt;非属性C</p>
+<p><strong>员工表</strong>中只放部门编号，不放部门其他信息，这些信息可以通过join查询获得</p>
+<p><strong>商品表</strong>中只放商品类别id，不放类别名称</p>
+<h3 id="②-反范式"><a href="#②-反范式" class="headerlink" title="② 反范式"></a>② 反范式</h3><p><code>业务优先</code>，增加冗余字段来提高读性能。空间换时间。<code>冗余字段修改需要同步</code></p>
+<p><strong>员工表</strong>的查询经常要部门名称，加进来；商品表同理。<strong>违反了第三范式</strong></p>
+<p><strong>学生表</strong>和<strong>课程评论表</strong>，查询课程的评论时经常要用学生名称</p>
+<p>学生表100w，评论表100w</p>
+<p>查询某课程的前10000条评论的姓名和评论；反范式化后，把学生姓名加入评论表</p>
+<p>0.1 -&gt; 0.036</p>
+<p>&#x3D;&#x3D;条件&#x3D;&#x3D;：冗余字段不常修改  且  查询时必要</p>
+<h2 id="数据库其他调优"><a href="#数据库其他调优" class="headerlink" title="~数据库其他调优"></a>~数据库其他调优</h2><p>从更大的层面来优化，主要就是下面这张表。垂直分库分表、读写分离</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055491.png" srcset="/img/loading.gif" lazyload alt="image-20230307161933988"></p>
+<p><strong>目标</strong>：吞吐量更大、响应速度更快</p>
+<p><strong>问题发现</strong>：用户反馈、日志</p>
+<h3 id="①-调优步骤"><a href="#①-调优步骤" class="headerlink" title="① 调优步骤"></a>① 调优步骤</h3><h4 id="1-合适的DBMS"><a href="#1-合适的DBMS" class="headerlink" title="1.合适的DBMS"></a>1.合适的DBMS</h4><p>事务以及安全性要求高，选择SQL Server、Oracle。单表可以存储上亿条数据。</p>
+<h4 id="2-优化表设计"><a href="#2-优化表设计" class="headerlink" title="2.优化表设计"></a>2.优化表设计</h4><p>尽量遵循第三范式 并且 适当运用反范式</p>
+<p>数据类型选择合适的</p>
+<h4 id="3-优化逻辑查询"><a href="#3-优化逻辑查询" class="headerlink" title="3.优化逻辑查询"></a>3.优化逻辑查询</h4><p>SQL的重写：子查询变join</p>
+<h4 id="4-优化物理查询"><a href="#4-优化物理查询" class="headerlink" title="4.优化物理查询"></a>4.优化物理查询</h4><p>索引</p>
+<h4 id="5-使用Redis缓存"><a href="#5-使用Redis缓存" class="headerlink" title="5.使用Redis缓存"></a>5.使用Redis缓存</h4><p>redis支持持久化，除了内存还可以将数据放到硬盘上</p>
+<h4 id="6-库级优化"><a href="#6-库级优化" class="headerlink" title="6.库级优化"></a>6.库级优化</h4><p>站在数据库维度进行优化。</p>
+<p>多台机器读写分离、<code>分库分表</code>切割数据库</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055491.png" srcset="/img/loading.gif" lazyload alt="image-20230307161933988"></p>
+<h3 id="②-优化MySQL服务器"><a href="#②-优化MySQL服务器" class="headerlink" title="② 优化MySQL服务器"></a>② 优化MySQL服务器</h3><p>硬件层面：<code>大内存</code>、<code>高速磁盘系统(SCSI -&gt; SSD) </code>，<code>合理分布磁盘I/O</code>，<code>配置多处理器</code></p>
+<p>MySQL参数：<code>innodb_buffer_pool_size (表、索引)</code>、<code>key_buffer_size </code>、<code>table_cache </code>、<code>query_cache_size(查询缓存、8.0没有)</code>、<code>sort_buffer_size(排序)</code>、<code>join_buffer_size(join缓存)</code>、<code>max_connections(默认151)</code></p>
+<h3 id="③-表结构优化"><a href="#③-表结构优化" class="headerlink" title="③ 表结构优化"></a>③ 表结构优化</h3><h4 id="冷热数据分离"><a href="#冷热数据分离" class="headerlink" title="冷热数据分离"></a>冷热数据分离</h4><p>拆分：<code>会员表</code> 存储会员登录认证信息，该表中有很多字段，如<code>id、姓名、密码、地址、电 话、个人描述</code>字段。其中<code>地址、电话、个人描述</code>等字段并不常用，可以将这些不常用的字段分解出另一个表。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055492.png" srcset="/img/loading.gif" lazyload alt="image-20230307161748616"></p>
+<h4 id="增加中间表"><a href="#增加中间表" class="headerlink" title="增加中间表"></a>增加中间表</h4><p>经常需要联合查询的数据，直接多开一个中间表</p>
+<h4 id="增加冗余字段"><a href="#增加冗余字段" class="headerlink" title="增加冗余字段"></a>增加冗余字段</h4><p>反范数</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p><strong>整数</strong>：通常int，unsigned要用就用</p>
+<p><strong>TIMESTAMP</strong>：TIMESTAMP存储的时间范围1970-01-01 00:00:01 ~ 2038-01_19-03:14:07。TIMESTAMP使用4字节，DATETIME使用8个字节，同时TIMESTAMP具有自动赋值以及自动更新的特性。</p>
+<p><strong>DECIMAL</strong>代替FLOAT和DOUBLE存储精确浮点数：精准的浮点数、4B存储9位，且可以存储比bigint大的整型数据</p>
+<h3 id="④-大表优化"><a href="#④-大表优化" class="headerlink" title="④ 大表优化"></a>④ 大表优化</h3><h4 id="1-限定查询的范围"><a href="#1-限定查询的范围" class="headerlink" title="1 限定查询的范围"></a>1 限定查询的范围</h4><p>禁止不带任何限制数据范围条件的查询语句。比如：我们当用户在查询订单历史的时候，我们可以控制 在一个月的范围内；</p>
+<h4 id="2-读-写分离"><a href="#2-读-写分离" class="headerlink" title="2 读&#x2F;写分离"></a>2 读&#x2F;写分离</h4><p>经典的数据库拆分方案，主库负责写，从库负责读。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055493.png" srcset="/img/loading.gif" lazyload alt="image-20230307161543744"></p>
+<h4 id="3-垂直拆分"><a href="#3-垂直拆分" class="headerlink" title="3.垂直拆分"></a>3.垂直拆分</h4><p>冷热数据分离，也可以是经常使用的放一起</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055494.png" srcset="/img/loading.gif" lazyload alt="image-20230307161824905"></p>
+<h4 id="4-水平拆分"><a href="#4-水平拆分" class="headerlink" title="4.水平拆分"></a>4.水平拆分</h4><p>数据量尽量控制在1000w以内</p>
+<p>按某个属性如年份划分到不同的表</p>
+<p>但表数据还是同一个机器上，并发量还是上不去，还是<code>分库</code>比较好。</p>
+<p>拆分会带来逻辑、部署、运维的复杂度</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="~事务"></a>~事务</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>事务：</strong>一组逻辑操作单元，使数据从一种状态变换到另一种状态。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055495.png" srcset="/img/loading.gif" lazyload alt="image-20230311180107196"></p>
+<p>MySQL中，只有InnoDB支持事务。</p>
+<h4 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a><strong>ACID</strong></h4><p><strong>原子性（atomicity）：</strong> 不可分割</p>
+<p><strong>一致性（consistency）：</strong> 数据从一个 <code>合法性状态</code> 变换到另外一个 <code>合法性状态</code> 。</p>
+<p><strong>隔离型（isolation）：</strong><code>不能被其他事务干扰</code>，<strong>锁</strong>来实现。下小节为对应隔离级别</p>
+<p><strong>持久性（durability）：</strong> 提交后<code>永久改变</code>。通过 <code>事务日志</code>（<code>重做日志</code> 和 <code>回滚日志</code>）来实现</p>
+<h4 id="事务状态"><a href="#事务状态" class="headerlink" title="事务状态"></a>事务状态</h4><p>提交或者中止是一个事务生命周期的结束</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055496.png" srcset="/img/loading.gif" lazyload alt="image-20230311175427170" style="zoom: 50%;" />
+
+<h4 id="显式事务"><a href="#显式事务" class="headerlink" title="显式事务"></a>显式事务</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 显式事务会关闭自动提交<br>BEGIN;<br>#或者<br>START TRANSACTION (READ ONLY \ READ WRITE);<br><br>SAVEPOINT savepoint_name<br># 将事务回滚到某个保存点。 事务还没结束<br>ROLLBACK TO [SAVEPOINT]<br><br>## 结束事务<br># 提交事务。当提交事务后，对数据库的修改是永久性的。<br>COMMIT;<br># 回滚事务。即撤销正在进行的所有没有提交的修改<br>ROLLBACK;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="隐式事务"><a href="#隐式事务" class="headerlink" title="隐式事务"></a>隐式事务</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;autocommit&#x27;; <br>ON # 每个语句自动提交事务<br>SET autocommit = on\1 ;  OFF\0<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h3><p>在并发场景下（若干个客户端连接），如何处理隔离</p>
+<h4 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h4><ol>
+<li><p><strong>脏写</strong>（ Dirty Write ）：B在更新时，A先更新且commit了，但B rollback了，吞掉了A的更新。（实际上A需要排队）</p>
+</li>
+<li><p><strong>脏读</strong>（ Dirty Read ）：读取到了还没commit的数据</p>
+</li>
+<li><p><strong>不可重复读</strong>（ Non-Repeatable Read ）：一个事务两次读之间，值被别的人commit改了，导致每次读取不一样</p>
+</li>
+<li><p><strong>幻读</strong>（ Phantom ）：两次读之间，<code>插入</code>了一些新行（幻影记录）。</p>
+</li>
+</ol>
+<h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>解决上面的问题</p>
+<p>1.<strong>读未提交</strong>（Read uncommitted）：内存有直接读内存</p>
+<p>​    这种事务隔离级别下，select语句不加锁。</p>
+<p>​    此时，可能读取到不一致的数据，即“读脏 ”。这是并发最高，一致性最差的隔离级别。</p>
+<p>2.<strong>读已提交</strong>（Read committed）：读磁盘  Oracle</p>
+<p>​    可避免 脏读 的发生。</p>
+<p>​    在互联网大数据量，高并发量的场景下，几乎 不会使用 上述两种隔离级别。</p>
+<p>3.<strong>可重复读</strong>（Repeatable read）：MySql  <code>SHOW VARIABLES LIKE &#39;tx_isolation&#39;;</code> <code>transaction_isolation</code></p>
+<p>​    事务开始前尽可能创建快照（内存）。</p>
+<p>​	查询时<strong>先在快照区</strong>中查找数据的快照，如果快照区中没有该数据的快照，MySQL 就会<strong>再 undo 日志</strong>中查找该数据最新的修改操作，并将其还原到快照区中，然后再将数据返回给事务</p>
+<p>​	mysql其实也可以解决幻读，在锁里讲</p>
+<p>4.<strong>串行化</strong>（Serializable ）：</p>
+<p>​    可避免幻读</p>
+<p>​	加了行X锁，比如s1查询了id&#x3D;3的数据，s2的插入就会阻塞</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055497.png" srcset="/img/loading.gif" lazyload alt="image-20230311183443046"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># mysql，想永久修改需要修改配置文件<br>SET [GLOBAL|SESSION] TRANSACTION_ISOLATION = &#x27;隔离级别&#x27;<br>#其中，隔离级别格式：<br>&gt; READ-UNCOMMITTED<br>&gt; READ-COMMITTED<br>&gt; REPEATABLE-READ<br>&gt; SERIALIZABLE<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>隔离级别越高，数据一致性就越好，但并发性越弱。</p>
+</blockquote>
+<h2 id="事务日志"><a href="#事务日志" class="headerlink" title="事务日志"></a>事务日志</h2><p>而事务的原子性、一致性和持久性由事务的 redo 日志和undo 日志来保证。存储引擎层 (innodb) 生成</p>
+<ul>
+<li><p>REDO LOG 称为 <code>重做日志 </code>，提供再写入操作，恢复提交事务修改的页操作，用来保证事务的<strong>持久性</strong>。</p>
+<p><code>&quot;物理级别&quot;</code>上的页修改操作，比如页号xxx，偏移量yyy写入了’zzz’数据。</p>
+</li>
+<li><p>UNDO LOG 称为 <code>回滚日志</code> ，回滚行记录到某个特定版本，用来保证事务的<strong>原子性</strong>、一致性。</p>
+<p> <code>逻辑操作</code> 日志，INSERT则会记录一条对应DELETE。用于 <code>事务的回滚</code>和 <code>一致性非锁定读</code></p>
+</li>
+</ul>
+<p>COMMIT用REDO实现，ROLLBACK用UNDO实现。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055498.png" srcset="/img/loading.gif" lazyload alt="image-20230313105558624"></p>
+<h3 id="redo日志"><a href="#redo日志" class="headerlink" title="redo日志"></a>redo日志</h3><p>保证事务的<strong>持久性</strong>。</p>
+<ul>
+<li>首先需要读取<code>磁盘</code> -&gt; 内存中的<code>Buffer Pool</code></li>
+<li>发生修改更先更新<code>Buffer Pool</code>，再更新<code>磁盘</code>；更新了但没写入磁盘的叫<code>脏页</code>。</li>
+<li>内存是正确的，但刷盘是比较慢的且可能宕机， 为了保证磁盘数据是正确的：<ol>
+<li>疯狂一直刷盘（代价大），并且事务修改不相邻页面时，IO是<code>随机IO</code></li>
+<li>引入redo日志</li>
+</ol>
+</li>
+</ul>
+<p>WAL技术 (<code>Write-Ahead Logging</code>)：先写日志（写入了就算事务成功），再写磁盘。</p>
+<p>实现更低频率更高速度的刷盘：</p>
+<ul>
+<li>低频：redo日志占用的<code>空间小</code>（存储表空间ID、页号、偏移量以及需要更新的值）</li>
+<li>高速：<code>顺序IO</code></li>
+</ul>
+<h4 id="redo特点"><a href="#redo特点" class="headerlink" title="redo特点"></a>redo特点</h4><ul>
+<li><p><strong>redo日志是顺序写入磁盘的</strong></p>
+<p>一个事务多条语句,一条语句多条redo日志，这些日志是按照<code>产生的顺序写入磁盘的</code>，也就是使用顺序ID，效率比随机IO快。</p>
+</li>
+<li><p><strong>事务执行过程中，redo log不断记录</strong></p>
+<p>redo log跟bin log的区别，redo log是<code>存储引擎层</code>产生的，而bin log是<code>数据库层</code>产生的。假设一个事务，对表做10万行的记录插入，在这个过程中，一直不断的往redo log顺序记录，而bin log不会记录，直到这个事务提交，才会一次写入到bin log文件中。</p>
+</li>
+</ul>
+<h4 id="redo日志组成"><a href="#redo日志组成" class="headerlink" title="redo日志组成"></a>redo日志组成</h4><ul>
+<li><code>重做日志的缓冲 (redo log buffer)</code>：内存 <code>innodb_log_buffer_size</code> 16MB</li>
+<li><code>重做日志文件 (redo log file) </code>：mysql&#x2F;data&#x2F;ib_logfile0  ib_logfile1</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055499.png" srcset="/img/loading.gif" lazyload alt="image-20230312214754687"></p>
+<blockquote>
+<p>先持久化日志，再持久化数据(在commit后才会持久化)</p>
+</blockquote>
+<p>至此，关键的刷盘变成了<code>步骤3</code>，由参数<code>innodb_flush_log_at_trx_commit</code>控制</p>
+<ul>
+<li><code>设置为0</code> ：表示每次事务提交时不进行刷盘操作。</li>
+<li><code>设置为2</code> ：表示每次事务提交时都只把 <code>redo log buffer</code> 内容写入 <code>page cache</code>（OS对写入磁盘的优化，由OS决定，有小概率宕机），不进行同步。由os自己决定什么时候同步到磁盘文件。此时MYSQL挂了不影响</li>
+<li><code>设置为1</code> ：表示每次事务提交时都将进行同步（写入<code>page cache</code>并<code>同步磁盘</code>）（ 默认值，持久性的保证 ）</li>
+</ul>
+<p>此外：系统默认master thread每隔<strong>1s</strong>进行一次重做日志的同步：<code>redo log buffer</code>到<code>page cache</code>，然后刷盘</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055500.png" srcset="/img/loading.gif" lazyload alt="image-20230312223435328"></p>
+<p>或者写满<code>innodb_log_buffer_size</code>后刷盘。</p>
+<h4 id="redo-log-buffer"><a href="#redo-log-buffer" class="headerlink" title="redo log buffer"></a>redo log buffer</h4><p>一个原子操作为一个<code>Mini-Transaction</code>，如一次插入。但一次插入可能移动多条数据，对应多个redo</p>
+<p>一个MTR里的多个redo需要放在一起（不可分割），但一个事务内的多个MTR可以分割存放</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055501.png" srcset="/img/loading.gif" lazyload alt="image-20230313101247985" style="zoom:67%;" />
+
+<p>t1、t2为两个事务，mtr_t1_1由多条redo组成<br>buffer由block组成，一个block512字节 <code>innodb_log_block_size</code>，对应一个扇区的大小</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055502.png" srcset="/img/loading.gif" lazyload alt="image-20230313101924121"></p>
+<p>头包含指针、已使用多少等信息</p>
+<h4 id="redo-log-file"><a href="#redo-log-file" class="headerlink" title="redo log file"></a>redo log file</h4><ul>
+<li><p><code>innodb_log_group_home_dir</code> 文件路径</p>
+</li>
+<li><p><code>innodb_log_files_in_group</code> 默认2组</p>
+</li>
+<li><p><code>innodb_log_file_size</code>  单个 redo log 文件设置大小，默认值为 <code>48M</code> </p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055503.png" srcset="/img/loading.gif" lazyload alt="image-20230313104804144"></p>
+<p><code>write pos</code>指针（终点）：当前插入点</p>
+<p><code>checkpoint</code>指针（起点）：checkpoint 和 write pos 之间为在内存中但还没写入磁盘，故障后需要恢复这部分数据</p>
+</li>
+<li><p><code>innodb_flush_log_at_trx_commit</code> 刷盘策略</p>
+</li>
+</ul>
+<h4 id="施放时间"><a href="#施放时间" class="headerlink" title="施放时间"></a>施放时间</h4><ul>
+<li>redo log 在事务的执行过程中不断记录。通常在事务提交时buffer-&gt;file。</li>
+<li>理论上redo log file中的文件在数据写入磁盘（图4）后可以释放</li>
+</ul>
+<h3 id="Undo日志"><a href="#Undo日志" class="headerlink" title="Undo日志"></a>Undo日志</h3><p>更新数据前先更新undo log。在系统表空间，也可以使用独立表空间</p>
+<p><strong>原子性：</strong>要么都做，要么都不做。可能发生意外，如何<code>逻辑恢复</code>到之前状态</p>
+<ul>
+<li>服务器错误、断电</li>
+<li>手动ROLLBACK</li>
+</ul>
+<p>增删改都要记录反向操作</p>
+<blockquote>
+<p> undo日志为了实现持久化，需要同样会<strong>产生redo日志</strong>。</p>
+</blockquote>
+<p>在内存数据更新前先更新undo</p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><ul>
+<li><strong>作用1：回滚数据</strong></li>
+<li><strong>作用2：MVCC</strong>（多版本并发控制）。当读取一条被占用的数据时，用undo读取之前的信息</li>
+</ul>
+<h4 id="回滚段"><a href="#回滚段" class="headerlink" title="回滚段"></a>回滚段</h4><p><code>innodb_undo_logs</code>个回滚段。一个回滚段多个页，一个页（可服务于多个事务，重用防止浪费）存放undo记录，</p>
+<h4 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h4><ol>
+<li><code>未提交的回滚数据(uncommitted undo information)</code>：该数据所关联的事务并未提交，用于实现读一致性，所以该数据不能被其他事务的数据覆盖。 （避免脏读）</li>
+<li><code>已经提交但未过期的回滚数据(committed undo information)</code>：该数据关联的事务已经提交，但是仍受到undo retention参数的保持时间的影响。（避免不可重复读）</li>
+<li><code>事务已经提交并过期的数据(expired undo information)</code>：事务已经提交，而且数据保存时间已经超过 undo retention参数指定的时间，可覆盖</li>
+</ol>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><ul>
+<li>正常提交就是提交，redo log file写入了就持久化了。在正常情况下rollback，根据undo日志回滚</li>
+<li>如果没commit且没redo log file但宕机了，数据只内存中，不用改磁盘，事务结束</li>
+<li>如果没commit但有redo log file宕机了，可以选择rollback，或者继续事务</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055505.png" srcset="/img/loading.gif" lazyload alt="image-20230313161236154"></p>
+<p>行格式中，每行数据都会有一个<code>事务id</code>，以及<code>回滚指针</code>（指向undo的指针）</p>
+<h4 id="回滚"><a href="#回滚" class="headerlink" title="回滚"></a>回滚</h4><p>undo log在操作过程中串联起来，记录下数据差异，回滚时逆向进行</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055506.png" srcset="/img/loading.gif" lazyload alt="image-20230313161721869"></p>
+<ol>
+<li>通过undo no&#x3D;3的日志把id&#x3D;2的数据删除 </li>
+<li>通过undo no&#x3D;2的日志把id&#x3D;1的数据的deletemark还原成0 </li>
+<li>通过undo no&#x3D;1的日志把id&#x3D;1的数据的name还原成Tom </li>
+<li>通过undo no&#x3D;0的日志把id&#x3D;1的数据删除</li>
+</ol>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p>实现事务的<code>隔离性</code></p>
+<p>并发访问时的安全性</p>
+<h3 id="并发事务情况"><a href="#并发事务情况" class="headerlink" title="并发事务情况"></a>并发事务情况</h3><ul>
+<li><strong>读-读</strong> ：无影响</li>
+<li><strong>写-写</strong>：<code>脏写</code>  <strong>必须加锁</strong>。 先来的加锁，后来的排队。先来的完成后把后来的激活</li>
+<li><strong>读-写</strong>：<code>脏读、不可重复读、幻读</code>    <strong>重点关注</strong></li>
+</ul>
+<h3 id="读写解决"><a href="#读写解决" class="headerlink" title="读写解决"></a>读写解决</h3><ol>
+<li>读（MVCC），写（加锁）。下章</li>
+<li>读写都加锁。但插入的数据无法加，无法解决幻读 ；读-写 操作彼此需要 <code>排队执行</code> ，影响性能。</li>
+</ol>
+<p>一般情况下我们当然愿意采用 <code>MVCC</code> 来解决 <code>读-写</code> 操作并发执行的问题，但是<strong>业务在某些特殊情况</strong>下，要求必须采用 <code>加锁 </code>的方式执行。下面就讲解下MySQL中不同类别的锁。</p>
+<h3 id="锁的类别"><a href="#锁的类别" class="headerlink" title="锁的类别"></a>锁的类别</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055507.png" srcset="/img/loading.gif" lazyload alt="image-20230313164720406"></p>
+<h4 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h4><p>InnoDB可以加表上、也可以加行上</p>
+<ul>
+<li><p>共享锁S：读也可以加X锁，这里是手动加锁。(MVCC中的当前读)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT   LOCK IN SHARE MODE<br>SELECT   FOR UPDATE (nowait 锁了就直接返回、不等待)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>排他锁X：写锁，会阻断X和S。有S时也不能加X。一直等到超时</p>
+<ul>
+<li>DELETE：X锁</li>
+<li>INSERT：<code>隐式锁</code>，因为一开始没有空间</li>
+<li>UPDATE：<ul>
+<li>修改了主键：先del再insert</li>
+<li>空间没有变：X锁</li>
+<li>空间变化了：相当于修改主键，先del再insert</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="表-行-页-锁"><a href="#表-行-页-锁" class="headerlink" title="表 行 页 锁"></a>表 行 页 锁</h4><p>粒度越小，开销越大，并发性越高。InnoDB提供到行锁</p>
+<h5 id="表锁"><a href="#表锁" class="headerlink" title="表锁"></a>表锁</h5><p><strong>不依赖于存储引擎</strong>，策略一样</p>
+<h6 id="表锁-1"><a href="#表锁-1" class="headerlink" title="表锁"></a>表锁</h6><p>表锁：InnoDB一般在崩溃恢复时才加，MyISAM默认</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">`LOCK TABLES t READ`   `S锁`<br>`LOCK TABLES t WRITE`  `X锁` <br><br># 查看<br>SHOW OPEN TABLES; # 主要关注In_use字段的值<br>或者<br>SHOW OPEN TABLES where In_use &gt; 0;<br><br>UNLOCK TABLES; # 使用此命令解锁当前加锁的表<br></code></pre></td></tr></table></figure>
+
+<p>MyISAM&#x3D;&#x3D;默认会在执行CRUD时对整个表加锁&#x3D;&#x3D;，只能读-读，导致查询性能下降的原因。InnoDB不加</p>
+<p>注意加锁后，不能操作别的表了</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055508.png" srcset="/img/loading.gif" lazyload alt="image-20230316144257602"></p>
+<h6 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h6><p>InnoDB原本想加表锁，需要遍历全部数据查看有没有行锁</p>
+<p>A加了行X锁后，自动加一个表的<code>X意向锁</code>（代表A有意向去操作整张表）其他人B就加不了表锁。  存储引擎 <code>维护</code> </p>
+<p>也就是B加锁前，除了看有没有锁，还要看有没有同级别的意向锁的存在</p>
+<ul>
+<li><strong>协调</strong>多粒度锁共存，方便在加表锁时，查看有没有行锁</li>
+</ul>
+<h6 id="自增锁"><a href="#自增锁" class="headerlink" title="自增锁"></a>自增锁</h6><p><code>AUTO_INCREMENT</code></p>
+<p>多并发下如何实现自增</p>
+<p>直接加锁 等、</p>
+<h6 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h6><p>DDL操作加锁：别人在读数据时，你不能改表结构</p>
+<h5 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h5><ul>
+<li><strong>优点：</strong>锁定力度小，发生<code>锁冲突概率低</code>，可以实现的<code>并发度高</code>。</li>
+<li><strong>缺点：</strong>对于<code>锁的开销比较大</code>，加锁会比较慢，容易出现<code>死锁</code>情况。</li>
+</ul>
+<p>① <strong>记录锁</strong>（Record Locks）</p>
+<p>​	<code>LOCK_REC_NOT_GAP</code>，就是正常的X、S锁。只有S-S共享</p>
+<p>​	例：一个事务在更新（自动加X），另一个不可以<code>select .. lock in share mode</code>，但可以直接读（MVCC）</p>
+<p>② <strong>间隙锁</strong>（Gap Locks）</p>
+<p>​	在RR级别下<strong>解决幻读</strong></p>
+<p>（1）防止间隙内有新数据被插入<br>（2）防止已存在的数据，更新成间隙内的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT * FROM t WHERE id BETWEEN 100 AND 200；<br>查询后，100~200之间加上间隙锁，禁止再插入数据<br></code></pre></td></tr></table></figure>
+
+<p>③ <strong>临键锁</strong>（Next-Key Locks）</p>
+<p>​	一个<code>记录锁</code>和一个<code>gap锁</code>的合体</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">begin;<br>select * from student where id &lt;=8 and id &gt; 3 for update;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="页锁"><a href="#页锁" class="headerlink" title="页锁"></a>页锁</h5><p>页锁就是在 <code>页的粒度</code> ，粒度在表和行之间</p>
+<h4 id="乐观锁悲观锁"><a href="#乐观锁悲观锁" class="headerlink" title="乐观锁悲观锁"></a>乐观锁悲观锁</h4><p><strong>悲观锁：</strong>认为别人会影响自己，总是加锁阻塞其他线程。数据库实现 <code>synchronized</code>  <code>ReentrantLock</code> </p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055509.png" srcset="/img/loading.gif" lazyload alt="image-20230316161045465"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055510.png" srcset="/img/loading.gif" lazyload alt="image-20230316161155532"></p>
+<p>加锁后等待时间较长，所有扫描到的数据都会锁定，因此必须要索引</p>
+<p><strong>乐观锁</strong></p>
+<p>不上锁。</p>
+<p>在表中设计一个 <code>版本字段 version</code> ，第一次读的时候，会获取 version 字段的取值。然后对数据进行更新或删除操作时，会执行 <code>UPDATE ... SET version=version+1 WHERE version=version</code> 。version不一样说明别人修改过了</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055511.png" srcset="/img/loading.gif" lazyload alt="image-20230316161722838"></p>
+<p>上面可能会导致失败太多，再更新。减库存前先判断</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055512.png" srcset="/img/loading.gif" lazyload alt="image-20230316161931349"></p>
+<p><code>乐观锁</code> 适合 <code>读操作多</code> ，悲观锁相反</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055513.png" srcset="/img/loading.gif" lazyload alt="image-20230316162041048"></p>
+<h4 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h4><p>整个数据库只读</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">Flush tables with read lock<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055514.png" srcset="/img/loading.gif" lazyload alt="image-20230316163506070"></p>
+<ol>
+<li>互斥条件：资源不能被共享，即每个资源一次只能被一个进程占用。</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，已获得的资源保持不放。</li>
+<li>不剥夺条件：进程已获得的资源，在未使用完之前，不能被剥夺，只能在使用完后自己释放。</li>
+<li>循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h5 id="处理死锁"><a href="#处理死锁" class="headerlink" title="处理死锁"></a>处理死锁</h5><p><strong>方式1：</strong>等待，直到超时（<code>innodb_lock_wait_timeout</code>&#x3D;50s)。不太好</p>
+<p><strong>方式2：</strong>使用死锁检测处理死锁程序， <code>wait-for graph</code>算法</p>
+<p>需要存储全部事务构建的锁信息，构建等待图，存在环就存在死锁</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055515.png" srcset="/img/loading.gif" lazyload alt="image-20230316164435644" style="zoom: 80%;" />
+
+<p>一旦检测到回路、有死锁，这时候InnoDB存储引擎会选择<code>回滚undo量最小的事务</code>，让其他事务继续执行（<code>innodb_deadlock_detect=on</code>表示开启这个逻辑）。</p>
+<p>复杂度还是比较高</p>
+<h3 id="锁结构"><a href="#锁结构" class="headerlink" title="锁结构"></a>锁结构</h3><p>InnoDB使用锁信息来跟踪行级锁。锁信息（<code>lock_t</code>）存储在锁管理器（<code>lock manager</code>），去锁管理器中查询该行是否被锁定。</p>
+<p><code>InnoDB</code> 存储引擎中的 <code>锁结构</code> 如下：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055516.png" srcset="/img/loading.gif" lazyload alt="image-20220714132306208"></p>
+<p>结构解析：</p>
+<p><code>1. 锁所在的事务信息 </code>：</p>
+<p>不论是 <code>表锁</code> 还是 <code>行锁</code> ，都是在事务执行过程中生成的，哪个事务生成了这个锁结构 ，这里就记录这个 事务的指针</p>
+<p><code>2. 索引信息</code> ：</p>
+<p>对于 <code>行锁</code> 来说，需要记录一下加锁的记录是属于哪个索引的。这里也是一个指针。</p>
+<p><code>3. 表锁／行锁信息</code> ：</p>
+<p><code>表锁结构</code> 和 <code>行锁结构</code> 在这个位置的内容是不同的：</p>
+<ul>
+<li><p>表锁：</p>
+<p>记载着是对哪个表加的锁，还有其他的一些信息。</p>
+</li>
+<li><p>行锁：</p>
+<p>记载了三个重要的信息：</p>
+<ul>
+<li><code>Space ID</code> ：记录所在表空间。</li>
+<li><code>Page Number</code> ：记录所在页号。</li>
+<li><code>n_bits </code>：对于行锁来说，一条记录就对应着一个比特位，一个页面中包含很多记录，用不同 的比特位来区分到底是哪一条记录加了锁。为此在行锁结构的末尾放置了一堆比特位，这个<code>n_bis</code>属性代表使用了多少比特位。</li>
+</ul>
+<blockquote>
+<p>n_bits的值一般都比页面中记录条数多一些。主要是为了之后在页面中插入了新记录后 也不至于重新分配锁结构</p>
+</blockquote>
+</li>
+</ul>
+<p><code>4. type_mode</code> ：</p>
+<p>这是一个32位的数，被分成了 <code>lock_mode</code> 、 <code>lock_type</code> 和 <code>rec_lock_type</code> 三个部分，如图所示：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055517.png" srcset="/img/loading.gif" lazyload alt="image-20220714133319666"></p>
+<ul>
+<li>锁的模式（ <code>lock_mode</code> ），占用低4位，可选的值如下：<ul>
+<li><code>LOCK_IS</code> （十进制的 0 ）：表示共享意向锁，也就是 <code>IS锁</code> 。 </li>
+<li><code>LOCK_IX</code> （十进制的 1 ）：表示独占意向锁，也就是 <code>IX锁</code> 。 </li>
+<li><code>LOCK_S</code> （十进制的 2 ）：表示共享锁，也就是 <code>S锁</code> 。 </li>
+<li><code>LOCK_X</code> （十进制的 3 ）：表示独占锁，也就是 <code>X锁</code> 。 </li>
+<li><code>LOCK_AUTO_INC</code> （十进制的 4 ）：表示 <code>AUTO-INC锁</code> 。</li>
+</ul>
+</li>
+</ul>
+<p>在InnoDB存储引擎中，LOCK_IS，LOCK_IX，LOCK_AUTO_INC都算是表级锁的模式，LOCK_S和 LOCK_X既可以算是表级锁的模式，也可以是行级锁的模式。</p>
+<ul>
+<li>锁的类型（ <code>lock_type</code> ），占用第5～8位，不过现阶段只有第5位和第6位被使用：<ul>
+<li><code>LOCK_TABLE</code> （十进制的 16 ），也就是当第5个比特位置为1时，表示表级锁。</li>
+<li><code>LOCK_REC </code>（十进制的 32 ），也就是当第6个比特位置为1时，表示行级锁。</li>
+</ul>
+</li>
+<li>行锁的具体类型（ <code>rec_lock_type</code> ），使用其余的位来表示。只有在 <code>lock_type</code> 的值为 <code>LOCK_REC</code> 时，也就是只有在该锁为行级锁时，才会被细分为更多的类型：<ul>
+<li><code>LOCK_ORDINARY</code> （十进制的 0 ）：表示 <code>next-key锁</code> 。</li>
+<li><code>LOCK_GAP</code> （十进制的 512 ）：也就是当第10个比特位置为1时，表示 <code>gap锁</code> 。</li>
+<li><code>LOCK_REC_NOT_GAP</code> （十进制的 1024 ）：也就是当第11个比特位置为1时，表示正经 <code>记录锁</code> 。</li>
+<li><code>LOCK_INSERT_INTENTION</code> （十进制的 2048 ）：也就是当第12个比特位置为1时，表示插入意向锁。其他的类型：还有一些不常用的类型我们就不多说了。</li>
+</ul>
+</li>
+<li><code>is_waiting</code> 属性呢？基于内存空间的节省，所以把 <code>is_waiting</code> 属性放到了 <code>type_mode</code> 这个32 位的数字中：<ul>
+<li><code>LOCK_WAIT</code> （十进制的 256 ） ：当第9个比特位置为 1 时，表示 <code>is_waiting</code> 为 <code>true</code> ，也 就是当前事务尚未获取到锁，处在等待状态；当这个比特位为 0 时，表示 <code>is_waiting</code> 为 <code>false</code> ，也就是当前事务获取锁成功。</li>
+</ul>
+</li>
+</ul>
+<p><code>5. 其他信息</code> ：</p>
+<p>为了更好的管理系统运行过程中生成的各种锁结构而设计了各种哈希表和链表。</p>
+<p><code>6. 一堆比特位</code> ：</p>
+<p>如果是 <code>行锁结构</code> 的话，在该结构末尾还放置了一堆比特位，比特位的数量是由上边提到的 <code>n_bits</code> 属性 表示的。InnoDB数据页中的每条记录在 <code>记录头信息</code> 中都包含一个 <code>heap_no</code> 属性，伪记录 <code>Infimum</code> 的 <code>heap_no</code> 值为 0 ， <code>Supremum</code> 的 <code>heap_no</code> 值为 1 ，之后每插入一条记录， <code>heap_no</code> 值就增1。 锁结 构 最后的一堆比特位就对应着一个页面中的记录，一个比特位映射一个 <code>heap_no</code> ，即一个比特位映射 到页内的一条记录。</p>
+<h3 id="锁监控"><a href="#锁监控" class="headerlink" title="锁监控"></a>锁监控</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 查询正在被锁阻塞的sql语句。<br>SELECT * FROM information_schema.INNODB_TRX\G;<br># 查询锁等待情况<br>SELECT * FROM data_lock_waits\G;<br># 查询锁的情况<br>SELECT * from performance_schema.data_locks\G;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><p>MVCC （Multiversion Concurrency Control），隔离级别我们可以设置，MVCC是如何实现隔离级别(RM和RR)</p>
+<p>解决<code>读-写</code>冲突，读不加锁。读为<strong>快照读</strong>，写为<strong>当前读</strong></p>
+<p>组成：<code>隐藏字段</code>、<code>undo日志</code>、<code>ReadView</code></p>
+<h3 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h3><h4 id="快照读"><a href="#快照读" class="headerlink" title="快照读"></a>快照读</h4><p>基本的<code>select</code>。隔离级别不是串行级别</p>
+<h4 id="当前读"><a href="#当前读" class="headerlink" title="当前读"></a>当前读</h4><p>为读到最新数据，加锁</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT * FROM student LOCK IN SHARE MODE; # 共享锁，锁上后别人不能修改<br>SELECT * FROM student FOR UPDATE; # 排他锁<br>INSERT INTO student values ... # 排他锁<br>DELETE FROM student WHERE ... # 排他锁<br>UPDATE student SET ... # 排他锁<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h3><h4 id="隔离级别-1"><a href="#隔离级别-1" class="headerlink" title="隔离级别"></a>隔离级别</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055518.png" srcset="/img/loading.gif" lazyload alt="image-20230317134757906" style="zoom:67%;" />
+
+<h4 id="隐藏字段、Undo-Log版本链"><a href="#隐藏字段、Undo-Log版本链" class="headerlink" title="隐藏字段、Undo Log版本链"></a>隐藏字段、Undo Log版本链</h4><ul>
+<li>隐藏字段包含：<ul>
+<li><code>trx_id</code> ：最后一次修改的事务id</li>
+<li><code>roll_pointer</code>: 操作的记录信息</li>
+</ul>
+</li>
+<li>Undo Log版本链：包含历史信息</li>
+</ul>
+<h5 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h5><p>如事务8插入了一条数据</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055519.png" srcset="/img/loading.gif" lazyload alt="image-20230317135028917"></p>
+<p>此时两个事务分别进行2次修改，注意他们不能同时更新，只能一个commit后再一个更新：<code>写锁</code></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055520.png" srcset="/img/loading.gif" lazyload alt="image-20230317135251185" style="zoom:67%;" />
+
+<p>在完成后，第一条为记录，历史版本串成了undo日志</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055521.png" srcset="/img/loading.gif" lazyload alt="image-20230317135348858"></p>
+<h3 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h3><h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><p>MVCC 的实现依赖于：<code>隐藏字段</code>、<code>Undo Log</code>、<code>Read View</code>。</p>
+<p><strong>ReadView</strong>: <strong>事务</strong>在进行<strong>快照读</strong>时产生的 <strong>读视图</strong>（一对一）。有一个数组记录活跃事务ID</p>
+<ul>
+<li><code>READ UNCOMMITTED</code> ：读未提交，就是最新数据。&#x3D;&#x3D;不使用&#x3D;&#x3D;</li>
+<li><code>READ COMMITTED</code>：每次读之前都会新生成一个视图</li>
+<li><code>REPEATABLE READ</code>：第一次读时生成</li>
+<li><code>SERIALIZABLE</code>：从MVCC并发控制退化为基于锁的并发控制。不区别快照读与当前读，所有的读操作均为当前读，读加读锁 (S锁)，写加写锁 (X锁)。并发度急剧下降，不建议使用。</li>
+</ul>
+<h4 id="ReadView组成"><a href="#ReadView组成" class="headerlink" title="ReadView组成"></a>ReadView组成</h4><p>这个ReadView中主要包含4个比较重要的内容，分别如下：</p>
+<ol>
+<li><p><code>creator_trx_id</code> ，创建这个 Read View 的事务 ID。</p>
+<blockquote>
+<p>说明：只有在<strong>CUD</strong>才会为 事务分配事务id，否则在<strong>R</strong>事务中的事务id值都默认为0。</p>
+</blockquote>
+</li>
+<li><p><code>trx_ids</code> ，表示在生成ReadView时当前系统中活跃的读写事务的 <code>事务id列表</code> 。</p>
+</li>
+<li><p><code>up_limit_id</code> ，活跃的事务中最小的事务 ID。</p>
+</li>
+<li><p><code>low_limit_id</code> ，表示生成ReadView时系统中应该分配给下一个事务的 id 值。low_limit_id 是系 统最大的事务id值，这里要注意是系统中的事务id，需要区别于正在活跃的事务ID。</p>
+</li>
+</ol>
+<blockquote>
+<p>为什么需要: 如果读到了在trx_ids中的，或者大于low_limit_id，什么数据被修改了，那就要回滚undo读历史版本</p>
+<p>up_limit_id 作用就是方便比较，小于up_limit_id 的就可以直接读</p>
+</blockquote>
+<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><p><code>trx_ids</code> ：   [<code>up_limit_id</code>  …     ]   <code>low_limit_id</code> </p>
+<p><strong>规则：</strong></p>
+<ul>
+<li>快照读：如果改事务读到的行记录的<code>trx_id</code>&gt;&#x3D;<code>low_limit_id</code> || <code>trx_id</code> in <code>trx_ids</code> ,   说明这个行版本在事务创建后被修改过，就需要沿着Undo<strong>一直倒退</strong>到事务创建时的版本：<code>trx_id</code>&lt;<code>low_limit_id</code> || <code>trx_id</code> not in <code>trx_ids</code> 。</li>
+<li>当前读：必须读取最新版本，也就是直接读到的数据</li>
+</ul>
+<p>步骤判断：</p>
+<ul>
+<li>如果被访问版本的trx_id属性值与ReadView中的 creator_trx_id 值相同，意味着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。 </li>
+<li>如果被访问版本的trx_id属性值小于ReadView中的 up_limit_id 值，表明生成该版本的事务在当前事务生成ReadView前已经提交，所以该版本可以被当前事务访问。 </li>
+<li>如果被访问版本的trx_id属性值大于或等于ReadView中的 low_limit_id 值，表明生成该版本的事务在当前事务生成ReadView后才开启，所以该版本不可以被当前事务访问。 </li>
+<li>如果被访问版本的trx_id属性值在ReadView的 up_limit_id 和 low_limit_id 之间，那就需要判断一下trx_id属性值是不是在 trx_ids 列表中。<ul>
+<li>如果在，说明创建ReadView时生成该版本的事务还是活跃的，该版本不可以被访问。 </li>
+<li>如果不在，说明创建ReadView时生成该版本的事务已经被提交，该版本可以被访问。</li>
+</ul>
+</li>
+</ul>
+<p>再根据生成规则，<code>READ COMMITTED</code>(每次读生成)  <code>REPEATABLE READ</code>(事务生成时生成)，这两种隔离级别都实现了。</p>
+<h4 id="幻读解决"><a href="#幻读解决" class="headerlink" title="幻读解决"></a>幻读解决</h4><p><strong>快照读：</strong>插入的数据一定是活跃的事务或未来的事务：<code>trx_id</code>&gt;&#x3D;<code>low_limit_id</code> || <code>trx_id</code> in <code>trx_ids</code> ，也不能倒退版本，根据规则就被MVCC直接忽略了</p>
+<p><strong>当前读：</strong>MVCC无法解决。A查询id&gt;3,B插入id&#x3D;6，A更新id&#x3D;6(当前读)，至此之后A都会读到幻影记录6.</p>
+<p>​	解决办法：在A查询id&gt;3时，自动添加<strong>间隙锁</strong>(RR并且有索引)。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Edwin_Hu/article/details/124392174">MVCC 幻读问题</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Edwin_Hu/article/details/124392174">间隙锁原理</a></p>
+<h2 id="事务总结"><a href="#事务总结" class="headerlink" title="事务总结"></a>事务总结</h2><p><strong>原子性：</strong> <code>undo日志</code>实现回滚，保证操作原子性</p>
+<p><strong>隔离型：</strong>读-读、读-写（锁 或者 MVCC+锁）、写-写(锁)</p>
+<p><strong>持久性：</strong> <code>redu日志</code>实现，数据持久化前，先把操作持久化</p>
+<p>目标：<strong>一致性：</strong>  数据从一个 <code>合法性状态</code> 变换到另外一个 <code>合法性状态</code> 。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vg411p7uJ">字节数据库优化</a>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CaSVhAJgycjjbCxAkII2ZA">慢 SQL 分析与优化</a></p>
+<p><strong>InnoDB</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062055522.png" srcset="/img/loading.gif" lazyload alt="image-20221206102707216"></p>
+<p><strong>回表查询</strong>：先根据筛选条件在普通索引上定位id，再拿id再聚集索引上定位行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN <span class="hljs-keyword">SELECT</span> id, name <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">WHERE</span> name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;shenjian&#x27;</span>;<br>EXPLAIN <span class="hljs-keyword">SELECT</span> id, name, sex <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">WHERE</span> name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;shenjian&#x27;</span>; 需要回表<br></code></pre></td></tr></table></figure>
+
+<p>limit: 先查询全部数据，再进行过滤   优化</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">（全部sn<span class="hljs-operator">=</span><span class="hljs-string">&#x27;XD12345678&#x27;</span>的数据要回表）<br><span class="hljs-keyword">SELECT</span> o1.<span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> sn<span class="hljs-operator">=</span><span class="hljs-string">&#x27;XD12345678&#x27;</span> LIMIT <span class="hljs-number">10000</span>,<span class="hljs-number">10</span> <br><br>（只回表<span class="hljs-number">10</span>条数据）<br><span class="hljs-keyword">SELECT</span> o1.<span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders o1<br><span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> (<span class="hljs-keyword">SELECT</span> id <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> sn<span class="hljs-operator">=</span><span class="hljs-string">&#x27;XD12345678&#x27;</span> LIMIT <span class="hljs-number">10000</span>,<span class="hljs-number">10</span>) o2<br><span class="hljs-keyword">ON</span> o1.id <span class="hljs-operator">=</span> o2.id;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>不使用子查询：先查外表，外表大很慢</p>
+<p>IN代替or：IN会将数组先排序，然后用二分去查找</p>
+<p>少用select *</p>
+<p>where groupby having  先where过滤</p>
+<p>exists和in区别，要用<strong>小表驱动大表</strong>，因为是以驱动表建立for循环　<strong>被驱动表走索引</strong></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino">exists用外表驱动内表，拿一条条外表数据去内标查       适合外小内大<br>in反过来，先查询内表，再拿数据去外表走索引<br>子查询in exists:https:<span class="hljs-comment">//blog.csdn.net/wpc2018/article/details/122948692</span><br></code></pre></td></tr></table></figure>
+
+<p>join的驱动</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-number">1</span>）当连接查询没有<span class="hljs-keyword">where</span>条件时<br><span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> 前面的表是驱动表，后面的表是被驱动表<br><span class="hljs-keyword">right</span> <span class="hljs-keyword">join</span> 后面的表是驱动表，前面的表是被驱动表<br><span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> <span class="hljs-operator">/</span> <span class="hljs-keyword">join</span> 会自动选择表数据比较少的作为驱动表<br>straight_join(≈<span class="hljs-keyword">join</span>) 直接选择左边的表作为驱动表（语义上与<span class="hljs-keyword">join</span>类似，但去除了<span class="hljs-keyword">join</span>自动选择小表作为驱动表的特性）<br><br><span class="hljs-number">2</span>）当连接查询有<span class="hljs-keyword">where</span>条件时，带<span class="hljs-keyword">where</span>条件的表是驱动表，否则是被驱动表<br></code></pre></td></tr></table></figure>
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BC%80%E5%8F%91/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%90%8E%E7%AB%AF/" class="print-no-link">#后端</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/20/%E5%BB%BA%E7%AB%99/" title="建立博客">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">建立博客</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/30/springboot/" title="springboot笔记">
+                        <span class="hidden-mobile">springboot笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

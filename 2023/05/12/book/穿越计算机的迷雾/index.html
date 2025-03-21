@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="bit入门如何用电来表达一个数字：  1v为1  、2v为2… 但难以计算到底是几v 开关，0代表无 1代表有。二进制  如何对二进制实现加法  对于每一位 两个输入一个进位 一个输出一个进位   多位串联起来 低位的进位传递给高位    电与磁电能生磁，通过电流通断规律控制衔铁臂上下运动画出莫尔斯电报 ​	距离太远？继电器实现不同回路的继电 磁生电，线圈切割磁感线产生电流：话筒  声波-&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="穿越计算机的迷雾">
+<meta property="og:url" content="http://example.com/2023/05/12/book/%E7%A9%BF%E8%B6%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E8%BF%B7%E9%9B%BE/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="bit入门如何用电来表达一个数字：  1v为1  、2v为2… 但难以计算到底是几v 开关，0代表无 1代表有。二进制  如何对二进制实现加法  对于每一位 两个输入一个进位 一个输出一个进位   多位串联起来 低位的进位传递给高位    电与磁电能生磁，通过电流通断规律控制衔铁臂上下运动画出莫尔斯电报 ​	距离太远？继电器实现不同回路的继电 磁生电，线圈切割磁感线产生电流：话筒  声波-&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450617.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450618.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450619.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450620.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450621.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450622.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450623.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450624.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450625.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450627.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450628.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450629.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450630.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450631.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450632.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450633.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450634.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450635.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450636.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450637.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450638.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450639.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450640.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450641.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450642.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450643.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450644.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450645.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450646.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450647.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450648.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450649.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450650.png">
+<meta property="article:published_time" content="2023-05-12T07:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机体系结构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450617.png">
+  
+  
+  
+  <title>穿越计算机的迷雾 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">穿越计算机的迷雾</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-12 15:00" pubdate>
+          2023年5月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">穿越计算机的迷雾</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="bit入门"><a href="#bit入门" class="headerlink" title="bit入门"></a>bit入门</h3><p>如何用电来表达一个数字：</p>
+<ul>
+<li>1v为1  、2v为2… 但难以计算到底是几v</li>
+<li>开关，0代表无 1代表有。二进制</li>
+</ul>
+<p>如何对二进制实现加法</p>
+<ul>
+<li>对于每一位<ul>
+<li>两个输入一个进位</li>
+<li>一个输出一个进位</li>
+</ul>
+</li>
+<li>多位串联起来<ul>
+<li>低位的进位传递给高位</li>
+</ul>
+</li>
+</ul>
+<h3 id="电与磁"><a href="#电与磁" class="headerlink" title="电与磁"></a>电与磁</h3><p>电能生磁，通过电流通断规律控制衔铁臂上下运动画出莫尔斯电报</p>
+<p>​	距离太远？继电器实现不同回路的继电</p>
+<p>磁生电，线圈切割磁感线产生电流：<strong>话筒</strong>  声波-&gt;电流     <strong>扬声器</strong> 电流-&gt;声波   二者可以是同一个东西</p>
+<p>为什么是交流电</p>
+<ul>
+<li>产生更容易，圆周运动</li>
+<li>通过变压器轻松实现升降压，而高压传输损耗更小</li>
+</ul>
+<h3 id="全加器"><a href="#全加器" class="headerlink" title="全加器"></a>全加器</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://fasionchan.com/computer/logic-gate/relay-logic-gate/">用电磁继电器实现逻辑门</a> 非(1)、与(2)、或(2)、与非(2)、异或门(<code>!AB+A!B</code>两非两与一或&#x3D;8、或 与非 与 &#x3D; 6)</li>
+</ul>
+<p>同门电路<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450617.png" srcset="/img/loading.gif" lazyload alt="image-20230511153924305"></p>
+<p>与非<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450618.png" srcset="/img/loading.gif" lazyload alt="image-20230511154215546" style="zoom: 67%;" /></p>
+<p>异或门</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450619.png" srcset="/img/loading.gif" lazyload alt="image-20230511152444206" style="zoom: 50%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450620.png" srcset="/img/loading.gif" lazyload alt="image-20230511152733412"></p>
+<ul>
+<li><p>对全加器列出真值表，化简出逻辑表达式，并使用继电器构造出来，22个-&gt;18个  1940年计数器</p>
+<p><code>S = A ⊕ B ⊕ Cin</code></p>
+<p><code>Cout = (A B) + (Cin (A ⊕ B))</code></p>
+</li>
+</ul>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450621.png" srcset="/img/loading.gif" lazyload alt="image-20230511151739600" style="zoom:80%;" />
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450622.png" srcset="/img/loading.gif" lazyload alt="image-20230511172429980"></p>
+<p>至此我们得到了<strong>运算器</strong></p>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p>为了记录下1bit！！！(后面采用电容存储1bit(DARM 内存；晶体管做触发器SRAM cache))</p>
+<p>二极管：加热的灯丝可以放出电子</p>
+<p>三极管：中间增加一个栅极，可以截断或者放大</p>
+<p><strong>振荡器：</strong>把一个非门的输出接到输入</p>
+<h4 id="触发器："><a href="#触发器：" class="headerlink" title="触发器："></a><strong>触发器：</strong></h4><p>​		输出永远相反，而当输入只有一个1时，可以改变输出状态(输入期望也相反)   问题：我只想在想记录时记录</p>
+<p>​		输入S置为一后，Q一直会保持1，R(reset)可以将Q置零。都为1不稳定</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450623.png" srcset="/img/loading.gif" lazyload alt="image-20230511163751743"><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450624.png" srcset="/img/loading.gif" lazyload alt="image-20230511164109382" style="zoom:67%;" /></p>
+<h4 id="D触发器："><a href="#D触发器：" class="headerlink" title="D触发器："></a><strong>D触发器：</strong></h4><p>​		增加一个控制端，实现1bit的保存。CP为1时，Q&#x3D;D保存输入，CP为0时，忽略</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450625.png" srcset="/img/loading.gif" lazyload alt="image-20230511165325821"></p>
+<h4 id="上升沿D触发器："><a href="#上升沿D触发器：" class="headerlink" title="上升沿D触发器："></a><strong>上升沿D触发器</strong>：</h4><p>​		CP为上升信号时，触发保存。对于继电器，一次记录可能需要延时1s</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450627.png" srcset="/img/loading.gif" lazyload alt="image-20230511165731250"><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450628.png" srcset="/img/loading.gif" lazyload alt="image-20230511170247155"></p>
+<h4 id="走马灯：移位寄存器"><a href="#走马灯：移位寄存器" class="headerlink" title="走马灯：移位寄存器"></a><strong>走马灯：移位寄存器</strong></h4><p>​		（移位寄存器）振荡器 + 循环连接的上升沿触发器，其中有一个1；每震荡一次1就传递给下一个。<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450629.png" srcset="/img/loading.gif" lazyload alt="image-20230511170124003"></p>
+<h4 id="寄存器：多个上升D"><a href="#寄存器：多个上升D" class="headerlink" title="寄存器：多个上升D"></a><strong>寄存器：</strong>多个上升D</h4><p>多个CP就可以构成寄存器存储数据</p>
+<h4 id="T触发器："><a href="#T触发器：" class="headerlink" title="T触发器："></a><strong>T触发器：</strong></h4><p>​		反转</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450630.png" srcset="/img/loading.gif" lazyload alt="image-20230511170310516"></p>
+<p>​		串联： 二进制计数器，计算上升沿的数量</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450631.png" srcset="/img/loading.gif" lazyload alt="image-20230511172102638"></p>
+<p>至此我们得到了寄存器，能够缓存一部分数据。</p>
+<p>继电器  -&gt;电子管  -&gt; 晶体管  -&gt;  集成电路</p>
+<h3 id="一连串加法"><a href="#一连串加法" class="headerlink" title="一连串加法"></a>一连串加法</h3><p>之前的加法器只能保证两个输入得到一个输出，但不能连续计算。结合寄存器优化！！</p>
+<p>1.基本思想：使用寄存器保存值，一个数为直接输入，另一个为RA寄存器的值。加法器会<strong>实时</strong>计算两个输入的值</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450632.png" srcset="/img/loading.gif" lazyload alt="image-20230511190342020"></p>
+<p>2.为了实现连续计算，加法器的输出要直接接到输入</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450633.png" srcset="/img/loading.gif" lazyload alt="image-20230511190457135"></p>
+<p>​		<strong>问题：</strong>共用一条线（<strong>总线</strong>）会冲突，需要添加控制实现轮流使用总线</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450634.png" srcset="/img/loading.gif" lazyload alt="image-20230511190610102" style="zoom:67%;" />
+
+<p>3.添加上总线控制GA，GB，总线控制是<strong>按住</strong>，而寄存器装载是上升沿<strong>按下松开</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450635.png" srcset="/img/loading.gif" lazyload alt="image-20230511190438862"></p>
+<p>10+3+2</p>
+<p>第一步为装载，2~3为相加</p>
+<ol>
+<li>扳出10（在实际中，取数也是一个自动操作 后面实现），按住GA，延时后按下RA，装载输入1的值为10  </li>
+<li>扳出3， 按住GA，这时候加法器已经得到了实时输出，按下TR，装载输出到寄存器</li>
+<li>再按住GB，代表输出需要占用总线，数据传输到RA时按下RA装载结果，实现一次计算</li>
+<li>重复2过程，扳出数字2…</li>
+</ol>
+<p>4.添加一个<strong>控制器</strong>控制，列出真值表，即可得到控制器电路（K的状态相当于指令，控制器电路需要解析指令）。延时问题后面解决</p>
+<ul>
+<li>上面两个为模式，选择一个</li>
+<li>下面两个为当前模式下的操作，k0~x只有一个为1</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450636.png" srcset="/img/loading.gif" lazyload alt="image-20230511195305178"></p>
+<p>5.控制器优化，只使用一个控制</p>
+<ol>
+<li><p>既然操作t只有一个为1，那么用循环移位寄存器RR实现</p>
+</li>
+<li><p>延时问题，我现在先让G(控制线先输出)，而数据寄存器R需要再按下开关时才触发</p>
+<p>   松开开关代表切换操作，松开状态下数据参数门打开</p>
+<p>   松开后再按下代表上一个数据已经传过来了，要用快点用，按下瞬间装载数据</p>
+<p>也就是松开实现模式切换，按下实现数据保存</p>
+</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450637.png" srcset="/img/loading.gif" lazyload alt="image-20230511195839855"></p>
+<h3 id="全自动加法"><a href="#全自动加法" class="headerlink" title="全自动加法"></a>全自动加法</h3><p>现在还需要手动将数据输入，能不能一次性全部输入：需要先存储  <strong>存储器！！</strong></p>
+<p>单bit存储：输入和输出共用一条线，通过信号控制输入还是输出，G就相当于总线控制(输出器)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450638.png" srcset="/img/loading.gif" lazyload alt="image-20230511193329800"></p>
+<h4 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h4><p>把多个bit连一起就可以组成一个大数（一行），多个数就可以组成存储器，需要地址译码器选择哪个数据(门牌号)</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450639.png" srcset="/img/loading.gif" lazyload alt="image-20230511193502167" style="zoom:67%;" />
+
+<p>封装一下：输入：地址引线 RW ， 输出n个bit</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450640.png" srcset="/img/loading.gif" lazyload alt="image-20230511193521662" style="zoom:50%;" />
+
+
+
+<h4 id="磁芯"><a href="#磁芯" class="headerlink" title="磁芯"></a>磁芯</h4><p>W：不同的电流方向导致不同的磁场方向</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450641.png" srcset="/img/loading.gif" lazyload alt="image-20230511193659896" style="zoom:50%;" />
+
+<p>R：写入一个0，如果原来是0，读出线上电压变化很小。如果原来是1，磁场变化导致读出线上感应电压大</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450642.png" srcset="/img/loading.gif" lazyload alt="image-20230511193820128" style="zoom:50%;" />
+
+<p>1949年10月21磁芯存储器专利</p>
+<h4 id="自动取数"><a href="#自动取数" class="headerlink" title="自动取数"></a>自动取数</h4><p>需要一个计数器ACC，AR寄存计数器的值<strong>（地址寄存器）</strong>，DR寄存数据<strong>（数据寄存器）</strong></p>
+<ol>
+<li>按下K<del>AR</del>锁存当前地址</li>
+<li>按住K<del>RD</del>读取数据，同时按下KDR寄存数据</li>
+<li>按下K<del>AC</del>实现地址增加</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450643.png" srcset="/img/loading.gif" lazyload alt="image-20230511201809307"></p>
+<p>同样使用一个循环移位1器和译码器实现上面的逻辑结构，至此按下三下即可取出一个数据到DR寄存器</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450644.png" srcset="/img/loading.gif" lazyload alt="image-20230511202034724"></p>
+<h4 id="连接加法器"><a href="#连接加法器" class="headerlink" title="连接加法器"></a>连接加法器</h4><p>加法器包含2个操作，存储器包含三个，一共五个</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450645.png" srcset="/img/loading.gif" lazyload alt="image-20230511202615465"></p>
+<p>将相加还是装载添加到指令中，指令也是从存储器中取，指令通过<strong>EC解析</strong>后，翻译出当前的任务，反过来<strong>影响译码器</strong>，也就是告诉计算机进行的下一步操作。IR + EC + 译码器相当于是控制器</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450646.png" srcset="/img/loading.gif" lazyload alt="image-20230511203156283" style="zoom:50%;" />
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450647.png" srcset="/img/loading.gif" lazyload alt="image-20230511203046934"></p>
+<p>现代的指令中，数据可以直接包含在指令中。原来的AC更像是现代中的PC指针，指向指令的位置</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450648.png" srcset="/img/loading.gif" lazyload alt="image-20230511203602817"></p>
+<p>最后，把手动按下K换成一个振荡器，即可实现全自动。需要添加一个中止指令，代表程序结束了</p>
+<p>如何处理进位？额外产生一个进位标志来影响控制器</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450649.png" srcset="/img/loading.gif" lazyload alt="image-20230512122031198"></p>
+<h3 id="现代计算机"><a href="#现代计算机" class="headerlink" title="现代计算机"></a>现代计算机</h3><p>SRAM：使用晶体管构建触发器，形成存储器，SRAM，但太贵了6个晶体管一个bit，只用来做cache</p>
+<p>DRAM：使用电容和晶体三极管，2ms刷新一次DRAM，做内存</p>
+<p>ROM：一开始只读，然后可擦除。U盘、固态硬盘</p>
+<p>外存：磁芯 —&gt;  磁盘(机械硬盘 磁头+ 磁道 + 扇区) —&gt;  固态硬盘</p>
+<p>流水线：充分利用CPU和内存，错开执行 取指 译码 运算 写回操作</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450650.png" srcset="/img/loading.gif" lazyload alt="image-20230512125603868"></p>
+<h3 id="IO设备"><a href="#IO设备" class="headerlink" title="IO设备"></a>IO设备</h3><p>CPU从哪里读取数据：IO接口</p>
+<p>什么时候去读：CPU不知道IO接口到底有没有数据</p>
+<ul>
+<li>不停的读：CPU不能干别的事情了</li>
+<li>定时询问</li>
+<li>中断：中断向量号表示谁请求了中断，再根据中断向量表转到相应中断处理逻辑</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BB%E4%B9%A6/" class="category-chain-item">读书</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="print-no-link">#计算机体系结构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20-%20jyy/" title="操作系统 - jyy">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统 - jyy</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/15/redis%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/" title="redis应用及原理">
+                        <span class="hidden-mobile">redis应用及原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

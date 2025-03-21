@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="引言redis是目前最流行的缓存中间件，但他是如何保证实现稳定并且高性能的提供服务的？  如果只是单机版redis，有什么问题？ 宕机后，如何快速恢复？ 主从集群以及sentinel可以带来怎样的优势？ 分片集群作用？  这篇文章从0到1，一步步构建出当前的redis 单机redis 如上图所示，项目的数据最简单的就是直接从mysql读取，现在多了一个redis缓存，并使用cache aside">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文搞懂 Redis 架构演化之路(腾讯技术工程)">
+<meta property="og:url" content="http://example.com/2023/09/10/TechDigest/Redis%20%E6%9E%B6%E6%9E%84%E6%BC%94%E5%8C%96%E4%B9%8B%E8%B7%AF/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="引言redis是目前最流行的缓存中间件，但他是如何保证实现稳定并且高性能的提供服务的？  如果只是单机版redis，有什么问题？ 宕机后，如何快速恢复？ 主从集群以及sentinel可以带来怎样的优势？ 分片集群作用？  这篇文章从0到1，一步步构建出当前的redis 单机redis 如上图所示，项目的数据最简单的就是直接从mysql读取，现在多了一个redis缓存，并使用cache aside">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021423629.png">
+<meta property="article:published_time" content="2023-09-10T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="文章精读">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="高性能">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021423629.png">
+  
+  
+  
+  <title>一文搞懂 Redis 架构演化之路(腾讯技术工程) - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">一文搞懂 Redis 架构演化之路(腾讯技术工程)</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-10 20:00" pubdate>
+          2023年9月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一文搞懂 Redis 架构演化之路(腾讯技术工程)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>redis是目前最流行的缓存中间件，但他是如何保证实现稳定并且高性能的提供服务的？</p>
+<ol>
+<li>如果只是单机版redis，有什么问题？</li>
+<li>宕机后，如何快速恢复？</li>
+<li>主从集群以及sentinel可以带来怎样的优势？</li>
+<li>分片集群作用？</li>
+</ol>
+<p>这篇文章从0到1，一步步构建出当前的redis</p>
+<h2 id="单机redis"><a href="#单机redis" class="headerlink" title="单机redis"></a>单机redis</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422103.png" srcset="/img/loading.gif" lazyload alt="image-20240402113405372"></p>
+<p>如上图所示，项目的数据最简单的就是直接从mysql读取，现在多了一个redis缓存，并使用cache aside pattern。</p>
+<p>在服务不断运行中，项目中redis存储的数据越来越多，如果突然<strong>redis宕机</strong>，由于redis是内存数据库，全部的数据都会丢失。</p>
+<ol>
+<li><strong>读数据</strong>：就算redis重启了，数据丢失了，构建缓存的过程中数据库压力很大</li>
+<li><strong>写数据</strong>：如果有写数据还没有写入到数据库，数据就永久丢失了</li>
+</ol>
+<h2 id="持久化：有备无患"><a href="#持久化：有备无患" class="headerlink" title="持久化：有备无患"></a>持久化：有备无患</h2><h3 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422958.png" srcset="/img/loading.gif" lazyload alt="image-20240402113736587"></p>
+<p>最简单的持久化操作就是：每执行一个命令，除了更新redis内存外，还写入磁盘，也就是磁盘和redis始终同步。</p>
+<p>问题：<strong>写磁盘的速度肯定是跟不上redis，如果希望强一致性，那磁盘的读写速度就是redis的性能极限，性能急剧下降。</strong></p>
+<p>数据从内存到磁盘分两步：</p>
+<ol>
+<li>程序写文件的 PageCache（write）</li>
+<li>把 PageCache 刷到磁盘（fsync）</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422753.png" srcset="/img/loading.gif" lazyload alt="image-20240402114411870"></p>
+<p>刚才是每次都执行这两步，现在可以只执行第一步，然后让后台线程去执行fsync操作</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422229.png" srcset="/img/loading.gif" lazyload alt="image-20240402114515651"></p>
+<p>其实这就是AOF，（Append Only File）。</p>
+<p>Redis AOF 持久化提供了 3 种刷盘机制：对应着fsync的不同时机</p>
+<ol>
+<li>appendfsync always：主线程同步 fsync</li>
+<li>appendfsync no：由 OS fsync</li>
+<li>appendfsync everysec：后台线程每间隔1秒 fsync；大大减小了io的频率</li>
+</ol>
+<p>​	随着时间推移，AOF文件可能越来越大，redis还提供了AOF rewrite使得AOF【瘦身】，如 <code>set k1 v1，set k1 v2</code>，其实我们只需要记录后一条命令就好了（最终版本）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422401.png" srcset="/img/loading.gif" lazyload alt="image-20240402114719479"></p>
+<h3 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h3><p>除了使用基于命令的方式，还可以使用最常用的基于<strong>数据快照</strong>实现数据的备份</p>
+<p>快照的备份时机可以定时的，也可也是最近一段时间数据的修改量 <code>save 300 10   # 100s内有10个key修改了则触发bgsave</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422389.png" srcset="/img/loading.gif" lazyload alt="image-20240402115227024"></p>
+<p>优点</p>
+<ol>
+<li>持久化体积小（二进制+压缩）</li>
+<li>写盘频率</li>
+</ol>
+<p>缺点也很明显，因为是定时持久化，数据肯定没有 AOF 实时持久化完整。</p>
+<p>如果你的 Redis 只当做缓存，对于丢失数据不敏感（可从后端的数据库查询），那这种持久化方式是非常合适的。</p>
+<p>如果让你来选择持久化方案，你可以这样选择：</p>
+<ol>
+<li>业务对于数据丢失不敏感，选 RDB</li>
+<li>业务对数据完整性要求比较高，选 AOF 但文件体积更大、恢复更慢</li>
+</ol>
+<h3 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a>混合持久化</h3><p>如何保证数据完整性，又可以让文件更小（恢复更快）呢？</p>
+<p>数据完整性：想要保住数据完整性，就需要从AOF下手（记录下每条命令），还想要体积更小，就将RDB快照（二进制+压缩）嵌入到AOF中</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021424560.png" srcset="/img/loading.gif" lazyload alt="image-20240402142442717"></p>
+<p>当 AOF 在做 rewrite 时，<strong>Redis 先以 RDB 格式在 AOF 文件中写入一个数据快照，再把在这期间产生的每一个写命令，追加到 AOF 文件中。</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422942.png" srcset="/img/loading.gif" lazyload alt="image-20240402130926543"></p>
+<p>数据恢复时，先加载AOF中的RDB，再执行命令</p>
+<p>现在已经实现单机的恢复，但恢复启动的过程中服务还是宕机的，解决方法：引入多个 Redis 实例，这些实例实时进行同步，当一个宕机后剩下的立马可以补救【主从复制：多副本】</p>
+<h2 id="主从复制：多副本"><a href="#主从复制：多副本" class="headerlink" title="主从复制：多副本"></a>主从复制：多副本</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021422670.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li><strong>缩短不可用时间</strong>：master 发生宕机，我们可以<strong>手动</strong>把 slave 提升为 master 继续提供服务</li>
+<li><strong>提升读性能</strong>：让 slave 分担一部分读请求，提升应用的整体性能</li>
+</ol>
+<p>但它的问题在于：<strong>当 master 宕机时，我们需要「手动」把 slave 提升为 master，这个过程也是需要花费时间的。</strong></p>
+<p>优化：切换的过程，变成自动化？</p>
+<h2 id="哨兵：故障自动切换"><a href="#哨兵：故障自动切换" class="headerlink" title="哨兵：故障自动切换"></a>哨兵：故障自动切换</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021423319.png" srcset="/img/loading.gif" lazyload alt="image-20240402132002932"></p>
+<ol>
+<li>引入哨兵实现服务的监控</li>
+<li>多个哨兵避免网络问题引起的波动</li>
+</ol>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">哨兵协商判定 <span class="hljs-keyword">master</span> <span class="hljs-title">异常后，这里还有一个问题：由哪个哨兵来发起主从切换呢？</span><br><span class="hljs-title"></span><br><span class="hljs-title">答案是，选出一个哨兵「领导者」，由这个领导者进行主从切换。</span><br><span class="hljs-title"></span><br><span class="hljs-title">问题又来了，这个领导者怎么选？</span><br><span class="hljs-title"></span><br><span class="hljs-title">想象一下，在现实生活中，选举是怎么做的？</span><br><span class="hljs-title"></span><br><span class="hljs-title">是的，投票。</span><br><span class="hljs-title"></span><br><span class="hljs-title">在选举哨兵领导者时，我们可以制定这样一个选举规则：</span><br><span class="hljs-title"></span><br><span class="hljs-title">每个哨兵都询问其它哨兵，请求对方为自己投票</span><br><span class="hljs-title">每个哨兵只投票给第一个请求投票的哨兵，且只能投票一次</span><br><span class="hljs-title">首先拿到超过半数投票的哨兵，当选为领导者，发起主从切换</span><br><span class="hljs-title">这个选举的过程就是我们经常听到的：分布式系统领域中的「共识算法」。</span><br><span class="hljs-title"></span><br><span class="hljs-title">什么是共识算法？</span><br><span class="hljs-title"></span><br><span class="hljs-title">我们在多个机器部署哨兵，它们需要共同协作完成一项任务，所以它们就组成了一个「分布式系统」。</span><br><span class="hljs-title"></span><br><span class="hljs-title">在分布式系统领域，多个节点如何就一个问题达成共识的算法，就叫共识算法。</span><br><span class="hljs-title"></span><br><span class="hljs-title">在这个场景下，多个哨兵共同协商，选举出一个都认可的领导者，就是使用共识算法完成的。</span><br><span class="hljs-title"></span><br><span class="hljs-title">这个算法还规定节点的数量必须是奇数个，这样可以保证系统中即使有节点发生了故障，剩余超过「半数」的节点状态正常，依旧可以提供正确的结果，也就是说，这个算法还兼容了存在故障节点的情况。</span><br></code></pre></td></tr></table></figure>
+
+<div class="note note-success">
+            <p>共识算法在分布式系统领域有很多，例如 Paxos、Raft，哨兵选举领导者这个场景，使用的是 Raft 共识算法，因为它足够简单，且易于实现。</p>
+          </div>
+
+<p>目前解决的问题：</p>
+<ol>
+<li><strong>数据怕丢失</strong>：持久化（RDB&#x2F;AOF）</li>
+<li><strong>恢复时间久</strong>：主从副本（副本随时可切）</li>
+<li><strong>手动切换时间长</strong>：哨兵集群（自动切换）</li>
+<li><strong>读存在压力</strong>：扩容副本（读写分离）</li>
+<li><strong>写存在压力</strong>：<strong>一个 mater 扛不住怎么办？</strong></li>
+</ol>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021425239.png" srcset="/img/loading.gif" lazyload alt="image-20240402133049163"></p>
+<p>引入多个master分担压力</p>
+<p>我们制定规则如下：</p>
+<ol>
+<li>每个节点各自存储一部分数据，所有节点数据之和才是全量数据</li>
+<li>制定一个路由规则，对于不同的 key，把它路由到固定一个实例上进行读写</li>
+</ol>
+<p>需要一个路由</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021423759.png" srcset="/img/loading.gif" lazyload alt="image-20240402133114498"></p>
+<p>这种方案也叫做「客户端分片」，这个方案的缺点是，<strong>客户端需要维护这个路由规则，也就是说，你需要把路由规则写到你的业务代码中。</strong></p>
+<p>如何做到不把路由规则耦合在客户端业务代码中呢？</p>
+<p>继续优化，我们可以在客户端和服务端之间增加一个「中间代理层」，这个代理就是我们经常听到的 Proxy，路由转发规则，放在这个 Proxy 层来维护。使得proxy后面的一切对客户端来说都是透明无感知的</p>
+<p>业界开源的 Redis 分片集群方案，例如 Twemproxy、Codis 就是采用的这种方案。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021425312.png" srcset="/img/loading.gif" lazyload alt="image-20240402133147080"></p>
+<h3 id="官方"><a href="#官方" class="headerlink" title="官方"></a>官方</h3><p>官方方案更加简单，无需路由以及哨兵</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021423629.png" srcset="/img/loading.gif" lazyload alt="image-20240402133237153"></p>
+<ol>
+<li>故障监控：<strong>Redis Cluster 无需部署哨兵集群，集群内 Redis 节点通过 Gossip 协议互相探测健康状态，在故障时可发起自动切换。</strong></li>
+<li>路由：访问集群的任意节点，会自动转发到正确节点</li>
+</ol>
+<p>虽然省去了哨兵集群的部署，维护成本降低了不少，但对于客户端升级 SDK，对于新业务应用来说，可能成本不高，但对于老业务来讲，「升级成本」还是比较高的，这对于切换官方 Redis Cluster 方案有不少阻力。</p>
+<p>于是，各个公司有开始自研针对 Redis Cluster 的 Proxy，降低客户端的升级成本，架构就变成了这样：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404021424113" srcset="/img/loading.gif" lazyload alt="Image"></p>
+<p>这样，客户端无需做任何变更，只需把连接地址切到 Proxy 上即可，由 Proxy 负责转发数据，以及应对后面集群增删节点带来的路由变更。</p>
+<p>至此，业界主流的 Redis 分片架构已经成型，当你使用分片集群后，对于未来更大的流量压力，也都可以从容面对了！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下，我们是如何从 0 到 1，再从 1 到 N 构建一个稳定、高性能的 Redis 集群的，从这之中你可以清晰地看到 Redis 架构演进的整个过程。</p>
+<ol>
+<li><strong>数据怕丢失</strong> -&gt; 持久化（RDB&#x2F;AOF）</li>
+<li><strong>恢复时间久</strong> -&gt; 主从副本（副本随时可切）</li>
+<li><strong>故障手动切换慢</strong> -&gt; 哨兵集群（自动切换）</li>
+<li><strong>读存在压力</strong> -&gt; 扩容副本（读写分离）</li>
+<li><strong>写存在压力&#x2F;容量瓶颈</strong> -&gt; 分片集群</li>
+<li><strong>分片集群社区方案</strong> -&gt;  Twemproxy、Codis（Redis 节点之间无通信，需要部署哨兵，可横向扩容）</li>
+<li><strong>分片集群官方方案</strong> -&gt;  Redis Cluster （Redis 节点之间 Gossip 协议，无需部署哨兵，可横向扩容）</li>
+<li><strong>业务侧升级困难</strong> -&gt; Proxy + Redis Cluster（不侵入业务侧）</li>
+</ol>
+<p>至此，我们的 Redis 集群才得以长期稳定、高性能的为我们的业务提供服务。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QssILJLna_v7XQWtV5UMzA">一文搞懂 Redis 架构演化之路</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" class="category-chain-item">系统架构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E9%AB%98%E6%80%A7%E8%83%BD/" class="category-chain-item">高性能</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
+      
+        <a href="/tags/redis/" class="print-no-link">#redis</a>
+      
+        <a href="/tags/%E9%AB%98%E6%80%A7%E8%83%BD/" class="print-no-link">#高性能</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/09/TechDigest/TCP%E6%95%B0%E6%8D%AE%E7%B2%98%E5%8C%85/" title="TCP数据粘包">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TCP数据粘包</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/07/book/%E4%B8%80%E4%B8%AA%E6%96%B0%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%AF%9E%E7%94%9F%5Blinux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB%5D/" title="一个新进程的诞生[linux源码趣读]">
+                        <span class="hidden-mobile">一个新进程的诞生[linux源码趣读]</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

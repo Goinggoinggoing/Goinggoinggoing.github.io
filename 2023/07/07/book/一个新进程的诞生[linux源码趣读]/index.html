@@ -1,0 +1,915 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="引入第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。 第一部分 进入内核前的苦力活 第二部分 大战前期的初始化工作 到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。 123456789101112void main(void) &#123;    &#x2F;&#x2F; 第二部分的内容，各种初始化工作    ...    &#x2F;&#x2F; 第三部分的内容，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个新进程的诞生[linux源码趣读]">
+<meta property="og:url" content="http://example.com/2023/07/07/book/%E4%B8%80%E4%B8%AA%E6%96%B0%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%AF%9E%E7%94%9F[linux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB]/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="引入第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。 第一部分 进入内核前的苦力活 第二部分 大战前期的初始化工作 到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。 123456789101112void main(void) &#123;    &#x2F;&#x2F; 第二部分的内容，各种初始化工作    ...    &#x2F;&#x2F; 第三部分的内容，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182148396.png">
+<meta property="article:published_time" content="2023-07-07T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182148396.png">
+  
+  
+  
+  <title>一个新进程的诞生[linux源码趣读] - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">一个新进程的诞生[linux源码趣读]</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-07-07 20:00" pubdate>
+          2023年7月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一个新进程的诞生[linux源码趣读]</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。</p>
+<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247499882&idx=1&sn=68fd16c5aeae15084be58afb1e5bd9e8&chksm=c2c5bac7f5b233d1c486fa57e9e3a2bc907a92ab69ff0344babab4d50bdaf76e7766b4b42914&scene=21#wechat_redirect">第一部分 进入内核前的苦力活</a></p>
+<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247500983&idx=1&sn=ad4c430823c975df97f13de3fbe8c66e&chksm=c2c5be1af5b2370cad4ce3218c5294feee4ae2e4d28804398c1dc8ac252c8dfafbe419ccf58c&scene=21#wechat_redirect">第二部分 大战前期的初始化工作</a></p>
+<p>到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-comment">// 第二部分的内容，各种初始化工作</span><br>    ...<br>    <span class="hljs-comment">// 第三部分的内容，一个新进程的诞生</span><br>    move_to_user_mode();<br>    <span class="hljs-keyword">if</span> (!fork()) &#123;<br>        <span class="hljs-comment">// 新进程里干了啥，是第四部分的内容</span><br>        init();<br>    &#125;<br>    <span class="hljs-comment">// 死循环，操作系统怠速状态</span><br>    <span class="hljs-keyword">for</span>(;;) pause();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>move_to_user_mode</strong>: 转为用户态，之后需要通过中断转为内核态</li>
+<li><strong>fork</strong>：从进程0创建进程1</li>
+<li><strong>init</strong>： 进程1加载根文件系统任务，创建进程2，进程2加载shell</li>
+<li><strong>pause</strong>：暂停</li>
+</ul>
+<h3 id="从内核态切换到用户态"><a href="#从内核态切换到用户态" class="headerlink" title="从内核态切换到用户态"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/AVl6R2N9d_sldkhfvC6aEw">从内核态切换到用户态</a></h3><p><strong>move_to_user_mode</strong></p>
+<h4 id="特权级的实现"><a href="#特权级的实现" class="headerlink" title="特权级的实现"></a>特权级的实现</h4><ul>
+<li>首先从一个最大的视角来看，这一切都源于 CPU 的保护机制。CPU 为了配合操作系统完成保护机制这一特性，分别设计了<strong>分段保护机制</strong>与<strong>分页保护机制</strong>。</li>
+<li>当我们在 <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247499699&idx=1&sn=000d83798b0158dbdf48d76e49d3ff96&chksm=c2c5851ef5b20c08bc641d4b118db78a3af5a4f90a057d1ce9f9b68f04b529124f466c743bc5&scene=21#wechat_redirect">第七回 | 六行代码就进入了保护模式</a> 将 cr0 寄存器的 PE 位开启时，就开启了保护模式，也即开启了<strong>分段保护机制</strong>。</li>
+</ul>
+<p><strong>如何保护的？</strong></p>
+<p>cs代码段选择子的最后几位</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404181748003.png" srcset="/img/loading.gif" lazyload alt="image-20240418174750677"></p>
+<ul>
+<li>CPL代表当前的特权级别：11代表用户态</li>
+<li>代码的跳转执行jmp时，yyy : xxx，这里的 yyy 就是q请求跳转的段选择子</li>
+<li>在GDT中保存了yyy 的段描述符，其中定义了DPL指明了<strong>目标代码段特权级</strong></li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404181753857.png" srcset="/img/loading.gif" lazyload alt="image-20240418175345418"></p>
+<ul>
+<li>在代码跳转时：<strong>CPL</strong>必须等于<strong>DPL</strong></li>
+<li>在内存数据访问时：<strong>处于内核态的代码可以访问任何特权级的数据段，处于用户态的代码则只可以访问用户态的数据段</strong></li>
+<li>发送中断时，指向新的CS IP，CS中的CPL通常是0</li>
+</ul>
+<h4 id="转化方式"><a href="#转化方式" class="headerlink" title="转化方式"></a>转化方式</h4><p>中断和中断返回：<strong>int 0x80</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404181756186.png" srcset="/img/loading.gif" lazyload alt="image-20240418175639704"></p>
+<p>没有中断也可也返回？</p>
+<p>中断前通常会保存当前的cs ip，并在return时pop，所以这里我们return前先push，假装发生了中断，push的cs ip就是等下想去的位置</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404181758084.png" srcset="/img/loading.gif" lazyload alt="image-20240418175822567"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs asm">void main(void) &#123;<br>    ...    <br>    move_to_user_mode();<br>    ...<br>&#125;<br><br>#define move_to_user_mode() \<br>_asm &#123; \<br>    _asm mov eax,esp \<br>    _asm push 00000017h \  SS 赋值<br>    _asm push eax \<br>    _asm pushfd \<br>    _asm push 0000000fh \  CS 赋值<br>    _asm push offset l1 \<br>    _asm iretd /* 执行中断返回指令*/ \<br>_asm l1: mov eax,17h \<br>    _asm mov ds,ax \<br>    _asm mov es,ax \<br>    _asm mov fs,ax \<br>    _asm mov gs,ax \<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注意SS、CS最后两位为1，代表<strong>切换到用户态</strong></li>
+<li>从<strong>LDT</strong>拿转换关系：倒数第三位 TI 表示从 GDT 还是 LDT 中取，1 表示 LDT，也就是从局部描述符表中取。局部描述符具体是哪一个？也就是lldt 指向的是谁？</li>
+</ul>
+<blockquote>
+<p>在 <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247500496&idx=1&sn=3bddde6c68c2b03d9721ba74e949cfa8&chksm=c2c5b87df5b2316b083015a4fdba2df29211f38fcfd1cdb040e02ab410432608e26383a43ef5&scene=21#wechat_redirect">第18回 | 大名鼎鼎的进程调度就是从这里开始的</a> 中，将 0 号 LDT 作为当前的 LDT 索引，记录在了 CPU 的 lldt 寄存器中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> lldt(n) __asm__(<span class="hljs-string">&quot;lldt %%ax&quot;</span>::<span class="hljs-string">&quot;a&quot;</span> (_LDT(n)))</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">sched_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    ...<br>    lldt(<span class="hljs-number">0</span>);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>特权的区别通过cs中的CPL和段描述符中的DPL定义，跳转时需要检查，使得用户下的代码和数据和内核下的区分开来</li>
+<li>什么时候特权会转变：中断以及中断返回时</li>
+</ul>
+<h3 id="如果让你来设计进程调度"><a href="#如果让你来设计进程调度" class="headerlink" title="如果让你来设计进程调度"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Sf9vV7RCnVDlBKXx5jXs1Q">如果让你来设计进程调度</a></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    ...    <br>    move_to_user_mode();<br>    <span class="hljs-keyword">if</span> (!fork()) &#123;<br>        init();<br>    &#125;<br>    <span class="hljs-keyword">for</span>(;;) pause();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上一节中，成功切换到了用户态，现在我们先不考虑fork，先讲讲如何实现进程调度？</p>
+<p>如何实现cpu一下运行这个线程，一下另外一个？</p>
+<blockquote>
+<p>由一个不受任何程序控制的，第三方的不可抗力，每隔一段时间就中断一下 CPU 的运行，然后跳转到一个特殊的程序那里，这个程序通过某种方式获取到 CPU 下一个要运行的程序的地址，然后跳转过去。</p>
+<p>这个每隔一段时间就中断 CPU 的不可抗力，就是由定时器触发的<strong>时钟中断</strong>。</p>
+</blockquote>
+<p>当前线程被换下去后，肯定需要保存当前任务的现场，比如它上一次执行到哪里了，要不 CPU 就算决定好了要跳转到你这个进程上运行，具体跳到哪一行运行，总得有个地方存吧？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    ?<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><p>每个程序最终的本质就是执行指令。这个过程会涉及<strong>寄存器</strong>，<strong>内存</strong>和<strong>外设端口</strong>。</p>
+<p>内存还有可能设计成相互错开的，互不干扰，比如进程 1 你就用 0<del>1K 的内存空间，进程 2 就用 1K</del>2K 的内存空间，咱谁也别影响谁。</p>
+<p>但寄存器只有那么多，如果当前线程切换掉了，切换前就要存储下来，否者就别别人删了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    ...<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> <span class="hljs-title">tss</span>;</span><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> &#123;</span><br>    <span class="hljs-type">long</span>    back_link;  <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    esp0;<br>    <span class="hljs-type">long</span>    ss0;        <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    esp1;<br>    <span class="hljs-type">long</span>    ss1;        <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    esp2;<br>    <span class="hljs-type">long</span>    ss2;        <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    cr3;<br>    <span class="hljs-type">long</span>    eip;<br>    <span class="hljs-type">long</span>    eflags;<br>    <span class="hljs-type">long</span>    eax,ecx,edx,ebx;<br>    <span class="hljs-type">long</span>    esp;<br>    <span class="hljs-type">long</span>    ebp;<br>    <span class="hljs-type">long</span>    esi;<br>    <span class="hljs-type">long</span>    edi;<br>    <span class="hljs-type">long</span>    es;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    cs;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    ss;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    ds;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    fs;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    gs;     <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    ldt;        <span class="hljs-comment">/* 16 high bits zero */</span><br>    <span class="hljs-type">long</span>    trace_bitmap;   <span class="hljs-comment">/* bits: trace 0, bitmap 16-31 */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">i387_struct</span> <span class="hljs-title">i387</span>;</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>cr3</strong> ： cr3 寄存器是指向页目录表首地址的，每一个进程不同，说明了线性地址到物理地址的映射关系不同。当前进程来了，就把当前进程的cr3设置上，代表当前线程在运行</p>
+<p>操作系统来复制<strong>建立不同的页目录表</strong>并替换 cr3 寄存器即可，可以实现内存的不冲突或者共享</p>
+<h4 id="什么时候切换"><a href="#什么时候切换" class="headerlink" title="什么时候切换"></a>什么时候切换</h4><p>每次时钟都切换？太频繁了</p>
+<p>给进程一个属性，叫<strong>剩余时间片</strong>，每次时钟中断来了之后都 <strong>-1</strong>，如果减到 0 了，就触发切换进程的操作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    ...<br>    <span class="hljs-type">long</span> counter;<br>    ...<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> <span class="hljs-title">tss</span>;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>每次中断都–，并检查一下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">do_timer</span><span class="hljs-params">(<span class="hljs-type">long</span> cpl)</span> &#123;<br>    ...<br>    <span class="hljs-comment">// 当前线程还有剩余时间片，直接返回</span><br>    <span class="hljs-keyword">if</span> ((--current-&gt;counter)&gt;<span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br>    <span class="hljs-comment">// 若没有剩余时间片，调度</span><br>    schedule(); <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a><strong>优先级</strong></h4><p>如何区分进程的优先级，其实就是counter的初始值，用一个priority保存</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    ...<br>    <span class="hljs-type">long</span> counter;<br>    <span class="hljs-type">long</span> priority;<br>    ...<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> <span class="hljs-title">tss</span>;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h4><p>刚才的进程是都要运行的，有没有不在运行的情况？</p>
+<p>一个进程读取磁盘，需要阻塞好久，这个时候调度cpu给他也没用，就需要主动<strong>放弃CPU执行权力</strong>，用<strong>state</strong>记录下进程的状态。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    <span class="hljs-type">long</span> state;<br>    <span class="hljs-type">long</span> counter;<br>    <span class="hljs-type">long</span> priority;<br>    ...<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> <span class="hljs-title">tss</span>;</span><br>&#125;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TASK_RUNNING          0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TASK_INTERRUPTIBLE    1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TASK_UNINTERRUPTIBLE  2</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TASK_ZOMBIE           3</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TASK_STOPPED          4</span><br></code></pre></td></tr></table></figure>
+
+<p>现在就可以完成简单的任务了：表示状态的 <strong>state</strong>，表示剩余时间片的 <strong>counter</strong>，表示优先级的 <strong>priority</strong>，和表示上下文信息的 <strong>tss</strong>。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br><span class="hljs-comment">/* these are hardcoded - don&#x27;t touch */</span><br>    <span class="hljs-type">long</span> state; <span class="hljs-comment">/* -1 unrunnable, 0 runnable, &gt;0 stopped */</span><br>    <span class="hljs-type">long</span> counter;<br>    <span class="hljs-type">long</span> priority;<br>    <span class="hljs-type">long</span> signal;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sigaction</span> <span class="hljs-title">sigaction</span>[32];</span><br>    <span class="hljs-type">long</span> blocked;   <span class="hljs-comment">/* bitmap of masked signals */</span><br><span class="hljs-comment">/* various fields */</span><br>    <span class="hljs-type">int</span> exit_code;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> start_code,end_code,end_data,brk,start_stack;<br>    <span class="hljs-type">long</span> pid,father,pgrp,session,leader;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> uid,euid,suid;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> gid,egid,sgid;<br>    <span class="hljs-type">long</span> alarm;<br>    <span class="hljs-type">long</span> utime,stime,cutime,cstime,start_time;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> used_math;<br><span class="hljs-comment">/* file system info */</span><br>    <span class="hljs-type">int</span> tty;        <span class="hljs-comment">/* -1 if no tty, so it must be signed */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> umask;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">m_inode</span> * <span class="hljs-title">pwd</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">m_inode</span> * <span class="hljs-title">root</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">m_inode</span> * <span class="hljs-title">executable</span>;</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> close_on_exec;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> * <span class="hljs-title">filp</span>[<span class="hljs-title">NR_OPEN</span>];</span><br><span class="hljs-comment">/* ldt for this task 0 - zero 1 - cs 2 - ds&amp;ss */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">desc_struct</span> <span class="hljs-title">ldt</span>[3];</span><br><span class="hljs-comment">/* tss for this task */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tss_struct</span> <span class="hljs-title">tss</span>;</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>进程调度的开始，要从一次定时器滴答来触发，通过时钟中断处理函数走到进程调度函数，然后去进程的结构 task_struct 中取出所需的数据，进行策略计算，并挑选出下一个可以得到 CPU 运行的进程，跳转过去。</p>
+</blockquote>
+<h3 id="从一次定时器滴答来看进程调度"><a href="#从一次定时器滴答来看进程调度" class="headerlink" title="从一次定时器滴答来看进程调度"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/yFre8Qv_ZCtjRkTS49n6rw">从一次定时器滴答来看进程调度</a></h3><p>上回我们说了进程调度需要的数据结构，现在我们来看下具体的调度过程</p>
+<p>还记得我们在 <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247500496&idx=1&sn=3bddde6c68c2b03d9721ba74e949cfa8&chksm=c2c5b87df5b2316b083015a4fdba2df29211f38fcfd1cdb040e02ab410432608e26383a43ef5&scene=21#wechat_redirect">第18回 | 大名鼎鼎的进程调度就是从这里开始的</a> <strong>sched_init</strong> 的时候，开启了<strong>定时器</strong>吧？这个定时器每隔一段时间就会向 CPU 发起一个中断信号。</p>
+<p> <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404181957483.png" srcset="/img/loading.gif" lazyload alt="image-20240418195753302"></p>
+<p>这个间隔时间被设置为 10 ms，也就是 100 Hz。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">schedule.c<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> HZ 100</span><br></code></pre></td></tr></table></figure>
+
+<p>发起的中断叫<strong>时钟中断</strong>，其中断向量号被设置为了 <strong>0x20</strong>。</p>
+<p>同时我们在 <strong>sched_init</strong> 里设置的时钟中断和对应的中断处理函数吧？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">schedule.c<br><span class="hljs-title function_">set_intr_gate</span><span class="hljs-params">(<span class="hljs-number">0x20</span>, &amp;timer_interrupt)</span>;<br><br>system_call.s<br><br>_timer_interrupt:<br>    ...<br>    <span class="hljs-comment">// 增加系统滴答数</span><br>    incl _jiffies<br>    ...<br>    <span class="hljs-comment">// 调用函数 do_timer</span><br>    call _do_timer<br>    ...<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">do_timer</span><span class="hljs-params">(<span class="hljs-type">long</span> cpl)</span> &#123;<br>    ...<br>    <span class="hljs-comment">// 当前线程还有剩余时间片，直接返回</span><br>    <span class="hljs-keyword">if</span> ((--current-&gt;counter)&gt;<span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br>    <span class="hljs-comment">// 若没有剩余时间片，调度</span><br>    schedule();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="schedule"><a href="#schedule" class="headerlink" title="schedule"></a>schedule</h4><p>找出剩余时间片最大的线程（<code>state=TASK_RUNNING</code> ），如果都没有时间就<code>counter = counter/2 + priority</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">schedule</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">int</span> i, next, c;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> ** <span class="hljs-title">p</span>;</span><br>    ...<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>        c = <span class="hljs-number">-1</span>;<br>        next = <span class="hljs-number">0</span>;<br>        i = NR_TASKS;<br>        p = &amp;task[NR_TASKS];<br>        <span class="hljs-keyword">while</span> (--i) &#123;<br>            <span class="hljs-keyword">if</span> (!*--p)<br>                <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-keyword">if</span> ((*p)-&gt;state == TASK_RUNNING &amp;&amp; (*p)-&gt;counter &gt; c)<br>                c = (*p)-&gt;counter, next = i;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (c) <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">for</span>(p = &amp;LAST_TASK ; p &gt; &amp;FIRST_TASK ; --p)<br>            <span class="hljs-keyword">if</span> (*p)<br>                (*p)-&gt;counter = ((*p)-&gt;counter &gt;&gt; <span class="hljs-number">1</span>) +<br>                        (*p)-&gt;priority;<br>    &#125;<br>    switch_to(next);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="switch-to"><a href="#switch-to" class="headerlink" title="switch_to"></a>switch_to</h4><p>进程切换，其实就是切换上一章中我们定义的数据结构，我们需要保存当前的上下文到tss中，并将新的线程的上下文加载</p>
+<p><strong>ljmp</strong> ：指令后面跟的是一个 tss 段，那么，会由硬件将当前各个寄存器的值保存在当前进程的 tss 中，并将新进程的 tss 信息加载到各个寄存器。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182001401.png" srcset="/img/loading.gif" lazyload alt="image-20240418200148268"></p>
+<h3 id="通过-fork-看一次系统调用流程"><a href="#通过-fork-看一次系统调用流程" class="headerlink" title="通过 fork 看一次系统调用流程"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rYBSH_AZDwgc8knSKDSSxA">通过 fork 看一次系统调用流程</a></h3><p>回到我们的fork命令</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    ...    <br>    move_to_user_mode();<br>    <span class="hljs-keyword">if</span> (!fork()) &#123;<br>        init();<br>    &#125;<br>    <span class="hljs-keyword">for</span>(;;) pause();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>伪代码：这里其实是触发了一次中断，具体处理函数由eax决定，并去<code>sys_call_table</code>（操作系统提供给用户全部的系统调用功能）找</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">fork</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>     <span class="hljs-keyword">volatile</span> <span class="hljs-type">long</span> __res;<br>    _asm &#123;<br>        _asm mov eax,__NR_fork  <span class="hljs-comment">// 宏定义，值是 2</span><br>        _asm <span class="hljs-type">int</span> <span class="hljs-number">80</span>h<br>        _asm mov __res,eax<br>    &#125;<br>    <span class="hljs-keyword">if</span> (__res &gt;= <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span>) __res;<br>    errno = -__res;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c">set_system_gate(<span class="hljs-number">0x80</span>, &amp;system_call);<br><br>fn_ptr sys_call_table[] = &#123; sys_setup, sys_exit, sys_fork, sys_read,<br>  sys_write, sys_open, sys_close, sys_waitpid, sys_creat, sys_link,<br>  sys_unlink, sys_execve, sys_chdir, sys_time, sys_mknod, sys_chmod,<br>  sys_chown, sys_break, sys_stat, sys_lseek, sys_getpid, sys_mount,<br>  sys_umount, sys_setuid, sys_getuid, sys_stime, sys_ptrace, sys_alarm,<br>  sys_fstat, sys_pause, sys_utime, sys_stty, sys_gtty, sys_access,<br>  sys_nice, sys_ftime, sys_sync, sys_kill, sys_rename, sys_mkdir,<br>  sys_rmdir, sys_dup, sys_pipe, sys_times, sys_prof, sys_brk, sys_setgid,<br>  sys_getgid, sys_signal, sys_geteuid, sys_getegid, sys_acct, sys_phys,<br>  sys_lock, sys_ioctl, sys_fcntl, sys_mpx, sys_setpgid, sys_ulimit,<br>  sys_uname, sys_umask, sys_chroot, sys_ustat, sys_dup2, sys_getppid,<br>  sys_getpgrp, sys_setsid, sys_sigaction, sys_sgetmask, sys_ssetmask,<br>  sys_setreuid, sys_setregid<br>&#125;;<br><br>_system_call:<br>    ...<br>    call [_sys_call_table + eax*<span class="hljs-number">4</span>]<br>    ...<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182006030.png" srcset="/img/loading.gif" lazyload alt="image-20240418200635408"></p>
+<blockquote>
+<p>系统调用也可能有参数，刚刚产生哪个系统调用是通过<strong>eax</strong>传递，其他的参数可以通过<code>ebx ecx edx</code> 传递</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _syscall0(type,name)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _syscall1(type,name,atype,a)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _syscall2(type,name,atype,a,btype,b)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _syscall3(type,name,atype,a,btype,b,ctype,c)</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<p>全貌：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c">_system_call:<br>    cmpl $nr_system_calls<span class="hljs-number">-1</span>,%eax<br>    ja bad_sys_call<br>    push %ds<br>    push %es<br>    push %fs<br>    pushl %edx<br>    pushl %ecx      <span class="hljs-meta"># push %ebx,%ecx,%edx as parameters</span><br>    pushl %ebx      <span class="hljs-meta"># to the system call</span><br>    movl $<span class="hljs-number">0x10</span>,%edx     <span class="hljs-meta"># set up ds,es to kernel space</span><br>    mov %dx,%ds<br>    mov %dx,%es<br>    movl $<span class="hljs-number">0x17</span>,%edx     <span class="hljs-meta"># fs points to local data space</span><br>    mov %dx,%fs<br>    call _sys_call_table(,%eax,<span class="hljs-number">4</span>)<br>    pushl %eax<br>    movl _current,%eax<br>    cmpl $<span class="hljs-number">0</span>,state(%eax)     <span class="hljs-meta"># state</span><br>    jne reschedule<br>    cmpl $<span class="hljs-number">0</span>,counter(%eax)       <span class="hljs-meta"># counter</span><br>    je reschedule<br>ret_from_sys_call:<br>    movl _current,%eax      <span class="hljs-meta"># task[0] cannot have signals</span><br>    cmpl _task,%eax<br>    je <span class="hljs-number">3f</span><br>    cmpw $<span class="hljs-number">0x0f</span>,CS(%esp)     <span class="hljs-meta"># was old code segment supervisor ?</span><br>    jne <span class="hljs-number">3f</span><br>    cmpw $<span class="hljs-number">0x17</span>,OLDSS(%esp)      <span class="hljs-meta"># was stack segment = 0x17 ?</span><br>    jne <span class="hljs-number">3f</span><br>    movl <span class="hljs-title function_">signal</span><span class="hljs-params">(%eax)</span>,%ebx<br>    movl <span class="hljs-title function_">blocked</span><span class="hljs-params">(%eax)</span>,%ecx<br>    notl %ecx<br>    andl %ebx,%ecx<br>    bsfl %ecx,%ecx<br>    je 3f<br>    btrl %ecx,%ebx<br>    movl %ebx,<span class="hljs-title function_">signal</span><span class="hljs-params">(%eax)</span><br>    incl %ecx<br>    pushl %ecx<br>    call _do_signal<br>    popl %eax<br>3:  popl %eax<br>    popl %ebx<br>    popl %ecx<br>    popl %edx<br>    pop %fs<br>    pop %es<br>    pop %ds<br>    iret<br></code></pre></td></tr></table></figure>
+
+<p>因为 system_call 是通过 int 80h 这个软中断进来的，所以也属于中断的一种，具体说是属于特权级发生变化的，且没有错误码情况的中断，所以在这之前栈已经被压了 <strong>SS、ESP、EFLAGS、CS、EIP</strong> 这些值。</p>
+<p>接下来 system_call 又压入了一些值，具体说来有 <strong>ds、es、fs、edx、ecx、ebx、eax</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * Stack layout in &#x27;ret_from_system_call&#x27;:</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *   0(%esp) - %eax</span><br><span class="hljs-comment"> *   4(%esp) - %ebx</span><br><span class="hljs-comment"> *   8(%esp) - %ecx</span><br><span class="hljs-comment"> *   C(%esp) - %edx</span><br><span class="hljs-comment"> *  10(%esp) - %fs</span><br><span class="hljs-comment"> *  14(%esp) - %es</span><br><span class="hljs-comment"> *  18(%esp) - %ds</span><br><span class="hljs-comment"> *  1C(%esp) - %eip</span><br><span class="hljs-comment"> *  20(%esp) - %cs</span><br><span class="hljs-comment"> *  24(%esp) - %eflags</span><br><span class="hljs-comment"> *  28(%esp) - %oldesp</span><br><span class="hljs-comment"> *  2C(%esp) - %oldss</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
+
+<p>所以之后，中断处理程序如果有需要的话，就可以从这里取出它想要的值，包括 CPU 压入的那五个值，或者 system_call 手动压入的 7 个值。</p>
+<p>比如 <strong>sys_execve</strong> 这个中断处理函数，一开始就取走了位于栈顶 0x1C 位置处的 EIP 的值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">EIP = <span class="hljs-number">0x1C</span><br>_sys_execve:<br>    lea EIP(%esp),%eax<br>    pushl %eax<br>    call _do_execve<br>    addl $<span class="hljs-number">4</span>,%esp<br>    ret<br></code></pre></td></tr></table></figure>
+
+<p>随后在 <strong>do_execve</strong> 函数中，又通过 C 语言函数调用的约定，取走了 <strong>filename，argv，envp</strong> 等参数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">do_execve</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * eip,</span><br><span class="hljs-params">        <span class="hljs-type">long</span> tmp,</span><br><span class="hljs-params">        <span class="hljs-type">char</span> * filename,</span><br><span class="hljs-params">        <span class="hljs-type">char</span> ** argv,</span><br><span class="hljs-params">        <span class="hljs-type">char</span> ** envp)</span> &#123;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="fork-中进程基本信息的复制"><a href="#fork-中进程基本信息的复制" class="headerlink" title="fork 中进程基本信息的复制"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8cy-xX3ekeqHelrFcYFkvw">fork 中进程基本信息的复制</a></h3><p>回到<code>fork</code>函数，<code>sys_fork</code> 具体干了什么</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs asm">_sys_fork:<br>    call _find_empty_process<br>    testl %eax,%eax<br>    js 1f<br>    push %gs<br>    pushl %esi<br>    pushl %edi<br>    pushl %ebp<br>    pushl %eax<br>    call _copy_process<br>    addl $20,%esp<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>find_empty_process</strong>，就是找到空闲的进程槽位。 <code>task[64]</code></li>
+</ol>
+   <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">long</span> last_pid = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">find_empty_process</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">int</span> i;<br>    repeat:<br>        <span class="hljs-keyword">if</span> ((++last_pid)&lt;<span class="hljs-number">0</span>) last_pid=<span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span> ; i&lt;<span class="hljs-number">64</span> ; i++)<br>            <span class="hljs-keyword">if</span> (task[i] &amp;&amp; task[i]-&gt;pid == last_pid) <span class="hljs-keyword">goto</span> repeat;<br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span> ; i&lt;<span class="hljs-number">64</span>; i++)<br>        <span class="hljs-keyword">if</span> (!task[i])<br>            <span class="hljs-keyword">return</span> i;<br>    <span class="hljs-keyword">return</span> -EAGAIN;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>copy_process</strong>，就是复制进程。</li>
+</ol>
+   <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_process</span><span class="hljs-params">(<span class="hljs-type">int</span> nr,<span class="hljs-type">long</span> ebp,<span class="hljs-type">long</span> edi,<span class="hljs-type">long</span> esi,<span class="hljs-type">long</span> gs,<span class="hljs-type">long</span> none,</span><br><span class="hljs-params">        <span class="hljs-type">long</span> ebx,<span class="hljs-type">long</span> ecx,<span class="hljs-type">long</span> edx,</span><br><span class="hljs-params">        <span class="hljs-type">long</span> fs,<span class="hljs-type">long</span> es,<span class="hljs-type">long</span> ds,</span><br><span class="hljs-params">        <span class="hljs-type">long</span> eip,<span class="hljs-type">long</span> cs,<span class="hljs-type">long</span> eflags,<span class="hljs-type">long</span> esp,<span class="hljs-type">long</span> ss)</span>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> <span class="hljs-title">p</span> =</span> <br>        (<span class="hljs-keyword">struct</span> task_struct *) get_free_page();<br>    task[nr] = p;<br>    *p = *current; <span class="hljs-comment">// 复制当前当前进程 使得完全一样</span><br><br>    p-&gt;state = TASK_UNINTERRUPTIBLE;<br>    p-&gt;pid = last_pid;<br>    p-&gt;counter = p-&gt;priority;<br>    ..<br>    p-&gt;tss.edx = edx;<br>    p-&gt;tss.ebx = ebx;<br>    p-&gt;tss.esp = esp;<br>    ...<br>    copy_mem(nr,p);<br>    ...<br>    set_tss_desc(gdt+(nr&lt;&lt;<span class="hljs-number">1</span>)+FIRST_TSS_ENTRY,&amp;(p-&gt;tss));<br>    set_ldt_desc(gdt+(nr&lt;&lt;<span class="hljs-number">1</span>)+FIRST_LDT_ENTRY,&amp;(p-&gt;ldt));<br>    p-&gt;state = TASK_RUNNING;<br>    <span class="hljs-keyword">return</span> last_pid;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>get_free_page</strong> : 遍历mem_map[]，找到一个空闲的区域，空间给<code>task_struct p</code></p>
+</li>
+<li><p>将这个 p 记录在进程管理结构 task[nr] 中</p>
+</li>
+<li><p>复制当前进程的task</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182024339.png" srcset="/img/loading.gif" lazyload alt="image-20240418202432064"></p>
+</li>
+</ul>
+<p>设置独特值：一部分是 <strong>state</strong>，<strong>pid</strong>，<strong>counter</strong> 这种<strong>进程的元信息</strong>，另一部分是 <strong>tss</strong> 里面保存的各种寄存器的信息，即<strong>上下文</strong>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_process</span><span class="hljs-params">(<span class="hljs-type">int</span> nr, ...)</span> &#123;<br>    ...<br>    p-&gt;state = TASK_UNINTERRUPTIBLE;<br>    p-&gt;pid = last_pid;<br>    p-&gt;counter = p-&gt;priority;<br>    ..<br>    p-&gt;tss.edx = edx;<br>    p-&gt;tss.ebx = ebx;<br>    p-&gt;tss.esp = esp;<br>    ...<br>    p-&gt;tss.esp0 = PAGE_SIZE + (<span class="hljs-type">long</span>) p;<br>    p-&gt;tss.ss0 = <span class="hljs-number">0x10</span>;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p> ss0 和 esp0，这个表示 0 特权级也就是内核态时的 ss:esp 的指向。</p>
+<p>根据代码我们得知，其含义是将代码在内核态时使用的堆栈栈顶指针指向进程 task_struct 所在的 4K 内存页的最顶端，而且之后的每个进程都是这样被设置的。</p>
+<p>接下来将是进程页表和段表的复制，这将会决定进程之间的内存规划问题，很是精彩，也是 fork 真正的难点所在。</p>
+<h3 id="透过-fork-来看进程的内存规划"><a href="#透过-fork-来看进程的内存规划" class="headerlink" title="透过 fork 来看进程的内存规划"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/d2pHFSbTLb-nv2C_RfKlVA">透过 fork 来看进程的内存规划</a></h3><p>上一节中完成了task内存分配以及基本信息的复制，这里讲<code>copy_mem</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_mem</span><span class="hljs-params">(<span class="hljs-type">int</span> nr,<span class="hljs-keyword">struct</span> task_struct * p)</span> &#123;<br>    <span class="hljs-comment">// 局部描述符表 LDT 赋值</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> old_data_base,new_data_base,data_limit;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> old_code_base,new_code_base,code_limit;<br>    code_limit = get_limit(<span class="hljs-number">0x0f</span>);<br>    data_limit = get_limit(<span class="hljs-number">0x17</span>);<br>    new_code_base = nr * <span class="hljs-number">0x4000000</span>;<br>    new_data_base = nr * <span class="hljs-number">0x4000000</span>;<br>    set_base(p-&gt;ldt[<span class="hljs-number">1</span>],new_code_base);<br>    set_base(p-&gt;ldt[<span class="hljs-number">2</span>],new_data_base);<br>    <span class="hljs-comment">// 拷贝页表</span><br>    old_code_base = get_base(current-&gt;ldt[<span class="hljs-number">1</span>]);<br>    old_data_base = get_base(current-&gt;ldt[<span class="hljs-number">2</span>]);<br>    copy_page_tables(old_data_base,new_data_base,data_limit);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>地址转换过程：需要进过分段和分页</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182033099.png" srcset="/img/loading.gif" lazyload alt="image-20240418203259106"></p>
+<h4 id="LDT"><a href="#LDT" class="headerlink" title="LDT"></a><strong>LDT</strong></h4><p>分段查看的就是当前进程的LDT，我们给进程 0 准备的 LDT 的代码段和数据段，段基址都是 0，段限长是 640K。给进程 1，也就是我们现在正在 fork 的这个进程，其代码段和数据段还没有设置。</p>
+<p>所以第一步，<strong>局部描述符表 LDT 的赋值</strong>，就是给上图中那两个还未设置的代码段和数据段赋值。</p>
+<p>其中<strong>段限长</strong>，就是取自进程 0 设置好的段限长，也就是 640K。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_mem</span><span class="hljs-params">(<span class="hljs-type">int</span> nr,<span class="hljs-keyword">struct</span> task_struct * p)</span> &#123;<br>    ...<br>    code_limit = get_limit(<span class="hljs-number">0x0f</span>);<br>    data_limit = get_limit(<span class="hljs-number">0x17</span>);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>而<strong>段基址</strong>有点意思，是取决于当前是几号进程，也就是 nr 的值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_mem</span><span class="hljs-params">(<span class="hljs-type">int</span> nr,<span class="hljs-keyword">struct</span> task_struct * p)</span> &#123;<br>    ...<br>    new_code_base = nr * <span class="hljs-number">0x4000000</span>; <span class="hljs-comment">//（64M）</span><br>    new_data_base = nr * <span class="hljs-number">0x4000000</span>;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>也就是说，今后每个进程通过段基址的手段，分别在线性地址空间中占用 64M 的空间（暂不考虑段限长），且紧挨着。</p>
+<p>接着就把 LDT 设置进了 LDT 表里。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">copy_mem</span><span class="hljs-params">(<span class="hljs-type">int</span> nr,<span class="hljs-keyword">struct</span> task_struct * p)</span> &#123;<br>    ...<br>    set_base(p-&gt;ldt[<span class="hljs-number">1</span>],new_code_base);<br>    set_base(p-&gt;ldt[<span class="hljs-number">2</span>],new_data_base);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182033003.png" srcset="/img/loading.gif" lazyload alt="image-20240418203254546"></p>
+<p>进程0的线性地址空间是0<del>64M，1 是64</del>128M</p>
+<p>经过以上的步骤，就通过分段的方式，将进程映射到了相互隔离的线性地址空间里，这就是<strong>段式</strong>管理。</p>
+<h4 id="页表的复制"><a href="#页表的复制" class="headerlink" title="页表的复制"></a><strong>页表的复制</strong></h4><p>页表项</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182211547.png" srcset="/img/loading.gif" lazyload alt="image-20240418221102280"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> *  Well, here is one of the most complicated functions in mm. It</span><br><span class="hljs-comment"> * copies a range of linerar addresses by copying only the pages.</span><br><span class="hljs-comment"> * Let&#x27;s hope this is bug-free, &#x27;cause this one I don&#x27;t want to debug :-)</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">copy_page_tables</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> from,<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> to,<span class="hljs-type">long</span> size)</span><br>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * from_page_table;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * to_page_table;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> this_page;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * from_dir, * to_dir;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> nr;<br><br>    from_dir = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *) ((from&gt;&gt;<span class="hljs-number">20</span>) &amp; <span class="hljs-number">0xffc</span>);<br>    to_dir = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *) ((to&gt;&gt;<span class="hljs-number">20</span>) &amp; <span class="hljs-number">0xffc</span>);<br>    size = ((<span class="hljs-type">unsigned</span>) (size+<span class="hljs-number">0x3fffff</span>)) &gt;&gt; <span class="hljs-number">22</span>;<br>    <span class="hljs-keyword">for</span>( ; size--&gt;<span class="hljs-number">0</span> ; from_dir++,to_dir++) &#123;<br>        <span class="hljs-keyword">if</span> (!(<span class="hljs-number">1</span> &amp; *from_dir))<br>            <span class="hljs-keyword">continue</span>;<br>        from_page_table = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *) (<span class="hljs-number">0xfffff000</span> &amp; *from_dir);<br>        to_page_table = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *) get_free_page() <span class="hljs-comment">//页表也是申请的空间</span><br>        *to_dir = ((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>) to_page_table) | <span class="hljs-number">7</span>;<br>        nr = (from==<span class="hljs-number">0</span>)?<span class="hljs-number">0xA0</span>:<span class="hljs-number">1024</span>;<br>        <span class="hljs-keyword">for</span> ( ; nr-- &gt; <span class="hljs-number">0</span> ; from_page_table++,to_page_table++) &#123;<br>            this_page = *from_page_table;<br>            <span class="hljs-keyword">if</span> (!(<span class="hljs-number">1</span> &amp; this_page))<br>                <span class="hljs-keyword">continue</span>;<br>            this_page &amp;= ~<span class="hljs-number">2</span>;  <span class="hljs-comment">// 只读</span><br>            *to_page_table = this_page;<br>            <span class="hljs-keyword">if</span> (this_page &gt; LOW_MEM) &#123;<br>                *from_page_table = this_page;<br>                this_page -= LOW_MEM;<br>                this_page &gt;&gt;= <span class="hljs-number">12</span>;<br>                mem_map[this_page]++; <span class="hljs-comment">// 计数++  地址到idx需要右移12</span><br>            &#125;<br>        &#125;<br>    &#125;<br>    invalidate(); <span class="hljs-comment">// 刷新转换后援缓冲器（TLB）</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在进程 0 的线性地址空间是 0 - 64M，进程 1 的线性地址空间是 64M - 128M。<strong>我们现在要造一个进程 1 的页表，使得进程 1 和进程 0 最终被映射到的物理空间都是 0 - 64M</strong>，这样进程 1 才能顺利运行起来，不然就乱套了。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182051201.png" srcset="/img/loading.gif" lazyload alt="image-20240418205101695"></p>
+<p>假设现在正在运行进程 0，代码中给出一个虚拟地址 0x03，由于进程 0 的 LDT 中代码段基址是 0，所以线性地址也是 0x03，最终由进程 0 页表映射到物理地址 0x03 处。</p>
+<p>假设现在正在运行进程 1，代码中给出一个虚拟地址 0x03，由于进程 1 的 LDT 中代码段基址是 64M，所以线性地址是 64M + 3，最终由进程 1 页表映射到物理地址也同样是 0x03 处。</p>
+<p><strong>即，进程 0 和进程 1 目前共同映射物理内存的前 640K 的空间。</strong></p>
+<p>至于如何将不同地址通过不同页表映射到相同物理地址空间，很简单，举个刚刚的例子。</p>
+<p>刚刚的进程 1 的线性地址 64M + 0x03 用二进制表示是：</p>
+<p>0000010000_0000000000_000000000011</p>
+<p>刚刚的进程 0 的线性地址 0x03 用二进制表示是：</p>
+<p>0000000000_0000000000_000000000011</p>
+<p>根据分页机制的转化规则，<strong>前 10 位表示页目录项，中间 10 位表示页表项，后 12 位表页内偏移。</strong></p>
+<p>进程 1 要找的是页目录项 16 中的第 0 号页表</p>
+<p>进程 0 要找的是页目录项 0 中的第 0 号页表</p>
+<p>那只要让这俩最终找到的两个页表里的数据一模一样即可。<code>*from_page_table = this_page</code>;</p>
+<blockquote>
+<p>~2 表示取反，2 用二进制表示是 10，取反就是 01，其目的是把 this_page 也就是当前的页表的 RW 位置零，也就是是<strong>把该页变成只读</strong>。</p>
+<p>而 *from_page_table &#x3D; this_page 表示<strong>又把源页表也变成只读</strong>。</p>
+<p>也就是说，经过 fork创建出的新进程，其页表项都是只读的，而且导致源进程的页表项也变成了只读。</p>
+<p>这个就是<strong>写时复制</strong>的基础，新老进程一开始共享同一个物理内存空间，如果只有读，那就相安无事，但如果任何一方有写操作，由于页面是只读的，将触发缺页中断，然后就会分配一块新的物理内存给产生写操作的那个进程，此时这一块内存就不再共享了。</p>
+</blockquote>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182201513.png" srcset="/img/loading.gif" lazyload alt="image-20240418220124431"></p>
+<h4 id="写时复制"><a href="#写时复制" class="headerlink" title="写时复制"></a>写时复制</h4><p><strong>缺页中断</strong>：</p>
+<p>包含缺页<code>do_no_page</code>，和只读页<code>do_wp_page</code>  两种情况</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">do_page_fault</span><span class="hljs-params">(..., <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> error_code)</span> &#123;<br>    ...   <br>    <span class="hljs-keyword">if</span> (error_code &amp; <span class="hljs-number">1</span>)<br>        do_wp_page(error_code, address, current, user_esp);<br>    <span class="hljs-keyword">else</span><br>        do_no_page(error_code, address, current, user_esp);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">do_wp_page</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> error_code,<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> address)</span> &#123;<br>    <span class="hljs-comment">// 后面这一大坨计算了 address 在页表项的指针</span><br>    un_wp_page((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)<br>        (((address&gt;&gt;<span class="hljs-number">10</span>) &amp; <span class="hljs-number">0xffc</span>) + (<span class="hljs-number">0xfffff000</span> &amp;<br>        *((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *) ((address&gt;&gt;<span class="hljs-number">20</span>) &amp;<span class="hljs-number">0xffc</span>)))));<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">un_wp_page</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * table_entry)</span> &#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> old_page,new_page;<br>    old_page = <span class="hljs-number">0xfffff000</span> &amp; *table_entry;<br>    <span class="hljs-comment">// 只被引用一次，说明没有被共享，那只改下读写属性就行了</span><br>    <span class="hljs-keyword">if</span> (mem_map[MAP_NR(old_page)]==<span class="hljs-number">1</span>) &#123;<br>        *table_entry |= <span class="hljs-number">2</span>;<br>        invalidate();<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 被引用多次，就需要复制页表了</span><br>    new_page=get_free_page()；<br>    mem_map[MAP_NR(old_page)]--;<br>    *table_entry = new_page | <span class="hljs-number">7</span>; <span class="hljs-comment">// 更新可读可写</span><br>    invalidate();<br>    copy_page(old_page,new_page);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182219235.png" srcset="/img/loading.gif" lazyload alt="image-20240418221905176"></p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182148396.png" srcset="/img/loading.gif" lazyload alt="image-20240418214828462"></p>
+<ul>
+<li><p><strong>第一</strong>，原封不动复制了一下 task_struct。</p>
+<p><img src="/../AppData/Roaming/Typora/typora-user-images/image-20240418214853270.png" srcset="/img/loading.gif" lazyload alt="image-20240418214853270"></p>
+</li>
+<li><p><strong>第二</strong>，LDT 的复制和改造，使得进程 0 和进程 1 分别映射到了不同的线性地址空间。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182149395.png" srcset="/img/loading.gif" lazyload alt="image-20240418214916017"></p>
+</li>
+<li><p><strong>第三</strong>，页表的复制，使得进程 0 和进程 1 又从不同的线性地址空间，被映射到了相同的物理地址空间。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182149210.png" srcset="/img/loading.gif" lazyload alt="image-20240418214928175"></p>
+<p>最后，将新老进程的页表都变成只读状态，为后面<strong>写时复制</strong>的<strong>缺页中断</strong>做准备。</p>
+</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182200350.png" srcset="/img/loading.gif" lazyload alt="image-20240418220017599"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/linux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB/" class="category-chain-item">linux源码趣读</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/linux/" class="print-no-link">#linux</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/09/10/TechDigest/Redis%20%E6%9E%B6%E6%9E%84%E6%BC%94%E5%8C%96%E4%B9%8B%E8%B7%AF/" title="一文搞懂 Redis 架构演化之路(腾讯技术工程)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一文搞懂 Redis 架构演化之路(腾讯技术工程)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/01/book/%E5%A4%A7%E6%88%98%E5%89%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%B7%A5%E4%BD%9C%5Blinux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB%5D/" title="大战前的初始化工作[linux源码趣读]">
+                        <span class="hidden-mobile">大战前的初始化工作[linux源码趣读]</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

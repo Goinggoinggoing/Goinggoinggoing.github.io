@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="11&#x2F;10 ~ 11&#x2F;23 重构原因 原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况 原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方  重构基本思想 考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="考试重构-压测">
+<meta property="og:url" content="http://example.com/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="11&#x2F;10 ~ 11&#x2F;23 重构原因 原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况 原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方  重构基本思想 考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202455624.png">
+<meta property="article:published_time" content="2023-11-23T11:33:46.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="优化">
+<meta property="article:tag" content="水杉">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202455624.png">
+  
+  
+  
+  <title>考试重构-压测 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">考试重构-压测</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-23 19:33" pubdate>
+          2023年11月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">考试重构-压测</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>11&#x2F;10 ~ 11&#x2F;23</p>
+<h3 id="重构原因"><a href="#重构原因" class="headerlink" title="重构原因"></a>重构原因</h3><ul>
+<li>原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况</li>
+<li>原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方</li>
+</ul>
+<h3 id="重构基本思想"><a href="#重构基本思想" class="headerlink" title="重构基本思想"></a>重构基本思想</h3><ul>
+<li>考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可以小一点，个人做题数据时间需要改大一些，至少要超过考试的时间，防止学生答案丢失</li>
+<li>原来代码做了预热逻辑，该部分对系统整体提升不大，删去；redis判活部分没有必要，redis可靠性还是很高的，如果想做redis开关也不应该用threadlocal，应该是一个统一开关</li>
+<li>原来缓存答案逻辑是定时缓存，定时缓存系统负载很大，很多请求都是无效的请求，改成上下题切换时进行缓存</li>
+<li>目前系统支持的考试类型包含：练习、考试、模拟考试、课程评价。不同的模式有不同的处理，使用多态来优化代码结构；《以多态取代条件表达式》</li>
+<li>缓存答案有两种思想：一题一个key-value，一个key保存一个answerList，最终选择方案为answerList，可以避免进入考试时对redis的遍历插入以及考试结束时的遍历读取</li>
+</ul>
+<h3 id="重构步骤"><a href="#重构步骤" class="headerlink" title="重构步骤"></a>重构步骤</h3><ol>
+<li>删除原来所有有关redis缓存的全部代码，测试</li>
+<li>编写redis缓存通用类，将 （redis缓存不存在时，自动取数据库读取并插回redis）封装</li>
+<li>编写公共缓存管理类，全部有关缓存的代码都在此进行，包括缓存不存在时的mybatisplus数据库读取操作，service必须使用这里暴露的公共方法（使用缓存），禁止在service中直接查询数据库。</li>
+<li>在考试模式跑通测试后，编写多态代码扩展到（练习、考试、模拟考试、课程评价）模式</li>
+<li>引入消息队列对交卷进行优化</li>
+</ol>
+<h4 id="redis通用类"><a href="#redis通用类" class="headerlink" title="redis通用类"></a>redis通用类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 序列化方式 GenericFastJsonRedisSerializer 可以直接强转</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisCache</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RedisTemplate&lt;String, Object&gt; redisTemplate;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> defaultExpiration;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TimeUnit defaultExpirationUnit;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RedisCache</span><span class="hljs-params">(RedisTemplate&lt;String, Object&gt; redisTemplate, <span class="hljs-type">long</span> defaultExpiration, TimeUnit defaultExpirationUnit)</span> &#123;<br>        <span class="hljs-built_in">this</span>.redisTemplate = redisTemplate;<br>        <span class="hljs-built_in">this</span>.defaultExpiration = defaultExpiration;<br>        <span class="hljs-built_in">this</span>.defaultExpirationUnit = defaultExpirationUnit;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> (T) redisTemplate.opsForValue().get(key);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">get</span><span class="hljs-params">(String key, Supplier&lt;T&gt; supplier, <span class="hljs-type">long</span> expiration, TimeUnit unit)</span> &#123;<br>        <span class="hljs-type">T</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> (T) redisTemplate.opsForValue().get(key);<br>        <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) &#123;<br>            value = supplier.get();<br>            put(key, value, expiration, unit);<br>        &#125;<br>        <span class="hljs-keyword">return</span> value;<br>    &#125;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="公共缓存管理类"><a href="#公共缓存管理类" class="headerlink" title="公共缓存管理类"></a>公共缓存管理类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CommonRedisCacheBean</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">EXAM_KEY</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;v2Exam:resourceId:%s&quot;</span>;<br><br>	RedisTemplate&lt;String, Object&gt; objectRedisTemplate;<br>    <br>    <span class="hljs-keyword">public</span> RedisCache&lt;Exam&gt; EXAM_CACHE;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CommonRedisCacheBean</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;objectRedisTemplate&quot;)</span> RedisTemplate&lt;String, Object&gt; objectRedisTemplate)</span> &#123;<br>        <span class="hljs-built_in">this</span>.objectRedisTemplate = objectRedisTemplate;<br>        <span class="hljs-built_in">this</span>.EXAM_CACHE = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisCache</span>&lt;&gt;(objectRedisTemplate, <span class="hljs-number">10</span>, TimeUnit.MINUTES);<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> Exam <span class="hljs-title function_">getExam</span><span class="hljs-params">(String resourceId)</span>&#123;<br>        <span class="hljs-keyword">return</span> EXAM_CACHE.get(String.format(EXAM_KEY, resourceId),<br>                () -&gt; examMapper.selectOne(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;Exam&gt;().eq(Exam::getResourceId, resourceId)));<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BaseExamHandler</span> &#123;<br>    <span class="hljs-comment">// 获取提示getNotice 不实现，交给子类</span><br> 	<span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title function_">getNotice</span><span class="hljs-params">(Exam exam)</span>&#123; <br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnsupportedOperationException</span>(<span class="hljs-string">&quot;This method is not implemented&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 很多都一样，定义在父类</span><br>    <span class="hljs-keyword">public</span> ExamDataRes <span class="hljs-title function_">getExamInfo</span><span class="hljs-params">(String resourceId)</span> &#123;<br>		<span class="hljs-comment">// code</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExerciseHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseExamHandler</span>&#123;<br>    <span class="hljs-meta">@Override</span> <span class="hljs-comment">// 具体自己的实现</span><br>    <span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title function_">getNotice</span><span class="hljs-params">(Exam exam)</span> &#123;<br>        Map&lt;String, Object&gt; noticeMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;&gt;();<br>        <span class="hljs-keyword">return</span> noticeMap;<br>    &#125;<br>	<span class="hljs-comment">// 直接调用父</span><br>    <span class="hljs-keyword">public</span> ExamDataRes <span class="hljs-title function_">getExamInfo</span><span class="hljs-params">(String resourceId)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.getExamInfo(resourceId);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExamHandlerFactory</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Integer, BaseExamHandler&gt; handlerMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ExamHandlerFactory</span><span class="hljs-params">(</span><br><span class="hljs-params">            ExerciseHandler exerciseHandler,</span><br><span class="hljs-params">            ExamHandler examHandler,</span><br><span class="hljs-params">            SimulationHandler simulationHandler,</span><br><span class="hljs-params">            EvaluateHandler evaluateHandler)</span> &#123;<br>        handlerMap.put(ExamType.EXERCISE, exerciseHandler);<br>        handlerMap.put(ExamType.EXAM, examHandler);<br>        handlerMap.put(ExamType.EXAM_SIMULATION, simulationHandler);<br>        handlerMap.put(ExamType.Evaluate, evaluateHandler);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> BaseExamHandler <span class="hljs-title function_">getHandler</span><span class="hljs-params">(<span class="hljs-type">int</span> type)</span> &#123;<br>        <span class="hljs-type">BaseExamHandler</span> <span class="hljs-variable">handler</span> <span class="hljs-operator">=</span> handlerMap.get(type);<br>        <span class="hljs-keyword">if</span> (handler == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Invalid exam type&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> handler;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BaseExamHandler</span> <span class="hljs-variable">handler</span> <span class="hljs-operator">=</span> examHandlerFactory.getHandler(exam.getType());<br>handler.startExam(resourceId, exam);<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h4><p>​	引入原因：考试有两个并发峰值：进入考试阶段以及交卷阶段，进入考试阶段设计数据库的读取操作（考生是否进入过考试，进入过需要取出答案），提交阶段涉及数据库的插入操作。海量的数据库插入操作会影响系统的并发，使用mq来优化可以减轻系统压力，削峰</p>
+<p>mq使用逻辑</p>
+<ul>
+<li>在学生提交交卷请求时，立马更新redis，之后直接返回。redis更新成功代表考试交卷成功，并同时发送一个mq请求</li>
+<li>mq消费者消费该消息，将数据从redis插入到数据库</li>
+<li>mq消费函数是幂等的，mq需要保证至少一次消费</li>
+</ul>
+<h3 id="压测"><a href="#压测" class="headerlink" title="压测"></a>压测</h3><p>查看系统的负载</p>
+<h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><p><strong>可能的影响因素：</strong></p>
+<ul>
+<li>代码质量，是否使用缓存，缓存命中率</li>
+<li>exam pod数量，pod的Xmx</li>
+<li>gateway 、usercenter pod数量</li>
+<li>redis </li>
+<li>mysql</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ol>
+<li>pod扩容应该在考试前进行，动态扩容瞬间系统会炸</li>
+<li>每次压测前注意清理oom的pod</li>
+</ol>
+<p><strong>参数：</strong></p>
+<ul>
+<li>人数x&#x3D;6k~10k</li>
+<li>warm-up&#x3D;100s</li>
+<li>题目延时5~180s，平均delay &#x3D; 92.5s</li>
+</ul>
+<p>进入峰值QPS &#x3D; 在进入考试warm结尾：x&#x2F;warm * 3(notices\startExam\getExamInfo) + x&#x2F;delay </p>
+<p>另外当交卷开始时会达到第二个峰值</p>
+<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><ol>
+<li>3pod压2k人，无压力</li>
+<li>开启动态扩容，压4k人，扩容瞬间系统崩溃</li>
+<li>提前给开好10pod 6k人，不使用mq，峰值在进入考试结尾以及交卷，尤其是交卷。交卷90%达到了10sRT。<ol>
+<li>分析：exam-pod的cpu利用率不高，推测是gateway usercenter的原因（第一时间运维同学不在没有找到mysql的pod），扩容gateway usercenter发现还是没有用</li>
+<li>rt:<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202311232119135.png" srcset="/img/loading.gif" lazyload alt="image-20231122140548390"></li>
+</ol>
+</li>
+<li>在找到<strong>mysql</strong>机器后发现mysql负载很高，理论上如果同一场考试同一批人连续压测，不应该有任何mysql请求，全部数据都进入了缓存，回到本地机器调试开启gateway usercenter的debug发现，任何一个请求都进行了额外数据库的查询，该查询不合理需要优化掉，因此本次压测暂时到此结束。</li>
+<li>此外skywalking也给出了慢SQL，但是第一时间没有关注到</li>
+</ol>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><ul>
+<li>在系统中，除了要关注自己写的代码外， 还需要注意整条链路；自己写的代码再好有别的瓶颈也没有用</li>
+<li>cpu利用率是最简单的查看瓶颈的方式</li>
+<li>可观测的重要性</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BC%80%E5%8F%91/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%90%8E%E7%AB%AF/" class="print-no-link">#后端</a>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+        <a href="/tags/%E4%BC%98%E5%8C%96/" class="print-no-link">#优化</a>
+      
+        <a href="/tags/%E6%B0%B4%E6%9D%89/" class="print-no-link">#水杉</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/15/TechDigest/%E8%AE%A2%E5%8D%95%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86/" title="订单超时处理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">订单超时处理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/15/TechDigest/%E5%AF%B9%E8%B4%A6%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE/" title="对账体系建设">
+                        <span class="hidden-mobile">对账体系建设</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

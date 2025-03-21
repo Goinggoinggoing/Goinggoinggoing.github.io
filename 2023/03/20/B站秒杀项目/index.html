@@ -1,0 +1,1052 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="B站秒杀项目笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="B站秒杀项目">
+<meta property="og:url" content="http://example.com/2023/03/20/B%E7%AB%99%E7%A7%92%E6%9D%80%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="B站秒杀项目笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903365.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903366.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903367.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903368.png">
+<meta property="article:published_time" content="2023-03-20T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java项目">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903365.png">
+  
+  
+  
+  <title>B站秒杀项目 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">B站秒杀项目</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-20 20:00" pubdate>
+          2023年3月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">B站秒杀项目</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="B站秒杀项目"><a href="#B站秒杀项目" class="headerlink" title="B站秒杀项目"></a>B站秒杀项目</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1sf4y1L7KE">视频地址</a></li>
+<li>代码：<a target="_blank" rel="noopener" href="https://github.com/Goinggoinggoing/seckill-study">https://github.com/Goinggoinggoing/seckill-study</a></li>
+<li>项目来源：程序员来了666 <a target="_blank" rel="noopener" href="https://gitee.com/guizhizhe/seckill_demo">https://gitee.com/guizhizhe/seckill_demo</a> ， 添加了一些中间过程接口以及注释</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>一个简单的秒杀项目，并不断的优化</p>
+<ol>
+<li><p>在该项目中核心就是秒杀的实现：不能超卖、不能重复抢</p>
+<ul>
+<li>不能超卖在doSeckill1中通过update的排他性实现(乐观锁)。而在doSeckill2中通过redis预减库存(redis的原子性实现)</li>
+<li>不能重复抢通过唯一索引实现，默认建表时没有添加，压测可以把用户加少点商品多一点就可以复现重复购买</li>
+</ul>
+</li>
+<li><p>优化不过就是把数据库的重复访问，能放到redis就放到redis；而如果访问redis太多了就再加一层内存标记</p>
+</li>
+<li><p>redis和mysql要么都在远程，要么都在本地，否则可能会出现redis缓存优化了但QPS没提升</p>
+</li>
+</ol>
+<p>秒杀的接口有三个，先在goodsdetail中启用doSeckill1</p>
+<ol>
+<li><p>doSeckill1:  对应到 <strong>P43</strong>，update排他+唯一索引实现秒杀(没有做order页面静态化)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 到这里为了实现不超卖（减少库存的同时判断库存数量）且单一下单（唯一索引）</span><br><span class="hljs-type">boolean</span> <span class="hljs-variable">seckillGoodsResult</span> <span class="hljs-operator">=</span> itSeckillGoodsService.update(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UpdateWrapper</span>&lt;TSeckillGoods&gt;()<br>        .setSql(<span class="hljs-string">&quot;stock_count = &quot;</span> + <span class="hljs-string">&quot;stock_count-1&quot;</span>)<br>        .eq(<span class="hljs-string">&quot;goods_id&quot;</span>, goodsVo.getId())<br>        .gt(<span class="hljs-string">&quot;stock_count&quot;</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment">//大于零才下单</span><br>);<br><span class="hljs-comment">// 防超卖，直接结束，很关键</span><br><span class="hljs-keyword">if</span> (!seckillGoodsResult) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  <span class="hljs-comment">// 否则下单事务直接结束。update是排他锁，一定不会超卖</span><br>&#125;<br><br><span class="hljs-comment">// 同时做了一些优化： 下单后存入redis，加快是否重复下单判断。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>doSeckill2：对应到 <strong>P53</strong>，         order界面静态化 +  redis预减库存 + 内存标记 + MQ</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs">0.页面静态化（在前后端分离项目里默认就做了）<br>1.用redis预减库存（减少数据库访问），redis是原子操作，可以防止超卖；<br>2.满足还有库存后进入MQ队列；  <br>3.我还想减少redis访问次数：引入内存标记。<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>doSeckill ：最终秒杀方案          一些安全上的优化</p>
+</li>
+</ol>
+<p>对应到发起请求界面static\goodsDetail.html 52~67行</p>
+<p>前后端结合项目，两种处理页面方式，二者对比可以看orderDetail页面</p>
+<ol>
+<li>前端页面在template下，通过controller返回访问，并<code>model.add添加数据</code>。<code>h:text=&quot;$&#123;goods.goodsName&#125;&quot;</code>页面取出数据， 不可直接访问页面</li>
+<li>在static下的页面可直接访问，并在页面加载时ajax请求返回json数据，<code>$(&quot;#goodsName&quot;).text(goods.goodsName);</code>根据id注入数据。（代码中的方式，相当于静态化了，视频中一开始是上面的方式，后面才做的静态化）</li>
+</ol>
+<h2 id="视频内容"><a href="#视频内容" class="headerlink" title="视频内容"></a>视频内容</h2><ol>
+<li>项目框架搭建<ol>
+<li>SpringBoot环境搭建</li>
+<li>集成Thymeleaf,RespBean</li>
+<li>MyBatis</li>
+</ol>
+</li>
+<li>分布式会话<ol>
+<li>用户登录<ol>
+<li>设计数据库</li>
+<li>明文密码二次MD5加密</li>
+<li>参数校验+全局异常处理</li>
+</ol>
+</li>
+<li>共享Session<ol>
+<li>SpringSession</li>
+<li>Redis</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>功能开发<ol>
+<li>商品列表</li>
+<li>商品详情</li>
+<li>秒杀</li>
+<li>订单详情</li>
+</ol>
+</li>
+<li>系统压测<ol>
+<li>JMeter</li>
+<li>自定义变量模拟多用户</li>
+<li>JMeter命令行的使用</li>
+<li>正式压测<ol>
+<li>商品列表</li>
+<li>秒杀</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>页面优化<ol>
+<li>页面缓存+URL缓存+对象缓存</li>
+<li>页面静态化，前后端分离</li>
+<li>静态资源优化</li>
+<li>CDN优化</li>
+</ol>
+</li>
+<li>接口优化<ol>
+<li>Redis预减库存减少数据库的访问</li>
+<li>内存标记减少Redis的访问</li>
+<li>RabbitMQ异步下单<ol>
+<li>SpringBoot整合RabbitMQ</li>
+<li>交换机</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>安全优化<ol>
+<li>秒杀接口地址隐藏</li>
+<li>算术验证码</li>
+<li>接口防刷</li>
+</ol>
+</li>
+<li>主流的秒杀方案</li>
+</ol>
+<h2 id="软件架构"><a href="#软件架构" class="headerlink" title="软件架构"></a>软件架构</h2><table>
+<thead>
+<tr>
+<th>技术</th>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spring Boot</td>
+<td>2.6.4</td>
+<td></td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/baomidou/generator">MyBatis Plus</a></td>
+<td>3.5.1</td>
+<td></td>
+</tr>
+<tr>
+<td>Swagger2</td>
+<td>2.9.2</td>
+<td>Swagger-models2.9.2版本报错，使用的是1.5.22</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://doc.xiaominfo.com/">Kinfe4j</a></td>
+<td>2.0.9</td>
+<td>感觉比Swagger UI漂亮的一个工具，访问地址是ip:端口&#x2F;doc.html</td>
+</tr>
+<tr>
+<td>Spring Boot Redis</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>快（高性能） 准（一致性） 稳（高可用）</p>
+<h2 id="项目构建"><a href="#项目构建" class="headerlink" title="项目构建"></a>项目构建</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>spring 模板，并添加相应依赖，再添加mybatisplus</p>
+<p>配置mybatis-plus  datasource  log</p>
+<p>创建controller service mapper 和mapper.xml， @MapperScan Dao层</p>
+<p>新建测试接口测试</p>
+<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p>创建数据库表以及mapper service controller层</p>
+<p>​		pass  &#x3D;  MD5(MD5(pass名为+salt) + salt2)，前端传过来的时候也加密一次。这里salt2是存在数据库里的</p>
+<p>创建一个项目作为逆向生成工具项目，勾选spring web，添加mybatis plus，官网代码生成器</p>
+<h3 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h3><p>&#x2F;doLogin</p>
+<p>导入登录界面，前端传密码前用md5加密一下</p>
+<p>添加通用返回类以及枚举对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RespBean</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> RespBean <span class="hljs-title function_">success</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RespBean</span>(RespBeanEnum.SUCCESS.getCode(), RespBeanEnum.SUCCESS.getMessage(), <span class="hljs-literal">null</span>);<br>    &#125;<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">RespBeanEnum</span> &#123;<br>    <span class="hljs-comment">//通用</span><br>    SUCCESS(<span class="hljs-number">200</span>, <span class="hljs-string">&quot;SUCCESS&quot;</span>),<br>    ERROR(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;服务端异常&quot;</span>),<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>校验在service中，还可以导入<code>spring-boot-starter-validation</code>包然后通过注解<code>@NotNull</code>实现校验。</p>
+<ul>
+<li><p>service如果出现异常，抛出并且<code>全局异常处理</code></p>
+</li>
+<li><p>登录成功后存一个uuid到session，并用cookie(直接返回也可以)返回给前端，前端每次都带上这个；或者返回一个token，前端每次携带</p>
+</li>
+<li><p>添加<code>spring-session-data-redis</code>依赖后可以将session自动存入redis中实现分布式session，</p>
+</li>
+<li><p>或者直接存数据到redis, key为uuid，通过cookie传来。之后相当于每次<strong>通过uuid拿到用户信息</strong>。导入<code>redis</code>包，配置 ip port等，配置类实现redis序列化，object序列化为json</p>
+</li>
+<li><p>使用配置MVC，继承 <code>WebMvcConfigurer</code>实现mvc的配置</p>
+<p>​	配置自定义参数配置， 每次取出user传入参数（这里只做了取出参数User，没有拦截请求）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903365.png" srcset="/img/loading.gif" lazyload alt="image-20230315100229300"></p>
+<p>​    还可以配置拦截器，添加拦截器，拦截哪些请求。（也可以拦截器直接实现参数，自己代码）</p>
+</li>
+</ul>
+<h3 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h3><p><strong>界面</strong>：商品列表 商品详情 订单 </p>
+<p><strong>表</strong>：商品表 订单表 秒杀商品表（秒杀活动很多，添加一个标识字段不合适）  秒杀订单表</p>
+<p><code>秒杀表</code>：商品ID、秒杀库存、开始结束时间</p>
+<h3 id="商品列表"><a href="#商品列表" class="headerlink" title="商品列表"></a>商品列表</h3><p>名称 图片 价格 秒杀价 秒杀库存</p>
+<p>由于需要显示的数据包含<code>商品表</code>和<code>秒杀商品表</code>，添加vo继承商品表添加额外信息</p>
+<p><code>toList</code>接口返回商品列表，还需要添加<strong>mvc静态资源映射</strong> ：<code>addResourceHandlers</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903366.png" srcset="/img/loading.gif" lazyload alt="image-20230307190839362"></p>
+<h3 id="商品详情页"><a href="#商品详情页" class="headerlink" title="商品详情页"></a>商品详情页</h3><p>需要知道秒杀是否开始结束，后端通过时间判断返回给前端一个状态（未开始、进行中、已结束）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903367.png" srcset="/img/loading.gif" lazyload alt="image-20230307193103679"></p>
+<h3 id="秒杀功能"><a href="#秒杀功能" class="headerlink" title="秒杀功能"></a>秒杀功能</h3><p>&#x2F;doSeckill1  传统秒杀</p>
+<p>传入user，goodsId</p>
+<ul>
+<li>判断该goodsId是否还有库存，库存是看秒杀商品表， <code>进一步：redis预减</code></li>
+<li>判断该userId是否购买过goodId（查看秒杀订单表）：&#x3D;&#x3D;优化：查询redis&#x3D;&#x3D;</li>
+<li>都没问题时，减库存，生成订单，生成秒杀订单          <code>进一步：加入队列</code></li>
+</ul>
+<p>代码中，前端页面需要将接口改为doSeckill1</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>建表，需要额外秒杀商品表（价格、库存、开始结束时间）、秒杀订单（商品id、订单id）</li>
+<li>登录，存入信息到redis，key为时间戳，访问通过cookie携带</li>
+<li>全局异常处理处理业务异常，拦截器拦截未登录用户（cookie时间戳不合理），静态资源配置</li>
+<li>商品列表、商品详情页，秒杀功能</li>
+</ul>
+<h2 id="压测"><a href="#压测" class="headerlink" title="压测"></a>压测</h2><h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>jmeter</p>
+<ul>
+<li>QPS：每秒请求次数</li>
+<li>TPS：每秒事务（吞吐量）次数</li>
+<li>一个页面一个TPS可能多次QPS</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903368.png" srcset="/img/loading.gif" lazyload alt="image-20230314094536441"></p>
+<p>但windos和linux相差可能很多</p>
+<p><strong>配置mysql：</strong>为了安全性创建新用户xx，打开阿里云安全组，关闭防火墙</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">CREATE USER &#x27;xx&#x27;@&#x27;%&#x27; IDENTIFIED BY <span class="hljs-string">&#x27;123456&#x27;</span>;<br>grant <span class="hljs-attribute">all</span> on *.* <span class="hljs-selector-tag">to</span> &#x27;xx&#x27;@&#x27;%&#x27;;<br><br>sudo firewall-cmd <span class="hljs-attr">--list-ports</span><br>sudo firewall-cmd <span class="hljs-attr">--add-port</span>=<span class="hljs-number">3306</span>/tcp <span class="hljs-attr">--permanent</span><br>sudo firewall-cmd <span class="hljs-attr">--reload</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>配置redis</strong>  (使用docker)，并配置远程访问以及持久化</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs css"># 持久化<br>mkdir -<span class="hljs-selector-tag">p</span> /root/docker/redis/data<br>mkdir -<span class="hljs-selector-tag">p</span> /root/docker/redis/conf<br>vi /root/docker/redis/conf/redis<span class="hljs-selector-class">.conf</span><br>    # bind <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><br>    protected-mode no<br>    appendonly yes<br>	requirepass <span class="hljs-number">123123</span><br><br>docker run <span class="hljs-attr">--name</span> my_redis -<span class="hljs-selector-tag">p</span> <span class="hljs-number">6379</span>:<span class="hljs-number">6379</span> -v /root/docker/redis/data:/data -v /root/docker/redis/conf/redis.conf:/etc/redis/redis.conf -d redis redis-server /etc/redis/redis.conf <br><br>redis-server /etc/redis/redis.conf：在容器内执行的命令，启动 Redis 服务，并使用 /etc/redis/redis.conf 作为配置文件。<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>安装jmeter，配置encodin，导入配置，放到bin目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./jmeter.sh -n -t first.jmx -l result.jtl<br>result.jtl 拿到win 聚合报告下查看<br></code></pre></td></tr></table></figure>
+
+
+
+<p>部署java 到docker容器中,但我mysql redis都装在宿主机，需要合并网络不好访问，所以还是部署出来（或者用dockercompose部署）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs css"># 使用 openjdk 作为基础镜像<br><span class="hljs-selector-tag">FROM</span> openjdk:<span class="hljs-number">8</span>-jdk-alpine<br><br># 设置工作目录<br>WORKDIR /app<br><br># 将打包好的jar复制到容器中<br>COPY target/seckill-demo-<span class="hljs-number">0.0</span>.<span class="hljs-number">1</span>-SNAPSHOT.jar /app/seckill-demo-<span class="hljs-number">0.0</span>.<span class="hljs-number">1</span>-SNAPSHOT.jar<br><br># 暴露应用程序端口，起提示作用<br>EXPOSE <span class="hljs-number">8080</span><br><br># 启动应用程序<br>CMD [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app/seckill-demo-0.0.1-SNAPSHOT.jar&quot;</span>]<br><br>docker build -t myapp:v1 .<br>docker run -p <span class="hljs-number">8080</span>:<span class="hljs-number">8080</span> myapp:v1<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>问题</strong>：postman可以携带cookie请求成功，但浏览器不可以（跨域）</p>
+<p>​			现在没有拦截未登录用户，如果未携带cookie会导致User空指针异常</p>
+<p><strong>小结</strong></p>
+<ul>
+<li>本地项目数据库、redis都用云的，并打包一份项目放到云上</li>
+<li>云上部署，本地运行压测程序进行压测（标准应该云上压测，但比较麻烦）</li>
+</ul>
+<h3 id="配置文件导入多用户"><a href="#配置文件导入多用户" class="headerlink" title="配置文件导入多用户"></a>配置文件导入多用户</h3><ul>
+<li><p>再创建一个用户，登录后把uuid保存下来，放到文件里逗号分隔</p>
+</li>
+<li><p>csv数据文件设置 <strong>定义</strong>变量名称<code>userTicket</code>, <code>$&#123;userTicket&#125;</code> 取出</p>
+</li>
+<li><p>测试&#x2F;user&#x2F;info接口，看下是不是 <strong>返回不同用户</strong></p>
+</li>
+<li><p>商品列表：5000 10 ：460</p>
+</li>
+</ul>
+<p>生成100个用户，并且登录返回ticket,这里也可以生成用户用java，请求用python</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/createuser&quot;)</span><br>    <span class="hljs-meta">@ApiOperation(&quot;压测创建配置文件&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">CreateUser</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        List&lt;TUser&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-comment">//生成用户</span><br><span class="hljs-comment">//        for (int i = 0; i &lt; 100; i++) &#123;</span><br><span class="hljs-comment">//            TUser tUser = new TUser();</span><br><span class="hljs-comment">//            tUser.setId(1233L + i);</span><br><span class="hljs-comment">//            tUser.setNickname(&quot;user&quot; + i);</span><br><span class="hljs-comment">//            tUser.setSalt(&quot;1a2b3c&quot;);</span><br><span class="hljs-comment">//            tUser.setPassword(&quot;05314c6fbe1d0cdb5eab4e80f1bda30a&quot;);</span><br><span class="hljs-comment">//            list.add(tUser);</span><br><span class="hljs-comment">//        &#125;</span><br><span class="hljs-comment">//        tUserService.saveBatch(list);</span><br><span class="hljs-comment">//        System.out.println(&quot;create user&quot;);</span><br><br>        <span class="hljs-comment">//读取用户</span><br>        list = tUserService.list();<br><br>        <span class="hljs-comment">//登录，生成UserTicket</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">urlString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;http://localhost:8080/login/doLogin&quot;</span>;<br>        <span class="hljs-type">File</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;C:\\Users\\13000\\Desktop\\config.txt&quot;</span>);<br>        <span class="hljs-keyword">if</span> (file.exists()) &#123;<br>            file.delete();<br>        &#125;<br>        <span class="hljs-type">RandomAccessFile</span> <span class="hljs-variable">randomAccessFile</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RandomAccessFile</span>(file, <span class="hljs-string">&quot;rw&quot;</span>);<br>        randomAccessFile.seek(<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; list.size(); i++) &#123;<br>            <span class="hljs-type">TUser</span> <span class="hljs-variable">tUser</span> <span class="hljs-operator">=</span> list.get(i);<br>            <span class="hljs-type">URL</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">URL</span>(urlString);<br>            <span class="hljs-type">HttpURLConnection</span> <span class="hljs-variable">httpURLConnection</span> <span class="hljs-operator">=</span> (HttpURLConnection) url.openConnection();<br>            httpURLConnection.setRequestMethod(<span class="hljs-string">&quot;POST&quot;</span>);<br>            httpURLConnection.setDoOutput(<span class="hljs-literal">true</span>);<br>            <span class="hljs-type">OutputStream</span> <span class="hljs-variable">outputStream</span> <span class="hljs-operator">=</span> httpURLConnection.getOutputStream();<br>            <span class="hljs-type">String</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;mobile=&quot;</span> + tUser.getId() + <span class="hljs-string">&quot;&amp;password=c38dc3dcb8f0b43ac8ea6a70b5ec7648&quot;</span>;<br>            outputStream.write(params.getBytes());<br>            outputStream.flush();<br>            <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> httpURLConnection.getInputStream();<br>            <span class="hljs-type">ByteArrayOutputStream</span> <span class="hljs-variable">byteArrayOutputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>            <span class="hljs-type">byte</span>[] buff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span>];<br>            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">while</span> ((len = inputStream.read(buff)) &gt;= <span class="hljs-number">0</span>) &#123;<br>                byteArrayOutputStream.write(buff, <span class="hljs-number">0</span>, len);<br>            &#125;<br>            inputStream.close();<br>            byteArrayOutputStream.close();<br>            <span class="hljs-type">String</span> <span class="hljs-variable">respone</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(byteArrayOutputStream.toByteArray());<br>            <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>            <span class="hljs-type">RespBean</span> <span class="hljs-variable">respBean</span> <span class="hljs-operator">=</span> mapper.readValue(respone, RespBean.class);<br>            <span class="hljs-type">String</span> <span class="hljs-variable">userTicket</span> <span class="hljs-operator">=</span> (String) respBean.getObject();<br>            System.out.println(<span class="hljs-string">&quot;create userTicket:&quot;</span> + tUser.getId());<br>            <span class="hljs-type">String</span> <span class="hljs-variable">row</span> <span class="hljs-operator">=</span> tUser.getId() + <span class="hljs-string">&quot;,&quot;</span> + userTicket;<br>            randomAccessFile.seek(randomAccessFile.length());<br>            randomAccessFile.write(row.getBytes());<br>            randomAccessFile.write(<span class="hljs-string">&quot;\r\n&quot;</span>.getBytes());<br>            System.out.println(<span class="hljs-string">&quot;write to file :&quot;</span> + tUser.getId());<br>        &#125;<br>        randomAccessFile.close();<br>        System.out.println();<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试秒杀接口"><a href="#测试秒杀接口" class="headerlink" title="测试秒杀接口"></a>测试秒杀接口</h3><p>&#x2F;doSeckill2</p>
+<p>存在超卖问题！！</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><h3 id="1-对象缓存redis"><a href="#1-对象缓存redis" class="headerlink" title="1.对象缓存redis"></a>1.对象缓存redis</h3><p>通过uuid缓存User对象，数据跟新后要删除redis</p>
+<h3 id="2-页面缓存redis"><a href="#2-页面缓存redis" class="headerlink" title="2.页面缓存redis"></a>2.页面缓存redis</h3><p>把整个页面缓存到redis </p>
+<p>​	本来是<code>return ”goodsList“</code> 返回页面   - - 》》优化成 <code>渲染出整个页面</code>再返回，并缓存整个页面。<code>toList</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(value = &quot;/toList&quot;, produces = &quot;text/html;charset=utf-8&quot;, method = RequestMethod.GET)</span><br><span class="hljs-meta">@ResponseBody</span> <span class="hljs-comment">// 之前是返回字符串走mvc，现在是直接返回html文本</span><br><br>    <span class="hljs-comment">// 先看redis有没有</span><br>    <span class="hljs-type">ValueOperations</span> <span class="hljs-variable">valueOperations</span> <span class="hljs-operator">=</span> redisTemplate.opsForValue();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">html</span> <span class="hljs-operator">=</span> (String) valueOperations.get(<span class="hljs-string">&quot;goodsList&quot;</span>);<br>    <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(html)) &#123;<br>        <span class="hljs-keyword">return</span> html;<br>    &#125;<br>    <span class="hljs-comment">// 数据还是先放到model</span><br>    model.addAttribute(<span class="hljs-string">&quot;user&quot;</span>, user);<br>    model.addAttribute(<span class="hljs-string">&quot;goodsList&quot;</span>, itGoodsService.findGoodsVo());<br>    <span class="hljs-comment">// 手动渲染goodsList这个界面</span><br>    <span class="hljs-type">WebContext</span> <span class="hljs-variable">webContext</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebContext</span>(request, response, request.getServletContext(), request.getLocale(), model.asMap());<br>    html = thymeleafViewResolver.getTemplateEngine().process(<span class="hljs-string">&quot;goodsList&quot;</span>, webContext);<br><br>    <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(html)) &#123;<br>        valueOperations.set(<span class="hljs-string">&quot;goodsList&quot;</span>, html, <span class="hljs-number">60</span>, TimeUnit.SECONDS);<br>    &#125;<br>    <span class="hljs-keyword">return</span> html;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-页面静态化"><a href="#3-页面静态化" class="headerlink" title="3.页面静态化"></a>3.页面静态化</h3><p>前后端分离</p>
+<ul>
+<li>静态页面放到static下，可以直接&#x2F;path.html访问，加载页面时请求返回json数据 <code>goodsDetail2</code> -&gt; <code>detail</code></li>
+<li>之前跳转是<code>/goods/toDetail?goodsId=1</code>访问接口，现在是<code>/Detail.html?goodsId=1</code>直接访问页面，但加载页面时多一步ajax请求数据</li>
+<li>前端加载数据 根据id注入: <code>$(&quot;#goodsName&quot;).text(goodsVo.goodsName); </code>  本来是Thymeleaf <code>th:text= &quot;$&#123;goodsVo.goodname&#125;&quot;</code></li>
+</ul>
+<p>orderDetial页面同理：</p>
+<ul>
+<li>原来发起doseckill1请求，成功加载数据return detaii跳转页面，失败返回到错误页面（代码就是这样）</li>
+<li>现在发起doseckill2请求，成功后弹框问是否跳转到static下的detaii.html，然后再发起ajax请求加载detail</li>
+</ul>
+<h3 id="4-静态资源缓存"><a href="#4-静态资源缓存" class="headerlink" title="4.静态资源缓存"></a>4.静态资源缓存</h3><p>配置后static下的<code>goodsDetail.html</code>将被缓存，</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-comment">#静态资源处理</span><br>  <span class="hljs-attr">resources:</span><br>    <span class="hljs-comment">#启动默认静态资源处理，默认启动</span><br>    <span class="hljs-attr">add-mappings:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">cache:</span><br>      <span class="hljs-attr">cachecontrol:</span><br>        <span class="hljs-comment">#缓存响应时间，单位秒</span><br>        <span class="hljs-attr">max-age:</span> <span class="hljs-number">3600</span><br>    <span class="hljs-attr">chain:</span><br>      <span class="hljs-comment">#资源配链启动缓存，默认启动</span><br>      <span class="hljs-attr">cache:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-comment">#启动资源链，默认禁用</span><br>      <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-comment">#启用压缩资源（gzip，brotil）解析，默认禁用</span><br>      <span class="hljs-attr">compressed:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-comment">#启用h5应用缓存，默认禁用</span><br>      <span class="hljs-attr">html-application-cache:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">static-locations:</span> <span class="hljs-string">classpath:/static/</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-问题解决"><a href="#5-问题解决" class="headerlink" title="5.问题解决"></a>5.问题解决</h3><p>判断是否重复抢购，存入redis中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">TSeckillOrder tSeckillOrder = (TSeckillOrder) redisTemplate.opsForValue().get(&quot;order:&quot; + user.getId() + &quot;:&quot; + goodsId);<br></code></pre></td></tr></table></figure>
+
+<p>单纯在减库存时判断商品库存是否为负，为负不再继续，解决超卖。<code>update会加行级别排他锁</code> &#x3D;&#x3D;影响并发量&#x3D;&#x3D;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">seckillGoodsResult</span> <span class="hljs-operator">=</span> itSeckillGoodsService.update(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UpdateWrapper</span>&lt;TSeckillGoods&gt;()<br>                                                          .setSql(<span class="hljs-string">&quot;stock_count = &quot;</span> + <span class="hljs-string">&quot;stock_count-1&quot;</span>)<br>                                                          .eq(<span class="hljs-string">&quot;goods_id&quot;</span>, goodsVo.getId())<br>                                                          .gt(<span class="hljs-string">&quot;stock_count&quot;</span>, <span class="hljs-number">0</span>)<br>                                                         );<br><span class="hljs-keyword">if</span> (!seckillGoodsResult) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>订单表加唯一索引(user, goodid)防止单一用户多抢，<code>@Transactional</code>。</p>
+<p>至此：单一购买以及超卖问题都解决了</p>
+<h2 id="进一步优化"><a href="#进一步优化" class="headerlink" title="进一步优化"></a>进一步优化</h2><p>doseckill2</p>
+<ul>
+<li><p>redis预减库存（原子）</p>
+</li>
+<li><p>内存标记减少redis访问</p>
+</li>
+<li><p>用队列进行缓冲</p>
+</li>
+<li><p>静态化 + MQ + redis: QPS：<code>637-&gt;571</code>   反而下降了 </p>
+</li>
+<li><p><strong>分析原因</strong>：数据库在本地但redis在云上，导致redis读取过慢，<strong>redis本地</strong>后**<code>1933 -&gt; 3209</code>**，p55</p>
+</li>
+</ul>
+<h3 id="1-预减库存"><a href="#1-预减库存" class="headerlink" title="1.预减库存"></a>1.<strong>预减库存</strong></h3><ul>
+<li>加载时加入库存量 ;redis是&#x3D;&#x3D;原子操作&#x3D;&#x3D;，减库存时不会有并发问题，保证进入MQ的都是有库存的</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Long</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> redisTemplate.opsForValue().decrement(<span class="hljs-string">&quot;seckillGoods:&quot;</span> + goodsId);<br><span class="hljs-keyword">if</span> (v &lt; <span class="hljs-number">0</span>)&#123;<br>    EmptyStockMap.put(goodsId, <span class="hljs-literal">true</span>); <span class="hljs-comment">// 内存标记</span><br>    redisTemplate.opsForValue().increment(<span class="hljs-string">&quot;seckillGoods:&quot;</span> + goodsId);<br>    <span class="hljs-keyword">return</span> RespBean.error(RespBeanEnum.EMPTY_STOCK);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-内存标记："><a href="#2-内存标记：" class="headerlink" title="2.内存标记："></a>2.<strong>内存标记：</strong></h3><p>在访问redis前，使用一个map标记商品是否还有库存，减少redis访问（分布式会不会有问题？？）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//内存标记，减少Redis的访问</span><br><span class="hljs-keyword">if</span> (EmptyStockMap.get(goodsId)) &#123;<br>    <span class="hljs-keyword">return</span> RespBean.error(RespBeanEnum.EMPTY_STOCK);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-消息队列："><a href="#3-消息队列：" class="headerlink" title="3.消息队列："></a>3.<strong>消息队列：</strong></h3><p>有库存要加入mq，传入参数中</p>
+<ul>
+<li>配置文件定义队列和交换机</li>
+<li>MQSender文件封装发送方法</li>
+<li>返回给前端排队中状态码</li>
+<li>MQReceiver完成下单，再判断下库存、重复抢购</li>
+</ul>
+<h3 id="4-前端轮询："><a href="#4-前端轮询：" class="headerlink" title="4.前端轮询："></a><strong>4.前端轮询：</strong></h3><p> 下单后等待，添加一个接口查询是否下单成功</p>
+<h3 id="lua脚本："><a href="#lua脚本：" class="headerlink" title="lua脚本："></a><strong>lua脚本：</strong></h3><p>&#x2F;&#x2F; 减少和增加不是原子的，但会有问题吗？？：redis库存可能负数，但不会超卖</p>
+<p><code>setIfAbsent</code> ：setnx实现加锁，存在以下问题：</p>
+<ul>
+<li>异常了<strong>锁不会销毁</strong>：增加一个5s超时时间</li>
+<li>如果处理时间超过了5s，会导致<strong>删别人的锁</strong>：value是版本号，保证删的是自己加的版本</li>
+<li>（获取版本号 比较 删除）<strong>不是原子操作</strong>：lua脚本实现redis原子化</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testLock3</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">ValueOperations</span> <span class="hljs-variable">valueOperations</span> <span class="hljs-operator">=</span> redisTemplate.opsForValue();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();<br>    <span class="hljs-type">Boolean</span> <span class="hljs-variable">isLock</span> <span class="hljs-operator">=</span> valueOperations.setIfAbsent(<span class="hljs-string">&quot;k1&quot;</span>, value, <span class="hljs-number">5</span>, TimeUnit.SECONDS);<br>    <span class="hljs-keyword">if</span> (isLock) &#123;<br>        valueOperations.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;xxx&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> (String) valueOperations.get(<span class="hljs-string">&quot;name&quot;</span>);<br>        System.out.println(<span class="hljs-string">&quot;name=&quot;</span> + name);<br>        <span class="hljs-comment">//操作结束，删除锁</span><br>        System.out.println(valueOperations.get(<span class="hljs-string">&quot;k1&quot;</span>));<br>        <span class="hljs-type">Boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> (Boolean) redisTemplate.execute(redisScript, Collections.singletonList(<span class="hljs-string">&quot;k1&quot;</span>), value);<br>        System.out.println(result);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;有线程在使用，请稍后再试&quot;</span>);<br>    &#125;<br>&#125;<br><br>lua：<br> <span class="hljs-keyword">if</span> redis.call(<span class="hljs-string">&quot;get&quot;</span>,KEYS[<span class="hljs-number">1</span>])==ARGV[<span class="hljs-number">1</span>] then<br>    <span class="hljs-keyword">return</span> redis.call(<span class="hljs-string">&quot;del&quot;</span>,KEYS[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>end<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><ul>
+<li>验证码，存入redis <code>.set(&quot;captcha:&quot; + tUser.getId() + &quot;:&quot; + goodsId, captcha.text() )</code></li>
+<li>对同一用户和商品生成一个唯一地址，拿地址再下单。获取地址需要验证码，地址同样redis</li>
+<li>限流 （网关）</li>
+</ul>
+<p><strong>单接口简单限流</strong>：直接redis，存在5s最后临界问题  ； 漏桶算法；令牌桶算法（令牌不断生成到桶里）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">制访问次数，<span class="hljs-number">5</span>秒内访问<span class="hljs-number">5</span>次<br><span class="hljs-type">String</span> <span class="hljs-variable">uri</span> <span class="hljs-operator">=</span> request.getRequestURI();<br>captcha = <span class="hljs-string">&quot;0&quot;</span>;<br><span class="hljs-type">Integer</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> (Integer) valueOperations.get(uri + <span class="hljs-string">&quot;:&quot;</span> + tuser.getId());<br><span class="hljs-keyword">if</span> (count == <span class="hljs-literal">null</span>) &#123;<br>    valueOperations.set(uri + <span class="hljs-string">&quot;:&quot;</span> + tuser.getId(), <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, TimeUnit.SECONDS);<br>&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count &lt; <span class="hljs-number">5</span>) &#123;<br>    valueOperations.increment(uri + <span class="hljs-string">&quot;:&quot;</span> + tuser.getId());<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> RespBean.error(RespBeanEnum.ACCESS_LIMIT_REACHED);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>通用：</strong>拦截器+注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">需要限制的接口 <br><span class="hljs-meta">@AccessLimit(second = 5, maxCount = 5, needLogin = true)</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">f</span><span class="hljs-params">()</span><br><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(ElementType.METHOD)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> AccessLimit &#123;<br><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">second</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">maxCount</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">needLogin</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>拦截器：去出注解中的参数进行判断。同时把user参数的写入也加进来，存入ThreadLocal</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>    <span class="hljs-keyword">if</span> (handler <span class="hljs-keyword">instanceof</span> HandlerMethod) &#123;<br>        <span class="hljs-comment">// 参数User</span><br>        <span class="hljs-type">TUser</span> <span class="hljs-variable">tUser</span> <span class="hljs-operator">=</span> getUser(request, response);<br>        UserContext.setUser(tUser);<br>        <br>        <span class="hljs-type">HandlerMethod</span> <span class="hljs-variable">hm</span> <span class="hljs-operator">=</span> (HandlerMethod) handler;<br>        <span class="hljs-type">AccessLimit</span> <span class="hljs-variable">accessLimit</span> <span class="hljs-operator">=</span> hm.getMethodAnnotation(AccessLimit.class);<br>        <span class="hljs-keyword">if</span> (accessLimit == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">second</span> <span class="hljs-operator">=</span> accessLimit.second();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">maxCount</span> <span class="hljs-operator">=</span> accessLimit.maxCount();<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">needLogin</span> <span class="hljs-operator">=</span> accessLimit.needLogin();<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> request.getRequestURI();<br>        <span class="hljs-keyword">if</span> (needLogin) &#123;<br>            <span class="hljs-keyword">if</span> (tUser == <span class="hljs-literal">null</span>) &#123;<br>                render(response, RespBeanEnum.SESSION_ERROR);<br>            &#125;<br>            key += <span class="hljs-string">&quot;:&quot;</span> + tUser.getId();<br>        &#125;<br>        <span class="hljs-type">ValueOperations</span> <span class="hljs-variable">valueOperations</span> <span class="hljs-operator">=</span> redisTemplate.opsForValue();<br>        <span class="hljs-type">Integer</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> (Integer) valueOperations.get(key);<br>        <span class="hljs-keyword">if</span> (count == <span class="hljs-literal">null</span>) &#123;<br>            valueOperations.set(key, <span class="hljs-number">1</span>, second, TimeUnit.SECONDS);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count &lt; maxCount) &#123;<br>            valueOperations.increment(key);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            render(response, RespBeanEnum.ACCESS_LIMIT_REACHED);<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="企业"><a href="#企业" class="headerlink" title="企业"></a>企业</h2><p>网关过滤</p>
+<p>2s 100w请求，20w商品。令牌桶。没获得令牌的直接失败</p>
+<p>快速生成订单：redis （分片） ，再mq</p>
+<p>超卖：分布式锁redisson。加锁解锁消耗：集群</p>
+<p>nacos动态下发商品数量</p>
+<ul>
+<li>框架搭建<ul>
+<li>Thymeleaf, RespBean</li>
+<li>设计数据库 </li>
+<li>全局异常 、通用返回、通用参数</li>
+</ul>
+</li>
+<li>开发<ul>
+<li>商品列表</li>
+<li>商品详情</li>
+<li>订秒杀</li>
+<li>订单详情</li>
+</ul>
+</li>
+<li>压测<ul>
+<li>配置环境</li>
+<li>多用户</li>
+</ul>
+</li>
+<li>优化 页面、对象</li>
+<li>进一步优化Redis预减、内存标记、MQ</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>框架搭建<ul>
+<li>Thymeleaf, RespBean</li>
+<li>设计数据库 </li>
+<li>全局异常 、通用返回、通用参数</li>
+</ul>
+</li>
+<li>开发<ul>
+<li>商品列表</li>
+<li>商品详情</li>
+<li>订秒杀</li>
+<li>订单详情</li>
+</ul>
+</li>
+<li>压测<ul>
+<li>配置环境</li>
+<li>多用户</li>
+</ul>
+</li>
+<li>优化 页面、对象</li>
+<li>进一步优化Redis预减、内存标记、MQ</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java%E9%A1%B9%E7%9B%AE/" class="print-no-link">#java项目</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/15/redis%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/" title="redis应用及原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">redis应用及原理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/20/%E5%BB%BA%E7%AB%99/" title="建立博客">
+                        <span class="hidden-mobile">建立博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

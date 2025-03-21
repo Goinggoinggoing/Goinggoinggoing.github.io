@@ -1,0 +1,1062 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="软件   硬件  1.冯诺依曼ENIAC手动接线代表指令。冯诺依曼将指令存储起来   运算器为中心，数据要经过运算器。 现代的将存储器为中心  主存储器取存数据的程，现代这两个寄存器继承到了cpu里面  通过译码器将地址转为one hot，1的那个为接通  运算器 控制器 举例a * b + c 的执行过程，高级语言转为指令存放到内存中。这里的指令是单地址指令 根据pc从内存取指令(初始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成原理">
+<meta property="og:url" content="http://example.com/2021/09/08/%E6%9C%BA%E7%BB%84/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="软件   硬件  1.冯诺依曼ENIAC手动接线代表指令。冯诺依曼将指令存储起来   运算器为中心，数据要经过运算器。 现代的将存储器为中心  主存储器取存数据的程，现代这两个寄存器继承到了cpu里面  通过译码器将地址转为one hot，1的那个为接通  运算器 控制器 举例a * b + c 的执行过程，高级语言转为指令存放到内存中。这里的指令是单地址指令 根据pc从内存取指令(初始">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062002396.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012811.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012813.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012814.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012815.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012816.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012817.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012818.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012819.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012820.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012821.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012822.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012823.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012824.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012825.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012826.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012827.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012828.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012829.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012830.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012831.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012832.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012833.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012834.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012835.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012836.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012837.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012838.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012839.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012840.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012841.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012842.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012843.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012844.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012845.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012846.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012847.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012848.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012849.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012851.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012852.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012853.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012854.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012855.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012856.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012857.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012858.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012859.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012860.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012861.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012862.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012863.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012864.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012865.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012866.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012867.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012868.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012869.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012867.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012870.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012871.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012872.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012873.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012874.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012875.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012876.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012877.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012878.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012879.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012880.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012881.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012882.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012883.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012884.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012885.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012886.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012887.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012888.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012889.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012890.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012891.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012892.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012893.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012894.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012895.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012896.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012897.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012898.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012899.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012900.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012902.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012903.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012904.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012905.png">
+<meta property="article:published_time" content="2021-09-08T12:33:46.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png">
+  
+  
+  
+  <title>计算机组成原理 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">计算机组成原理</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-09-08 20:33" pubdate>
+          2021年9月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机组成原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png" srcset="/img/loading.gif" lazyload alt="image-20210531150601852"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062002396.png" srcset="/img/loading.gif" lazyload alt="image-20210531111032467" style="zoom: 67%;" />
+
+
+
+<p>软件</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012811.png" srcset="/img/loading.gif" lazyload alt="image-20210531111208860" style="zoom:67%;" />
+
+<p>硬件</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012813.png" srcset="/img/loading.gif" lazyload alt="image-20210531112655239"></p>
+<h3 id="1-冯诺依曼"><a href="#1-冯诺依曼" class="headerlink" title="1.冯诺依曼"></a>1.冯诺依曼</h3><p>ENIAC手动接线代表指令。冯诺依曼将指令存储起来</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012814.png" srcset="/img/loading.gif" lazyload alt="image-20210531113110649" style="zoom: 80%;" />
+
+<p><strong>运算器</strong>为中心，数据要经过运算器。</p>
+<p>现代的将<strong>存储器</strong>为中心</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012815.png" srcset="/img/loading.gif" lazyload alt="image-20210531113528807"></p>
+<h4 id="主存储器"><a href="#主存储器" class="headerlink" title="主存储器"></a>主存储器</h4><p>取存数据的程，现代这两个寄存器继承到了cpu里面</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012816.png" srcset="/img/loading.gif" lazyload alt="image-20210531113844906" style="zoom:50%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012817.png" srcset="/img/loading.gif" lazyload alt="image-20210531113937808" style="zoom:50%;" /></p>
+<p>通过<strong>译码器</strong>将地址转为one hot，1的那个为接通</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012818.png" srcset="/img/loading.gif" lazyload alt="image-20210531153111051"></p>
+<h4 id="运算器"><a href="#运算器" class="headerlink" title="运算器"></a>运算器</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012819.png" srcset="/img/loading.gif" lazyload alt="image-20210531114435559"></p>
+<h4 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012820.png" srcset="/img/loading.gif" lazyload alt="image-20210531114630517"></p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>a * b + c 的执行过程，高级语言转为指令存放到内存中。这里的指令是单地址指令</p>
+<p>根据pc从内存取指令(初始0)   <strong>-&gt;</strong>   分析指令（操作码）    <strong>-&gt;</strong>   执行指令内容      <strong>指令和数据都是来自存储体</strong>   </p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012821.png" srcset="/img/loading.gif" lazyload alt="image-20210531115304027"></p>
+<p>将机器指令转换为多条微指令</p>
+<p>高级语言  -&gt;（编译）  汇编语言    -&gt;  操作系统  -&gt;（汇编） 机器语言 01   -&gt;    微指令</p>
+<p>或者直接将高级语言转为机器语言（python）逐句翻译</p>
+<h4 id="主频"><a href="#主频" class="headerlink" title="主频"></a>主频</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012822.png" srcset="/img/loading.gif" lazyload alt="image-20210531151536611"></p>
+<h4 id="波特率比特率"><a href="#波特率比特率" class="headerlink" title="波特率比特率"></a>波特率比特率</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012823.png" srcset="/img/loading.gif" lazyload alt="image-20210607222453605"></p>
+<h3 id="2-基础"><a href="#2-基础" class="headerlink" title="2.基础"></a>2.基础</h3><h4 id="1-进制转换"><a href="#1-进制转换" class="headerlink" title="1.进制转换"></a>1.进制转换</h4><p>十进制转其他</p>
+<p>​	整数除基取余</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012824.png" srcset="/img/loading.gif" lazyload alt="image-20210601113732024"></p>
+<p>​	小数乘基取整</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012825.png" srcset="/img/loading.gif" lazyload alt="image-20210601113850208"></p>
+<p>二进制转其他（4、8、16）：多位一组，分组转换</p>
+<h4 id="2-BCD码"><a href="#2-BCD码" class="headerlink" title="2.BCD码"></a>2.BCD码</h4><p>用二进制表达十进制数，当超过10时需要加6修正</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012826.png" srcset="/img/loading.gif" lazyload alt="image-20210601114659976"></p>
+<h4 id="3-ASCII"><a href="#3-ASCII" class="headerlink" title="3.ASCII"></a>3.ASCII</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012827.png" srcset="/img/loading.gif" lazyload alt="image-20210601114946178" style="zoom: 50%;" />
+
+<p>汉字7445个，需要2B</p>
+<h4 id="4-校验"><a href="#4-校验" class="headerlink" title="4.校验"></a>4.校验</h4><p><strong>奇校验</strong>：加完校验1的个数为<strong>奇数个</strong>，一般放前面</p>
+<p><strong>海明校验</strong>：p的位置为2^n，标记出出错位置</p>
+<p>d为数据，p为校验码<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012828.png" srcset="/img/loading.gif" lazyload alt="image-20210601120945066"></p>
+<p>pi为d为1的下标上第i为异或得到，共需要大约log2位用来校验<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012829.png" srcset="/img/loading.gif" lazyload alt="image-20210601121114649"></p>
+<p><strong>循环冗余校验CRC ：</strong></p>
+<p>有一个给出的生成多项式，最高为x次<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012830.png" srcset="/img/loading.gif" lazyload alt="image-20210601121801336">，转为二进制被除数1101有x+1位，将数据左移x位后除以该数（模二除），得到的余数就是校验位。发送   移位后的数  加上  余数。</p>
+<p>校验：数据模二除多项式，余数为零</p>
+<h4 id="5-数据表示"><a href="#5-数据表示" class="headerlink" title="5.数据表示"></a>5.数据表示</h4><p>无符号数： 0 ~ 2^n-1</p>
+<p>有符号数：一位表示符号</p>
+<p>定点小数：纯小数。0. x，再加一位表示符号<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012831.png" srcset="/img/loading.gif" lazyload alt="image-20210601122710917" style="zoom:67%;" /></p>
+<p>原码：有符号数<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012832.png" srcset="/img/loading.gif" lazyload alt="image-20210601123056307">，加减计算需要讨论符号</p>
+<p>反码：负数按位取反</p>
+<p><strong>补码</strong>：负数按位取反，末尾加一（原理上是用溢出值减绝对值）。计算直接加</p>
+<p>移码：加上128后，转为无符号机器数。比较大小</p>
+<p><strong>移位：</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012833.png" srcset="/img/loading.gif" lazyload alt="image-20210601131324554" style="zoom: 67%;" />
+
+<p><strong>溢出判断</strong></p>
+<p>​	1.通过符号判断</p>
+<p>​	2.进位判断法：V&#x3D; S异或C 其中S为符号位产生的进位,C为最高有效位产生的进位。 </p>
+<p>​	3.双符号位： V&#x3D;Sf1 Sf2 + 其中,Sf1和Sf2分别为最高符号位及第二符号位。</p>
+<h4 id="求补电路："><a href="#求补电路：" class="headerlink" title="求补电路："></a>求补电路：</h4><p>将补码表示的<strong>带符号数</strong>转换成 <strong>无符号绝对值</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012834.png" srcset="/img/loading.gif" lazyload alt="image-20210601171422268"></p>
+<h4 id="绝对值乘法"><a href="#绝对值乘法" class="headerlink" title="绝对值乘法"></a>绝对值乘法</h4><p>acc中保存当前进位，MQ高位保存结果以及低位未计算的乘数，当乘数都移出去后，结果就是ACC MQ</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012835.png" srcset="/img/loading.gif" lazyload alt="image-20210601154034355"></p>
+<h4 id="绝对值除法"><a href="#绝对值除法" class="headerlink" title="绝对值除法"></a>绝对值除法</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012836.png" srcset="/img/loading.gif" lazyload alt="image-20210601160052898"></p>
+<p>ACC中放当前值，MQ中放结果</p>
+<h4 id="浮点数表示"><a href="#浮点数表示" class="headerlink" title="浮点数表示"></a>浮点数表示</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012837.png" srcset="/img/loading.gif" lazyload alt="image-20210601161602994" style="zoom: 80%;" />
+
+<p>规格化，M左移使得最高位有效</p>
+<p>溢出时，将M右移</p>
+<p><strong>IEEE 754</strong>       <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012838.png" srcset="/img/loading.gif" lazyload alt="image-20210601163257381"><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012839.png" srcset="/img/loading.gif" lazyload alt="image-20210601165117606">)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012840.png" srcset="/img/loading.gif" lazyload alt="image-20210601163002198"></p>
+<p>浮点数运算：小阶向大阶看齐</p>
+<h4 id="ALU"><a href="#ALU" class="headerlink" title="ALU"></a>ALU</h4><p>Arithmetic and logic unit  算数、逻辑、移位</p>
+<p>与非：<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012841.png" srcset="/img/loading.gif" lazyload alt="image-20210601165845453">现实容易实现</p>
+<p>异或：<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012842.png" srcset="/img/loading.gif" lazyload alt="image-20210601165936688">和加法的逻辑类似</p>
+<p>全加器：</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012843.png" srcset="/img/loading.gif" lazyload alt="image-20210601170821403" style="zoom:50%;" />
+
+<p>多位串行：</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012844.png" srcset="/img/loading.gif" lazyload alt="image-20210601171144274" style="zoom:80%;" />
+
+<p>并行</p>
+<p>组内并行，组间串行</p>
+<h3 id="3-存储器"><a href="#3-存储器" class="headerlink" title="3.存储器"></a>3.存储器</h3><p>读取过程：地址线先传送地址数据到MAR，略微等待后<strong>片选线</strong>和<strong>读写控制线</strong>给出信号，将数据读入MDR中</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012845.png" srcset="/img/loading.gif" lazyload alt="image-20210602131615023"></p>
+<p>实际上，地址是有<strong>行选和列选</strong>（需要的线少一倍），刷新时是以行为单位。</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012846.png" srcset="/img/loading.gif" lazyload alt="image-20210602133806204" style="zoom:50%;" />
+
+<p>地址线连接MAR（行列分别传入），数据线连接MDR</p>
+<p><strong>寻址方式：</strong>按字、字节、半字、双字寻址</p>
+<p><strong>存储方法：</strong></p>
+<p>​	小段方式：先放低位字节，低位在左</p>
+<p>​	大段方式：先放高位，高位在左</p>
+<h4 id="半导体存储器"><a href="#半导体存储器" class="headerlink" title="半导体存储器"></a>半导体存储器</h4><p>辅存不和cpu直接通信，主存RAM+ROM</p>
+<h5 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h5><p>Random Access Memory</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012847.png" srcset="/img/loading.gif" lazyload alt="image-20210602133519525"></p>
+<p>刷新时间：2ms要都刷新过一次。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012848.png" srcset="/img/loading.gif" lazyload alt="image-20210602134144186"></p>
+<h5 id="ROM"><a href="#ROM" class="headerlink" title="ROM"></a>ROM</h5><p>Read only Memory</p>
+<p>保存必要信息，非易失。保存os在辅存中的位置，开机必要信息</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012849.png" srcset="/img/loading.gif" lazyload alt="image-20210603102734100" style="zoom: 67%;" />
+
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><h5 id="位扩展："><a href="#位扩展：" class="headerlink" title="位扩展："></a><strong>位扩展</strong>：</h5><p>​	进行位数的扩充（加大字长） 一个存储器对应byte中的一位</p>
+<p>​	例:使用16K<em>1的存储器芯片组成16K</em>8位的存储器</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012851.png" srcset="/img/loading.gif" lazyload alt="image-20210603104237304"></p>
+<h5 id="字扩展法"><a href="#字扩展法" class="headerlink" title="字扩展法:"></a><strong>字扩展法</strong>:</h5><p>​	进行字向扩充(位数不变)  需要先选择取哪个存储器</p>
+<p>​	例如：用16K*8位的芯片组成64K *8位的存储器</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012852.png" srcset="/img/loading.gif" lazyload alt="image-20210603104254082"> </p>
+<p>​	A0~A13为地址选择 A14 A15为芯片选择（2:4译码器）</p>
+<h5 id="字位同时扩展法"><a href="#字位同时扩展法" class="headerlink" title="字位同时扩展法:"></a>字位同时扩展法:</h5><p>​		一个存储器的容量为M<em>N位,若使用 l</em>k位的芯片(l&lt;M,K&lt;N),需要在字向和位向同时进行扩展. 此时共需(M&#x2F;l)*(N&#x2F;k)个存储器芯片</p>
+<h4 id="多体并行存储体"><a href="#多体并行存储体" class="headerlink" title="多体并行存储体"></a>多体并行存储体</h4><p>低位交叉编址</p>
+<p>（右图）将相邻的单元放到不同的存储体中，这样<strong>不需要等待恢复时间</strong>再去读取下一个（流水线）</p>
+<p>需要满足当再一次读取到M0时，M0已经恢复</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012853.png" srcset="/img/loading.gif" lazyload alt="image-20210603112354973" style="zoom: 67%;" />
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012854.png" srcset="/img/loading.gif" lazyload alt="image-20210603111717030"></p>
+<p>宏观上扩展了4倍</p>
+<h4 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h4><p>空间局部性原理（访问的都是相近的元素）</p>
+<p>cache和主存可以<strong>以块为单位</strong>交流</p>
+<p>标记项：cache是从主存中<strong>哪里来的</strong>、cache<strong>是否有效</strong></p>
+<h5 id="全相联映射"><a href="#全相联映射" class="headerlink" title="全相联映射"></a>全相联映射</h5><p>​	随便放，查找时遍历查看</p>
+<h5 id="直接映射："><a href="#直接映射：" class="headerlink" title="直接映射："></a><strong>直接映射：</strong></h5><p>​	主存第j块和Cache第i块有如下函数关系:</p>
+<p>​	i&#x3D; j mod m (m为Cache中总块数)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012855.png" srcset="/img/loading.gif" lazyload alt="image-20210604111316459"></p>
+<p>​	访问过程：依据cache块号直接去查找，看表中对应保存的<strong>组号</strong>与主存中组号是否一样。</p>
+<p>​	空间利用率低,命中率也低，硬件实现简单,成本低.</p>
+<h5 id="组相联映射："><a href="#组相联映射：" class="headerlink" title="组相联映射："></a><strong>组相联映射：</strong></h5><p>​	将cache分组，主存必须放入对应组中，但组内可以随意放置</p>
+<h5 id="替换与修改"><a href="#替换与修改" class="headerlink" title="替换与修改"></a>替换与修改</h5><p>RAND FIFO  LRU（最近最少使用）  LFU(历史次数)</p>
+<p>写回法：脏位决定是否需要写回</p>
+<p>全写法：有一个缓冲同时修改</p>
+<h4 id="虚拟存储"><a href="#虚拟存储" class="headerlink" title="虚拟存储"></a>虚拟存储</h4><p>将访问外存（逻辑地址）映射到主存（物理地址）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012856.png" srcset="/img/loading.gif" lazyload alt="image-20210604115521773"></p>
+<h3 id="4-指令"><a href="#4-指令" class="headerlink" title="4.指令"></a>4.指令</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012857.png" srcset="/img/loading.gif" lazyload alt="image-20210604165949832" style="zoom:67%;" />
+
+<h4 id="指令格式"><a href="#指令格式" class="headerlink" title="指令格式"></a>指令格式</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012858.png" srcset="/img/loading.gif" lazyload alt="image-20210604152403058"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012859.png" srcset="/img/loading.gif" lazyload alt="image-20210604153414463" style="zoom: 80%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012860.png" srcset="/img/loading.gif" lazyload alt="image-20210604153350576" style="zoom:67%;" /></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012861.png" srcset="/img/loading.gif" lazyload alt="image-20210604160201175"></p>
+<h4 id="指令的址方式"><a href="#指令的址方式" class="headerlink" title="指令的址方式"></a>指令的址方式</h4><p>1.顺序寻址方式 2.跳跃寻址方式</p>
+<h4 id="数据寻址方式"><a href="#数据寻址方式" class="headerlink" title="数据寻址方式"></a>数据寻址方式</h4><p>用寻址特征表明现在的寻址方式</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012862.png" srcset="/img/loading.gif" lazyload alt="image-20210604161158449" style="zoom:67%;" />
+
+<p>立即寻址</p>
+<p>寄存器寻址 </p>
+<p>直接寻址</p>
+<p>寄存器间接寻址</p>
+<p>基址寻址（BR）面向操作系统，内容操作系统确定，有利于<strong>多道程序数据块</strong></p>
+<p>变址寻址（IX）用于循环程序，<strong>数组</strong>的偏移</p>
+<p>相对寻址（PC）  （PC）+A  <strong>跳转指令</strong></p>
+<p>寄存器寻址：（SP）保存栈顶指针</p>
+<p>间接寻址</p>
+<h4 id="CISC、RISC"><a href="#CISC、RISC" class="headerlink" title="CISC、RISC"></a>CISC、RISC</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012863.png" srcset="/img/loading.gif" lazyload alt="image-20210604165458037"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012864.png" srcset="/img/loading.gif" lazyload alt="image-20210604165743389"></p>
+<h3 id="5-CPU"><a href="#5-CPU" class="headerlink" title="5.CPU"></a>5.CPU</h3><p>ALU+CU+寄存器+中断系统</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012865.png" srcset="/img/loading.gif" lazyload alt="image-20210605121433796" style="zoom:67%;" />
+
+<h4 id="CPU结构"><a href="#CPU结构" class="headerlink" title="CPU结构"></a>CPU结构</h4><p>cpu<strong>内部总线</strong>完成内部数据传输；MAR，MDR要和<strong>内外总线</strong>都要连接</p>
+<p>还有一种结构为：寄存器之间通过<strong>专用线</strong>连接</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012866.png" srcset="/img/loading.gif" lazyload alt="image-20210605122928712"></p>
+<h4 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h4><p>一个机器周期（CPU周期）是一次存取周期</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012867.png" srcset="/img/loading.gif" lazyload alt="image-20210605123401431" style="zoom: 67%;" />
+
+<h4 id="微操作"><a href="#微操作" class="headerlink" title="微操作"></a>微操作</h4><p>取指、取数</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012868.png" srcset="/img/loading.gif" lazyload alt="image-20210605132815242" style="zoom: 50%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012869.png" srcset="/img/loading.gif" lazyload alt="image-20210605132849850" style="zoom: 67%;" /></p>
+<h4 id="控制器-1"><a href="#控制器-1" class="headerlink" title="控制器"></a>控制器</h4><p><strong>cpu控制方式：</strong></p>
+<p>​	同步控制方式、异步控制方式、联合控制方式</p>
+<p>同步：</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012867.png" srcset="/img/loading.gif" lazyload alt="image-20210605123401431" style="zoom: 67%;" />
+
+
+
+<h5 id="硬布线：RISC"><a href="#硬布线：RISC" class="headerlink" title="硬布线：RISC"></a><strong>硬布线：</strong>RISC</h5><p><strong>节拍发生器</strong>：将时钟转为节拍</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012870.png" srcset="/img/loading.gif" lazyload alt="image-20210605141903363" style="zoom:50%;" />
+
+<p><strong>安排微操作的时钟节拍</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012871.png" srcset="/img/loading.gif" lazyload alt="image-20210605135938501"></p>
+<p><strong>设计电路</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012872.png" srcset="/img/loading.gif" lazyload alt="image-20210605141448990"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012873.png" srcset="/img/loading.gif" lazyload alt="image-20210605141717000"></p>
+<h5 id="微程序：CISC"><a href="#微程序：CISC" class="headerlink" title="微程序：CISC"></a>微程序：CISC</h5><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012874.png" srcset="/img/loading.gif" lazyload alt="image-20210605154140727" style="zoom:50%;" />
+
+<p>​	将微指令保存到控制存储器CM中（CPU内部，ROM实现，一条条已经写好的），类似于指令的保存执行</p>
+<p>​	水平型：可以同时执行。垂直型：类似机器指令</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012875.png" srcset="/img/loading.gif" lazyload alt="image-20210605151805913"></p>
+<p>​	<strong>操作控制字段</strong>：标记一个个微操作，</p>
+<p>​			<strong>直接表示法</strong>：为1就执行 需要很长   <strong>快</strong></p>
+<p>​			<strong>编码表示法</strong></p>
+<p>​			<strong>混合</strong><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012876.png" srcset="/img/loading.gif" lazyload alt="image-20210605152026694" style="zoom:50%;" />组内互斥</p>
+<p>​	<strong>顺序控制字段</strong>：下一条微指令是 跳转 还是 顺序 </p>
+<h4 id="流水线"><a href="#流水线" class="headerlink" title="流水线"></a>流水线</h4><p>将这几个过程重叠起来，并行运行</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012877.png" srcset="/img/loading.gif" lazyload alt="image-20210605160344293" style="zoom: 67%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012878.png" srcset="/img/loading.gif" lazyload alt="image-20210605160349615"></p>
+<p><strong>问题：</strong></p>
+<p>​	时间不一样：全部统一为最长的时间</p>
+<p><strong>冲突：</strong></p>
+<p>​	硬件：</p>
+<p>​     	  结构相关（资源冲突）：硬件资源满足不了  <strong>同时需要访问内存</strong></p>
+<p>​	编程：</p>
+<p>​	   数据相关（数据冲突）：一条指令依赖前一条指令的执行结果(数据)却无法得到 c&#x3D;a+b； c++;</p>
+<p>​					 <strong>硬件直接暂停   添加空指令</strong>  <strong>数据旁路</strong>  <strong>编译优化</strong></p>
+<p>​			控制相关（控制冲突）：流水线遇到分支(if) 指令或其他改变PC值的指令</p>
+<p>​				（acm算法运行为非流水执行过程。）</p>
+<h3 id="6-总线"><a href="#6-总线" class="headerlink" title="6.总线"></a>6.总线</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012879.png" srcset="/img/loading.gif" lazyload alt="image-20210607212721351" style="zoom:67%;" />
+
+<p>​	<strong>分时  共享</strong></p>
+<p>​	机械特性、电器特性、功能特性、时间特性</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>​	串行、并行（宽度高、频率低） </p>
+<p>​	(内部总线、系统总线（数据、地址、控制）、I&#x2F;O总线) <strong>轮询</strong></p>
+<p>​					单总线																				双总线（速度不同，进行分离）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012880.png" srcset="/img/loading.gif" lazyload alt="image-20210607213949316" style="zoom:50%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012881.png" srcset="/img/loading.gif" lazyload alt="image-20210607213918796" style="zoom:50%;" /></p>
+<p>​	三总线（提高io速度）       <strong>DMA控制器</strong>控制高速传输（不用CPU），别的<strong>中断</strong>（鼠标键盘）实现</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012882.png" srcset="/img/loading.gif" lazyload alt="image-20210607214207930" style="zoom: 67%;" />
+
+<p>4总线</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012883.png" srcset="/img/loading.gif" lazyload alt="image-20210607225218682"></p>
+<p>​	地址总线(AB)—其宽度可表明地址空间范围  32位寻址范围2^32 4G</p>
+<p>​	数据总线(DB)—其宽度可表明一次读写的二进制位数  32位4B</p>
+<p>​	控制总线(CB)— 包括各种控制命令(如存储器读 写、I&#x2F;O读写)、请求信号与仲裁信号、中断请求与应答 等。</p>
+<p>​	<strong>复用AB和DB</strong></p>
+<h4 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h4><p>​	时钟周期T：机器的时钟周期     				时钟频率：1&#x2F;T</p>
+<p>​	传输周期：N个时钟周期：申请、寻址、传输、结束		工作频率：1&#x2F;N</p>
+<p>​	总线宽度：DB宽度</p>
+<p>​	总线带宽：每秒传输的B ，工作频率 * 总线带宽 &#x2F; 8</p>
+<h4 id="总线仲裁"><a href="#总线仲裁" class="headerlink" title="总线仲裁"></a>总线仲裁</h4><h5 id="集中总裁"><a href="#集中总裁" class="headerlink" title="集中总裁"></a>集中总裁</h5><p>​		<strong>链式查询</strong>：BR BG BS ，  <strong>BG按顺序查询，距离近的优先级高</strong></p>
+<p>​			<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012884.png" srcset="/img/loading.gif" lazyload alt="image-20210607220159388" style="zoom: 67%;" /></p>
+<p>​		<strong>计算器定时查询</strong>：独立的BG线，计数器每次加1代表访问下一个IO ， log n</p>
+<p>​			<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012885.png" srcset="/img/loading.gif" lazyload alt="image-20210607220536152" style="zoom:67%;" /></p>
+<p>​		<strong>独立请求</strong>：需要排队、速度快。独立的BG线</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012886.png" srcset="/img/loading.gif" lazyload alt="image-20210607220713828" style="zoom:67%;" />
+
+<h5 id="分布式仲裁："><a href="#分布式仲裁：" class="headerlink" title="分布式仲裁："></a><strong>分布式仲裁</strong>：</h5><p>​		不需要中央仲裁器，每个潜在的主 方功能模块都有自己的仲裁号和仲裁器</p>
+<p>​		将总裁号发到总裁总线上去比较</p>
+<h4 id="总线操作"><a href="#总线操作" class="headerlink" title="总线操作"></a>总线操作</h4><p>​	申请分配（请求、仲裁）、寻址阶段、传输阶段、结束阶段</p>
+<p>​	<strong>同步定时方式</strong>：根据时钟的<strong>上升沿</strong>控制节奏</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012887.png" srcset="/img/loading.gif" lazyload alt="image-20210607222304595" style="zoom:50%;" />
+
+<p>​	<strong>异步定时方式</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012888.png" srcset="/img/loading.gif" lazyload alt="image-20210607222129667" style="zoom: 50%;" />
+
+<p>​		<strong>半同步通信</strong>：加控制信号，当数据没传到位时等待</p>
+<p>​		<strong>分离式通信：</strong>将准备数据时，总线控制权交出来</p>
+<h4 id="总线标准"><a href="#总线标准" class="headerlink" title="总线标准"></a>总线标准</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012889.png" srcset="/img/loading.gif" lazyload alt="image-20210607224104543"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012890.png" srcset="/img/loading.gif" lazyload alt="image-20210607224633259"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012891.png" srcset="/img/loading.gif" lazyload alt="image-20210607224925037"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012892.png" srcset="/img/loading.gif" lazyload alt="image-20210607225022641"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012893.png" srcset="/img/loading.gif" lazyload alt="image-20210607225726363"></p>
+<h3 id="7-IO"><a href="#7-IO" class="headerlink" title="7.IO"></a>7.IO</h3><p>CPU<strong>管理外围设备</strong>有几种方式：</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012894.png" srcset="/img/loading.gif" lazyload alt="image-20210626104910735" style="zoom:67%;" />
+
+<p>IO指令由CPU产生，用来控制IO；通道指令为通道产生，具体执行</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012895.png" srcset="/img/loading.gif" lazyload alt="image-20210626103906731" style="zoom:67%;" />
+
+
+
+<h4 id="输入输出设备"><a href="#输入输出设备" class="headerlink" title="输入输出设备"></a>输入输出设备</h4><p>​	输入： 鼠标键盘    输出 ：显示器打印机</p>
+<p>​	外存</p>
+<p><strong>磁表面存储</strong> </p>
+<p>​	串行读取</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012896.png" srcset="/img/loading.gif" lazyload alt="image-20210626110114399" style="zoom:67%;" />
+
+<p>​	</p>
+<p><strong>磁盘</strong></p>
+<p>​	按照扇区读取，寻道-&gt;旋转-&gt;传输时间。利用便宜可以实现加速或者冗余</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012897.png" srcset="/img/loading.gif" lazyload alt="image-20210626110421321"></p>
+<p><strong>光盘</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012898.png" srcset="/img/loading.gif" lazyload alt="image-20210626111615777" style="zoom:50%;" />
+
+
+
+<p><strong>固态硬盘</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012899.png" srcset="/img/loading.gif" lazyload alt="image-20210626111746131" style="zoom:67%;" />
+
+
+
+<h4 id="IO接口"><a href="#IO接口" class="headerlink" title="IO接口"></a>IO接口</h4><p>控制、读取io其实就是访问响应寄存器</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012900.png" srcset="/img/loading.gif" lazyload alt="image-20210626112849731" style="zoom:67%;" />
+
+<p>如何定位编址？统一编址、独立编址（主存的编址和IO的编址是否在一起）</p>
+<h4 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h4><p>​	比如每秒查询鼠标30次，询问鼠标有没有数据。查到了还需要等待鼠标传输数据</p>
+<h4 id="中断方式"><a href="#中断方式" class="headerlink" title="中断方式"></a>中断方式</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012902.png" srcset="/img/loading.gif" lazyload alt="image-20210626114555456" style="zoom: 67%;" />
+
+<p>在指令完成后，查看中断源寄存器是否有1，有1就进入中断</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012903.png" srcset="/img/loading.gif" lazyload alt="image-20210626182320701" style="zoom:67%;" />
+
+<p>实现<strong>优先级</strong></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012904.png" srcset="/img/loading.gif" lazyload alt="image-20210626184052004" style="zoom:67%;" />
+
+
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012905.png" srcset="/img/loading.gif" lazyload alt="image-20210626184644527"></p>
+<h4 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h4><p>​	接收IO请求，向CPU发出占用总线的请求</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/408/" class="category-chain-item">408</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="print-no-link">#计算机基础</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/09/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/20/dl/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0CV/" title="动手学深度学习CV">
+                        <span class="hidden-mobile">动手学深度学习CV</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

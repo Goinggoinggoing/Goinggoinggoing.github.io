@@ -1,0 +1,1327 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1cr4y1671t 链接https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1189u6u4icQYHg_9_7ovWmA?pwd&#x3D;eh11提取码：eh11 社交类项目  短信登陆 商户查询缓存：缓存雪崩 穿透 击穿 博客 优惠券秒杀：计算器 lua 分布式锁 队列 好友关注：set集合  项目搭建前后端分离 start ngi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis应用及原理">
+<meta property="og:url" content="http://example.com/2023/04/15/redis%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1cr4y1671t 链接https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1189u6u4icQYHg_9_7ovWmA?pwd&#x3D;eh11提取码：eh11 社交类项目  短信登陆 商户查询缓存：缓存雪崩 穿透 击穿 博客 优惠券秒杀：计算器 lua 分布式锁 队列 好友关注：set集合  项目搭建前后端分离 start ngi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200622115.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200816783.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325211055087.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230404171731277.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230405142105457.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230406095939158.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230406095958023.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709085404088.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709092259943.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709093433217.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709095146299.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709095044594.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707152248244.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707103341469.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707153026142.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707155755562.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707160256704.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161013987.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161444358.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161656312.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707162012005.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707162424474.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707163516061.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707163637084.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707165307535.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707165501735.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707170100439.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707183846705.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707184055375.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709102813407.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709103658048.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709103955153.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709104322936.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710210639496.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312112300103.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710212320878.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710212834966.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710210200037.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711105909192.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711110539096.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711112726811.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711115356778.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711134306850.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145018722.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145121313.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145634454.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711151947271.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312145711748.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711154604922.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711152433990.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711153249122.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711153713999.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711155037085.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711161528460.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711161941107.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163132536.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163653562.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163720136.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711165735576.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711170113298.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711170150903.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717083050523.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717091331161.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312155344282.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717090812839.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230720160353433.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230720160417403.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724220743572.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312161810513.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724221019443.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724221457501.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312163852835.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230725090111123.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153110963.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153206242.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230725090632140.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314155003680.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314155134295.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314160627286.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314161213466.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314163514595.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314203756099.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314204822767.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314205242909.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221335497.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221659158.png">
+<meta property="article:published_time" content="2023-04-15T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="reids">
+<meta property="article:tag" content="中间件">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200622115.png">
+  
+  
+  
+  <title>redis应用及原理 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">redis应用及原理</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-15 20:00" pubdate>
+          2023年4月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          58 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">redis应用及原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cr4y1671t">https://www.bilibili.com/video/BV1cr4y1671t</a></p>
+<p>链接<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1189u6u4icQYHg_9_7ovWmA?pwd=eh11">https://pan.baidu.com/s/1189u6u4icQYHg_9_7ovWmA?pwd=eh11</a><br>提取码：eh11</p>
+<p>社交类项目</p>
+<ul>
+<li>短信登陆</li>
+<li>商户查询缓存：缓存雪崩 穿透 击穿</li>
+<li>博客</li>
+<li>优惠券秒杀：计算器 lua 分布式锁 队列</li>
+<li>好友关注：set集合</li>
+</ul>
+<h3 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h3><p>前后端分离</p>
+<p>start nginx.exe</p>
+<h4 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h4><ul>
+<li>user</li>
+<li>user_info</li>
+<li>shop</li>
+<li>shop_type</li>
+<li>blog</li>
+<li>follow</li>
+<li>voucher</li>
+<li>voucher_order</li>
+</ul>
+<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>短信登录：验证码，用户信息都是直接存入session</p>
+<p>是否登录：session中不用唯一，而redis是共享的需要唯一</p>
+<p>​		1.查看session中有没有某个key（固定,不用返回，如”user”，“code”）   2.查看redis中有没有携带的这个token（动态	返回,UUID或者JWT）</p>
+<p>配置拦截器，取出User的同时加入到threadlocal中，以后获得用户  <code>UserHolder.getUser()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserHolder</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;UserDTO&gt; tl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveUser</span><span class="hljs-params">(UserDTO user)</span>&#123;<br>        tl.set(user);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> UserDTO <span class="hljs-title function_">getUser</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> tl.get();<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeUser</span><span class="hljs-params">()</span>&#123;<br>        tl.remove();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>去除敏感信息：创建一个小的类，然后copy信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 把1中有的都给2，并创建对象</span><br>BeanUtil.copyProperties(user,UserDTO.class))<br></code></pre></td></tr></table></figure>
+
+<p><strong>redis</strong>：验证码、用户信息都存入redis中。</p>
+<ul>
+<li>用户信息用hash（<code>BeanUtil.beanToMap</code>），添加有效期，登录添加登陆后<strong>更新有效期</strong></li>
+<li>拦截器类没有交给spring，不能注入redis，因此添加一个成员变量</li>
+<li>StringRedisTemplate 需要<strong>保证</strong>hash中key value 都是<strong>string</strong>。所以beantomap时需要对<strong>类型进行转化</strong></li>
+<li>问题：有的请求没有拦截，导致没有刷新。再添加一个。一个全部刷新添加、一个拦截</li>
+</ul>
+<h3 id="商户查询缓存"><a href="#商户查询缓存" class="headerlink" title="商户查询缓存"></a>商户查询缓存</h3><p>缓存：浏览器缓存 redis缓存 数据库缓存 索引</p>
+<p>问题：数据一致性</p>
+<p>shop、shop_type添加缓存</p>
+<h4 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200622115.png" srcset="/img/loading.gif" lazyload alt="image-20230325200622115"></p>
+<ul>
+<li>低一致性的数据：内存淘汰</li>
+<li>高一致性：主动更新+超时</li>
+</ul>
+<h5 id="主动更新"><a href="#主动更新" class="headerlink" title="主动更新"></a>主动更新</h5><ol>
+<li>更新数据库的同时更新缓存<ul>
+<li>更新还是删除缓存：<strong>删除比较一致性好</strong>。防止多次更新</li>
+<li>如何保证同时成功失败：单体：事务；分布式：TCC分布式事务</li>
+<li>先更新数据库还是缓存？   都可能有问题<ul>
+<li>先删缓存：A删完缓存来了查询B，B查询完成后写入脏数据到redis</li>
+<li><strong>先数据库</strong>：出问题概率更低（B来的时候没有缓存，B读取数据库，A更新数据并删除redis，B写脏数据到redis），但A写数据库的过程，B查的都是旧数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存、数据库整合成一个服务</li>
+<li>先更新缓存、异步更新到数据库</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200816783.png" srcset="/img/loading.gif" lazyload alt="image-20230325200816783"></p>
+<p>所以：查询商品：<strong>添加超时，并且更新后删除缓存</strong></p>
+<p>此外：还可以直接加读写锁，更新时直接加写锁。读取时读redis加读锁，读数据库并更新加写锁  并发251集</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ReentrantReadWriteLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantReadWriteLock</span>();<br><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">update</span><span class="hljs-params">(String sql, Object... params)</span> &#123;<br>    <span class="hljs-type">SqlPair</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlPair</span>(sql, params);<br>    <span class="hljs-comment">// 加写锁, 防止其它线程对缓存读取和更改</span><br>    lock.writeLock().lock();<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> genericDao.update(sql, params);<br>        map.clear();<br>        <span class="hljs-keyword">return</span> rows;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        lock.writeLock().unlock();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> T <span class="hljs-title function_">queryOne</span><span class="hljs-params">(Class&lt;T&gt; beanClass, String sql, Object... params)</span> &#123;<br>    <span class="hljs-type">SqlPair</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SqlPair</span>(sql, params);<br>    <span class="hljs-comment">// 加读锁, 防止其它线程对缓存更改</span><br>    lock.readLock().lock();<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-type">T</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> map.get(key);<br>        <span class="hljs-keyword">if</span> (value != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> value;<br>        &#125;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        lock.readLock().unlock();<br>    &#125;<br>    <span class="hljs-comment">// 加写锁, 防止其它线程对缓存读取和更改</span><br>    lock.writeLock().lock();<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// get 方法上面部分是可能多个线程进来的, 可能已经向缓存填充了数据</span><br>        <span class="hljs-comment">// 为防止重复查询数据库, 再次验证</span><br>        <span class="hljs-type">T</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> map.get(key);<br>        <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-comment">// 如果没有, 查询数据库</span><br>            value = genericDao.queryOne(beanClass, sql, params);<br>            map.put(key, value);<br>        &#125;<br>        <span class="hljs-keyword">return</span> value;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        lock.writeLock().unlock();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><p>Redis和数据库都不存在的数据，不停的请求每次都会打到数据库上。</p>
+<ul>
+<li><strong>缓存空对象</strong>：直接缓存一个空值“”，需要添加TTL。可能照成短期的不一致。  代码写法</li>
+<li><strong>布隆过滤器</strong>：添加一层判断是否纯在。内存少 但实现复杂</li>
+</ul>
+<p>此外还有：数据格式校验、用户权限校验、热点参数限流 cloud</p>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><p>同时大量缓存失效或者宕机。</p>
+<ul>
+<li>TTL可以添加随机</li>
+<li>Redis集群</li>
+<li>降级限流 确保数据库安全</li>
+<li>多级缓存</li>
+</ul>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><p>查询数据库但在没有构建出缓存的这段时间，<strong>同时大量重建</strong> 击穿了数据库。</p>
+<p>热点key（高并发），并且重新构建业务比较<strong>复杂</strong>（查询数据库的时间很长，这个时间大家都来查了）。</p>
+<ul>
+<li><strong>互斥锁</strong>：加一个查询锁。没有锁的休息下重试。<strong>可能死锁</strong>  （锁的可能会有问题：加版本 加lua脚本 见秒杀.md）</li>
+<li><strong>逻辑过期</strong>：永不过期防止查不到，并且添加一个逻辑过期时间字段，如果逻辑过期了，就<strong>返回旧值并异步更新</strong>一下（锁）</li>
+</ul>
+<h5 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h5><p>setIfAbsent实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isLock</span><span class="hljs-params">(String key)</span>&#123;<br>    <span class="hljs-type">Boolean</span> <span class="hljs-variable">aBoolean</span> <span class="hljs-operator">=</span> stringRedisTemplate.opsForValue().setIfAbsent(key, <span class="hljs-string">&quot;1&quot;</span>);<br>    <span class="hljs-keyword">return</span> BooleanUtil.isTrue(aBoolean);<br>&#125;<br><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">unLock</span><span class="hljs-params">(String key)</span>&#123;<br>    <span class="hljs-type">Boolean</span> <span class="hljs-variable">delete</span> <span class="hljs-operator">=</span> stringRedisTemplate.delete(key);<br>    <span class="hljs-keyword">return</span> delete;<br>&#125;	<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Shop <span class="hljs-title function_">queryWithMutex</span><span class="hljs-params">(<span class="hljs-type">long</span> id)</span>&#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);<br>    <span class="hljs-keyword">if</span> (s != <span class="hljs-literal">null</span>)&#123;<br>        <span class="hljs-keyword">if</span> (s.isEmpty())&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> JSONUtil.toBean(s, Shop.class);<br>    &#125;<br>    <span class="hljs-type">Shop</span> <span class="hljs-variable">shop</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;lock:shop:&quot;</span> + id;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-keyword">if</span>(!isLock(lockKey))&#123;<br>            Thread.sleep(<span class="hljs-number">50</span>);<br>            queryWithMutex(id);<br>        &#125;<br>        <span class="hljs-comment">// double check 没有的话也会访问多次数据库</span><br>        s = stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);<br>        <span class="hljs-keyword">if</span> (s != <span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">if</span> (s.isEmpty())&#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>            &#125;<br>            <span class="hljs-keyword">return</span> JSONUtil.toBean(s, Shop.class);<br>        &#125;<br>        <span class="hljs-comment">// 模拟</span><br>        shop = getById(id);<br>        Thread.sleep(<span class="hljs-number">200</span>);<br><br>        <span class="hljs-keyword">if</span> (shop == <span class="hljs-literal">null</span>)&#123;<br>            stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, <span class="hljs-string">&quot;&quot;</span>, CACHE_NULL_TTL, TimeUnit.MINUTES );<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES );<br>    &#125;<br>    <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>        e.printStackTrace();<br>    &#125;<span class="hljs-keyword">finally</span> &#123;<br>        unLock(lockKey);<br>    &#125;<br>    <span class="hljs-keyword">return</span> shop;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="逻辑过期"><a href="#逻辑过期" class="headerlink" title="逻辑过期"></a>逻辑过期</h5><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325211055087.png" srcset="/img/loading.gif" lazyload alt="image-20230325211055087" style="zoom: 67%;" />
+
+<p>RedisData: 包装类保存时间和数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisData</span> &#123;<br>    <span class="hljs-keyword">private</span> LocalDateTime expireTime;<br>    <span class="hljs-keyword">private</span> Object data;<br>&#125;<br><br><span class="hljs-comment">// 取出</span><br><span class="hljs-type">RedisData</span> <span class="hljs-variable">redisData</span> <span class="hljs-operator">=</span> JSONUtil.toBean(s, RedisData.class);<br><span class="hljs-type">JSONObject</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> (JSONObject)redisData.getData();<br><span class="hljs-type">Shop</span> <span class="hljs-variable">shop</span> <span class="hljs-operator">=</span> JSONUtil.toBean(data, Shop.class);<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><strong>先预热下数据</strong>,该数据逻辑上过期了</li>
+<li>redis没有 直接返回</li>
+<li>有 再看下时间要不要重建</li>
+<li>最后修改下数据库，1m发起1000次请求，重建延时为200ms，可以看到后面的数据可以查到真的，前面是脏的</li>
+</ul>
+<p>没有doublecheck但数据库依旧只查询了一次，原因未知</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 使用逻辑过期</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">CACHE_REBUILD_EXECUTOR</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">10</span>);<br><span class="hljs-keyword">public</span> Shop <span class="hljs-title function_">queryWithLogicExpire</span><span class="hljs-params">(<span class="hljs-type">long</span> id)</span>&#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);<br>    <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.isEmpty())&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-type">RedisData</span> <span class="hljs-variable">redisData</span> <span class="hljs-operator">=</span> JSONUtil.toBean(s, RedisData.class);<br>    <span class="hljs-type">JSONObject</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> (JSONObject)redisData.getData();<br>    <span class="hljs-type">Shop</span> <span class="hljs-variable">shop</span> <span class="hljs-operator">=</span> JSONUtil.toBean(data, Shop.class);<br>    <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">expireTime</span> <span class="hljs-operator">=</span> redisData.getExpireTime();<br>    <span class="hljs-keyword">if</span> (expireTime.isAfter(LocalDateTime.now()))&#123;<br>        <span class="hljs-keyword">return</span> shop;<br>    &#125;<br><br>    <span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> LOCK_SHOP_KEY + id;<br>    <span class="hljs-comment">// 没拿到锁直接返回</span><br>    <span class="hljs-keyword">if</span> (!isLock(lockKey)) &#123;<br>        <span class="hljs-keyword">return</span> shop;<br>    &#125;<br><br>    <span class="hljs-comment">// double check 但没发现影响</span><br>    <span class="hljs-comment">//        s = stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);</span><br>    <span class="hljs-comment">//        if (s == null || s.isEmpty())&#123;</span><br>    <span class="hljs-comment">//            return null;</span><br>    <span class="hljs-comment">//        &#125;</span><br>    <span class="hljs-comment">//        redisData = JSONUtil.toBean(s, RedisData.class);</span><br>    <span class="hljs-comment">//        data = (JSONObject)redisData.getData();</span><br>    <span class="hljs-comment">//        shop = JSONUtil.toBean(data, Shop.class);</span><br>    <span class="hljs-comment">//        expireTime = redisData.getExpireTime();</span><br>    <span class="hljs-comment">//        if (expireTime.isAfter(LocalDateTime.now()))&#123;</span><br>    <span class="hljs-comment">//            return shop;</span><br>    <span class="hljs-comment">//        &#125;</span><br><br>    CACHE_REBUILD_EXECUTOR.submit(() -&gt; &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            saveShop2Redis(id, <span class="hljs-number">20L</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            unLock(lockKey);<br>        &#125;<br>    &#125;);<br><br>        <span class="hljs-keyword">return</span> shop;<br><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h4><ul>
+<li>对象-&gt;string类型 TTL</li>
+<li>对象-&gt;string类型 逻辑TTL</li>
+<li><strong>queryWithPassThrough</strong> 空字符串防止缓存穿透<ul>
+<li><code>pre  id  Class</code> -&gt; 对象   null防止缓存穿透，<code>Function&lt;ID, R&gt; dbFallback, Long time, TimeUnit unit</code>重建</li>
+</ul>
+</li>
+<li><strong>queryWithLogicalExpire</strong> <ul>
+<li><code>pre  id  Class</code> -&gt; 对象    <code>Function&lt;ID, R&gt; dbFallback, Long time, TimeUnit unit</code>重建</li>
+</ul>
+</li>
+<li><strong>queryWithMutex</strong></li>
+</ul>
+<h3 id="秒杀"><a href="#秒杀" class="headerlink" title="秒杀"></a>秒杀</h3><p>代金券就是商品</p>
+<p>tb_voucher_order：订单表</p>
+<h4 id="ID生成器"><a href="#ID生成器" class="headerlink" title="ID生成器"></a>ID生成器</h4><p>id没有使用自增：规律性明显、表拆分后自增会冲突</p>
+<p>全局id生成器：唯一、高可用（集群）、高性能、递增、安全</p>
+<p>时间戳用的秒，序列号为一天的自增长（需要一个prefix）：方便统计计量、控制大小</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230404171731277.png" srcset="/img/loading.gif" lazyload alt="image-20230404171731277"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">LocalDateTime.now(); <span class="hljs-comment">// 时间</span><br>now.toEpochSecond(ZoneOffset.UTC); <span class="hljs-comment">// 转为秒</span><br>now.format(DateTimeFormatter.ofPattern(<span class="hljs-string">&quot;yyyy:MM:dd&quot;</span>)); <span class="hljs-comment">// 转为特定格式字符串</span><br><br><br>CountDownLatch 可以实现线程的等待<br>CountDownLatch(<span class="hljs-number">300</span>);<span class="hljs-comment">// 计数</span><br>countDownLatch.countDown();<br>countDownLatch.await();<span class="hljs-comment">// 等待减完 阻塞</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="优惠券下单"><a href="#优惠券下单" class="headerlink" title="优惠券下单"></a>优惠券下单</h4><p>同样两个表，<strong>普通表</strong>和<strong>秒杀表</strong></p>
+<p>普通表有基本信息（<code>type</code>区分普通还是秒杀），秒杀表扩展 <code>库存 时间</code>。<code>voucher</code>类中有额外字段，用<code>@TableField(exist = false)</code>标识。</p>
+<p>添加优惠券：一个接口  同时添加两个表。</p>
+<h5 id="超卖"><a href="#超卖" class="headerlink" title="超卖"></a>超卖</h5><ul>
+<li>悲观锁：直接一个<code>redis.setnx</code>锁</li>
+<li>乐观锁：更新数据时，成功率很低<ul>
+<li>添加版本号，修改前需要查版本号 <code>set stock = stock -1 where version = initVersion</code></li>
+<li>CAS(compare and set)：库存本来就是版本号，<code>where stock = initStock</code> ，但这样会导致<strong>成功率低</strong>；  &#x3D;&#x3D;修改为&#x3D;&#x3D;：<code>where stock &gt; 0</code>  也就是秒杀项目的基础用法</li>
+</ul>
+</li>
+</ul>
+<h5 id="一人一单"><a href="#一人一单" class="headerlink" title="一人一单"></a>一人一单</h5><ul>
+<li>唯一索引</li>
+<li>加锁: 单机情况<ol>
+<li>sychronized：锁定函数,阻塞的</li>
+<li>缩小范围，提取一人一单开始锁定，并且通过userid标识 <code>synchronized (userId.toString().intern())</code> </li>
+<li>小函数添加事务，提取出真的的代理对象调用小函数。引入依赖、添加注解</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">synchronized</span> (userId.toString().intern()) &#123;<br>    <span class="hljs-comment">// 获取代理对象(事务)</span><br>    <span class="hljs-type">IVoucherOrderService</span> <span class="hljs-variable">proxy</span> <span class="hljs-operator">=</span> (IVoucherOrderService) AopContext.currentProxy() ;<br>    <span class="hljs-keyword">return</span> proxy.createVoucherOrder(voucherId);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>问题：</strong>微服务项目，不同服务中的普通线程锁就失败了。无法跨进程</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230405142105457.png" srcset="/img/loading.gif" lazyload alt="image-20230405142105457"></p>
+<h4 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h4><p><strong>普通set del</strong> &#x3D;&gt; <strong>加超时</strong> &#x3D;&gt; <strong>加版本</strong> &#x3D;&gt; <strong>加Lua</strong></p>
+<p><code>set lock thread1 NX EX 10</code></p>
+<p>添加<code>SimpleRedisLock</code>类专门处理锁，需要传入name 和 redis</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryLock</span><span class="hljs-params">(<span class="hljs-type">long</span> timeoutSec)</span> &#123;<br>        <span class="hljs-comment">// 获取线程标示</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">threadId</span> <span class="hljs-operator">=</span> ID_PREFIX + Thread.currentThread().getId();<br>        <span class="hljs-comment">// 获取锁</span><br>        <span class="hljs-type">Boolean</span> <span class="hljs-variable">success</span> <span class="hljs-operator">=</span> stringRedisTemplate.opsForValue()<br>                .setIfAbsent(KEY_PREFIX + name, threadId, timeoutSec, TimeUnit.SECONDS);<br>        <span class="hljs-keyword">return</span> Boolean.TRUE.equals(success);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 调用lua脚本</span><br>        stringRedisTemplate.execute(<br>                UNLOCK_SCRIPT,<br>                Collections.singletonList(KEY_PREFIX + name),<br>                ID_PREFIX + Thread.currentThread().getId());<br>    &#125;<br><br>	<span class="hljs-comment">// 非原子</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock2</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 获取线程标示</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">threadId</span> <span class="hljs-operator">=</span> ID_PREFIX + Thread.currentThread().getId();<br>        <span class="hljs-comment">// 获取锁中的标示</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> stringRedisTemplate.opsForValue().get(KEY_PREFIX + name);<br>        <span class="hljs-comment">// 判断标示是否一致</span><br>        <span class="hljs-keyword">if</span>(threadId.equals(id)) &#123;<br>            <span class="hljs-comment">// 释放锁</span><br>            stringRedisTemplate.delete(KEY_PREFIX + name);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="lua"><a href="#lua" class="headerlink" title="lua"></a>lua</h5><p>数组下标从1开始，需要指明key的数量</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> key = KEYS[<span class="hljs-number">1</span>]<br><span class="hljs-keyword">local</span> value = ARGV[<span class="hljs-number">1</span>]<br>redis.call(<span class="hljs-string">&#x27;SET&#x27;</span>, key, value)<br><span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;OK&#x27;</span><br><br>eval <span class="hljs-string">&quot;local key = KEYS[1]\nlocal value = ARGV[1]\nredis.call(&#x27;SET&#x27;, key, value)\nreturn &#x27;OK&#x27;&quot;</span> <span class="hljs-number">1</span> mykey hello<br><br><br>unlock.lua：<br> <span class="hljs-keyword">if</span> redis.call(<span class="hljs-string">&quot;get&quot;</span>,KEYS[<span class="hljs-number">1</span>])==ARGV[<span class="hljs-number">1</span>] <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">return</span> redis.call(<span class="hljs-string">&quot;del&quot;</span>,KEYS[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">else</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>脚本定义和调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">UNLOCK_SCRIPT = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultRedisScript</span>&lt;&gt;();<br>UNLOCK_SCRIPT.setLocation(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassPathResource</span>(<span class="hljs-string">&quot;unlock.lua&quot;</span>));<br>UNLOCK_SCRIPT.setResultType(Long.class);<br><br>stringRedisTemplate.execute(<br>                UNLOCK_SCRIPT,<br>                Collections.singletonList(KEY_PREFIX + name),<br>                ID_PREFIX + Thread.currentThread().getId());<br>                <br>                <br>UNLOCK_SCRIPT也可以直接交给spring<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h5><ul>
+<li>不可重用 A拿了锁调用B，B也需要锁</li>
+<li>不可重试，只try一次</li>
+<li>超时释放 和 业务时间冲突</li>
+<li>主从一致性，主节点宕机后存在还能没同步到从节点</li>
+</ul>
+<h4 id="Redisson"><a href="#Redisson" class="headerlink" title="Redisson"></a>Redisson</h4><h5 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h5><p>1.首先，在 pom.xml 文件中添加 Redisson 的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.redisson<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>redisson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.16.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>2.在 Spring Boot 应用中，使用 Redisson 的方式通常是通过创建一个 RedissonClient 实例与 Redis 进行通信。RedissonClient 可以根据 Redis 的不同部署方式来进行配置。下面是一个基于单节点的 Redisson 配置示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedissonConfig</span> &#123;<br>    <span class="hljs-meta">@Bean(destroyMethod = &quot;shutdown&quot;)</span><br>    <span class="hljs-keyword">public</span> RedissonClient <span class="hljs-title function_">redisson</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Config</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Config</span>();<br>        config.useSingleServer()<br>                .setAddress(<span class="hljs-string">&quot;redis://localhost:6379&quot;</span>)<br>                .setDatabase(<span class="hljs-number">0</span>)<br>                .setPassword(<span class="hljs-string">&quot;password&quot;</span>);<br>        <span class="hljs-keyword">return</span> Redisson.create(config);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>3.执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Autowired</span><br><span class="hljs-keyword">private</span> RedissonClient redisson;<br><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">doSomething</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">RLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> redisson.getLock(<span class="hljs-string">&quot;lock:order:&quot;</span>+userId);<br>    lock.tryLock(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, TimeUnit.SECONDS); <span class="hljs-comment">// 阻塞尝试1s，过期时间10s</span><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// 被锁保护的代码区</span><br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        lock.unlock();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="可重用"><a href="#可重用" class="headerlink" title="可重用"></a>可重用</h5><p>Redisson自带可重用，可以打断点看redis中</p>
+<p><strong>实现原理：</strong>添加一个计数，如果是线程值相同，那么说明是<strong>同一个线程</strong>，<strong>可以获取</strong>锁，并<strong>数量+1</strong></p>
+<p>hash结构实现”： <code>lock:order</code>    (  <code>uuid+thread</code> : <code>count</code>)</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230406095939158.png" srcset="/img/loading.gif" lazyload alt="image-20230406095939158" style="zoom:67%;" />
+
+<p>释放锁时，先减，减到零再释放锁</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230406095958023.png" srcset="/img/loading.gif" lazyload alt="image-20230406095958023" style="zoom: 67%;" />
+
+<h5 id="重试"><a href="#重试" class="headerlink" title="重试"></a>重试</h5><ol>
+<li>获取锁成功直接返回，失败会返回过期时间</li>
+<li>获取锁失败，<strong>订阅</strong>别人的释放tread信号</li>
+<li>等到后，再去while true尝试锁，通过<strong>信号量</strong></li>
+</ol>
+<h5 id="主从一致性"><a href="#主从一致性" class="headerlink" title="主从一致性"></a>主从一致性</h5><p>开多台主机，重用保证主机的可靠性。相当于把redis主从机都做了复制</p>
+<h4 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709085404088.png" srcset="/img/loading.gif" lazyload alt="image-20230709085404088"></p>
+<h5 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h5><p>jvm中的服务，受到本地性能影响；并且数据可能丢失</p>
+<ul>
+<li>添加任务：往队列中add</li>
+<li>一个BlockQueue以及一个线程池，线程池中一个线程任务为不停的从队列中拿出任务并执行，这样就实现了异步</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709092259943.png" srcset="/img/loading.gif" lazyload alt="image-20230709092259943"></p>
+<h5 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h5><ul>
+<li><p>List：List模拟消息队列，单消费者</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">通过<span class="hljs-keyword">BRPOP </span>实现阻塞的提取任务<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>PubSub：点对点的消息队列，多生产多个消费者，可以实现通过通配符实现订阅</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">subscribe</span><span class="hljs-params">(channel)</span></span>  <br><span class="hljs-function"><span class="hljs-title">psubscribe</span><span class="hljs-params">(pattern)</span></span><br><br><span class="hljs-function"><span class="hljs-title">publish</span><span class="hljs-params">(channel)</span></span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709093433217.png" srcset="/img/loading.gif" lazyload alt="image-20230709093433217"></p>
+<p>​	消息堆积有上限，消息可能丢失（如果没有人接受的）</p>
+</li>
+<li><p>Stream：比较完善的模型，是一种新的数据类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">XADD key k v<br><span class="hljs-comment"># 创建名为users的队列，并向其中发送一个消息，内容是: &#123;name= jack , age=21&#125;,并且使用Redis自动生成ID</span><br>	XADD <span class="hljs-built_in">users</span> * name jack age 21<br><br>XREAD COUNT 1 STREAM key 0(从哪个消息开始，$为最新)   BLOCK 阻塞   读完不删除<br></code></pre></td></tr></table></figure>
+
+<p><strong>消费者组：</strong>一个组有多个消费者，共同消费；消息存在标识代表是否处理过，已读未确认的加入pending</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709095146299.png" srcset="/img/loading.gif" lazyload alt="image-20230709095146299"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709095044594.png" srcset="/img/loading.gif" lazyload alt="image-20230709095044594"></p>
+<p>XACK s1 g1 id</p>
+</li>
+</ul>
+<h3 id="分布式缓存"><a href="#分布式缓存" class="headerlink" title="分布式缓存"></a>分布式缓存</h3><ul>
+<li>数据丢失   主从 持久化</li>
+<li>并发能力    读写分离</li>
+<li>故障恢复    哨兵检测监控状态</li>
+<li>存储能力    单节点数据太大了，分片集群</li>
+</ul>
+<h4 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707152248244.png" srcset="/img/loading.gif" lazyload alt="image-20230707152248244"></p>
+<p>为了安全性使用AOF（1s刷盘），RDB（频率不高、空间小）定期手动进行备份</p>
+<h5 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h5><p>RDB  Redis Database Backup file    快照（snapshot）持久化方式<br>保存到磁盘,如果docker启动还需要挂载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">save   <span class="hljs-comment"># 阻塞  用于关机</span><br>bgsave <span class="hljs-comment"># 异步执行 子进程</span><br><br>save 300 10   <span class="hljs-comment"># 100s内有10个key修改了则触发bgsave</span><br>save <span class="hljs-string">&quot;&quot;</span> <span class="hljs-comment"># 禁用</span><br><br>dbfilename dump.rdb <span class="hljs-comment"># 文件名</span><br><span class="hljs-built_in">dir</span> ./7001  <span class="hljs-comment">#   相对于 工作目录 的路径</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>bgsave中fork过程是需要耗时的，需要拷贝内存。实际上是拷贝页表。</p>
+<p>如果在save过程写请求进来，会修改一个副本内存</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707103341469.png" srcset="/img/loading.gif" lazyload alt="image-20230707103341469"></p>
+<h5 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h5><p>(Append-Only File)  记录下命令，优先使用AOF恢复</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">appendonly <span class="hljs-built_in">yes</span><br>appendfilename <span class="hljs-string">&quot;appendonly.aof&quot;</span><br><br>appendfsync always <span class="hljs-comment"># 立即磁盘</span><br>appendfsync everysec <span class="hljs-comment"># 先写入缓存，1s写回磁盘默认 </span><br>appendfsync no  <span class="hljs-comment"># 先写入缓存，操作系统写回</span><br></code></pre></td></tr></table></figure>
+
+<p>同样会在开始前加载，结束后保存</p>
+<p>但：同一个key实际上前面的操作没有意义，<code>bgrewriteaof</code> 异步只保留最后一次</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">auto</span>-aof-rewrite-percentage <span class="hljs-number">100</span><br><span class="hljs-keyword">auto</span>-aof-rewrite-min-size <span class="hljs-number">64</span>mb<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="主从"><a href="#主从" class="headerlink" title="主从"></a>主从</h4><h5 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707153026142.png" srcset="/img/loading.gif" lazyload alt="image-20230707153026142"></p>
+<ul>
+<li>开启RDB  关闭AOF</li>
+<li>拷贝三个配置文件，需要不同的port和dir文件路径  master关闭bind</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-literal">slave</span><br>    SLAVEOF masterip masterport 当前成为成为<span class="hljs-literal">slave</span>     配置文件或者cli执行命令<br><br><span class="hljs-keyword">master</span><br>	<span class="hljs-title">info</span> replication 显示信息<br></code></pre></td></tr></table></figure>
+
+<p>至此master可读可写，slave只可以读，master写时会同步到从</p>
+<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p><strong>基于RDB</strong></p>
+<ul>
+<li>第一次判断：master有唯一replid，是数据集的标记，不一致说明是第一次</li>
+<li>是否落后：offset 偏移量代表数据，offset不一致说明数据落后了</li>
+</ul>
+<h6 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h6><p>第一次：全量同步；如果尝试做增量同步失败后<br><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707155755562.png" srcset="/img/loading.gif" lazyload alt="image-20230707155755562"></p>
+<h6 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h6><p>根据offset，发回repl_backlog差距<br>log是一个环形数组，如果差距写满了，就需要全量同步</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707160256704.png" srcset="/img/loading.gif" lazyload alt="image-20230707160256704"></p>
+<h5 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h5><ul>
+<li>repl-diskless-sync  yes  # 直接网络发送而不是先磁盘</li>
+<li>适当提高repl_backlog大小</li>
+<li>主从从结构</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161013987.png" srcset="/img/loading.gif" lazyload alt="image-20230707161013987"></p>
+<h4 id="故障恢复-哨兵"><a href="#故障恢复-哨兵" class="headerlink" title="故障恢复-哨兵"></a>故障恢复-哨兵</h4><p>哨兵也是一个小集群</p>
+<h5 id="作用和原理"><a href="#作用和原理" class="headerlink" title="作用和原理"></a>作用和原理</h5><ul>
+<li>master宕机，立马更换一个<ol>
+<li>与master断开时间小于配置</li>
+<li>再根据优先级</li>
+<li>最后判断offset</li>
+</ol>
+</li>
+<li>slave宕机重启</li>
+<li>如果发生了更换，客户端放如何知道？  通知客服端</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161444358.png" srcset="/img/loading.gif" lazyload alt="image-20230707161444358"></p>
+<h6 id="心跳监控"><a href="#心跳监控" class="headerlink" title="心跳监控"></a><strong>心跳监控</strong></h6><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707161656312.png" srcset="/img/loading.gif" lazyload alt="image-20230707161656312"></p>
+<h6 id="迁移master"><a href="#迁移master" class="headerlink" title="迁移master"></a><strong>迁移master</strong></h6><ul>
+<li>备选的变成master</li>
+<li>通知其他slave</li>
+<li>原来master配置文件改为slaveof new</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707162012005.png" srcset="/img/loading.gif" lazyload alt="image-20230707162012005"></p>
+<h5 id="搭建-1"><a href="#搭建-1" class="headerlink" title="搭建"></a>搭建</h5><p>sentinel.conf</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707162424474.png" srcset="/img/loading.gif" lazyload alt="image-20230707162424474"></p>
+<p>启动 <code>redis-sentinel  path.conf</code></p>
+<h5 id="感知切换"><a href="#感知切换" class="headerlink" title="感知切换"></a>感知切换</h5><p>redistemplate基于lettuce实现感知自动切换</p>
+<p>不需要配置redis地址，而是sentinel地址</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707163516061.png" srcset="/img/loading.gif" lazyload alt="image-20230707163516061"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707163637084.png" srcset="/img/loading.gif" lazyload alt="image-20230707163637084"></p>
+<h4 id="分片集群"><a href="#分片集群" class="headerlink" title="分片集群"></a>分片集群</h4><p>前面的问题：1.海量数据存储  2.高并发的写操作</p>
+<ul>
+<li>多个master 保存不同的数据  通过插槽实现；master之间可以同时执行命令，高性能</li>
+<li>master之间相互检测健康 不需要sentinel；高可用</li>
+<li>访问集群的任意节点，会自动转发到正确节点</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707165307535.png" srcset="/img/loading.gif" lazyload alt="image-20230707165307535"></p>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p>1.启动  master slave所有的都一样, config-file每个人都有自己的  当前启动后相互还没有关系</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707165501735.png" srcset="/img/loading.gif" lazyload alt="image-20230707165501735"></p>
+<p>2.创建集群</p>
+<p><code>redis-cli --cluster create --cluster-replicas 2 ip1 ip2 ....</code></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">redis-cli --cluster create --cluster-replicas <span class="hljs-number">1 127.0.0</span>.<span class="hljs-number">1:7001 127</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0.1:7002</span> <span class="hljs-number">127.0.0.1</span>:<span class="hljs-number">7003 127.0</span>.<span class="hljs-number">0.1:7004</span> <span class="hljs-number">127.0.0.1</span>:<span class="hljs-number">7005 127.0</span>.<span class="hljs-number">0.1:7006</span><br></code></pre></td></tr></table></figure>
+
+<p>一个master对应两个slave，前面的ip为master</p>
+<p>查看集群状态 ：<code>redis-cli -p 7001 cluster nodes</code></p>
+<p>连接：<code>redis-cli -c -p 7001</code></p>
+<h5 id="散列插槽"><a href="#散列插槽" class="headerlink" title="散列插槽"></a>散列插槽</h5><p>每一个master都会散列到0~16383个插槽上的一部分</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707170100439.png" srcset="/img/loading.gif" lazyload alt="image-20230707170100439"></p>
+<p>key的有效部分{hash_tag}（控制某一类在一个redis上）也会hash计算插槽%16384，得到插槽位置：<strong>数据和插槽绑定</strong></p>
+<h5 id="集群伸缩"><a href="#集群伸缩" class="headerlink" title="集群伸缩"></a>集群伸缩</h5><p><code>redis-cli --cluster help</code></p>
+<p><code>redis-cli --cluster add-node ip:port  集群ip:port</code></p>
+<p>分配插槽</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">redis-cli --cluster reshard ip:port  <br>3000 <span class="hljs-comment"># 移动多少个</span><br>to的<span class="hljs-built_in">id</span><br>from的<span class="hljs-built_in">id</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="故障转移"><a href="#故障转移" class="headerlink" title="故障转移"></a>故障转移</h5><p>当一个master宕机？</p>
+<p>集群可以实现自动切换,master宕机换下一个slave，slave也宕机插槽就宕机了</p>
+<p>手动转移：进入到slave  <code>CLUSTER FAILOVER</code>    </p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707183846705.png" srcset="/img/loading.gif" lazyload alt="image-20230707183846705"></p>
+<h5 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230707184055375.png" srcset="/img/loading.gif" lazyload alt="image-20230707184055375"></p>
+<h3 id="多级缓存"><a href="#多级缓存" class="headerlink" title="多级缓存"></a>多级缓存</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709102813407.png" srcset="/img/loading.gif" lazyload alt="image-20230709102813407"></p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><h4 id="键值设计"><a href="#键值设计" class="headerlink" title="键值设计"></a>键值设计</h4><h5 id="key"><a href="#key" class="headerlink" title="key"></a>key</h5><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709103658048.png" srcset="/img/loading.gif" lazyload alt="image-20230709103658048" style="zoom:50%;" />
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709103955153.png" srcset="/img/loading.gif" lazyload alt="image-20230709103955153"></p>
+<h5 id="bigkey"><a href="#bigkey" class="headerlink" title="bigkey"></a>bigkey</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230709104322936.png" srcset="/img/loading.gif" lazyload alt="image-20230709104322936"></p>
+<h5 id="合适数据结构"><a href="#合适数据结构" class="headerlink" title="合适数据结构"></a>合适数据结构</h5><p>存储对象：</p>
+<ul>
+<li>json字符串  方便</li>
+<li>直接打散，一个字段一个key value  浪费空间</li>
+<li>hash；entry不超过1000 如果太大拆分取模成多个hash</li>
+</ul>
+<h4 id="批处理优化"><a href="#批处理优化" class="headerlink" title="批处理优化"></a>批处理优化</h4><h5 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h5><p>单次：网络延时(ms级)+执行延时(us级)    一次执行多条指令，如mset，但收到指令集的限制</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710210639496.png" srcset="/img/loading.gif" lazyload alt="image-20230710210639496"></p>
+<p>pipeline：不受指令限制，一次发送多条指令，不具备原子性</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312112300103.png" srcset="/img/loading.gif" lazyload alt="image-20240312112300103" style="zoom:50%;" />
+
+<p>问题：在集群下，多个命令（pipeline mset）必须要在同一个插槽，才能映射到一台机器上</p>
+<h5 id="集群下的批处理"><a href="#集群下的批处理" class="headerlink" title="集群下的批处理"></a>集群下的批处理</h5><p>mset默认情况下如果key在不同节点上，会报错</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710212320878.png" srcset="/img/loading.gif" lazyload alt="image-20230710212320878"></p>
+<p>集群下，spring mset就会默认按照插槽划分，并且创建线程异步并行执行（方法三）</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710212834966.png" srcset="/img/loading.gif" lazyload alt="image-20230710212834966"></p>
+<h4 id="服务端优化"><a href="#服务端优化" class="headerlink" title="服务端优化"></a>服务端优化</h4><h5 id="持久化配置"><a href="#持久化配置" class="headerlink" title="持久化配置"></a>持久化配置</h5><ul>
+<li>缓存的redis实例开启一个单独实例，不需要做持久化</li>
+<li>为了安全性使用AOF，RDB定期手动进行备份</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230710210200037.png" srcset="/img/loading.gif" lazyload alt="image-20230710210200037"></p>
+<h5 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h5><p>单线程任务，慢查询会影响其他命令</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs excel">slowlog-<span class="hljs-built_in">log</span>-slower-than 默认<span class="hljs-number">10000</span>us   建议<span class="hljs-number">1000</span>  慢查询会放入日志中<br>slowlog-<span class="hljs-built_in">max</span>-<span class="hljs-built_in">len</span> 日志长度<br></code></pre></td></tr></table></figure>
+
+<p><code>SLOWLOG GET &lt;n&gt;</code> 命令来获取慢查询日志中的最近 N 条记录，或使用 <code>SLOWLOG RESET</code> 命令清空慢查询日志</p>
+<h5 id="命令及安全配置"><a href="#命令及安全配置" class="headerlink" title="命令及安全配置"></a>命令及安全配置</h5><p>在没有密码并且root启动redis时，修改rbd文件指向ssh文件，并设置value为公钥即可</p>
+<ul>
+<li>上线时禁用flushdb， config set 等命令，通过<code>rename command</code></li>
+<li>bind绑定局域网网卡</li>
+<li>开启防火墙</li>
+<li>不要使用root启动</li>
+<li>非默认端口，设置密码</li>
+</ul>
+<h5 id="内存配置"><a href="#内存配置" class="headerlink" title="内存配置"></a>内存配置</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711105909192.png" srcset="/img/loading.gif" lazyload alt="image-20230711105909192"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711110539096.png" srcset="/img/loading.gif" lazyload alt="image-20230711110539096"></p>
+<p><code>MEMORY STATS</code> 命令将返回以下统计数据：</p>
+<ul>
+<li><code>peak.allocated</code>：Redis 运行期间分配的内存峰值。</li>
+<li><code>total.allocated</code>：Redis 运行期间分配的总内存量。</li>
+<li><code>startup.allocated</code>：Redis 启动时分配的内存量。</li>
+<li><code>replication.backlog</code>：复制积压缓冲区使用的内存量。</li>
+<li><code>clients.slaves</code>：连接的从节点数量。</li>
+<li><code>clients.normal</code>：连接的普通客户端数量。</li>
+<li><code>aof.buffer</code>：AOF 缓冲区使用的内存量。</li>
+<li><code>lua.caches</code>：Lua 脚本缓存使用的内存量。</li>
+<li><code>overhead.total</code>：Redis 内部开销占用的内存量。</li>
+<li><code>dataset.bytes</code>：数据集占用的内存量。</li>
+<li><code>dataset.keys</code>：数据集中键的数量。</li>
+</ul>
+<h4 id="集群-or-单体"><a href="#集群-or-单体" class="headerlink" title="集群 or 单体"></a>集群 or 单体</h4><p>当部分插槽不可用时（master slave都宕机），默认集群宕机</p>
+<p><code>cluster-require-full-coverage yes</code></p>
+<p>节点中会互相ping监控状态，如果集群数量太多，ping也需要大量的带宽</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711112726811.png" srcset="/img/loading.gif" lazyload alt="image-20230711112726811"></p>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><h5 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">sds.h<br>    SDS_TYPE_8、SDS_TYPE_16、SDS_TYPE_32、SDS_TYPE_64  节约内存<br>    <br><span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">attribute__</span> ((__<span class="hljs-title">packed__</span>)) <span class="hljs-title">sdshdr32</span> &#123;</span><br>    <span class="hljs-type">uint32_t</span> len; <span class="hljs-comment">/* used */</span><br>    <span class="hljs-type">uint32_t</span> alloc; <span class="hljs-comment">/* excluding the header and null terminator */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> flags; <span class="hljs-comment">/* 3 lsb of type, 5 unused bits */</span><br>    <span class="hljs-type">char</span> buf[];<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>可以避免缓冲区溢出</strong>：C 语言中的字符串被修改（比如拼接）时，一旦没有分配足够长度的内存空间，就会造成缓冲区溢出。SDS 被修改时，会先根据 len 属性检查空间大小是否满足要求，如果不满足，则先扩展至所需大小再进行修改操作。</li>
+<li><strong>获取字符串长度的复杂度较低</strong>：C 语言中的字符串的长度通常是经过遍历计数来实现的，时间复杂度为 O(n)。SDS 的长度获取直接读取 len 属性即可，时间复杂度为 O(1)。</li>
+<li><strong>减少内存分配次数</strong>：为了避免修改（增加&#x2F;减少）字符串时，每次都需要重新分配内存（C 语言的字符串是这样的），SDS 实现了空间预分配和惰性空间释放两种优化策略。当 SDS 需要增加字符串时，Redis 会为 SDS 分配好内存，并且根据特定的算法分配多余的内存，这样可以减少连续执行字符串增长操作所需的内存重分配次数。当 SDS 需要减少字符串时，这部分内存不会立即被回收，会被记录下来，等待后续使用（支持手动释放，有对应的 API）。</li>
+<li><strong>二进制安全</strong>：C 语言中的字符串以空字符 <code>\0</code> 作为字符串结束的标识，这存在一些问题，像一些二进制文件（比如图片、视频、音频）就可能包括空字符，C 字符串无法正确保存。SDS 使用 len 属性判断字符串是否结束，不存在这个问题。</li>
+</ul>
+<h6 id="动态扩容"><a href="#动态扩容" class="headerlink" title="动态扩容"></a>动态扩容</h6><p>预分配多一点内存可以减少分配次数</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711115356778.png" srcset="/img/loading.gif" lazyload alt="image-20230711115356778"></p>
+<h5 id="IntSet"><a href="#IntSet" class="headerlink" title="IntSet"></a>IntSet</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">intset</span> &#123;</span><br><span class="hljs-type">uint32_t</span> encoding; <span class="hljs-comment">/* 编码方式，支持存放16位、32位、64位整数*/</span> 升级机制节约内存<br><span class="hljs-type">uint32_t</span> Length; <span class="hljs-comment">/*元素个数*/</span><br><span class="hljs-type">int8_t</span> contents[]; <span class="hljs-comment">/*整数数组，保存集合数据   实际大小由encoding决定 其实就是一个起点指针*/</span><br>&#125; intset;<br></code></pre></td></tr></table></figure>
+
+<p>为了方便查找，会<strong>有序、唯一</strong>存放（二分）。根据所占字节以及index索引    start + index * encoding</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711134306850.png" srcset="/img/loading.gif" lazyload alt="image-20230711134306850"></p>
+<p>如果存放的数超过了范围，会升级。需要将元素移动到合适位置</p>
+<p>适合数据量不大Set，有序方便查找某一个元素是否在集合中</p>
+<h5 id="Dict"><a href="#Dict" class="headerlink" title="Dict"></a>Dict</h5><p>key-value pair通过Dict实现，实现原理和java的hashmap很像，同样是2^n^大小的数组+链表</p>
+<p>扩容时触发rehash</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145018722.png" srcset="/img/loading.gif" lazyload alt="image-20230711145018722"></p>
+<p>两个ht用于扩容时存放新的hash表</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145121313.png" srcset="/img/loading.gif" lazyload alt="image-20230711145121313"></p>
+<h6 id="渐进扩容"><a href="#渐进扩容" class="headerlink" title="渐进扩容"></a>渐进扩容</h6><p>除了扩容，此外如果<code>LoadFactor &lt; 0.1</code>会收缩</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711145634454.png" srcset="/img/loading.gif" lazyload alt="image-20230711145634454"></p>
+<p>将空间申请到dict.ht[1]，此外标记rehashidx&#x3D;0代表迁移工作开始</p>
+<p><strong>渐进rehash</strong>：每次执行新增、查询、修改、删除操作时，都检查一下dict.rehashidx是否大于-1, 如果是则将<code>dict.ht[0].table[rehashidx]</code>的entry链表rehash到dict.ht[1]（需要重新计算hash），并且将rehashidx++。直至dict.ht[0]的所有数据都rehash到dict.ht[1]</p>
+<p>如果rehash在进行中，删改查需要在两个table中都去找，增加直接到dict.ht[1]</p>
+<p>最后将ht[0]指向ht[1]</p>
+<h5 id="ZipList"><a href="#ZipList" class="headerlink" title="ZipList"></a>ZipList</h5><p><strong>连续空间</strong>（所以不能太大；4~64kb）的<strong>双端</strong>链表，<strong>节省内存</strong>和提供<strong>快速的顺序访问</strong></p>
+<ul>
+<li>指针也要占内存（8B），如何节约？ 通过分配连续内存，并记录下前一个entry的长度实现前遍历，当前长度通过encoding记录。更少的内存碎片</li>
+<li>不能随机读取</li>
+<li>适用于<strong>顺序读取(或两端读取)操作频繁，写入操作较少</strong>   以及 <strong>小型集合</strong>（数小、数量少）</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711151947271.png" srcset="/img/loading.gif" lazyload alt="image-20230711151947271"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312145711748.png" srcset="/img/loading.gif" lazyload alt="image-20240312145711748"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711154604922.png" srcset="/img/loading.gif" lazyload alt="image-20230711154604922"></p>
+<p><strong>entry</strong>：previous用于向前遍历，encoding记录当前长度</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711152433990.png" srcset="/img/loading.gif" lazyload alt="image-20230711152433990"></p>
+<p><strong>encoding</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711153249122.png" srcset="/img/loading.gif" lazyload alt="image-20230711153249122"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711153713999.png" srcset="/img/loading.gif" lazyload alt="image-20230711153713999"></p>
+<h6 id="连锁更新问题"><a href="#连锁更新问题" class="headerlink" title="连锁更新问题"></a>连锁更新问题</h6><p>连续保存多个253B数据：长度保存字段1B或5B，如果前一个过长当前就要变成5B，导致当前entry超过254连锁更新下一个节点</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711155037085.png" srcset="/img/loading.gif" lazyload alt="image-20230711155037085"></p>
+<h5 id="QuickList"><a href="#QuickList" class="headerlink" title="QuickList"></a>QuickList</h5><p>ZipList需要连续空间，找不到怎么办？</p>
+<p>QuickList链表连接多个ZipList，兼具链表（非连续空间）数组（节约内存）的优点</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711161528460.png" srcset="/img/loading.gif" lazyload alt="image-20230711161528460"></p>
+<ul>
+<li><code>list-max-ziplist-size</code>：限制ziplist的entry数量或内存大小</li>
+<li><code>list-compress-depth</code>：是否压缩中间节点以及压缩的深度</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711161941107.png" srcset="/img/loading.gif" lazyload alt="image-20230711161941107"></p>
+<h5 id="SkipList"><a href="#SkipList" class="headerlink" title="SkipList"></a>SkipList</h5><p>QuickList需要全部遍历，如何实现LogN随机查询？</p>
+<ul>
+<li>顺序存储</li>
+<li>包含多个指针，指针的跨度不同（最多32级）</li>
+<li>查找过程向右或向下走</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163132536.png" srcset="/img/loading.gif" lazyload alt="image-20230711163132536"></p>
+<p>每一个节点有一个下一个节点数组，不同节点数组长度不同</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163653562.png" srcset="/img/loading.gif" lazyload alt="image-20230711163653562"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711163720136.png" srcset="/img/loading.gif" lazyload alt="image-20230711163720136"></p>
+<h5 id="RedisObject"><a href="#RedisObject" class="headerlink" title="RedisObject"></a>RedisObject</h5><p>Redis中的键值都会被封装为RedisObject，头需要16B</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711165735576.png" srcset="/img/loading.gif" lazyload alt="image-20230711165735576"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711170113298.png" srcset="/img/loading.gif" lazyload alt="image-20230711170113298"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230711170150903.png" srcset="/img/loading.gif" lazyload alt="image-20230711170150903"></p>
+<h4 id="数据结构-1"><a href="#数据结构-1" class="headerlink" title="数据结构"></a>数据结构</h4><p>数据量小的时候，尽量节约空间；数据量大不得不空间换时间</p>
+<h5 id="String"><a href="#String" class="headerlink" title="String"></a>String</h5><ol>
+<li>其基本编码方式是RAW,基于简单动态字符串(SDS)实现，存储上限为512mb。</li>
+<li>如果存储的SDS长度小于44字节，则会采用EMBSTR编码,此时object head与SDS是一段连续空间。 申请内存时只<br>需要调用<strong>1次</strong>内存分配函数,效率更高。（小于44字节，一共分配小于64）</li>
+<li>如果存储的字符串是整数值,并且大小在LONG_ MAX范围内，则会采用INT编码:直接将数据保存在RedisObject的<br>ptr指针位置(刚好8字节) ,不再需要SDS了。</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717083050523.png" srcset="/img/loading.gif" lazyload alt="image-20230717083050523"></p>
+<h5 id="List"><a href="#List" class="headerlink" title="List"></a>List</h5><ul>
+<li>LinkedList :普通链表，可以从双端访问，内存占用较高，内存碎片较多   3.2之前</li>
+<li>ZipList :压缩列表，可以从双端访问，内存占用低，存储上限低  3.2之前</li>
+<li>QuickList  3.2之后</li>
+</ul>
+<h5 id="set"><a href="#set" class="headerlink" title="set"></a>set</h5><ul>
+<li>唯一 但 不有序</li>
+<li>需要求交集、并集、差集</li>
+</ul>
+<p>需要高效判断元素是否存在：<code>Hash</code>， key来存储元素，value&#x3D;null。如果都是int，会使用<code>intset</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">robj *<span class="hljs-title function_">setTypeCreate</span><span class="hljs-params">(sds value)</span> &#123;<br>    <span class="hljs-comment">//判断value是否是数值类型long long</span><br>    <span class="hljs-keyword">if</span> (i sSdsRepresentableAsLongLong(value,<span class="hljs-literal">NULL</span>) == C. _0K)<br>        <span class="hljs-comment">//如果是数值类型，则采用IntSet编码</span><br>        <span class="hljs-keyword">return</span> createIntsetobject() ;<br>    <span class="hljs-comment">//否则采用默认编码，也就是HT</span><br>    <span class="hljs-keyword">return</span> createSetObject();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717091331161.png" srcset="/img/loading.gif" lazyload alt="image-20230717091331161"></p>
+<p>元素少直接用zipList，两个entry 分别保存element和score；score小的在前面</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312155344282.png" srcset="/img/loading.gif" lazyload alt="image-20240312155344282"></p>
+<h5 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h5><ul>
+<li>Hash结构默认采用ZipList编码，用以节省内存。ZipList中相邻的两个entry 分别保存field和value</li>
+<li>当数据量较大时，Hash结构会转为HT编码，也就是Dict, 触发条件有两个:<ul>
+<li>ZipList中的元素 数量超过了hash-max-ziplist-entries (默认512)</li>
+<li>ZipList中的任意entry大小超 过了hash-max-ziplist-value ( 默认64字节)</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230717090812839.png" srcset="/img/loading.gif" lazyload alt="image-20230717090812839"></p>
+<h4 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h4><h5 id="阻塞IO"><a href="#阻塞IO" class="headerlink" title="阻塞IO"></a>阻塞IO</h5><p>一直等</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230720160353433.png" srcset="/img/loading.gif" lazyload alt="image-20230720160353433"></p>
+<h5 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h5><p>请求时，如果数据不存在，不阻塞<br>还是不断询问，存在大量无效的询问</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230720160417403.png" srcset="/img/loading.gif" lazyload alt="image-20230720160417403"></p>
+<p>优化：一个线程监听多个FD，并且在就绪时得到通知</p>
+<h5 id="select"><a href="#select" class="headerlink" title="select"></a>select</h5><p>linux中最早的多路复用策略</p>
+<p>只返回数量。知道有FD就绪了，但不知道是谁，需要遍历全部FD数组，查看谁变成了1</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724220743572.png" srcset="/img/loading.gif" lazyload alt="image-20230724220743572"></p>
+<ul>
+<li>fd_set需要拷贝两次，用户-&gt;内核-&gt;用户</li>
+<li>每次需要遍历全部获取到底哪些就绪了</li>
+<li>最多1024个</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312161810513.png" srcset="/img/loading.gif" lazyload alt="image-20240312161810513"></p>
+<h5 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h5><p>使用一个数组保存（实现数量不被限制了，fds在内核中会转为链表；但太长会影响性能），同样返回就绪的数量</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724221019443.png" srcset="/img/loading.gif" lazyload alt="image-20230724221019443"></p>
+<h5 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h5><ol>
+<li>使用<code>epoll_create</code>创建一个<code>epoll</code>实例(<strong>内核中</strong>)，返回一个文件描述符。</li>
+<li>使用<code>epoll_ctl</code>将需要监听的文件描述符注册到<code>epoll</code>实例中，设置关注的事件类型（比如可读、可写等）。</li>
+<li>使用<code>epoll_wait</code>等待事件的发生，当文件描述符上的事件状态发生变化时，<code>epoll_wait</code>会返回就绪的文件描述符到用户空间的events中。</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230724221457501.png" srcset="/img/loading.gif" lazyload alt="image-20230724221457501"></p>
+<ul>
+<li><code>CTL</code>添加时，只添加到红黑树一次；<code>wait</code>只拷贝就绪的event，减少拷贝</li>
+<li>只返回就绪的，不用遍历</li>
+<li>使用红黑树提高CRUD性能</li>
+<li>LevelTriggered: 简称LT。当FD有数据可读时，会重复通知多次,直至数据处理完成。是Epoll的默认模式</li>
+<li>EdgeTriggered:简称ET。当FD有数据可读时，只会被通知一-次, 不管数据是否处理完成</li>
+</ul>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240312163852835.png" srcset="/img/loading.gif" lazyload alt="image-20240312163852835" style="zoom:50%;" />
+
+
+
+<h5 id="epoll服务端"><a href="#epoll服务端" class="headerlink" title="epoll服务端"></a>epoll服务端</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230725090111123.png" srcset="/img/loading.gif" lazyload alt="image-20230725090111123"></p>
+<h5 id="信号驱动IO"><a href="#信号驱动IO" class="headerlink" title="信号驱动IO"></a>信号驱动IO</h5><p>在数据好了的时候通过信号通知</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153110963.png" srcset="/img/loading.gif" lazyload alt="image-20240314153110963"></p>
+<h5 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h5><p>交给内核去拷贝数据</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153206242.png" srcset="/img/loading.gif" lazyload alt="image-20240314153206242"></p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>都包含两个部分：等待数据就绪、拷贝数据</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png" srcset="/img/loading.gif" lazyload alt="image-20240314153236150"></p>
+<h4 id="redis网络模型"><a href="#redis网络模型" class="headerlink" title="redis网络模型"></a>redis网络模型</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230725090632140.png" srcset="/img/loading.gif" lazyload alt="image-20230725090632140"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314155003680.png" srcset="/img/loading.gif" lazyload alt="image-20240314155003680"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314155134295.png" srcset="/img/loading.gif" lazyload alt="image-20240314155134295" style="zoom:50%;" />
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314160627286.png" srcset="/img/loading.gif" lazyload alt="image-20240314160627286"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314161213466.png" srcset="/img/loading.gif" lazyload alt="image-20240314161213466"></p>
+<ul>
+<li>epoll中监听包含SSFD读（接受新连接;<code>tcpAccepthandler</code>）、FD读（每一个客户端来了请求;<code>readQueryFromClient</code>）、FD写（写返回值给客户端；<code>sendReplyToClient</code>）  都包含了一个回调处理器</li>
+<li>瓶颈在于io，包含接受命令以及返回结果</li>
+</ul>
+<p><strong>多线程：</strong></p>
+<ul>
+<li>多线程读取客户端中socket数据并且解析成命令</li>
+<li>多线程去clients_pending_write中取结果</li>
+</ul>
+<h4 id="通信协议RESP"><a href="#通信协议RESP" class="headerlink" title="通信协议RESP"></a>通信协议RESP</h4><ul>
+<li>客户端发送请求</li>
+<li>服务端接受执行命令并返回</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314163514595.png" srcset="/img/loading.gif" lazyload alt="image-20240314163514595"></p>
+<p>使用socket实现发送和接收</p>
+<h4 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h4><p>一个dict存key-value，另一个key-ttl</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314203756099.png" srcset="/img/loading.gif" lazyload alt="image-20240314203756099"></p>
+<ul>
+<li>惰性删除：操作时才判断是否删除</li>
+<li>周期删除：定时任务serverCron删除（低频大量）、fast beforeSleep在每个事件循环都会执行 (高频少量)</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314204822767.png" srcset="/img/loading.gif" lazyload alt="image-20240314204822767"></p>
+<h4 id="内存淘汰策略"><a href="#内存淘汰策略" class="headerlink" title="内存淘汰策略"></a>内存淘汰策略</h4><p>在内存不够时，主动删除部分key, <code>processCommand</code>前会执行</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314205242909.png" srcset="/img/loading.gif" lazyload alt="image-20240314205242909"></p>
+<p>LRU和LFU在redisObject里记录了，因此后面删除的时候其实时拉取了一些随机样本（eviction_pool）来比较，而不是所有样本的LRU</p>
+<p>LFU记录的是一个概率统计值，并且有使用定时衰减</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221335497.png" srcset="/img/loading.gif" lazyload alt="image-20240314221335497"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221659158.png" srcset="/img/loading.gif" lazyload alt="image-20240314221659158"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BC%80%E5%8F%91/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="category-chain-item">中间件</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/reids/" class="print-no-link">#reids</a>
+      
+        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="print-no-link">#中间件</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/12/book/%E7%A9%BF%E8%B6%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E8%BF%B7%E9%9B%BE/" title="穿越计算机的迷雾">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">穿越计算机的迷雾</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/20/B%E7%AB%99%E7%A7%92%E6%9D%80%E9%A1%B9%E7%9B%AE/" title="B站秒杀项目">
+                        <span class="hidden-mobile">B站秒杀项目</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

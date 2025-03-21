@@ -1,0 +1,765 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="原文链接：https:&#x2F;&#x2F;tech.meituan.com&#x2F;2018&#x2F;03&#x2F;21&#x2F;balance-accounts.html 引入业务复杂性高：场景多、链路长、数据量大，给资金安全带来了巨大挑战 可能出现问题的场景：  可以看出，这些都是一些上下游交互的边界场景，以及遇到的问题。当然不仅限于这些场景，凡是有系统交互、数据交互边界的场景，都会出现此类问题，我们称之为“一致性问题”。经粗略统计，我们清">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对账体系建设">
+<meta property="og:url" content="http://example.com/2023/11/15/TechDigest/%E5%AF%B9%E8%B4%A6%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="原文链接：https:&#x2F;&#x2F;tech.meituan.com&#x2F;2018&#x2F;03&#x2F;21&#x2F;balance-accounts.html 引入业务复杂性高：场景多、链路长、数据量大，给资金安全带来了巨大挑战 可能出现问题的场景：  可以看出，这些都是一些上下游交互的边界场景，以及遇到的问题。当然不仅限于这些场景，凡是有系统交互、数据交互边界的场景，都会出现此类问题，我们称之为“一致性问题”。经粗略统计，我们清">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202607297.png">
+<meta property="article:published_time" content="2023-11-15T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="文章精读">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202607297.png">
+  
+  
+  
+  <title>对账体系建设 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">对账体系建设</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-15 20:00" pubdate>
+          2023年11月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">对账体系建设</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>原文链接：<a target="_blank" rel="noopener" href="https://tech.meituan.com/2018/03/21/balance-accounts.html">https://tech.meituan.com/2018/03/21/balance-accounts.html</a></p>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>业务复杂性高：场景多、链路长、数据量大，给资金安全带来了巨大挑战</p>
+<p>可能出现问题的场景：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325141416774.png" srcset="/img/loading.gif" lazyload alt="image-20240325141416774"></p>
+<p>可以看出，这些都是一些上下游交互的边界场景，以及遇到的问题。当然不仅限于这些场景，凡是有系统交互、数据交互边界的场景，都会出现此类问题，我们称之为“一致性问题”。经粗略统计，我们清结算系统建立以来有70%左右的问题都属于一致性问题。</p>
+<p>解决一致性问题的方法：目标都是在<strong>事中</strong>避免问题的发生。</p>
+<blockquote>
+<ul>
+<li>强一致性协议: 两阶段提交、三阶段提交、TCC (Try-Confirm-Cancel)等</li>
+<li>最终一致性: 主动轮询、异步确保、可靠消息、消息事务等</li>
+</ul>
+</blockquote>
+<p>但是在实际场景中，导致一致性问题的原因有很多，无论是系统的内部逻辑还是外部环境都十分复杂多变、不可预知，我们很难完全避免问题：</p>
+<ul>
+<li>幂等、并发控制不当。</li>
+<li>基础环境故障：比如网络、数据库、消息中间将发生故障。</li>
+<li>其他代码bug。</li>
+</ul>
+<p>因此事后对于问题数据的<strong>发现</strong>以及<strong>修复</strong>就显得尤为重要。这就是对账系统</p>
+<h3 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h3><ol>
+<li>数据准备</li>
+<li>数据核对（轧账）</li>
+<li>差错处理（平账）</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325142044925.png" srcset="/img/loading.gif" lazyload alt="image-20240325142044925"></p>
+<h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><p>将对账所需的全部数据，接入到我们的对账系统</p>
+<ul>
+<li>数据拉取：我们主动拉取数据，并通过数据适配的方式，将数据存储到对账数据池中。</li>
+<li>数据推送：由数据接入方将数据通过ETL（Extract-Transform-Load）等方式直接推送到我们的对账数据池中，数据格式由数据接入方自行适配。</li>
+<li>文件上传：我们会提供标准的文件模板，由数据接入方填充数据，通过文件上传的方式将数据接入到我们的数据池。</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325151242152.png" srcset="/img/loading.gif" lazyload alt="image-20240325151242152"></p>
+<p>此外，也可用使用同一个数据源</p>
+<h3 id="数据核对（轧账）"><a href="#数据核对（轧账）" class="headerlink" title="数据核对（轧账）"></a>数据核对（轧账）</h3><p>核心！其目标是发现问题数据。数据核对阶段我们的两个目标是保障数据核对的**<em>覆盖度*<strong>和</strong></em>准确性***。经过总结和梳理，数据核对过程可以分为以下5个环节。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325153926427.png" srcset="/img/loading.gif" lazyload alt="image-20240325153926427"></p>
+<h4 id="1-问题梳理"><a href="#1-问题梳理" class="headerlink" title="1. 问题梳理"></a><strong>1. 问题梳理</strong></h4><p>由于数据核对的目标是发现问题，那么我们进行数据核对就要从问题出发，首先明确我们要通过对账发现哪些问题，只有这样才能保证数据核对的覆盖度。经过梳理，我们发现在数据流转中过程中数据的不一致问题可以统一归结为三类，分别是*<strong>漏结*<strong>、</strong>*重复结**<em>、</em></strong>错结***。</p>
+<ul>
+<li>漏结：发起方有数据，而接收方没有数据。举个例子，目前清结算系统会在订单送达时给骑手结算。如果订单的状态是送达，而没有给骑手生成对应的结算数据。就是一种典型的漏结算场景。</li>
+<li>重复结：接收方重复处理。还是上面的例子，如果订单送达，给骑手结算了两次，产生了重复的结算数据，就是重复结算。</li>
+<li>错结：发起方和接受方数据不一致。一般会发生在金额和状态两个字段。比如说订单上的数据是用户加小费3元。结算这边只产生了2元的小费结算数据，就是错结。</li>
+</ul>
+<h4 id="2-对账方式"><a href="#2-对账方式" class="headerlink" title="2. 对账方式"></a><strong>2. 对账方式</strong></h4><p>对账方式主要分为两种，**<em>单向对账*<strong>和</strong></em>双向对账***。</p>
+<ul>
+<li>单向对账：以一方数据为基准进行对账。比如结算跟支付平台，以结算数据为基准和支付平台核对，用来发现结算数据为支付成功，支付平台支付失败等问题。</li>
+<li>双向对账：以双方的数据互为基准对账。既要保证结算数据为成功的，支付平台也要成功，又要保证支付平台数据为成功的，结算数据也要成功。</li>
+</ul>
+<p>显而易见，双向对账更能够全面的发现问题。因此在条件允许的情况下，我们会优先选择双向对账。</p>
+<h4 id="3-对账粒度"><a href="#3-对账粒度" class="headerlink" title="3. 对账粒度"></a><strong>3. 对账粒度</strong></h4><p>对账粒度也分为两种，分别是**<em>明细对账*<strong>和</strong></em>总数对账***。</p>
+<ul>
+<li>明细对账：对双方的每条数据依次进行比对。<ul>
+<li>优点是可以准确定位问题数据。</li>
+<li>缺点是对账口径的设计比较复杂。因为我们需要同时针对漏、重、错三种错误类别设计不同的对账口径，同时还要考虑到业务的边缘场景。稍有不慎，就会影响对账的准确性。</li>
+</ul>
+</li>
+<li>总数对账：选择一个维度，进行总数级别的对账。优缺点和上面相反</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154126578.png" srcset="/img/loading.gif" lazyload alt="image-20240325154126578"></p>
+<h4 id="4-对账口径"><a href="#4-对账口径" class="headerlink" title="4. 对账口径"></a><strong>4. 对账口径</strong></h4><p>对账口径，也就是具体的对账逻辑的设计。我们会提供固定的**<em>对账模板*<strong>，供不同的对账场景选取。如果某些特殊场景对账模板不能覆盖，也可以采取对账逻辑</strong></em>自定义***的方式进行对账。</p>
+<p>经过总结我们发现，对账的形式无非就是两方比对和自身异常检测两种。两方比对又可以细分为一对一、多对一、一对多。比对方法也主要是分为条目匹配和金额匹配。自身异常检测主要是重复性和异常状态的检测。我们把这些通用的对账逻辑模板化，减少重复的开发工作。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154156166.png" srcset="/img/loading.gif" lazyload alt="image-20240325154156166"></p>
+<h4 id="5-对账时机"><a href="#5-对账时机" class="headerlink" title="5. 对账时机"></a><strong>5. 对账时机</strong></h4><p>分为<strong><em>离线对账*<strong>和</strong></em>在线对账*</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154327968.png" srcset="/img/loading.gif" lazyload alt="image-20240325154327968"></p>
+<ul>
+<li><p>离线对账主要是通过固定的周期进行对账。最短周期为Ｔ＋１。它的好处是适用性较强，基本可以覆盖所有的对账场景。</p>
+</li>
+<li><p>在线对账又分为**<em>实时对账*<strong>和</strong></em>准实时对账***。</p>
+<ul>
+<li><p>实时对账和准实时对账的区别主要是<strong>实时对账耦合在结算链路中</strong>，可以在发现问题数据时，对结算流程进行拦截</p>
+</li>
+<li><p>准实时对账是异步进行的，不具备拦截能力。在线对账有一定的局限性，一方面它依赖于对账数据是否能实时的准备好，另一方面也比较占用系统资源。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>我们的做法应该是以周期对账为主，在某些实时性要求比较高，且条件满足的场景使用在线对账。</p>
+<h3 id="差错处理（平账）"><a href="#差错处理（平账）" class="headerlink" title="差错处理（平账）"></a>差错处理（平账）</h3><p>对问题数据的处理</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154405239.png" srcset="/img/loading.gif" lazyload alt="image-20240325154405239"></p>
+<h3 id="设计实现"><a href="#设计实现" class="headerlink" title="设计实现"></a>设计实现</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154600192.png" srcset="/img/loading.gif" lazyload alt="image-20240325154600192"></p>
+<h4 id="离线对账"><a href="#离线对账" class="headerlink" title="离线对账"></a>离线对账</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154706582.png" srcset="/img/loading.gif" lazyload alt="image-20240325154706582"></p>
+<h4 id="在线对账"><a href="#在线对账" class="headerlink" title="在线对账"></a>在线对账</h4><p>通过RPC、监听消息队列(MQ)、监听数据库binlog三种方式进行对账接入。在线对账平台分为管理层和执行层。管理层主要是承担策略编辑、策略绑定和拦截管理的相关工作。而执行层分为异步（准实时）对账和同步（实时）对账两个模块。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325154846323.png" srcset="/img/loading.gif" lazyload alt="image-20240325154846323"></p>
+<p>①异步对账：我们分别监听运单和结算单元的Binlog，通过Kafka-&gt;Storm的经典架构，进行对账策略的执行。实际的流程比较复杂，这里只是一张简图，大概就是：（细节可以忽略）</p>
+<blockquote>
+<p>结算单元是 清结算系统内部的模型，和运单是一对一关系，记录运单各个节点的结算状态。收到运单消息后，我们会把对于的运单以List的形式存储到Squirrel(Redis)中，当结算消息来了以后，就把对应运单记录Delete掉。如果有运单记录一直停留在List当中，也就是说明结算消息没有来，应该是发生了漏结算。我们通过过定时任务轮询运单List将问题数据输出。</p>
+</blockquote>
+<blockquote>
+<p>补充：这里在实习时接触到的是监听奖励表binlog，然后MQ发起一个对账请求，核对发奖信息和数据库配置信息是否一致</p>
+</blockquote>
+<p>②同步对账：示例中是结算内部的流程，经历结算单、账单、付款几个流程。因为付款是最后一个流程，如果这个时候数据存在问题，那么就会造成实际的资金损失。因此我们会在付款环节之前，对前面的数据进行对账。如果发现账单和结算单的数据不一致，我们就会进行数据拦截。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" class="category-chain-item">系统架构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A8%B3%E5%AE%9A%E6%80%A7/" class="category-chain-item">稳定性</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/" title="考试重构-压测">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">考试重构-压测</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/09/TechDigest/TCP%E6%95%B0%E6%8D%AE%E7%B2%98%E5%8C%85/" title="TCP数据粘包">
+                        <span class="hidden-mobile">TCP数据粘包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

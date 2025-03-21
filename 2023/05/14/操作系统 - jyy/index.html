@@ -1,0 +1,1453 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="有什么不懂的直接问gpt 什么是程序  00 01 10 00 01 10 源代码角度同时我们也可以用C语言实现  状态：内存中的所有东西，全部栈帧 使用栈模拟递归     二进制角度 状态：内存 + 寄存器 初始状态： 迁移：一条01指令  任何的程序都需要退出，也就是结束。因此需要特别的指令 syscall 把现在的状态交给操作系统 程序 &#x3D;  普通计算 + syscall 实现与操">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统 - jyy">
+<meta property="og:url" content="http://example.com/2023/05/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20-%20jyy/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="有什么不懂的直接问gpt 什么是程序  00 01 10 00 01 10 源代码角度同时我们也可以用C语言实现  状态：内存中的所有东西，全部栈帧 使用栈模拟递归     二进制角度 状态：内存 + 寄存器 初始状态： 迁移：一条01指令  任何的程序都需要退出，也就是结束。因此需要特别的指令 syscall 把现在的状态交给操作系统 程序 &#x3D;  普通计算 + syscall 实现与操">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404494.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404496.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404497.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404498.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404499.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404500.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404501.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404502.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404503.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404504.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404505.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404506.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404507.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404509.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404510.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404511.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404512.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404513.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404514.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404515.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404516.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404517.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404518.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404519.png">
+<meta property="article:published_time" content="2023-05-14T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404494.png">
+  
+  
+  
+  <title>操作系统 - jyy - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">操作系统 - jyy</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-14 20:00" pubdate>
+          2023年5月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          82 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">操作系统 - jyy</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>有什么不懂的直接问gpt</p>
+<h3 id="什么是程序"><a href="#什么是程序" class="headerlink" title="什么是程序"></a>什么是程序</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404494.png" srcset="/img/loading.gif" lazyload alt="image-20230512154440672" style="zoom: 67%;" />
+
+<p>00 01 10 00 01 10</p>
+<h4 id="源代码角度"><a href="#源代码角度" class="headerlink" title="源代码角度"></a>源代码角度</h4><p>同时我们也可以用C语言实现</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404496.png" srcset="/img/loading.gif" lazyload alt="image-20230512155633763"></p>
+<p>状态：内存中的所有东西，全部栈帧</p>
+<p>使用栈模拟递归</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404497.png" srcset="/img/loading.gif" lazyload alt="image-20230512161116475" style="zoom: 67%;" />
+
+
+
+<h4 id="二进制角度"><a href="#二进制角度" class="headerlink" title="二进制角度"></a>二进制角度</h4><ul>
+<li>状态：内存 + 寄存器</li>
+<li>初始状态：</li>
+<li>迁移：一条01指令</li>
+</ul>
+<p>任何的程序都需要退出，也就是结束。因此需要特别的指令 <code>syscall</code> 把现在的状态交给操作系统</p>
+<p>程序 &#x3D;  普通计算 + <code>syscall</code></p>
+<p>实现与操作系统中别的对象交互</p>
+<ul>
+<li>读写文件  如果有权限，操作系统把状态写入程序的M, R</li>
+<li>改变进程 杀死程序</li>
+</ul>
+<p>如何构造一个<code>printf(&quot;hello world&quot;)</code></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404498.png" srcset="/img/loading.gif" lazyload alt="image-20230512171448873" style="zoom:67%;" />
+
+
+
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><ul>
+<li>收编了所有对象（包含程序状态机和文件），实现霸主地位</li>
+<li>管理多个状态机，根据权限访问。打开文件，屏幕显示</li>
+</ul>
+<p>在程序眼里，操作系统就是<code>syscall</code>，程序 &#x3D; (普通计算 + <code>syscall</code>)  如何只展示<code>syscall</code></p>
+<ul>
+<li><code>strace a.out</code>  去掉计算，只展示用到的所有的系统调用</li>
+</ul>
+<p>c语言的第一条程序是什么，谁定义的，能不能修改</p>
+<p>计算机没有玄学，一切都建立在确定的机制上。bug只要能复现，就能解决</p>
+<h4 id="Python操作系统"><a href="#Python操作系统" class="headerlink" title="Python操作系统"></a>Python操作系统</h4><p><strong>思路</strong></p>
+<ul>
+<li>应用程序 &#x3D; 纯粹计算（Python 代码） + <code>syscall</code>；  			状态机</li>
+<li>操作系统 &#x3D; Python <code>syscall</code>实现，有 “假想” 的 I&#x2F;O 设备；   管理状态机</li>
+</ul>
+<p>​    操作系统为方框，程序为圆圈，操作系统管理全部程序，并且会提供红色的<code>syscall</code>指令。蓝色为当前运行程序<br>当<code>spawn</code>创建程序后，操作系统有了选择，到底执行哪一个程序呢？</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404499.png" srcset="/img/loading.gif" lazyload alt="image-20230527124547932"></p>
+<p><strong>四个 “系统调用” API</strong></p>
+<ul>
+<li><code>choose(xs)</code>: 返回 <code>xs</code> 中的一个随机选项，纯粹的计算不能实现随机</li>
+<li><code>write(s)</code>: 输出字符串 <code>s</code></li>
+<li><code>spawn(fn)</code>: 创建一个可运行的状态机 <code>fn</code></li>
+<li><code>sched()</code>: 随机切换到任意状态机执行（这里是主动切换，实际也存在被OS强制切换）</li>
+</ul>
+<h5 id="demo-code"><a href="#demo-code" class="headerlink" title="demo-code"></a>demo-code</h5><p>我进行状态机切换，肯定需要保存状态（变量值是多少、pc在哪） ： <code>yield</code>  （实际OS由一段汇编代码将当前状态机 (执行流) 的寄存器保存到内存中）<br>每一个进程在操作系统里被视为一个生成器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">OperatingSystem</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;A minimal executable operating system model.&quot;&quot;&quot;</span><br><br>    SYSCALLS = [<span class="hljs-string">&#x27;choose&#x27;</span>, <span class="hljs-string">&#x27;write&#x27;</span>, <span class="hljs-string">&#x27;spawn&#x27;</span>, <span class="hljs-string">&#x27;sched&#x27;</span>]<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Thread</span>:<br>        <span class="hljs-string">&quot;&quot;&quot;A &quot;freezed&quot; thread state.&quot;&quot;&quot;</span><br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, func, *args</span>):<br>            <span class="hljs-variable language_">self</span>._func = func(*args)<br>            <span class="hljs-variable language_">self</span>.retval = <span class="hljs-literal">None</span><br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">step</span>(<span class="hljs-params">self</span>):<br>            <span class="hljs-string">&quot;&quot;&quot;Proceed with the thread until its next trap.&quot;&quot;&quot;</span><br>            syscall, args, *_ = <span class="hljs-variable language_">self</span>._func.send(<span class="hljs-variable language_">self</span>.retval)<br>            <span class="hljs-variable language_">self</span>.retval = <span class="hljs-literal">None</span><br>            <span class="hljs-keyword">return</span> syscall, args<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, src</span>):<br>        variables = &#123;&#125;<br>        <span class="hljs-built_in">exec</span>(src, variables)<br>        <span class="hljs-variable language_">self</span>._main = variables[<span class="hljs-string">&#x27;main&#x27;</span>]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        threads = [OperatingSystem.Thread(<span class="hljs-variable language_">self</span>._main)]<br>        <span class="hljs-keyword">while</span> threads:  <span class="hljs-comment"># Any thread lives</span><br>            <span class="hljs-keyword">try</span>:<br>                <span class="hljs-keyword">match</span> (t := threads[<span class="hljs-number">0</span>]).step():<br>                    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;choose&#x27;</span>, xs:  <span class="hljs-comment"># Return a random choice</span><br>                        t.retval = random.choice(xs)<br>                    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;write&#x27;</span>, xs:  <span class="hljs-comment"># Write to debug console</span><br>                        <span class="hljs-built_in">print</span>(xs, end=<span class="hljs-string">&#x27;&#x27;</span>)<br>                    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;spawn&#x27;</span>, (fn, args):  <span class="hljs-comment"># Spawn a new thread</span><br>                        threads += [OperatingSystem.Thread(fn, *args)]<br>                    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;sched&#x27;</span>, _:  <span class="hljs-comment"># Non-deterministic schedule</span><br>                        random.shuffle(threads)<br>            <span class="hljs-keyword">except</span> StopIteration:  <span class="hljs-comment"># A thread terminates</span><br>                threads.remove(t)<br>                random.shuffle(threads)  <span class="hljs-comment"># sys_sched()</span><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Usage: <span class="hljs-subst">&#123;sys.argv[<span class="hljs-number">0</span>]&#125;</span> file&#x27;</span>)<br>        exit(<span class="hljs-number">1</span>)<br><br>    src = Path(sys.argv[<span class="hljs-number">1</span>]).read_text()<br>    <span class="hljs-keyword">for</span> syscall <span class="hljs-keyword">in</span> OperatingSystem.SYSCALLS:<br>        src = src.replace(<span class="hljs-string">f&#x27;sys_<span class="hljs-subst">&#123;syscall&#125;</span>&#x27;</span>,        <span class="hljs-comment"># sys_write(...)</span><br>                          <span class="hljs-string">f&#x27;yield &quot;<span class="hljs-subst">&#123;syscall&#125;</span>&quot;, &#x27;</span>)  <span class="hljs-comment">#  -&gt; yield &#x27;write&#x27;, (...)</span><br><br>    OperatingSystem(src).run()<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python">count = <span class="hljs-number">0</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Tprint</span>(<span class="hljs-params">name</span>):<br>    <span class="hljs-keyword">global</span> count<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>        count += <span class="hljs-number">1</span><br>        sys_write(<span class="hljs-string">f&#x27;#<span class="hljs-subst">&#123;count:02&#125;</span> Hello from <span class="hljs-subst">&#123;name&#125;</span><span class="hljs-subst">&#123;i+<span class="hljs-number">1</span>&#125;</span>\n&#x27;</span>)<br>        sys_sched()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    n = sys_choose([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>])<br>    sys_write(<span class="hljs-string">f&#x27;#Thread = <span class="hljs-subst">&#123;n&#125;</span>\n&#x27;</span>)<br>    <span class="hljs-keyword">for</span> name <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;ABCDE&#x27;</span>[:n]:<br>        sys_spawn(Tprint, name)<br>    sys_sched()<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="more"><a href="#more" class="headerlink" title="more"></a>more</h5><p>进程 + 线程 + 终端 + 存储 (崩溃一致性)</p>
+<table>
+<thead>
+<tr>
+<th align="left">系统调用&#x2F;Linux 对应</th>
+<th align="left">行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">sys_spawn(fn)&#x2F;pthread_create</td>
+<td align="left">创建从 fn 开始执行的线程</td>
+</tr>
+<tr>
+<td align="left">sys_fork()&#x2F;fork</td>
+<td align="left">创建当前状态机的完整复制</td>
+</tr>
+<tr>
+<td align="left">sys_sched()&#x2F;定时被动调用</td>
+<td align="left">切换到随机的线程&#x2F;进程执行</td>
+</tr>
+<tr>
+<td align="left">sys_choose(xs)&#x2F;rand</td>
+<td align="left">返回一个 xs 中的随机的选择</td>
+</tr>
+<tr>
+<td align="left">sys_write(s)&#x2F;printf</td>
+<td align="left">向调试终端输出字符串 s</td>
+</tr>
+<tr>
+<td align="left">sys_bread(k)&#x2F;read</td>
+<td align="left">读取虚拟设磁盘块 �<em>k</em> 的数据</td>
+</tr>
+<tr>
+<td align="left">sys_bwrite(k, v)&#x2F;write</td>
+<td align="left">向虚拟磁盘块 �<em>k</em> 写入数据 �<em>v</em></td>
+</tr>
+<tr>
+<td align="left">sys_sync()&#x2F;sync</td>
+<td align="left">将所有向虚拟磁盘的数据写入落盘</td>
+</tr>
+<tr>
+<td align="left">sys_crash()&#x2F;长按电源按键</td>
+<td align="left">模拟系统崩溃</td>
+</tr>
+</tbody></table>
+<p><code>mosaic.py</code>：500行操作系统。还实现了打印每一步的状态</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python">T = <span class="hljs-number">3</span><br>n = <span class="hljs-number">3</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Tsum</span>( ):<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        tmp = heap.x<br>        tmp += <span class="hljs-number">1</span><br>        sys_sched()<br>        heap.x = tmp<br>        sys_sched()  <span class="hljs-comment"># 没有这一步, 最小为 n=3  添加后为2</span><br>    heap.done += <span class="hljs-number">1</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    heap.x = <span class="hljs-number">0</span><br>    heap.done = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(T):<br>    	sys_spawn(Tsum)<br>    <span class="hljs-keyword">while</span> heap.done != T:<br>    	sys_sched()<br>    sys_write(<span class="hljs-string">f&#x27;SUM = <span class="hljs-subst">&#123;heap.x&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>不确定性发生在<code>sys_sched()</code>， <code>--check</code> 遍历所有答案</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Tsum</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>    <span class="hljs-type">int</span> tmp = sum;<br>    tmp++;<br>    <span class="hljs-comment">// 假设此时可能发生进程/线程切换</span><br>    sum = tmp;<br>    <span class="hljs-comment">// 假设此时可能发生进程/线程切换  没有这个最小值为n</span><br>  &#125;<br>&#125;<br>T个程序执行n次，[<span class="hljs-number">2</span>~n*T]<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h3 id="多处理器编程"><a href="#多处理器编程" class="headerlink" title="多处理器编程"></a><a target="_blank" rel="noopener" href="http://jyywiki.cn/OS/2022/slides/3.slides">多处理器编程</a></h3><p><strong>1.放弃原子性</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> balance = <span class="hljs-number">100</span>;<br><span class="hljs-type">int</span> <span class="hljs-title function_">Alipay_withdraw</span><span class="hljs-params">(<span class="hljs-type">int</span> amt)</span> &#123;<br>  <span class="hljs-keyword">if</span> (balance &gt;= amt) &#123;<br>    balance -= amt;<br>    <span class="hljs-keyword">return</span> SUCCESS;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> FAIL;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) sum++;<br></code></pre></td></tr></table></figure>
+
+<p><code>printf(&quot;a&quot;) </code>为什么不会报错？带了锁</p>
+<p>互斥和原子性是本学期的重要主题</p>
+<p> <strong>2.顺序丧失</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">-O1: R[eax] = sum; R[eax] += N; sum = R[eax]<br>    O1保证最终一致，如果要写入多次，直接一次性写入<br>    最终读出<span class="hljs-number">100000000</span><br>    <br>-O2: sum += N;  <span class="hljs-number">200000000</span><br>    <br>另一个例子： 系统默认done不会改变了<br>    <span class="hljs-keyword">while</span> (!done);<br>    <span class="hljs-comment">// would be optimized to</span><br>    <span class="hljs-keyword">if</span> (!done) <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>3.丧失可见性</strong></p>
+<p>理论上输出 01 10 11, 但其实00也有输出</p>
+<p>处理器也是一个编译器，一条指令拆分多个uops</p>
+<p>如果想写入x时未命中，print就可以先执行</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">T1</span><span class="hljs-params">()</span> &#123;<br>  x = <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span><span class="hljs-params">(<span class="hljs-string">&quot;&quot;</span> : : <span class="hljs-string">&quot;memory&quot;</span>)</span>; <span class="hljs-comment">// compiler barrier</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;y = %d\n&quot;</span>, y);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">T2</span><span class="hljs-params">()</span> &#123;<br>  y = <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span><span class="hljs-params">(<span class="hljs-string">&quot;&quot;</span> : : <span class="hljs-string">&quot;memory&quot;</span>)</span>; <span class="hljs-comment">// compiler barrier</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;x = %d\n&quot;</span>, x);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="理解并发程序执行"><a href="#理解并发程序执行" class="headerlink" title="理解并发程序执行"></a><a target="_blank" rel="noopener" href="http://jyywiki.cn/OS/2022/slides/4.slides">理解并发程序执行</a></h3><p>在<strong>共享内存</strong>实现并发时，一个反例   <code>get set</code>不是原子操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> locked = UNLOCK;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">critical_section</span><span class="hljs-params">()</span> &#123;<br>retry:<br>  <span class="hljs-keyword">if</span> (locked != UNLOCK) &#123;<br>    <span class="hljs-keyword">goto</span> retry;<br>  &#125;<br>  locked = LOCK;<br><br>  <span class="hljs-comment">// critical section</span><br><br>  locked = UNLOCK;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Peterson"><a href="#Peterson" class="headerlink" title="Peterson"></a>Peterson</h4><p>棋子代表：我想上厕所；门上贴的人代表着：谁能上厕所</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404500.png" srcset="/img/loading.gif" lazyload alt="image-20230514163743735" style="zoom:67%;" />
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>, turn = A;<br>void TA() &#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>/* PC=<span class="hljs-number">1</span> */  x = <span class="hljs-number">1</span>;<br>/* PC=<span class="hljs-number">2</span> */  turn = B;<br>/* PC=<span class="hljs-number">3</span> */  <span class="hljs-keyword">while</span> (y &amp;&amp; turn == B) ;<br>            critical_section();<br>/* PC=<span class="hljs-number">4</span> */  x = <span class="hljs-number">0</span>; &#125; &#125;<br>void TB() &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>/* PC=<span class="hljs-number">1</span> */  y = <span class="hljs-number">1</span>;<br>/* PC=<span class="hljs-number">2</span> */  turn = A;<br>/* PC=<span class="hljs-number">3</span> */  <span class="hljs-keyword">while</span> (x &amp;&amp; turn == A) ;<br>            critical_section();<br>/* PC=<span class="hljs-number">4</span> */  y = <span class="hljs-number">0</span>; &#125; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>证明正确性：直接画出状态机表达出全部状态。</p>
+<h4 id="Model-Checker"><a href="#Model-Checker" class="headerlink" title="Model Checker"></a>Model Checker</h4><p>并发程序 &#x3D; 状态机，画出状态机就可以知道并发程序有没有错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Mutex</span>:<br>    locked = <span class="hljs-string">&#x27;&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">T1</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">yield</span> checkpoint()<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-keyword">yield</span> checkpoint()<br>            <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.locked == <span class="hljs-string">&#x27;🔒&#x27;</span>:<br>                <span class="hljs-keyword">yield</span> checkpoint()<br>                <span class="hljs-keyword">pass</span><br>            <span class="hljs-keyword">yield</span> checkpoint()<br>            <span class="hljs-variable language_">self</span>.locked = <span class="hljs-string">&#x27;🔒&#x27;</span><br>            ...<br></code></pre></td></tr></table></figure>
+
+<p>使用程序去遍历出全部的状态  Model Checker</p>
+<p>没有工具（编程、测试、调试），不做系统</p>
+<h3 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a><a target="_blank" rel="noopener" href="http://jyywiki.cn/OS/2022/slides/5.slides">互斥</a></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  ...<br>&#125; <span class="hljs-type">lock_t</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lk)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lk)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>还是原来难点：<strong>get set 非原子</strong></p>
+<h4 id="自旋锁-spin-lock"><a href="#自旋锁-spin-lock" class="headerlink" title="自旋锁 spin lock"></a>自旋锁 spin lock</h4><p><strong>硬件</strong>能为我们提供一条 “瞬间完成” 的读 + 写指令</p>
+<p> <code>xchg dest, src</code>  原子的实现交换数据，并返回原来的值。 这样就可以实现两个线程之间的锁</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">xchg</span><span class="hljs-params">(<span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> *addr, <span class="hljs-type">int</span> newval)</span> &#123;<br>  <span class="hljs-type">int</span> result;<br>  <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span> <span class="hljs-params">(<span class="hljs-string">&quot;lock xchg %0, %1&quot;</span></span><br><span class="hljs-params">    : <span class="hljs-string">&quot;+m&quot;</span>(*addr), <span class="hljs-string">&quot;=a&quot;</span>(result) : <span class="hljs-string">&quot;1&quot;</span>(newval))</span>;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-type">int</span> locked = <span class="hljs-number">0</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">while</span> (xchg(&amp;locked, <span class="hljs-number">1</span>)) ; &#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> &#123; xchg(&amp;locked, <span class="hljs-number">0</span>); &#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>处理器保证，带lock的指令可以锁定总线，xchg默认带lock</li>
+<li>两个cpu共享内存时，带lock指令会锁住memory ，硬件实现，一个bit实现bus lock</li>
+<li>cpu有缓存L1，如何保证缓存一致。当一个cpu锁定memory时，需要把别的cpu的缓存都剔除</li>
+</ul>
+<p><code>Load-Reserved/Store-Conditional</code>，硬件里会实现</p>
+<p>Compare-and-Swap：乐观锁</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">cas</span><span class="hljs-params">(<span class="hljs-type">int</span> *addr, <span class="hljs-type">int</span> cmp_val, <span class="hljs-type">int</span> new_val)</span> &#123;   <br>  <span class="hljs-type">int</span> old_val = *addr;<br>  <span class="hljs-keyword">if</span> (old_val == cmp_val) &#123;<br>    *addr = new_val; <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>缺陷</strong>：未获得锁的线程在空转，甚至获取锁的线程被OS切换了，所以需要<strong>不拥堵时</strong>使用</p>
+<p>操作系统内部自己使用：操作系统内核的并发数据结构 (短临界区)；关中断</p>
+<h4 id="互斥锁-Mutex-Lock"><a href="#互斥锁-Mutex-Lock" class="headerlink" title="互斥锁  Mutex Lock"></a>互斥锁  Mutex Lock</h4><p>与其干等，不如把cpu让给别的线程执行，<strong>阻塞</strong></p>
+<p>把锁的实现放到<strong>操作系统</strong>里就好！</p>
+<ul>
+<li><pre><code class="c">syscall(SYSCALL_lock, &amp;lk); // 试图获得 `lk`，但如果失败，就切换到其他线程
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs scss"><br>- ```c<br>  <span class="hljs-built_in">syscall</span>(SYSCALL_unlock, &amp;lk); <span class="hljs-comment">// 释放 `lk`，如果有等待锁的线程就唤醒</span><br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>未得到锁会进入等待队列，释放锁时OS会取出等待队列中一个线程，<strong>OS使用自旋锁</strong>确保自己处理过程是原子的</p>
+<p>上锁失败会睡眠，不占用CPU，但不管有没有竞争都需要进出内核系统调用，带来一定的开销</p>
+<h4 id="Futex-Spin-Mutex"><a href="#Futex-Spin-Mutex" class="headerlink" title="Futex &#x3D; Spin + Mutex"></a>Futex &#x3D; Spin + Mutex</h4><p><code>Fast Userspace muTexes</code>，无竞争情况下，能够避免系统调用的开销</p>
+<p><strong>1.自旋锁</strong> (线程直接共享 locked)</p>
+<ul>
+<li>更快的 fast path<ul>
+<li>xchg 成功 → 立即进入临界区，开销很小</li>
+</ul>
+</li>
+<li>更慢的 slow path<ul>
+<li>xchg 失败 → 浪费 CPU 自旋等待</li>
+</ul>
+</li>
+</ul>
+<p><strong>2.睡眠锁</strong> (通过系统调用访问 locked)</p>
+<ul>
+<li>更快的 slow path<ul>
+<li>上锁失败线程不再占用 CPU</li>
+</ul>
+</li>
+<li>更慢的 fast path<ul>
+<li>即便上锁成功也需要进出内核 (syscall)</li>
+</ul>
+</li>
+</ul>
+<p><strong>3.融合</strong>：先原子指令上锁，失败后系统调用睡眠</p>
+<p>线程库的锁就是这样的锁，但还有很多的<strong>优化</strong>以减少系统调用</p>
+<p>code：Kernel为操作系统需要做的，这里使用while模拟</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Futex</span>:<br>    locked, waits = <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span><br>	<span class="hljs-comment"># Model Checker会按行执行，所以这会被视为一个原子操作</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tryacquire</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.locked:<br>            <span class="hljs-comment"># Test-and-set (cmpxchg)</span><br>            <span class="hljs-comment"># Same effect, but more efficient than xchg</span><br>            <span class="hljs-variable language_">self</span>.locked = <span class="hljs-string">&#x27;🔒&#x27;</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;🔒&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">release</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.waits:<br>            <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-variable language_">self</span>.locked = <span class="hljs-string">&#x27;&#x27;</span><br><br><span class="hljs-meta">    @thread</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">t1</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.tryacquire() == <span class="hljs-string">&#x27;🔒&#x27;</span>:     <span class="hljs-comment"># User</span><br>                <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits + <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-comment"># Kernel</span><br>                <span class="hljs-keyword">while</span> <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.waits:      <span class="hljs-comment"># Kernel 实际上这里已经被os剥夺了</span><br>                    <span class="hljs-keyword">pass</span><br>            cs = <span class="hljs-literal">True</span>                         <span class="hljs-comment"># User</span><br>            <span class="hljs-keyword">del</span> cs                            <span class="hljs-comment"># User</span><br>            <span class="hljs-variable language_">self</span>.release()                    <span class="hljs-comment"># Kernel</span><br><br><span class="hljs-meta">    @thread</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">t2</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.tryacquire() == <span class="hljs-string">&#x27;🔒&#x27;</span>:<br>                <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits + <span class="hljs-string">&#x27;2&#x27;</span><br>                <span class="hljs-keyword">while</span> <span class="hljs-string">&#x27;2&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.waits:<br>                    <span class="hljs-keyword">pass</span><br>            cs = <span class="hljs-literal">True</span><br>            <span class="hljs-keyword">del</span> cs<br>            <span class="hljs-variable language_">self</span>.release()<br></code></pre></td></tr></table></figure>
+
+<p>Fast&#x2F;slow paths:性能优化的途径</p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a><a target="_blank" rel="noopener" href="http://jyywiki.cn/OS/2022/slides/6.slides">同步</a></h3><p>有了基本的互斥锁，现在需要通过他实现一些线程间的同步机制。有锁时默认使用<code>Futex</code></p>
+<p>线程同步：共同达到互相已知的状态</p>
+<p>生产者消费者(解决并发的万能钥匙)：等价于打印左右括号，左括号往队列加资源，右括号消费资源</p>
+<p><strong>自旋锁、互斥锁、条件变量、信号量、管道(通信)</strong></p>
+<h4 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h4><p>count计数左括号，是共享资源需要互斥，使用<code>spin lock</code>实现互斥访问count，并且如果不符合条件就反复询问<br>使用管道输入到python程序进行检查</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">int</span> n, count = <span class="hljs-number">0</span>;<br>mutex_t lk = MUTEX_INIT();<br><br>void Tproduce() &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>retry:<br>    mutex_lock(&amp;lk);<br>    <span class="hljs-keyword">if</span> (count == n) &#123;<br>      mutex_unlock(&amp;lk);<br>      goto retry;<br>    &#125;<br>    count++;<br>    printf(<span class="hljs-string">&quot;(&quot;</span>);<br>    mutex_unlock(&amp;lk);<br>  &#125;<br>&#125;<br><br>void Tconsume() &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>retry:<br>    mutex_lock(&amp;lk);<br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) &#123;<br>      mutex_unlock(&amp;lk);<br>      goto retry;<br>    &#125;<br>    count--;<br>    printf(<span class="hljs-string">&quot;)&quot;</span>);<br>    mutex_unlock(&amp;lk);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="万能的条件变量"><a href="#万能的条件变量" class="headerlink" title="万能的条件变量"></a>万能的条件变量</h4><p>我希望不要循环，在不满足时进行sleep</p>
+<p>条件变量 API：<strong>在不符合某条件时，等待别人通过cv唤醒我</strong>  cv是程序间的暗号  需要访问共享条件当然要加锁</p>
+<ul>
+<li>wait(cv, mutex) 💤  <code>release(mutex)、sleep</code><ul>
+<li>调用时必须保证已经获得 mutex</li>
+<li>醒来时需要获取mutex</li>
+</ul>
+</li>
+<li>signal&#x2F;notify(cv) 💬 私信：走起<ul>
+<li>如果有线程正在等待 cv，则唤醒其中一个线程</li>
+</ul>
+</li>
+<li>broadcast&#x2F;notifyAll(cv) 📣 所有人：走起<ul>
+<li>唤醒全部正在等待 cv 的线程</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Tproduce</span><span class="hljs-params">()</span> &#123;<br>  mutex_lock(&amp;lk);<br>  <span class="hljs-keyword">if</span> (count == n) cond_wait(&amp;cv, &amp;lk); <span class="hljs-comment">// 睡眠前释放锁；在唤醒后，会重新获取锁</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(&quot;</span>); count++; cond_signal(&amp;cv);<br>  mutex_unlock(&amp;lk);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Tconsume</span><span class="hljs-params">()</span> &#123;<br>  mutex_lock(&amp;lk);<br>  <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) cond_wait(&amp;cv, &amp;lk);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;)&quot;</span>); count--; cond_signal(&amp;cv);<br>  mutex_unlock(&amp;lk);<br>&#125;<br><br>代码有问题，因为消费者cond_signal(&amp;cv)时会唤醒消费者，因此需要两个条件变量分别用来唤醒P、C<br>或者我直接boradcast唤醒全部，但<span class="hljs-keyword">if</span>检测改成<span class="hljs-keyword">while</span>循环<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ProducerConsumer</span>:<br>    locked, count, log, waits = <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tryacquire</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.locked, seen = <span class="hljs-string">&#x27;🔒&#x27;</span>, <span class="hljs-variable language_">self</span>.locked<br>        <span class="hljs-keyword">return</span> seen == <span class="hljs-string">&#x27;&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">release</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.locked = <span class="hljs-string">&#x27;&#x27;</span><br><br><span class="hljs-meta">    @thread</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tp</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>):<br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span> <span class="hljs-comment"># mutex_lock()</span><br><br>            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-number">1</span>:<br>                <span class="hljs-comment"># cond_wait</span><br>                _, <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.release(), <span class="hljs-variable language_">self</span>.waits + <span class="hljs-string">&#x27;1&#x27;</span><br>                <span class="hljs-keyword">while</span> <span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.waits: <span class="hljs-keyword">pass</span><br>                <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span><br><br>            <span class="hljs-variable language_">self</span>.log, <span class="hljs-variable language_">self</span>.count = <span class="hljs-variable language_">self</span>.log + <span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-variable language_">self</span>.count + <span class="hljs-number">1</span><br>            <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits[<span class="hljs-number">1</span>:] <span class="hljs-comment"># cond_signal</span><br>            <span class="hljs-variable language_">self</span>.release() <span class="hljs-comment"># mutex_unlock()</span><br><br><span class="hljs-meta">    @thread</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tc1</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span><br><br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-number">0</span>:<br>            _, <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.release(), <span class="hljs-variable language_">self</span>.waits + <span class="hljs-string">&#x27;2&#x27;</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-string">&#x27;2&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.waits: <span class="hljs-keyword">pass</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span><br><br>        <span class="hljs-variable language_">self</span>.log, <span class="hljs-variable language_">self</span>.count = <span class="hljs-variable language_">self</span>.log + <span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-variable language_">self</span>.count - <span class="hljs-number">1</span><br><br>        <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits[<span class="hljs-number">1</span>:]<br>        <span class="hljs-variable language_">self</span>.release()<br><br><span class="hljs-meta">    @thread</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">tc2</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span><br><br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-number">0</span>:<br>            _, <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.release(), <span class="hljs-variable language_">self</span>.waits + <span class="hljs-string">&#x27;3&#x27;</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-string">&#x27;3&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.waits: <span class="hljs-keyword">pass</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.tryacquire(): <span class="hljs-keyword">pass</span><br><br>        <span class="hljs-variable language_">self</span>.log, <span class="hljs-variable language_">self</span>.count = <span class="hljs-variable language_">self</span>.log + <span class="hljs-string">&#x27;)&#x27;</span>, <span class="hljs-variable language_">self</span>.count - <span class="hljs-number">1</span><br><br>        <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits[<span class="hljs-number">1</span>:]<br>        <span class="hljs-variable language_">self</span>.release()<br></code></pre></td></tr></table></figure>
+<p>两个条件变量实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Tproduce</span><span class="hljs-params">()</span> &#123;<br>  mutex_lock(&amp;lk);<br>  <span class="hljs-keyword">if</span> (count == n) cond_wait(&amp;c, &amp;lk); <br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(&quot;</span>); count++; cond_signal(&amp;p);<br>  mutex_unlock(&amp;lk);<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">Tconsume</span><span class="hljs-params">()</span> &#123;<br>  mutex_lock(&amp;lk);<br>  <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) cond_wait(&amp;p, &amp;lk);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;)&quot;</span>); count--; cond_signal(&amp;c);<br>  mutex_unlock(&amp;lk);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="while循环-broadcast"><a href="#while循环-broadcast" class="headerlink" title="while循环+broadcast"></a>while循环+broadcast</h5><p>通用模板</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">mutex_lock(&amp;mutex);<br><span class="hljs-keyword">while</span> (!cond) &#123;      cond可以多个条件<br>  wait(&amp;cv, &amp;mutex);<br>&#125;<br>assert(cond);  <span class="hljs-comment">// 互斥锁保证了在此期间条件 cond 总是成立</span><br><br>其他线程条件可能被满足时，就算不满足进入<span class="hljs-keyword">while</span>还是会睡眠<br>broadcast(&amp;cv);<br><br>mutex_unlock(&amp;mutex);<br><br><br><span class="hljs-comment">/// ...计算任务，可能需要更长时间   也就是T(job) &gt;&gt;  T(同步互斥)</span><br></code></pre></td></tr></table></figure>
+
+<p>作业：打印指定的形状 <code>&lt;&gt;&lt;_</code> 和 <code>&gt;&lt;&gt;_ </code> <a target="_blank" rel="noopener" href="http://jyywiki.cn/pages/OS/2022/demos/fish.c">http://jyywiki.cn/pages/OS/2022/demos/fish.c</a></p>
+<p>处理器可以乱序执行，先执行第二条，但13需要顺序执行，硬件实现顺序执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">x = <span class="hljs-number">0</span>   write<br>t = y  <span class="hljs-comment"># 可以先执行</span><br>z = x   read<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="信号量PV"><a href="#信号量PV" class="headerlink" title="信号量PV"></a>信号量PV</h4><p>在执行前需要某些东西，没有就睡眠等到有。<code>happens before</code>。<strong>优雅但不全</strong></p>
+<p>最好解决<strong>单一资源</strong>问题，但上面的打印🐟难以实现</p>
+<p>token为资源数量，当token&#x3D;1、0时就代表互斥锁Mutex，没得到就睡眠（但相当于有多把钥匙）</p>
+<p>P： token– if token &lt; 0，线程加入等待队列</p>
+<p>V：token++ if token&lt;&#x3D;0, 唤醒等待队列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Semaphore</span>:<br>    token, waits = <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;&#x27;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">P</span>(<span class="hljs-params">self, tid</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.token &gt; <span class="hljs-number">0</span>:<br>            <span class="hljs-variable language_">self</span>.token -= <span class="hljs-number">1</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits + tid<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">V</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.waits:<br>            <span class="hljs-variable language_">self</span>.waits = <span class="hljs-variable language_">self</span>.waits[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-variable language_">self</span>.token += <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">()</span> &#123;<br>  P(&amp;empty);   <span class="hljs-comment">// P()返回 -&gt; 得到手环</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(&quot;</span>); <span class="hljs-comment">// 假设线程安全</span><br>  V(&amp;fill);<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">()</span> &#123;<br>  P(&amp;fill);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;)&quot;</span>);<br>  V(&amp;empty);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">A -&gt; B      如果使用条件变量，可能出现A已经执行，但B还没进入<br>    s = <span class="hljs-number">0</span><br>    A: V(s)<br>    B: P(S)<br>    <br>join：<br>    s = <span class="hljs-number">0</span><br>    A、B、C: V(s) <br>    main: P(S) * |T|<br></code></pre></td></tr></table></figure>
+
+<h5 id="计算图"><a href="#计算图" class="headerlink" title="计算图"></a>计算图</h5><p>如果想要并行，就需要画出计算图，并让程序按计算图执行：PV很方便</p>
+<p>每条边PV各一次</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404501.png" srcset="/img/loading.gif" lazyload alt="image-20230526171022426" style="zoom:67%;" />
+
+<h5 id="打印🐟"><a href="#打印🐟" class="headerlink" title="打印🐟"></a>打印🐟</h5><figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs isbl">当前线程想打符号<span class="hljs-string">&#x27;&lt;&#x27;</span> 那就<span class="hljs-function"><span class="hljs-title">P</span>(<span class="hljs-string">&#x27;&lt;&#x27;</span>)</span><br><br>当前线程结束后，根据规则决定谁可以执行 <span class="hljs-function"><span class="hljs-title">V</span>(<span class="hljs-string">&#x27;&gt;&#x27;</span>)   多个就随机</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="信号量实现条件变量"><a href="#信号量实现条件变量" class="headerlink" title="信号量实现条件变量"></a>信号量实现条件变量</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">失败：我不能带者锁睡眠，必须要先释放锁，但释放之后不能保证原子性了<br>wait(mutex)&#123;<br>	release(mutex)<br>	<span class="hljs-comment">// 可能被broadcast</span><br>	sleep<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><p>之前实现通信需要共享内存并且锁定，会引发竞争和死锁；因此我们反过来，通过通信来实现共享内存</p>
+<p><code>Do not communicate by sharing memory; instead, share memory by communicating. ——*Effective Go*</code></p>
+<p>管道：不但能同步，还能通信</p>
+<p><code>cat a.txt | wc -l</code> Linux管道就是一种同步机制。 后一个会一边接收一边处理</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-keyword">var</span> stream = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, <span class="hljs-number">10</span>)<br><span class="hljs-keyword">const</span> n = <span class="hljs-number">4</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">produce</span><span class="hljs-params">()</span></span> &#123;<br>  <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; ; i++ &#123;<br>    fmt.Println(<span class="hljs-string">&quot;produce&quot;</span>, i)<br>    stream &lt;- i<br>  &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">consume</span><span class="hljs-params">()</span></span> &#123;<br>  <span class="hljs-keyword">for</span> &#123;<br>    x := &lt;-stream<br>    fmt.Println(<span class="hljs-string">&quot;consume&quot;</span>, x)<br>  &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>  <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ &#123;<br>    <span class="hljs-keyword">go</span> produce()<br>  &#125;<br>  consume()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="哲学家吃饭"><a href="#哲学家吃饭" class="headerlink" title="哲学家吃饭"></a>哲学家吃饭</h4><h5 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h5><p>直接上吃饭的条件，并用互斥锁保护起来</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">mutex_lock(&amp;mutex);<br><span class="hljs-keyword">while</span> (!(avail[lhs] &amp;&amp; avail[rhs])) &#123;<br>  wait(&amp;cv, &amp;mutex);<br>&#125;<br>avail[lhs] = avail[rhs] = <span class="hljs-literal">false</span>;<br>mutex_unlock(&amp;mutex);<br>      <br><span class="hljs-comment">// ...</span><br><br>mutex_lock(&amp;mutex);<br>avail[lhs] = avail[rhs] = <span class="hljs-literal">true</span>;<br>broadcast(&amp;cv);<br>mutex_unlock(&amp;mutex);<br></code></pre></td></tr></table></figure>
+
+<h5 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 失败的尝试，这里会死锁</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Tphilosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>  <span class="hljs-type">int</span> lhs = (N + id - <span class="hljs-number">1</span>) % N;<br>  <span class="hljs-type">int</span> rhs = id % N;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    P(&amp;locks[lhs]);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;T%d Got %d\n&quot;</span>, id, lhs + <span class="hljs-number">1</span>);<br>    P(&amp;locks[rhs]);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;T%d Got %d\n&quot;</span>, id, rhs + <span class="hljs-number">1</span>);<br>      <br>    <span class="hljs-comment">// ...</span><br><br>    V(&amp;locks[lhs]);<br>    V(&amp;locks[rhs]);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 1.直接锁起来</span><br>mutex_lock(&amp;mutex);<br>P(&amp;locks[lhs]);<br>P(&amp;locks[rhs]);<br>mutex_unlock(&amp;mutex);<br><br><span class="hljs-comment">// 2. 只允许四个人上座 numperson=4   需求变了怎么办？</span><br>P(&amp;numperson);<br>P(&amp;locks[lhs]);<br>P(&amp;locks[rhs]);<br><br><br>V(&amp;numperson);<br></code></pre></td></tr></table></figure>
+
+<p>需求变了：如果一个人要左边两把右边一把，如何设计？   还是条件变量方便，直接改<code>cond</code>就行</p>
+<h4 id="分布与集中"><a href="#分布与集中" class="headerlink" title="分布与集中"></a>分布与集中</h4><p>集中控制而不是各自协调</p>
+<ul>
+<li>可以知道每一个线程具体运行状况，集中管理</li>
+<li><a target="_blank" rel="noopener" href="https://pdos.csail.mit.edu/6.824/papers/gfs.pdf">The Google File System</a></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Tphilosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>  send_request(id, EAT);<br>  P(allowed[id]); <span class="hljs-comment">// waiter 会把叉子递给哲学家</span><br>  philosopher_eat();<br>  send_request(id, DONE);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Twaiter</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    (id, status) = receive_request();<br>    <span class="hljs-keyword">if</span> (status == EAT) &#123; ... &#125;<br>    <span class="hljs-keyword">if</span> (status == DONE) &#123; ... &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>集中的人压力太大？再分级</li>
+</ul>
+<p>信号量可以被操作系统高效实现，避免了broadcast开销</p>
+<h3 id="真实世界的并发编程"><a href="#真实世界的并发编程" class="headerlink" title="真实世界的并发编程"></a>真实世界的并发编程</h3><p><strong>背景回顾</strong>：我们已经掌握了多种并发控制技术：自旋锁、互斥锁、条件变量、信号量。我们已经可以实现共享内存系统上的任意并发&#x2F;并行计算。然而，大家也在使用这些 “底层” 并发控制时发现使用的困难。那么，真实世界的程序员是怎么实现并发程序的？</p>
+<ul>
+<li><strong>高性能计算</strong> (注重任务分解)中的并行编程 (embarrassingly parallel 的数值计算)</li>
+<li><strong>数据中心</strong>(注重系统调用): (协程、Goroutine 和 channel)</li>
+<li>人工智能时代的<strong>分布式机器学习</strong> (GPU 和 Parameter Server)</li>
+<li><strong>用户身边</strong>的并发编程 (Web 和异步编程) (注重易用性)</li>
+</ul>
+<h4 id="高性能计算"><a href="#高性能计算" class="headerlink" title="高性能计算"></a>高性能计算</h4><p>massive computation  源自数值密集型科学计算任务。通常有固定的计算图</p>
+<ul>
+<li>物理系统模拟<ul>
+<li>天气预报、航天、制造、能源、制药、……</li>
+<li>大到宇宙小到量子，有模型就能模拟</li>
+</ul>
+</li>
+<li>矿厂 (现在不那么热了)<ul>
+<li>纯粹的 hash 计算</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://www.hpc100.cn/top100/21/">HPC-China 100</a></li>
+</ul>
+<p><strong>embarrassingly parallel</strong> ：这类问题可以被分解成多个独立的子问题，每个子问题可以在不同的处理器上并行计算，而不需要进行任何进一步的同步或通信。这种问题的并行化非常简单，因为每个子问题都是相互独立的，不需要进行任何协调或同步。</p>
+<p>通常出现在<strong>科学计算、数据分析、图像处理</strong>等领域。例如，在图像处理中，可以将一张大图像分成多个小块，每个小块可以在不同的处理器上并行处理，最后将结果合并成一张完整的图像。在科学计算中，可以将一个大型计算任务分成多个小任务，每个小任务可以在不同的处理器上并行计算，最后将结果合并成一个完整的计算结果。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404502.png" srcset="/img/loading.gif" lazyload style="zoom: 67%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404503.png" srcset="/img/loading.gif" lazyload alt="image-20230529102943340" style="zoom: 50%;" />两个线程画图</p>
+<h4 id="数据中心"><a href="#数据中心" class="headerlink" title="数据中心"></a>数据中心</h4><p><code>“A network of computing and storage resources that enable the delivery of *shared* applications and data.” (CISCO)</code></p>
+<p>以<strong>数据 (存储)</strong> 为中心</p>
+<ul>
+<li>互联网索引与搜索<ul>
+<li>Google</li>
+</ul>
+</li>
+<li>社交网络<ul>
+<li>Facebook&#x2F;Twitter</li>
+</ul>
+</li>
+<li>支撑各类互联网应用<ul>
+<li>通信 (微信&#x2F;QQ 群人数为什么有上限？)、支付 (支付宝)、游戏&#x2F;网盘&#x2F;……</li>
+</ul>
+</li>
+</ul>
+<h5 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h5><p>我希望高可靠、低延时、多副本的分布式 存储 计算系统</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404504.png" srcset="/img/loading.gif" lazyload alt="image-20230529103310529" style="zoom:67%;" />
+
+<p>举个例子：微信先拉黑，再发朋友圈，如果没有一致性，那么朋友圈可能被拉黑的人看到。亚马逊没一致性可能发两个快递</p>
+<h5 id="单机程序"><a href="#单机程序" class="headerlink" title="单机程序"></a><strong>单机程序</strong></h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404505.png" srcset="/img/loading.gif" lazyload alt="image-20230529103721001"></p>
+<p>假设有数千&#x2F;数万个请求同时到达服务器……</p>
+<ul>
+<li>线程能够实现并行处理</li>
+<li>但远多于处理器数量的线程导致性能问题<ul>
+<li>切换开销</li>
+<li>维护开销</li>
+</ul>
+</li>
+</ul>
+<h5 id="协程-协作的线程"><a href="#协程-协作的线程" class="headerlink" title="协程(协作的线程)"></a>协程(协作的线程)</h5><p>和线程概念相同 (独立堆栈、共享内存) ，用户态的线程，由程序员主动控制</p>
+<ul>
+<li>但 “一直执行”，直到 <code>yield()</code>   可以视为<strong>函数调用</strong>， 主动放弃处理器<ul>
+<li>有编译器辅助，切换开销低<ul>
+<li>yield() 是函数调用，只需保存&#x2F;恢复 <code>“callee saved”</code> 寄存器（函数调用保存的寄存器）  <code>RBP</code></li>
+<li>线程切换需要保存&#x2F;恢复全部寄存器</li>
+</ul>
+</li>
+<li>但等待 I&#x2F;O 时，其他协程就不能运行了……<ul>
+<li>失去了并行   go优化</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 只可能是 1122 或 2211</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">T1</span><span class="hljs-params">()</span> &#123; send(<span class="hljs-string">&quot;1&quot;</span>); send(<span class="hljs-string">&quot;1&quot;</span>); yield(); &#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">T2</span><span class="hljs-params">()</span> &#123; send(<span class="hljs-string">&quot;2&quot;</span>); send(<span class="hljs-string">&quot;2&quot;</span>); yield(); &#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>Goroutine</code>：概念上是线程，实现上是协程：在遇到IO且可能等待时，<code>yield</code>切换</p>
+<p>如果是协程，线程sleep后计算机就停止了，但go优化成yield切换</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>  <span class="hljs-string">&quot;fmt&quot;</span><br>  <span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>  <span class="hljs-keyword">go</span> spinner(<span class="hljs-number">100</span> * time.Millisecond)<br>  <span class="hljs-keyword">const</span> n = <span class="hljs-number">45</span><br>  fibN := fib(n) <span class="hljs-comment">// slow</span><br>  fmt.Printf(<span class="hljs-string">&quot;\rFibonacci(%d) = %d\n&quot;</span>, n, fibN)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">spinner</span><span class="hljs-params">(delay time.Duration)</span></span> &#123;<br>  <span class="hljs-keyword">for</span> &#123;<br>    <span class="hljs-keyword">for</span> _, r := <span class="hljs-keyword">range</span> <span class="hljs-string">`-\|/`</span> &#123;<br>      fmt.Printf(<span class="hljs-string">&quot;\r%c&quot;</span>, r)<br>      time.Sleep(delay)<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fib</span><span class="hljs-params">(x <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>  <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">2</span> &#123; <span class="hljs-keyword">return</span> x &#125;<br>  <span class="hljs-keyword">return</span> fib(x - <span class="hljs-number">1</span>) + fib(x - <span class="hljs-number">2</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>go之前，java已经形成了大数据处理系统的生态</p>
+<h4 id="人工智能时代的分布式机器学习"><a href="#人工智能时代的分布式机器学习" class="headerlink" title="人工智能时代的分布式机器学习"></a>人工智能时代的分布式机器学习</h4><h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404506.png" srcset="/img/loading.gif" lazyload alt="image-20230529110833871"></p>
+<h5 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h5><p>数据并行：一部分数据这台机器，一部分那台 <code>model = nn.DataParallel(model) </code><br>模型并行：切割计算图</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404507.png" srcset="/img/loading.gif" lazyload alt="image-20230529111116782"></p>
+<h5 id="SIMP"><a href="#SIMP" class="headerlink" title="SIMP"></a>SIMP</h5><p><code>Single Instruction, Multiple Threads</code></p>
+<p>CPU：多个cpu，但各自运行各自的，都有pc指针</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404509.png" srcset="/img/loading.gif" lazyload alt="image-20230529112121783"></p>
+<p>GPU：一个pc控制多个执行流，独立寄存器标记线程号</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404510.png" srcset="/img/loading.gif" lazyload alt="image-20230529112321136" style="zoom:80%;" />
+
+<h5 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404511.png" srcset="/img/loading.gif" lazyload alt="image-20230529112558826"></p>
+<h5 id="分布式机器学习"><a href="#分布式机器学习" class="headerlink" title="分布式机器学习"></a>分布式机器学习</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404512.png" srcset="/img/loading.gif" lazyload alt="image-20230529112936378"></p>
+<h4 id="用户身边并发编程"><a href="#用户身边并发编程" class="headerlink" title="用户身边并发编程"></a>用户身边并发编程</h4><p>web2.0：HTML(DOM Tree) + CSS + JS</p>
+<p>特点：不太复杂</p>
+<ul>
+<li>既没有太多计算<ul>
+<li>DOM Tree 也不至于太大 (大了人也看不过来)</li>
+<li>DOM Tree 怎么画浏览器全帮我们搞定了</li>
+</ul>
+</li>
+<li>也没有太多 I&#x2F;O<ul>
+<li>就是一些网络请求</li>
+</ul>
+</li>
+</ul>
+<h5 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h5><p>单线程 + 事件模型</p>
+<ul>
+<li><p>一个线程、按序执行 (run-to-complete)。无并行减少了bug  <strong>主线程执行栈 + 微任务队列</strong></p>
+</li>
+<li><p>耗时的 API (Timer, Ajax, …) 调用会立即返回 + <code>Callback</code></p>
+<ul>
+<li>当Promise被创建时，它处于未完成的状态（pending）。当异步操作完成并且Promise成功解析（resolved）时，或者发生错误导致Promise被拒绝（rejected）时，回调函数会被添加到微任务队列中。</li>
+</ul>
+</li>
+<li><p><strong>坏处</strong>：<code>$.ajax</code> 嵌套 5 层，可维护性已经接近于零了</p>
+</li>
+</ul>
+<h5 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h5><p><code>Callback</code>没有很好表示流程图 -&gt;  <code>Promise</code></p>
+<p>Chaining</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">loadScript</span>(<span class="hljs-string">&quot;/article/promise-chaining/one.js&quot;</span>)<br>  .<span class="hljs-title function_">then</span>( <span class="hljs-function"><span class="hljs-params">script</span> =&gt;</span> <span class="hljs-title function_">loadScript</span>(<span class="hljs-string">&quot;/article/promise-chaining/two.js&quot;</span>) )<br>  .<span class="hljs-title function_">then</span>( <span class="hljs-function"><span class="hljs-params">script</span> =&gt;</span> <span class="hljs-title function_">loadScript</span>(<span class="hljs-string">&quot;/article/promise-chaining/three.js&quot;</span>) )<br>  .<span class="hljs-title function_">then</span>( <span class="hljs-function"><span class="hljs-params">script</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// scripts are loaded, we can use functions declared there</span><br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123; ... &#125; );<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>Fork-join</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js">a = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>( <span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123; <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;A&#x27;</span>) &#125; )<br>b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>( <span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123; <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;B&#x27;</span>) &#125; )<br>c = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>( <span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123; <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;C&#x27;</span>) &#125; )<br><span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([a, b, c]).<span class="hljs-title function_">then</span>( <span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res) &#125; )<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 封装一个函数，用于加载一张图片</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">loadImage</span>(<span class="hljs-params">url</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> image = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>();<br>    image.<span class="hljs-property">onload</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-title function_">resolve</span>(image); <span class="hljs-comment">// 图片加载成功，将 Promise 标记为成功</span><br>    &#125;;<br>    image.<span class="hljs-property">onerror</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Failed to load image&#x27;</span>)); <span class="hljs-comment">// 图片加载失败，将 Promise 标记为失败</span><br>    &#125;;<br>    image.<span class="hljs-property">src</span> = url;<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">// 图片加载任务列表</span><br><span class="hljs-keyword">const</span> imageUrls = [<br>  <span class="hljs-string">&#x27;image1.jpg&#x27;</span>,<br>  <span class="hljs-string">&#x27;image2.jpg&#x27;</span>,<br>  <span class="hljs-string">&#x27;image3.jpg&#x27;</span><br>];<br><br><span class="hljs-comment">// 使用 Promise.all() 来处理多个图片加载任务</span><br><span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(imageUrls.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">url</span> =&gt;</span> <span class="hljs-title function_">loadImage</span>(url)))<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">images</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 所有图片加载完成，可以进行展示</span><br>    images.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">image</span> =&gt;</span> &#123;<br>      <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(image); <span class="hljs-comment">// 假设将图片添加到页面中</span><br>    &#125;);<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 图片加载过程中出现错误</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);<br>  &#125;);<br><br></code></pre></td></tr></table></figure>
+
+<h5 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async-Await"></a>Async-Await</h5><p> 一种计算图的描述语言.</p>
+<p>通过使用 <code>async</code> 关键字声明一个函数为异步函数(函数会返回一个<code>Promise</code>对象)，我们可以在函数内部使用 <code>await</code> 关键字来等待一个 Promise 对象的解决（resolve）</p>
+<p>更现代、更优雅的方式来处理异步代码，与 <code>.then</code> 方法相比更易于理解和编写(避免嵌套)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js">A = <span class="hljs-title function_">async</span> () =&gt; <span class="hljs-keyword">await</span> $.<span class="hljs-title function_">ajax</span>(<span class="hljs-string">&#x27;/hello/a&#x27;</span>)<br>B = <span class="hljs-title function_">async</span> () =&gt; <span class="hljs-keyword">await</span> $.<span class="hljs-title function_">ajax</span>(<span class="hljs-string">&#x27;/hello/b&#x27;</span>)<br>C = <span class="hljs-title function_">async</span> () =&gt; <span class="hljs-keyword">await</span> $.<span class="hljs-title function_">ajax</span>(<span class="hljs-string">&#x27;/hello/c&#x27;</span>)<br>hello = <span class="hljs-title function_">async</span> () =&gt; <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([<span class="hljs-title function_">A</span>(), <span class="hljs-title function_">B</span>(), <span class="hljs-title function_">C</span>()])<br><span class="hljs-title function_">hello</span>()<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">alert</span>)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;fetch failed!&#x27;</span>) &#125; )<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 异步函数示例</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://api.example.com/data&#x27;</span>);<br>    <span class="hljs-keyword">const</span> data = response.<span class="hljs-property">data</span>;<br>    <span class="hljs-keyword">return</span> data;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Failed to fetch data&#x27;</span>);<br>  &#125;<br>&#125;<br><br><br><span class="hljs-comment">// 调用异步函数</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Before fetchData()&#x27;</span>);<br><br><span class="hljs-title function_">fetchData</span>()<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Data:&#x27;</span>, data);<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error:&#x27;</span>, error);<br>  &#125;);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;After fetchData()&#x27;</span>);<br><br><span class="hljs-comment">// res:</span><br>    <span class="hljs-comment">// Before fetchData()</span><br>    <span class="hljs-comment">// After fetchData()</span><br>    <span class="hljs-comment">// Data: [data from API]</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="并发bug"><a href="#并发bug" class="headerlink" title="并发bug"></a>并发bug</h3><ul>
+<li>死锁</li>
+<li>数据竞争</li>
+<li>原子性和顺序违反</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">assert mode in [XRay, Electron]<br>assert mirror in [On, Off]<br>assert <span class="hljs-title function_">not</span> <span class="hljs-params">(mode == XRay and mirror == Off)</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h4><p>表现明显：程序停止了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">lock(&amp;lk);<br><span class="hljs-comment">// lk = LOCKED;</span><br>lock(&amp;lk);<br><span class="hljs-comment">// while (xchg(&amp;lk, LOCKED) == LOCKED) ;</span><br>	多层函数调用、隐藏的控制流（中断）<br>        <br>        <br><span class="hljs-type">void</span> <span class="hljs-title function_">Tphilosopher</span><span class="hljs-params">()</span> &#123;<br>  P(&amp;avail[lhs]);<br>  P(&amp;avail[rhs]);<br>  <span class="hljs-comment">// ...</span><br>  V(&amp;avail[lhs]);<br>  V(&amp;avail[rhs]);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Mutual-exclusion - 一张校园卡只能被一个人拥有</li>
+<li>Wait-for - 一个人等其他校园卡时，不会释放已有的校园卡</li>
+<li>No-preemption - 不能抢夺他人的校园卡</li>
+<li>Circular-chain - 形成校园卡的循环等待关系</li>
+</ul>
+<p> <strong>处理方法</strong>：</p>
+<ul>
+<li><strong>预防死锁</strong>（一次性分配资源； 允许抢占； <code>Locker order</code>规定获取锁的顺序，必须从小到大（获得编号最大的进程能运行））</li>
+<li><strong>避免死锁</strong>（<strong>银行家</strong>：在一次分配完后检查是否有安全序列能实现全部运行）</li>
+<li><strong>监测死锁</strong>（<strong>资源分配图</strong>，分配完有没有环）</li>
+<li><strong>解除死锁</strong>（资源剥夺、回滚进程、终止进程）</li>
+</ul>
+<h4 id="数据竞争"><a href="#数据竞争" class="headerlink" title="数据竞争"></a>数据竞争</h4><p>多个线程对同一内存进行读写，先写还是先读产生的结果不同。山寨支付宝判断并修改余额</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404513.png" srcset="/img/loading.gif" lazyload alt="image-20230530154901555"></p>
+<p>先来先写，多个memory，无法定义谁先来，所以需要避免data race。上锁</p>
+<p><strong>不同的线程</strong>同时访问<strong>同一内存</strong>，且至少有一个是写</p>
+<ul>
+<li>“内存” 可以是地址空间中的任何内存<ul>
+<li>可以是全部变量</li>
+<li>可以是堆区分配的变量</li>
+<li>可以是栈</li>
+</ul>
+</li>
+<li>“访问” 可以是任何代码<ul>
+<li>可能发生在你的代码里</li>
+<li>可以发生在框架代码里</li>
+<li>可能是一行你没有读到过的汇编代码</li>
+<li>可能时一条 ret 指令</li>
+</ul>
+</li>
+</ul>
+<h4 id="原子性违反"><a href="#原子性违反" class="headerlink" title="原子性违反"></a>原子性违反</h4><p>调查100个BUGs，97% 的非死锁并发 bug 都是<strong>原子性</strong>（山寨支付宝）或<strong>顺序错误</strong></p>
+<p> <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404514.png" srcset="/img/loading.gif" lazyload alt="image-20230530161346187"></p>
+<h3 id="应对并发bug"><a href="#应对并发bug" class="headerlink" title="应对并发bug"></a>应对并发bug</h3><p>假设程序员会花式犯错</p>
+<p><strong>编译器</strong>：只管翻译代码，不管需求含义</p>
+<p>怎么才能编写出 “正确” (符合 specification) 的程序？</p>
+<ul>
+<li>证明：Annotation verifier (<a target="_blank" rel="noopener" href="https://dafny-lang.github.io/dafny/">Dafny</a>), <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/113446.113468">Refinement types</a></li>
+<li>推测：Specification mining (<a target="_blank" rel="noopener" href="http://plse.cs.washington.edu/daikon/">Daikon</a>)</li>
+<li>构造：<a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s10009-012-0249-7">Program sketching</a></li>
+<li>编程语言的历史和未来<ul>
+<li>机器语言 → 汇编语言 → 高级语言 → <strong>自然编程语言</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="防御性编程"><a href="#防御性编程" class="headerlink" title="防御性编程"></a>防御性编程</h4><p>机器永远是对的，代码始终是错的</p>
+<p>防御性编程：把可能不对的情况都检查一遍。<code>assert</code>  大型项目很需要</p>
+<ul>
+<li><p>Peterson 算法中的临界区计数器</p>
+<ul>
+<li><code>assert(nest == 1);</code></li>
+</ul>
+</li>
+<li><p>二叉树的旋转</p>
+<ul>
+<li><code>assert(p-&gt;parent-&gt;left == p || p-&gt;parent-&gt;right == p);</code></li>
+</ul>
+</li>
+<li><p>AA-Deadlock 的检查</p>
+<ul>
+<li><code>if (holding(&amp;lk)) panic();</code></li>
+<li>xv6 spinlock 实现示例</li>
+</ul>
+</li>
+</ul>
+<h4 id="自动运行时检查"><a href="#自动运行时检查" class="headerlink" title="自动运行时检查"></a>自动运行时检查</h4><h5 id="Lockdep死锁检测"><a href="#Lockdep死锁检测" class="headerlink" title="Lockdep死锁检测"></a>Lockdep死锁检测</h5><p><code>Lockdep</code> ：死锁的检查。linux内核</p>
+<p>​	每一个锁有一个唯一的site（线程文件行号），上锁解锁日志记录下该site。通过查看所有日志有没有环</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lk)</span> &#123;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;LOCK   %s\n&quot;</span>, lk-&gt;site);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="data-race检测"><a href="#data-race检测" class="headerlink" title="data race检测"></a>data race检测</h5><p><code>ThreadSanitizer</code>：运行时的数据竞争检查.编译时实现</p>
+<p>两个进程同时读写同一内存，有没有happens-before关系，没有就存在data race (T1-5 T2-5)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404515.png" srcset="/img/loading.gif" lazyload alt="image-20230531112908484"></p>
+<h4 id="rule-of-thumb"><a href="#rule-of-thumb" class="headerlink" title="rule of thumb"></a>rule of thumb</h4><ul>
+<li>不实现 “完整” 的检查</li>
+<li>允许存在误报&#x2F;漏报</li>
+<li>但实现简单、非常有用</li>
+</ul>
+<h5 id="canary"><a href="#canary" class="headerlink" title="canary"></a>canary</h5><p>“牺牲” 一些内存单元，来预警 memory error 的发生。栈空间多分配一些<code>canary</code>空间作为保护，值被修改了就异常了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAGIC 0x55555555</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BOTTOM (STK_SZ / sizeof(u32) - 1)</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">stack</span> &#123;</span> <span class="hljs-type">char</span> data[STK_SZ]; &#125;;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">canary_init</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-built_in">stack</span> *s)</span> &#123;<br>  u32 *ptr = (u32 *)s;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; CANARY_SZ; i++)<br>    ptr[BOTTOM - i] = ptr[i] = MAGIC;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">canary_check</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> <span class="hljs-built_in">stack</span> *s)</span> &#123;<br>  u32 *ptr = (u32 *)s;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; CANARY_SZ; i++) &#123;<br>    panic_on(ptr[BOTTOM - i] != MAGIC, <span class="hljs-string">&quot;underflow&quot;</span>);<br>    panic_on(ptr[i] != MAGIC, <span class="hljs-string">&quot;overflow&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>msvc 中 debug mode 的 guard&#x2F;fence&#x2F;canary</p>
+<ul>
+<li>未初始化栈: <code>0xcccccccc </code>  烫</li>
+<li>未初始化堆: <code>0xcdcdcdcd </code> 屯</li>
+<li>对象头尾: <code>0xfdfdfdfd</code></li>
+</ul>
+<h5 id="低配lockdep"><a href="#低配lockdep" class="headerlink" title="低配lockdep"></a>低配lockdep</h5><p>统计自旋的次数，超过某个值肯定不正常</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">while</span> (xchg(&amp;lk, LOCKED) == LOCKED) &#123;<br>  <span class="hljs-keyword">if</span> (count++ &gt; SPIN_LIMIT) &#123;<br>    panic(<span class="hljs-string">&quot;Spin limit exceeded @ %s:%d\n&quot;</span>, __FILE__, __LINE__);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="低配AddressSanitizer"><a href="#低配AddressSanitizer" class="headerlink" title="低配AddressSanitizer"></a>低配AddressSanitizer</h5><p>并发分配内存时，分配完标记一个颜色</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// allocation</span><br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; (i + <span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(u32) &lt;= size; i++) &#123;<br>  panic_on(((u32 *)ptr)[i] == MAGIC, <span class="hljs-string">&quot;double-allocation&quot;</span>);<br>  arr[i] = MAGIC;<br>&#125;<br><br><span class="hljs-comment">// free</span><br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; (i + <span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(u32) &lt;= alloc_size(ptr); i++) &#123;<br>  panic_on(((u32 *)ptr)[i] == <span class="hljs-number">0</span>, <span class="hljs-string">&quot;double-free&quot;</span>);<br>  arr[i] = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="多处理器与中断"><a href="#多处理器与中断" class="headerlink" title="多处理器与中断"></a>多处理器与中断</h3><p>处理器如何实现多线程？中断</p>
+<p><strong>本讲内容</strong>：操作系统内核实现。</p>
+<ul>
+<li>多处理器和中断</li>
+<li>AbstractMachine API</li>
+<li>50 行实现嵌入式操作系统</li>
+</ul>
+<p>多处理器的状态机模型：状态为内存和每一个状态。执行为<strong>任选</strong>一个<code>cpu</code></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404516.png" srcset="/img/loading.gif" lazyload alt="image-20230601105219177"></p>
+<p>如果死循环某个CPU就会卡死，而为什么我们写的死循环程序不会卡死电脑？</p>
+<h4 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h4><p>下降沿触发的一根线。IF寄存器(interrupter flag) 决定是否响应中断（操作系统可以修改该值）</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404517.png" srcset="/img/loading.gif" lazyload alt="image-20230601111009780" style="zoom:50%;" />
+
+<ul>
+<li>x86 Family<ul>
+<li>询问中断控制器获得中断号 n</li>
+<li>保存 CS, RIP, RFLAGS, SS, RSP 到堆栈</li>
+<li>跳转到 <code>IDT[n]</code> 指定的地址，并设置处理器状态 (例如关闭中断)</li>
+</ul>
+</li>
+</ul>
+<p>关中断实现了 “stop the world”  ，尝试<code>asm volatile (&quot;cli&quot;)</code>被操作系统检测到，会直接报错</p>
+<h4 id="上下文保存"><a href="#上下文保存" class="headerlink" title="上下文保存"></a>上下文保存</h4><p>所有线程都有一块内存用来保存自己的现场</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Context</span> &#123;</span><br>    uint64_ t rax, rbx, rcx, rdx,<br>        rbp, rsi, rdi,<br>        r8，r9，r10, r11,<br>        r12，r13， r14， r15,<br>        rip, cs, rflags,<br>        rsp, ss, rsp0; <br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>中断处理：保存当前的ctx，并返回运行在该cpu上的另一个线程的上下文</p>
+<ul>
+<li><code>tasks[n]</code>是内存中所有线程的状态。next指针把所有状态串联</li>
+<li><code>currents[MAX_CPU]</code> 是每一个cpu当前的状态，都指向tasks中的某一个</li>
+<li><code>current=currents[cpu_current()]</code>是当前cpu状态指针，<code>current-&gt;context = ctx</code>保存现场到内存</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c">Task *currents[MAX_CPU];<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> current currents[cpu_current()]</span><br><br>Context *<span class="hljs-title function_">on_interrupt</span><span class="hljs-params">(Event ev, Context *ctx)</span> &#123;<br>  <span class="hljs-keyword">if</span> (!current) &#123;<br>    current = &amp;tasks[<span class="hljs-number">0</span>];  <span class="hljs-comment">// First trap for this CPU</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    current-&gt;context = ctx; <span class="hljs-comment">// Keep the stack-saved context</span><br>  &#125;<br><br>  <span class="hljs-comment">// Schedule</span><br>  <span class="hljs-keyword">do</span> &#123;<br>    current = current-&gt;next;<br>  &#125; <span class="hljs-keyword">while</span> (!on_this_cpu(current)); <span class="hljs-comment">// ((current - tasks) % cpu_count() != cpu_current());</span><br><br>  <span class="hljs-keyword">return</span> current-&gt;context;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="50行操作系统"><a href="#50行操作系统" class="headerlink" title="50行操作系统"></a>50行操作系统</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;am.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;klib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;klib-macros.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX_CPU 8</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">task</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span> *name;<br>    <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">task</span> *<span class="hljs-title">next</span>;</span><br>    <span class="hljs-type">void</span>      (*entry)(<span class="hljs-type">void</span> *);<br>    Context    *context;<br>  &#125;;<br>  <span class="hljs-type">uint8_t</span> <span class="hljs-built_in">stack</span>[<span class="hljs-number">8192</span>];<br>&#125; Task;  <span class="hljs-comment">// A &quot;state machine&quot;</span><br><br>Task *currents[MAX_CPU];<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> current currents[cpu_current()]</span><br><br><span class="hljs-type">int</span> locked = <span class="hljs-number">0</span>;  <span class="hljs-comment">// A spin lock</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span>   &#123; <span class="hljs-keyword">while</span> (<span class="hljs-type">atomic_xchg</span>(&amp;locked, <span class="hljs-number">1</span>)); &#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> &#123; <span class="hljs-type">atomic_xchg</span>(&amp;locked, <span class="hljs-number">0</span>); &#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tasks.h&quot;</span></span><br><br>Context *<span class="hljs-title function_">on_interrupt</span><span class="hljs-params">(Event ev, Context *ctx)</span> &#123;<br>  <span class="hljs-keyword">if</span> (!current) current = &amp;tasks[<span class="hljs-number">0</span>];  <span class="hljs-comment">// First interrupt</span><br>  <span class="hljs-keyword">else</span> current-&gt;context = ctx;  <span class="hljs-comment">// Save pointer to stack-saved context</span><br>  <span class="hljs-keyword">do</span> &#123;<br>    current = current-&gt;next;<br>  &#125; <span class="hljs-keyword">while</span> ((current - tasks) % cpu_count() != cpu_current());<br>  <span class="hljs-keyword">return</span> current-&gt;context;  <span class="hljs-comment">// Restore a new context</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">mp_entry</span><span class="hljs-params">()</span> &#123;<br>  yield();  <span class="hljs-comment">// Self-trap; never returns</span><br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  cte_init(on_interrupt);<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; LENGTH(tasks); i++) &#123;<br>    Task *task    = &amp;tasks[i];<br>    Area <span class="hljs-built_in">stack</span>    = (Area) &#123; &amp;task-&gt;context + <span class="hljs-number">1</span>, task + <span class="hljs-number">1</span> &#125;; <span class="hljs-comment">// 栈起始结束地址</span><br>    task-&gt;context = kcontext(<span class="hljs-built_in">stack</span>, task-&gt;entry, (<span class="hljs-type">void</span> *)task-&gt;name); <br>    task-&gt;next    = &amp;tasks[(i + <span class="hljs-number">1</span>) % LENGTH(tasks)];<br>  &#125;<br>  mpe_init(mp_entry);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// User-defined tasks</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">func</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span> &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    lock();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread-%s on CPU #%d\n&quot;</span>, arg, cpu_current());<br>    unlock();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-keyword">volatile</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100000</span>; i++) ;<br>  &#125;<br>&#125;<br><br>Task tasks[] = &#123;<br>  &#123; .name = <span class="hljs-string">&quot;A&quot;</span>, .entry = func &#125;,<br>  &#123; .name = <span class="hljs-string">&quot;B&quot;</span>, .entry = func &#125;,<br>  &#123; .name = <span class="hljs-string">&quot;C&quot;</span>, .entry = func &#125;,<br>  &#123; .name = <span class="hljs-string">&quot;D&quot;</span>, .entry = func &#125;,<br>  &#123; .name = <span class="hljs-string">&quot;E&quot;</span>, .entry = func &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h2><h3 id="fork-execv-exit"><a href="#fork-execv-exit" class="headerlink" title="fork execv exit"></a>fork execv exit</h3><ul>
+<li>应用程序 &#x3D; 纯粹计算（Python 代码） + <code>syscall</code>；  			状态机</li>
+<li>操作系统 &#x3D; <code>syscall</code>实现：重要的三个系统调用<ul>
+<li>fork: 对当前状态机状态进行完整复制</li>
+<li>execve: 将当前状态机状态重置为某个可执行文件描述的状态机</li>
+<li>exit: 销毁当前状态机</li>
+</ul>
+</li>
+</ul>
+<h4 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h4><p><code>fork</code>: <strong>完全</strong>复制一份当前的状态 (内存、寄存器现场)，相当于创建了一个新的进程，返回子进程号。<code>unix</code>唯一方法</p>
+<p>因为状态机是复制的，因此总能找到 “父子关系”</p>
+<ul>
+<li>因此有了进程树 (<code>pstree</code>)</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs coq">systemd-+-ModemManager--<span class="hljs-number">-2</span>*[&#123;ModemManager&#125;]<br>        |<span class="hljs-type">-NetworkManager</span>--<span class="hljs-number">-2</span>*[&#123;NetworkManager&#125;]<br>        |<span class="hljs-type">-accounts</span>-daemon--<span class="hljs-number">-2</span>*[&#123;accounts-daemon&#125;]<br>        |<span class="hljs-type">-at</span>-spi-bus-laun-+-dbus-daemon<br>        |                 <span class="hljs-type">`-3</span>*[&#123;<span class="hljs-built_in">at</span>-spi-bus-laun&#125;]<br>        |<span class="hljs-type">-at</span>-spi2-registr--<span class="hljs-number">-2</span>*[&#123;<span class="hljs-built_in">at</span>-spi2-registr&#125;]<br>        |<span class="hljs-type">-atd</span><br>        |<span class="hljs-type">-avahi</span>-daemon---avahi-daemon<br>        |<span class="hljs-type">-colord</span>--<span class="hljs-number">-2</span>*[&#123;colord&#125;]<br>        ...<br></code></pre></td></tr></table></figure>
+
+<p>1个变成了4个。fork出来的子进程也会执行下面的fork(), 除了x不一样其他都一样</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">pid_t</span> x = fork();<br><span class="hljs-type">pid_t</span> y = fork();<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %d\n&quot;</span>, x, y);<br></code></pre></td></tr></table></figure>
+
+<p>打印了多少个？  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++) &#123;<br>  fork();<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello\n&quot;</span>);<br>&#125;<br><br>./a.out          <span class="hljs-number">6</span>个<br>./a.out | cat    <span class="hljs-number">8</span>个  因为如果输入到管道，print的信息会放到缓存中，被同时复制<br></code></pre></td></tr></table></figure>
+
+<h4 id="execv"><a href="#execv" class="headerlink" title="execv"></a>execv</h4><p><code>execv</code> ：</p>
+<ul>
+<li>将当前进程<strong>重置</strong>成一个可执行文件描述状态机的初始状态</li>
+<li>唯一能够执行程序的系统调用，一切程序的<strong>起点</strong>（fork是父进程调用的）</li>
+<li>传入<strong>参数</strong>和<strong>环境变量</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">execve</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *filename,</span><br><span class="hljs-params">           <span class="hljs-type">char</span> * <span class="hljs-type">const</span> argv[], <span class="hljs-type">char</span> * <span class="hljs-type">const</span> envp[])</span>;<br><br>ls -al <br><span class="hljs-title function_">execve</span><span class="hljs-params">(<span class="hljs-string">&quot; /usr/bin/ls&quot;</span>, [<span class="hljs-string">&quot;ls&quot;</span>， <span class="hljs-string">&quot;-al&quot;</span>]， <span class="hljs-number">0x7ffeaabcda88</span> <span class="hljs-comment">/* 54 vars */</span>)</span> = <span class="hljs-number">0</span> <br></code></pre></td></tr></table></figure>
+
+<p>环境变量，默认继承父进程</p>
+<ul>
+<li>使用<code>env</code>命令查看<ul>
+<li><code>PATH</code>: 可执行文件搜索路径</li>
+<li><code>PWD</code>: 当前路径</li>
+<li><code>HOME</code>: home 目录</li>
+<li><code>DISPLAY</code>: 图形输出</li>
+<li><code>PS1</code>: shell 的提示符</li>
+</ul>
+</li>
+<li><code>export</code>: 告诉 shell 在创建子进程时设置环境变量<ul>
+<li>小技巧：<code>export ARCH=x86_64-qemu</code> 或 <code>export ARCH=native</code></li>
+</ul>
+</li>
+</ul>
+<p>strace gcc  gcc会先去找可执行的<code>as</code>汇编器程序，去path里找，所以会输出：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">pid 28369</span>] execve(<span class="hljs-string">&quot;/usr/local/sbin/as&quot;</span>, [<span class="hljs-string">&quot;as&quot;</span>, <span class="hljs-string">&quot;--64&quot;</span>, ...<br>[<span class="hljs-meta">pid 28369</span>] execve(<span class="hljs-string">&quot;/usr/local/bin/as&quot;</span>, [<span class="hljs-string">&quot;as&quot;</span>, <span class="hljs-string">&quot;--64&quot;</span>, ...<br>[<span class="hljs-meta">pid 28369</span>] execve(<span class="hljs-string">&quot;/usr/sbin/as&quot;</span>, [<span class="hljs-string">&quot;as&quot;</span>, <span class="hljs-string">&quot;--64&quot;</span>, ...<br>[<span class="hljs-meta">pid 28369</span>] execve(<span class="hljs-string">&quot;/usr/bin/as&quot;</span>, [<span class="hljs-string">&quot;as&quot;</span>, <span class="hljs-string">&quot;--64&quot;</span>, ..<br></code></pre></td></tr></table></figure>
+
+<h4 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> _exit(<span class="hljs-type">int</span> status)<br>    销毁当前状态机，并允许有一个返回值<br>    子进程终止会通知父进程 (后续课程解释)<br></code></pre></td></tr></table></figure>
+
+<p> exit 的几种写法 (它们是不同)</p>
+<ul>
+<li>exit(0)   	stdlib.h中声明的 libc 函数<ul>
+<li>会调用 <code>atexit</code></li>
+</ul>
+</li>
+<li><code>_exit(0)</code>  glibc 的 syscall wrapper<ul>
+<li>执行 “exit_group” 系统调用终止整个进程 (所有线程)<ul>
+<li>细心的同学已经在 strace 中发现了</li>
+</ul>
+</li>
+<li>不会调用 <code>atexit</code></li>
+</ul>
+</li>
+<li><code>syscall(SYS_exit, 0)</code><ul>
+<li>执行 “<code>exit</code>” 系统调用终止当前线程</li>
+<li>不会调用 <code>atexit</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="shell中运行-a-out"><a href="#shell中运行-a-out" class="headerlink" title="shell中运行.&#x2F;a.out:"></a>shell中运行.&#x2F;a.out:</h4><ol>
+<li>Shell解析命令行输入，发现<code>./a.out</code>是一个可执行文件。</li>
+<li>Shell调用<code>fork()</code>系统调用，创建一个新的子进程。子进程复制父进程的所有资源和代码段。</li>
+<li>子进程调用<code>execve()</code>系统调用，加载并执行<code>a.out</code>可执行文件。<ol>
+<li>如果可执行文件需要进行系统调用，例如读取文件或写入文件，它会使用相应的系统调用，如<code>open()</code>、<code>read()</code>、<code>write()</code>等。</li>
+<li>当可执行文件执行完毕或调用了<code>exit()</code>系统调用来终止进程时，进程会返回到Shell。</li>
+</ol>
+</li>
+<li>shell <code>wail()</code>等待子进程(如果后台运行<code>&amp;</code>就不会等待)</li>
+</ol>
+<p>Shell本身也是一个进程<code>/bin/bash</code>，初始状态读取配置文件<code>~/.bashrc</code>。输入：</p>
+<ul>
+<li>执行内部命令（例如<code>cd</code>或<code>echo</code>）</li>
+<li>执行系统命令（例如<code>ls</code>或<code>grep</code>）（本质上也是可执行文件）</li>
+<li>可执行文件</li>
+</ul>
+<h3 id="Linux中的init"><a href="#Linux中的init" class="headerlink" title="Linux中的init"></a>Linux中的init</h3><ul>
+<li>Linux 操作系统</li>
+<li>Linux 系统启动和 initramfs</li>
+<li>Linux 应用世界的构建</li>
+</ul>
+<p>just for fun</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">Hello, everybody out there using minix – I’m doing a (free) operating system (<span class="hljs-keyword">just </span>a hobby, won’t <span class="hljs-keyword">be </span><span class="hljs-keyword">big </span><span class="hljs-keyword">and </span>professional like gnu) for <span class="hljs-number">386</span>(<span class="hljs-number">486</span>) <span class="hljs-built_in">AT</span> <span class="hljs-keyword">clones. </span>This has <span class="hljs-keyword">been </span><span class="hljs-keyword">brewing </span>since April, <span class="hljs-keyword">and </span>is starting to get ready.<br>—— Linus Torvalds (时年 <span class="hljs-number">21</span> 岁)<br></code></pre></td></tr></table></figure>
+
+<p><code>Minix</code>: 完全用于教学的真实操作系统 1987。Andrew Tanenbaum。  <code>Linux</code> 的起点</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404518.png" srcset="/img/loading.gif" lazyload alt="image-20230604102002909"></p>
+<h4 id="Kernel"><a href="#Kernel" class="headerlink" title="Kernel"></a>Kernel</h4><ul>
+<li>加载第一个进程<ul>
+<li>相当于在操作系统中 “放置一个位于初始状态的状态机” **init **    <strong>systemd</strong> </li>
+<li>Single user model (高权限)</li>
+</ul>
+</li>
+<li>包含一些进程可操纵的操作系统对象</li>
+<li>除此之外 “什么也没有”<ul>
+<li>Linux 变为一个中断 (系统调用) 处理程序</li>
+</ul>
+</li>
+</ul>
+<p>Linux Kernel 系统调用上的发行版和应用生态</p>
+<ul>
+<li>系统工具 <a target="_blank" rel="noopener" href="https://www.gnu.org/software/coreutils/coreutils.html">coreutils</a>, <a target="_blank" rel="noopener" href="https://www.gnu.org/software/binutils/">binutils</a>, <a target="_blank" rel="noopener" href="https://systemd.io/">systemd</a>, …</li>
+<li>桌面系统 Gnome, xfce, Android</li>
+<li>应用程序 file manager, vscode, …</li>
+</ul>
+<h4 id="第一个状态机"><a href="#第一个状态机" class="headerlink" title="第一个状态机"></a>第一个状态机</h4><p>1.我们可以控制init程序是谁，比如最简单的<code>helloword</code>。当<code>helloword</code> 退出后，也就是杀死最后一个进程，Kernel panic</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">INIT := /init<br><span class="hljs-comment"># INIT := /minimal</span><br><br>run:<br><span class="hljs-comment"># Run QEMU with the installed kernel and generated initramfs</span><br>	qemu-system-x86_64 \<br>	  -serial mon:stdio \ <br>	  -kernel build/vmlinuz \<br>	  -initrd build/initramfs.cpio.gz \<br>	  -machine accel=kvm:tcg \<br>	  -append <span class="hljs-string">&quot;console=ttyS0 quiet rdinit=<span class="hljs-subst">$(INIT)</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>2.改回启动Init程序，其中<code>busybox</code> 是一个程序，但包含很多文件 5000行     <code>busybox  vi</code>      <code>busybox  sh</code>，因此我们的init程序就可以使用命令了，再通过软连接就可以直接执行了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/busybox sh</span><br><br><span class="hljs-comment"># initrd, only busybox and /init</span><br>BB=/bin/busybox<br><br><span class="hljs-comment"># (1) Print something and exit</span><br><span class="hljs-variable">$BB</span> <span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\033[31mHello, OS World\033[0m&quot;</span><br><span class="hljs-variable">$BB</span> poweroff -f<br><br><span class="hljs-comment"># (2) Run a shell on the init console</span><br><span class="hljs-variable">$BB</span> sh<br><br><span class="hljs-comment"># (3) Rock&#x27;n Roll!</span><br><span class="hljs-keyword">for</span> cmd <span class="hljs-keyword">in</span> $(<span class="hljs-variable">$BB</span> --list); <span class="hljs-keyword">do</span><br>  <span class="hljs-variable">$BB</span> <span class="hljs-built_in">ln</span> -s <span class="hljs-variable">$BB</span> /bin/<span class="hljs-variable">$cmd</span><br><span class="hljs-keyword">done</span><br>    <span class="hljs-comment"># /bin/ls -&gt; /bin/busybox</span><br>    <span class="hljs-comment"># /bin/cat -&gt; /bin/busybox</span><br>    <span class="hljs-comment"># /bin/grep -&gt; /bin/busybox</span><br><span class="hljs-built_in">mkdir</span> -p /tmp<br><span class="hljs-built_in">mkdir</span> -p /proc &amp;&amp; mount -t proc  none /proc<br><span class="hljs-built_in">mkdir</span> -p /sys  &amp;&amp; mount -t sysfs none /sys<br><span class="hljs-built_in">mknod</span> /dev/tty c 4 1<br>setsid /bin/sh &lt;/dev/tty &gt;/dev/tty 2&gt;&amp;1<br></code></pre></td></tr></table></figure>
+
+<p>至此我们通过init启动了一个独立sh，sh中可以执行我们的指令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vim">如果我们放一个<span class="hljs-keyword">vi</span> &amp; 在后台<br># pstree<br>init---<span class="hljs-keyword">sh</span>---pstree<br>           -<span class="hljs-keyword">vi</span><br>           <br>指令都是指向busybox，busybox通过系统调用的参数(执行的名称)实现不同的命令<br></code></pre></td></tr></table></figure>
+
+<h4 id="其他工作"><a href="#其他工作" class="headerlink" title="其他工作"></a>其他工作</h4><p>只是一个内存里的小文件系统</p>
+<ul>
+<li>我们 “看到” 的都是被 init 创造出来的<ul>
+<li>加载剩余必要的驱动程序，例如网卡</li>
+<li>根据 fstab 中的信息挂载文件系统，例如网络驱动器</li>
+<li>将根文件系统和控制权移交<code>pivot_root</code>给另一个程序，例如 systemd</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的地址空间"><a href="#进程的地址空间" class="headerlink" title="进程的地址空间"></a>进程的地址空间</h3><p>进程的状态由 (M,R) 组成，R为体系结构中决定的，M的具体实现？</p>
+<h4 id="地址空间内容"><a href="#地址空间内容" class="headerlink" title="地址空间内容"></a>地址空间内容</h4><p><code>pmap pid</code>   读取<code>/proc/pid/maps</code>   <code>strace</code>跟踪可以证明</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 一大堆内存，有的rx为代码pc访问  有的r(字符串常量)  有的rw(变量 栈)</span><br>12345:   executable_program<br>Address           Kbytes     RSS   Dirty Mode   Mapping<br>0000000000400000    2048     976     976 r-x--  executable_program<br>0000000000600000    1024     512     512 rw---  executable_program<br>0000000000700000    4096    2048    2048 rw---    [ anon ]<br>00007f9a28345000    4096    2048    2048 r-x--  libc.so.6<br>00007f9a283d4000    2048       0       0 -----  libc.so.6<br>00007f9a285d4000      16      12       0 r----  libc.so.6<br>00007f9a285d8000       4       4       4 rw---  libc.so.6<br>00007f9a285d9000      16       4       4 rw---    [ stack ]<br><br><span class="hljs-comment"># 猜测对不对的上？ 加一些变量代码，然后调试</span><br></code></pre></td></tr></table></figure>
+
+<p>如果是动态链接呢？有一个加载的过程，在<code>main</code>之前把动态链接库（如libc.so.6）加载到地址空间中</p>
+<p> 系统调用需要陷入内核，但有些简单的(只读的)可以不用陷入内核执行</p>
+<ul>
+<li><code>vvar</code> ：Virtual Variable  存储内核和用户空间之间共享的变量。这些变量包括与时间相关的信息、线程特定的数据等。</li>
+<li><code>vdso</code>：取这些信息的代码，<strong>不进入内核的系统调用</strong></li>
+</ul>
+<h4 id="空间的管理"><a href="#空间的管理" class="headerlink" title="空间的管理"></a>空间的管理</h4><p>程序空间是变化的：操作系统应该提供一个<strong>修改进程地址空间的系统调用</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 映射  fd文件描述符 offset偏移量，提供时把文件内容加载到内存</span><br><span class="hljs-type">void</span> *<span class="hljs-title function_">mmap</span><span class="hljs-params">(<span class="hljs-type">void</span> *addr, <span class="hljs-type">size_t</span> length, <span class="hljs-type">int</span> prot, <span class="hljs-type">int</span> flags,</span><br><span class="hljs-params">           <span class="hljs-type">int</span> fd, <span class="hljs-type">off_t</span> offset)</span>;<br><span class="hljs-type">int</span> <span class="hljs-title function_">munmap</span><span class="hljs-params">(<span class="hljs-type">void</span> *addr, <span class="hljs-type">size_t</span> length)</span>;<br><span class="hljs-comment">// 为 malloc/free 提供了机制</span><br><br><span class="hljs-comment">// 修改映射权限</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">mprotect</span><span class="hljs-params">(<span class="hljs-type">void</span> *addr, <span class="hljs-type">size_t</span> length, <span class="hljs-type">int</span> prot)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>分配8G(可以超过内存)会直接分配，使用时才加入内存发生缺页中断</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/mman.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> GiB * (1024LL * 1024 * 1024)</span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-keyword">volatile</span> <span class="hljs-type">uint8_t</span> *p = mmap(<span class="hljs-literal">NULL</span>, <span class="hljs-number">8</span> GiB, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mmap: %lx\n&quot;</span>, (<span class="hljs-type">uintptr_t</span>)p);<br>  <span class="hljs-keyword">if</span> ((<span class="hljs-type">intptr_t</span>)p == <span class="hljs-number">-1</span>) &#123;<br>    perror(<span class="hljs-string">&quot;cannot map&quot;</span>);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>  &#125;<br>  *(p + <span class="hljs-number">2</span> GiB) = <span class="hljs-number">1</span>;<br>  *(p + <span class="hljs-number">4</span> GiB) = <span class="hljs-number">2</span>;<br>  *(p + <span class="hljs-number">7</span> GiB) = <span class="hljs-number">3</span>;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Read get: %d\n&quot;</span>, *(p + <span class="hljs-number">4</span> GiB));<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Read get: %d\n&quot;</span>, *(p + <span class="hljs-number">6</span> GiB));<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Read get: %d\n&quot;</span>, *(p + <span class="hljs-number">7</span> GiB));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>Memory-Mapped File</strong>: 一致性：什么时候将修改写入磁盘？多进程如何共享？</p>
+<h4 id="入侵地址空间"><a href="#入侵地址空间" class="headerlink" title="入侵地址空间"></a>入侵地址空间</h4><p>入侵地址空间就是可以任意操控其他进程</p>
+<ul>
+<li>调试器 (gdb)<ul>
+<li>gdb 可以任意观测和修改程序的状态</li>
+</ul>
+</li>
+<li>Profiler (perf)<ul>
+<li>合理的需求，操作系统就必须支持</li>
+</ul>
+</li>
+</ul>
+<h5 id="金手指"><a href="#金手指" class="headerlink" title="金手指"></a>金手指</h5><p>物理劫持</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202306091404519.png" srcset="/img/loading.gif" lazyload alt="image-20230605105022909"></p>
+<h5 id="金山游侠"><a href="#金山游侠" class="headerlink" title="金山游侠"></a>金山游侠</h5><p>入侵地址空间，修改<strong>金钱</strong>、<strong>生命</strong>属性</p>
+<p>任何操作系统肯定提供了gdb</p>
+<p>原理为<code>pmap</code>读取内存的内容并修改</p>
+<p>代码扫描所有地址，找出金钱为3000的，消耗一些后找出价钱为2700的，这些地址值都修改就可以修改金钱</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> *argv[])</span> &#123;<br>  <span class="hljs-type">long</span> val;<br>  <span class="hljs-type">char</span> buf[<span class="hljs-number">64</span>];<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">game</span> <span class="hljs-title">game</span>;</span><br><br>  <span class="hljs-keyword">if</span> (load_game(&amp;game, argv[<span class="hljs-number">1</span>]) &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">goto</span> release;<br>  &#125;<br><br>  <span class="hljs-keyword">while</span> (!feof(<span class="hljs-built_in">stdin</span>)) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;(%s %d) &quot;</span>, game.name, game.pid);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>, buf) &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">goto</span> release;<br><br>    <span class="hljs-keyword">switch</span> (buf[<span class="hljs-number">0</span>]) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;q&#x27;</span>: <span class="hljs-keyword">goto</span> release; <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%ld&quot;</span>, &amp;val); game.bits = val; reset(&amp;game); <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>: <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%ld&quot;</span>, &amp;val); scan(&amp;game, val); <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;w&#x27;</span>: <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%ld&quot;</span>, &amp;val); overwrite(&amp;game, val); <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;r&#x27;</span>: reset(&amp;game); <span class="hljs-keyword">break</span>;<br>    &#125;<br>  &#125;<br><br>release:<br>  close_game(&amp;game);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="按键精灵"><a href="#按键精灵" class="headerlink" title="按键精灵"></a>按键精灵</h5><p>大量重复固定任务。这个简单，就是给进程发送键盘&#x2F;鼠标事件</p>
+<ul>
+<li>做个驱动 (可编程键盘&#x2F;鼠标)</li>
+<li>利用操作系统&#x2F;窗口管理器提供的 API<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jordansissel/xdotool">xdotool</a> (我们用这玩意测试 vscode 的插件)</li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/input/input.html">evdev</a> (按键显示脚本；主播常用)</li>
+</ul>
+</li>
+</ul>
+<h5 id="变速齿轮"><a href="#变速齿轮" class="headerlink" title="变速齿轮"></a>变速齿轮</h5><p>跳转游戏逻辑更新速度</p>
+<p>程序只是状态机，除了<code>syscall</code>无法感知时间。修改<code>syscall</code>返回值就可以欺骗程序。</p>
+<h5 id="代码注入"><a href="#代码注入" class="headerlink" title="代码注入"></a>代码注入</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 修改 API 调用的值</span><br>set_alarm(<span class="hljs-number">1000</span> / FPS); <span class="hljs-comment">// 希望改成 100 / FPS</span><br><br><span class="hljs-comment">// 锁定生命值</span><br>hp -= damage; <span class="hljs-comment">// 希望 “消除” 此次修改</span><br><span class="hljs-keyword">if</span> (hp &lt; <span class="hljs-number">0</span>) game_over();<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/408/" class="category-chain-item">408</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="print-no-link">#计算机基础</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/23/dl/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0NLP/" title="动手学深度学习NLP">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">动手学深度学习NLP</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/12/book/%E7%A9%BF%E8%B6%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E8%BF%B7%E9%9B%BE/" title="穿越计算机的迷雾">
+                        <span class="hidden-mobile">穿越计算机的迷雾</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

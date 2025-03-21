@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="GPT摘要 文章主要介绍了非可逆加密算法和可逆加密算法的原理和应用。在非可逆加密算法部分，介绍了MD5和SHA系列算法，以及它们在密码保存、文件完整性校验等方面的应用。同时提到了MAC和HMAC-SHA-256在确认消息完整性和身份认证中的作用。在可逆加密算法部分，介绍了凯撒密码和enigma机的原理，以及对称加密算法AES和非对称加密算法RSA的基本原理和应用场景。文章还简要讨论了密码攻击方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见加密算法">
+<meta property="og:url" content="http://example.com/2024/04/08/TechDigest/%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="GPT摘要 文章主要介绍了非可逆加密算法和可逆加密算法的原理和应用。在非可逆加密算法部分，介绍了MD5和SHA系列算法，以及它们在密码保存、文件完整性校验等方面的应用。同时提到了MAC和HMAC-SHA-256在确认消息完整性和身份认证中的作用。在可逆加密算法部分，介绍了凯撒密码和enigma机的原理，以及对称加密算法AES和非对称加密算法RSA的基本原理和应用场景。文章还简要讨论了密码攻击方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
+<meta property="article:published_time" content="2024-04-08T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="加密">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082201658.png">
+  
+  
+  
+  <title>常见加密算法 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">常见加密算法</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-08 20:00" pubdate>
+          2024年4月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">常见加密算法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>文章主要介绍了非可逆加密算法和可逆加密算法的原理和应用。在非可逆加密算法部分，介绍了MD5和SHA系列算法，以及它们在密码保存、文件完整性校验等方面的应用。同时提到了MAC和HMAC-SHA-256在确认消息完整性和身份认证中的作用。在可逆加密算法部分，介绍了凯撒密码和enigma机的原理，以及对称加密算法AES和非对称加密算法RSA的基本原理和应用场景。文章还简要讨论了密码攻击方法和SSL&#x2F;TLS中非对称加密的应用。</p>
+</blockquote>
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><ul>
+<li>非可逆加密（hash function）：密码保存、文件<strong>完整性</strong>正确性校验、文件秒上传<ul>
+<li>hash</li>
+<li>md5（Message Digest Algorithm 5） 128bit</li>
+<li>SHA（Secure Hash Algorithm）</li>
+</ul>
+</li>
+<li>可逆加密<ul>
+<li>对称加密<ul>
+<li>DES (Data Encryption Standard) 不安全</li>
+<li>AES (Advanced Encryption Standard)</li>
+</ul>
+</li>
+<li>非对称加密<ul>
+<li>RSA（Rivest-Shamir-Adleman）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>可逆加密是从传统意义上的加密，而非可逆加密通常用于签名</p>
+<h2 id="非可逆加密算法"><a href="#非可逆加密算法" class="headerlink" title="非可逆加密算法"></a>非可逆加密算法</h2><ul>
+<li><p>并不是真正意义上的加密，通常被称作hash算法（加密）或者摘要digest算法</p>
+<ul>
+<li><strong>非加密哈希函数</strong>：用于散列（Hash）数据，速度快；hash表、长链转短链：<code>MurmurHash</code></li>
+<li><strong>加密哈希函数</strong>：并具有一些特性，如<strong>抗碰撞性</strong>（即难以找到两个不同的输入，它们的哈希值相同）、困难性（难以计算出满足特定条件的输入，例如找到一个特定哈希值的输入），以及提供杂凑（Hash）的伪随机性。</li>
+</ul>
+</li>
+<li><p>主要用一个较短的字符串（<strong>数字指纹</strong>）代表原来的信息，<strong>不可逆</strong></p>
+</li>
+</ul>
+<p>密码保存、文件<strong>完整性</strong>正确性校验、文件秒上传（该文件MD5存在，说明大概率上传过）</p>
+<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>将任意长度消息  转为  32个16进制数（16B），4个幻数  （信息是减少的，不可逆）</p>
+<ol>
+<li><p>补齐到512bit（64B）整数，并且最后64位存放原始长度</p>
+</li>
+<li><p>每512bit为一个块，再拆分成4B一小块（16块）<code>X[i]</code>，更新幻数64次；更新函数每次更新第一个数</p>
+</li>
+<li><p>重复N轮512bit，最后4个幻数就是结果 </p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141875.png" srcset="/img/loading.gif" lazyload alt="image-20240227194554575"></p>
+</li>
+</ol>
+<h4 id="攻击"><a href="#攻击" class="headerlink" title="攻击"></a>攻击</h4><ol>
+<li>原像攻击：给出一个MD5，如何得到生成该MD5的消息</li>
+<li>第二原像攻击：给出消息，如何得到生成MD5相同的消息</li>
+<li>扛碰撞性：找出两个MD相同的消息<ul>
+<li>王小云2004年已经被打破，消息内容是乱码</li>
+<li>MarcStevens：<ul>
+<li>相同前缀碰撞：从内容 生成两个内容不同但MD5相同的数据（前缀保留图片或程序但后缀不同）；</li>
+<li>选择前缀碰撞：前缀不一样（一个正常程序一个死循环）然后构造后缀使得MD5相同</li>
+</ul>
+</li>
+<li>至此签名<strong>并不安全</strong>：攻击者可以创造出两个内容不同但签名相同的支票；文件校验从用户端是正常的，但如果用MD5检测软件，会导致正常版本通过检测，然后替换异常版本上架软件商店</li>
+</ul>
+</li>
+</ol>
+<h3 id="SHA系列："><a href="#SHA系列：" class="headerlink" title="SHA系列："></a><strong>SHA系列</strong>：</h3><ul>
+<li><strong>SHA-1</strong>：产生160位的哈希值，比MD5更安全，但它也已被发现有安全弱点。</li>
+<li><strong>SHA-2</strong>：包含多个版本（如SHA-224, SHA-256, SHA-384, 和SHA-512），相比于SHA-1提供了更高的安全性。</li>
+<li><strong>SHA-3</strong>：最新的SHA版本，使用不同的哈希算法（Keccak），提供了与SHA-2不同的安全性和效率。</li>
+</ul>
+<h3 id="MAC"><a href="#MAC" class="headerlink" title="MAC"></a>MAC</h3><p>message authentication code：确认完整性并进行身份认证，密钥+hash</p>
+<p>HMAC：Hash-based</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141879.png" srcset="/img/loading.gif" lazyload alt="image-20240408212345680"></p>
+<ul>
+<li>非可逆加密可以验证文件的完整性，例如从官网下载文件，但前提是官网提供了正确文件的md5</li>
+<li>a、b之间通信，如果a发送的消息被替换了，单纯使用hash b并不知道消息是否被替换，因为hash也能同时被替换</li>
+<li>如果ab之间提前约定了一个密钥，基于该密钥生成HMAC，别人就无法生成替换后的hash值，这就实现了签名。因此想要实现数据不被篡改，需要提前约定一个密钥</li>
+<li>在ssl&#x2F;tls握手时，CA就会用私钥对内容进行签名，用户用公钥解密并对比来查看内容是否被篡改</li>
+<li>https中，除了生成一个密钥用于加密通信以外，还可以生成一个密钥用于生成HMAC确认消息防止被篡改（其实就算被篡改了，由于中间人不知道加密密钥，篡改的内容也是无意义的）</li>
+</ul>
+<h3 id="HMAC-SHA-256"><a href="#HMAC-SHA-256" class="headerlink" title="HMAC-SHA-256"></a>HMAC-SHA-256</h3><p>JWT中用的，hash(密钥1+hash(密钥2+消息))</p>
+<p>密钥只有服务器知道，因此只有服务器能够生成 token，并验证token是否有效</p>
+<h3 id="密码攻击"><a href="#密码攻击" class="headerlink" title="密码攻击"></a>密码攻击</h3><p>黑客知道盐s，hash值，算法f(p,s) &#x3D; hash，但不知道原密码p<br>他的目的是通过hash值，盐s和算法f，求得密码p，使f(p,s) &#x3D; hash</p>
+<p>暴力破解：也就是原像攻击，暴力找原密码，不可能</p>
+<ul>
+<li>方法一：遍历原文为 12345678，meiyoumuma，iloveyou这样的常见密码字典，使用盐和密码作为参数调用算法得到 hash，在数据库中查找 hash 相同的用户，那么他的密码就被知道了。但是如果每个用户盐值不一样，就需要每个用户生成一个字典去攻击，该方法失效</li>
+<li>查表攻击（空间大）：事先计算出所有<strong>常见密码</strong>字典(<strong>明文</strong>)的<code>hash</code>结果(<strong>密文</strong>)，然后将其存入数据库中，通过建立<strong>索引</strong>等方式，当我们拿到一个<strong>密文</strong>(<code>hash</code>)时，我们去数据库通过索引将其快速查出对应的<strong>明文</strong>，如果数据库中不存在，则破解失败。加盐后简单密码就变成了123456+salt复杂密码，不在常见密码中，失效；</li>
+<li>彩虹表：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/105578739">彩虹表 rainbow-tables - 知乎 (zhihu.com)</a></li>
+</ul>
+<p><strong>实践</strong>：强hash函数（SHA-256） + 盐 + 循环hash</p>
+<p>现在主流密码处理方式的算法是PBKDF2，流程简述起来是随机生成一个高熵（意思是真的随机而且复杂）Salt，把你的密码和这个Salt连接在一起当作一个整体做一次哈希运算，哈希算法为安全的SHA-256，可以避免哈希碰撞，得到的这个哈希值和你的密码连接在一起再做一次哈希运算，以此类推，重复非常多次，次数越多越安全，但是服务器负担也就越重，一般在10万次以上。最后服务器存储Salt和最后一次得出的哈希值，这样服务器不知道你的密码，但是可以验证你输入的密码是否正确，即使被拖库也不用担心密码被暴力破解，因为随机Salt的引入让彩虹表攻击失效，单独针对你的密码暴力破解要付出遍历密码空间（比如说4位纯数字密码的密码空间是10000，指所有可能的密码组合的个数）所需时间的10万倍以上，比普通的算法要安全许多。在安全性更高的服务器上甚至还会结合硬件密钥来进一步增强安全性，那就是在以上的基础上得出的最后一次哈希值再和硬件密钥作为PBKDF2算法的输入，最终只存储Salt和结合了硬件密钥的最终哈希值，这样子就不给一点暴力攻击的机会了，因为硬件密钥永远不会脱离安全硬件，把相应的硬件断电就一点办法也没有了</p>
+<h2 id="可逆加密算法"><a href="#可逆加密算法" class="headerlink" title="可逆加密算法"></a>可逆加密算法</h2><h3 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h3><h4 id="移位替换"><a href="#移位替换" class="headerlink" title="移位替换"></a>移位替换</h4><p>公元前1世纪，移位替换<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141880.png" srcset="/img/loading.gif" lazyload alt="image-20240408104931318"></p>
+<h4 id="随机替换"><a href="#随机替换" class="headerlink" title="随机替换"></a>随机替换</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141881.png" srcset="/img/loading.gif" lazyload alt="image-20240408105059470"></p>
+<p>用统计的方法就可以破解，出现最多的e倍替换成了l</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141882.png" srcset="/img/loading.gif" lazyload alt="image-20240408105137344"></p>
+<h4 id="多替换表"><a href="#多替换表" class="headerlink" title="多替换表"></a>多替换表</h4><p>增加字母替换表，轮换使用替换表进行加密，加密表越多，统计特征慢慢消失</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141884.png" srcset="/img/loading.gif" lazyload alt="image-20240408105310020"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141885.png" srcset="/img/loading.gif" lazyload alt="image-20240408113434326"></p>
+<p>麻烦，enigma就是自动实现了字母表的替换</p>
+<h3 id="enigma"><a href="#enigma" class="headerlink" title="enigma"></a>enigma</h3><p>1926年开始，德国升级了加密系统，enigma机</p>
+<ul>
+<li><strong>字母替换</strong>的加密方法，输入o，输出c；再次输入时，输出会不同</li>
+<li>解密时直接输入密码可以得到原文，也就是自反的</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141886.png" srcset="/img/loading.gif" lazyload alt="image-20240408104801371"></p>
+<h4 id="内部结构"><a href="#内部结构" class="headerlink" title="内部结构"></a>内部结构</h4><ul>
+<li><p>一个转子相当于一个替换表，内部的接线是出厂固定的，但是按下后会转动转动，转动后替换表变了 <code>26*26*26</code>个</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141887.png" srcset="/img/loading.gif" lazyload alt="image-20240408112159790"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141888.png" srcset="/img/loading.gif" lazyload alt="image-20240408112219190"></p>
+</li>
+<li><p>反射板将信号反射回去（两两连接），使得型号可以<strong>自反</strong> + <strong>排己</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141889.png" srcset="/img/loading.gif" lazyload alt="image-20240408111708118"></p>
+</li>
+<li><p>解密时转轮的初始位置需要一样，这个相当于是密钥（德军每天更新），也就是破解必须要<strong>密钥+同一批次机器</strong></p>
+</li>
+<li><p>最后是接线板，可以实现交换两个字母 如果12对  有一千多亿种</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141890.png" srcset="/img/loading.gif" lazyload alt="image-20240408112439109"></p>
+</li>
+</ul>
+<h4 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h4><p><strong>密钥+同一批次机器+接线板</strong>  机器可以被缴获，密钥每天都更新</p>
+<p>德军加密方法：随机密钥SCA，统一密钥DAB</p>
+<ul>
+<li>先用统一密钥加密随机密钥两次，放到开头，再用随机密钥加密内容</li>
+<li>解密时用统一密钥解密开头，获取随机密钥，再用随机密钥解密内容</li>
+</ul>
+<p>大量的内容都是用不同的密钥加密的（减少重复），少量的无意义信息是用统一密钥加密的</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141891.png" srcset="/img/loading.gif" lazyload alt="image-20240408113818917"></p>
+<p>前六个字符是破译的关键！重复输入的<strong>随机密钥相当于漏洞</strong></p>
+<h5 id="破解初始密钥"><a href="#破解初始密钥" class="headerlink" title="破解初始密钥"></a>破解初始密钥</h5><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141892.png" srcset="/img/loading.gif" lazyload alt="image-20240408140327786"></p>
+<p>又因为自反性，D(A(F)) &#x3D; G  把DA（EB、FG）看成一个整体函数 ，使得F-&gt;G</p>
+<p>当天的密文有很多，可以把3个函数的26个字母的映射关系都列出</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141893.png" srcset="/img/loading.gif" lazyload alt="image-20240408140625913"></p>
+<ol>
+<li>这些映射存在环</li>
+<li>环的数量集合就是一个**特征(指纹)**，代表着转子的初始位子</li>
+<li>特征集合很少重复，如果构造了特征目录，就可以得到转子的初始位置</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141894.png" srcset="/img/loading.gif" lazyload alt="image-20240408140914606"></p>
+<h5 id="构造目录表"><a href="#构造目录表" class="headerlink" title="构造目录表"></a>构造目录表</h5><p>一对函数的映射存在环，一次循环的数量2x代表一对环特征x,x</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141895.png" srcset="/img/loading.gif" lazyload alt="image-20240408141100019"></p>
+<p><strong>循环测定仪</strong></p>
+<p>现在想构建AAA的特征</p>
+<ol>
+<li>设置AAA，另一个设置为AAD（相差3）  用于输出DA函数的特征<ul>
+<li>随便从一个开始</li>
+<li>循环后结束，点亮的数量2x就是当前两个环的数量和，也就是特征为x,x</li>
+<li>电亮没有亮过的开关，又得到一组特征y, y  循环执行</li>
+</ul>
+</li>
+<li>设置AAB，另一个设置为AAE   用于输出EB函数特征</li>
+<li>设置AAC，另一个设置为AAF   用于输出FC函数特征</li>
+<li>结合三个特征，组合成AAA转子的特征</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141896.png" srcset="/img/loading.gif" lazyload alt="image-20240408141257098"></p>
+<h5 id="目录表数量"><a href="#目录表数量" class="headerlink" title="目录表数量"></a>目录表数量</h5><ul>
+<li>三个随机排列：<code>26*26*26  *  A33</code>  大概10w，构造需要1年</li>
+<li>五个随机选择3个：10年！</li>
+<li>要用机器打败机器，Bomba！</li>
+</ul>
+<h4 id="社会工程学"><a href="#社会工程学" class="headerlink" title="社会工程学"></a>社会工程学</h4><ul>
+<li>基于 crib（一些常用特殊的词汇，例如每天早上的天气预报、生日快乐、甚至是故意的陷阱）</li>
+<li>bombe machine</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PL4y1H77Z">https://www.bilibili.com/video/BV1PL4y1H77Z</a></li>
+</ul>
+<h3 id="对称加密AES"><a href="#对称加密AES" class="headerlink" title="对称加密AES"></a>对称加密AES</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141897.png" srcset="/img/loading.gif" lazyload alt="image-20240408204133847"></p>
+<ul>
+<li><p>对称加密用一个相同的密钥进行加密解密，适合1对1的加密方式，但浏览器和服务器之间不能单纯使用同一个密钥，否者大家都一样用户之间相当于没有加密。（握手后随机生成一个传输也不行，因为会被中间人窃取）</p>
+</li>
+<li><p>因此<strong>双方确定密钥</strong>过程是关键</p>
+</li>
+<li><p><strong>预先共享密钥</strong>：面对面交换、安全信封或安全通信渠道</p>
+</li>
+<li><p><strong>密钥分发中心（Key Distribution Center，KDC）</strong>：KDC是一个可信的第三方实体，负责生成和分发密钥。发送方和接收方可以向KDC请求密钥，KDC会安全地将密钥发送给它们。这种方法需要发送方和接收方信任KDC的安全性。</p>
+</li>
+<li><p><strong>通过公钥密码体系配送共享密钥</strong>  https</p>
+</li>
+<li><p><strong>Diffie-Hellman密钥交换协议</strong>  详情见ECDHE中</p>
+</li>
+</ul>
+<h3 id="非对称加密RSA"><a href="#非对称加密RSA" class="headerlink" title="非对称加密RSA"></a>非对称加密RSA</h3><ul>
+<li>公钥加密只能私钥解密</li>
+<li>私钥加密只能公钥解密</li>
+<li><strong>计算复杂度高</strong></li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141898.png" srcset="/img/loading.gif" lazyload alt="image-20240408160753423"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404082141900.png" srcset="/img/loading.gif" lazyload alt="image-20240408161058177"></p>
+<ol>
+<li><strong>选择两个大质数p和q</strong>：这两个质数需要足够大，以确保其乘积n的位数可以满足安全需求。通常，p和q的位数应该在100位以上。</li>
+<li>**计算n和φ(n)**：n是p和q的乘积，φ(n)是n的欧拉函数，对于n&#x3D;pq，φ(n)&#x3D;(p-1)(q-1)。</li>
+<li><strong>选择公钥e</strong>：e需要满足1 &lt; e &lt; φ(n)，且e和φ(n)互质。通常，e可以选择为65537（这是一个常用的公钥，因为它有很好的性质，如二进制表示中只有两个1，计算效率高）。</li>
+<li><strong>计算私钥d</strong>：d是e关于φ(n)的模逆元，即满足ed ≡ 1 (mod φ(n))。这个可以通过扩展欧几里得算法来计算。</li>
+<li><strong>输出公钥和私钥</strong>：公钥是(n, e)，私钥是(n, d)。</li>
+</ol>
+<p>n的因数分解（即找出p和q）是一个已知的困难问题，这就是所谓的”大数因数分解问题”，保证RSA的安全性</p>
+<h3 id="ssl-tls"><a href="#ssl-tls" class="headerlink" title="ssl&#x2F;tls"></a>ssl&#x2F;tls</h3><p>有了非对称加密，就可以使得浏览器和服务器终极那的通信安全。非对称+对称加密</p>
+<ul>
+<li>服务器发公钥给浏览器，浏览器随机数（传输密钥）加密后传给服务器，服务器再私钥解密得到 传输密钥（<code>非对称+对称加密</code>  、如果只非对称加密，服务器的数据会被窃取）</li>
+<li>问题：如果中间人用窃取公钥并拦截，并生成自己的公钥发给浏览器，作为中间商，就会出问题</li>
+<li>如何确定浏览器收到的公钥是服务器给的：（域名、第三方机构、服务器公钥）给CA，CA添加数字签名（内容-&gt;hash-&gt;私钥加密）后给浏览器。浏览器解密（CA的公钥浏览器中保存了，浏览器信任的CA机构）看是否和明文hash一致</li>
+</ul>
+<p>握手过程</p>
+<ol>
+<li>Client Hello：TLS 版本号、支持的密码套件列表，以及生成的随机数</li>
+<li>Server Hello：确认TLS版本，发送证书（包含公钥），随机数，密码套件（密钥交换、签名RSA；AES通信加密）</li>
+<li>随机数（传输密钥）通过公钥加密后传给服务器（不考虑后续验证的化，其实这里可以携带加密数据，但RFC 标准不允许）</li>
+<li><strong>Finishd</strong>：私钥解密获得传说密钥，最后对握手数据进行摘要并且加密，用于验证加密是否可用以及是否被篡改</li>
+</ol>
+<h3 id="ECDHE握手"><a href="#ECDHE握手" class="headerlink" title="ECDHE握手"></a>ECDHE握手</h3><p>RSA不具备前向安全！</p>
+<h4 id="Diffie-Hellman密钥交换协议"><a href="#Diffie-Hellman密钥交换协议" class="headerlink" title="Diffie-Hellman密钥交换协议"></a><strong>Diffie-Hellman密钥交换协议</strong></h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111615446.png" srcset="/img/loading.gif" lazyload alt="image-20240411161319844"></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png" srcset="/img/loading.gif" lazyload alt="image-20240411161548610"></p>
+<p>根据私钥生成的方式，DH 算法分为两种实现：</p>
+<ul>
+<li>static DH 算法，这个是已经被废弃了；可能被暴力破解, 不具备前向安全性</li>
+<li>DHE 算法，现在常用的；</li>
+</ul>
+<h4 id="ECDHE"><a href="#ECDHE" class="headerlink" title="ECDHE"></a>ECDHE</h4><p>DHE 算法由于计算性能不佳，因为需要做大量的乘法，为了提升 DHE 算法的性能，所以就出现了现在广泛用于密钥交换算法 —— <strong>ECDHE 算法</strong>。</p>
+<p>小红和小明使用 ECDHE 密钥交换算法的过程：</p>
+<ul>
+<li>双方事先确定好使用哪种椭圆曲线，和曲线上的基点 G，这两个参数都是公开的；</li>
+<li>双方各自随机生成一个随机数作为<strong>私钥d</strong>，并与基点 G相乘得到<strong>公钥Q</strong>（Q &#x3D; dG），此时小红的公私钥为 Q1 和 d1，小明的公私钥为 Q2 和 d2；</li>
+<li>双方交换各自的公钥，最后小红计算点（x1，y1） &#x3D; d1Q2，小明计算点（x2，y2） &#x3D; d2Q1，由于椭圆曲线上是可以满足乘法交换和结合律，所以 d1Q2 &#x3D; d1d2G &#x3D; d2d1G &#x3D; d2Q1 ，因此<strong>双方的 x 坐标是一样的，所以它是共享密钥，也就是会话密钥</strong>。</li>
+</ul>
+<ol>
+<li><strong>Client Hello</strong>:客户端使用的 TLS 版本号、支持的密码套件列表，以及生成的<strong>随机数（Client Random）</strong>。</li>
+<li><strong>Server Hello</strong>: 随机数（Server Random） 密码套件（密钥协商ECDHE + 签名RSA+通信AES）、证书、选择椭圆曲线基点 G ，生成本地私钥d1，G*d1&#x3D;Q1 发送公钥 Q1 给客户端</li>
+<li>生成本地私钥d2，G*d2&#x3D;Q2 发送公钥Q2给服务器；会话密钥为d2Q1；本次通信携带加密数据</li>
+<li>最终验证一下</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DS4y1R7hM">https://www.bilibili.com/video/BV1DS4y1R7hM</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1M34y1o7ca">https://www.bilibili.com/video/BV1M34y1o7ca</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PL4y1H77Z">https://www.bilibili.com/video/BV1PL4y1H77Z</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1S541127qR">MD5为何不再安全</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/https_ecdhe.html#dh-%E7%AE%97%E6%B3%95">3.4 HTTPS ECDHE 握手解析 | 小林coding (xiaolincoding.com)</a>
+<a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404111616886.png">DH算法</a>
+<a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+        <a href="/tags/%E5%8A%A0%E5%AF%86/" class="print-no-link">#加密</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/09/TechDigest/%E4%BB%8EFD%E5%88%B0socketFD%E5%86%8D%E5%88%B0epoll%E5%8E%9F%E7%90%86/" title="从FD到socketFD再到epoll原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从FD到socketFD再到epoll原理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/01/%E8%80%83%E8%AF%95%E5%8E%8B%E6%B5%8B%E5%8F%8A%E7%93%B6%E9%A2%88%E6%8E%92%E6%9F%A5/" title="考试压测及瓶颈排查">
+                        <span class="hidden-mobile">考试压测及瓶颈排查</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

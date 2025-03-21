@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="引入什么是IO？：输入输出模型，常见包含磁盘IO、网络IO 流程一次IO包含以下过程：  应用程序向操作系统发起IO请求，等待数据就绪（等待到网卡&amp;网卡到达内核缓冲区） 操作系统拷贝内核数据到用户缓冲区   分类 同步和异步关注的是消息通信机制.  同步：就是在发出一个调用时，自己需要参与等待结果的过程,则为同步,前面四个 IO 都自己参与了,所以也称为同步 IO. 异步：则指出发出调用以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO模型介绍">
+<meta property="og:url" content="http://example.com/2024/04/14/TechDigest/IO%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="引入什么是IO？：输入输出模型，常见包含磁盘IO、网络IO 流程一次IO包含以下过程：  应用程序向操作系统发起IO请求，等待数据就绪（等待到网卡&amp;网卡到达内核缓冲区） 操作系统拷贝内核数据到用户缓冲区   分类 同步和异步关注的是消息通信机制.  同步：就是在发出一个调用时，自己需要参与等待结果的过程,则为同步,前面四个 IO 都自己参与了,所以也称为同步 IO. 异步：则指出发出调用以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png">
+<meta property="article:published_time" content="2024-04-14T12:33:46.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png">
+  
+  
+  
+  <title>IO模型介绍 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">IO模型介绍</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-14 20:33" pubdate>
+          2024年4月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">IO模型介绍</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>什么是IO？：输入输出模型，常见包含磁盘IO、网络IO</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>一次IO包含以下过程：</p>
+<ol>
+<li>应用程序向操作系统发起IO请求，等待数据就绪（等待到网卡&amp;网卡到达内核缓冲区）</li>
+<li>操作系统拷贝内核数据到用户缓冲区</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141018257.png" srcset="/img/loading.gif" lazyload alt="image-20240414090911822"></p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314153236150.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>同步和异步关注的是消息通信机制.</p>
+<ul>
+<li>同步：就是在发出一个调用时，自己需要参与等待结果的过程,则为同步,前面四个 IO 都自己参与了,所以也称为同步 IO.</li>
+<li>异步：则指出发出调用以后,到数据准备完成,自己都未参与,则为异步 IO。</li>
+</ul>
+<h2 id="1-阻塞IO"><a href="#1-阻塞IO" class="headerlink" title="1.阻塞IO"></a>1.阻塞IO</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">listenfd = socket();   <span class="hljs-comment">// 打开一个网络通信套接字</span><br>bind(listenfd);        <span class="hljs-comment">// 绑定</span><br>listen(listenfd);      <span class="hljs-comment">// 监听</span><br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>  buf = new buf[<span class="hljs-number">1024</span>]; <span class="hljs-comment">// 读取数据容器</span><br>  connfd = accept(listenfd);  <span class="hljs-comment">// 阻塞 等待建立连接</span><br>  <span class="hljs-type">int</span> n = read(connfd, buf);  <span class="hljs-comment">// 阻塞 读数据</span><br>  doSomeThing(buf);  <span class="hljs-comment">// 处理数据</span><br>  close(connfd);     <span class="hljs-comment">// 关闭连接</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>流程如下：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141014720.png" srcset="/img/loading.gif" lazyload alt="image-20240414091402977"></p>
+<ol>
+<li>第一阶段如果阻塞了，当前线程会进入睡眠状态，直到数据就绪后唤醒</li>
+<li>没有cpu空转，但一个线程只能处理一个fd</li>
+</ol>
+<p>缺点：单一线程无法同时处理多个FD，如果需要处理多个FD需要开启多个线程，线程消耗比较大，线程切换开销也大</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> True:<br>    <span class="hljs-keyword">for</span> each 句柄数组 &#123;<br>        read/write(fd, <span class="hljs-comment">/* 参数 */</span>) <span class="hljs-comment">// 如果由一个卡住  其他的就绪也不能执行</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-非阻塞IO"><a href="#2-非阻塞IO" class="headerlink" title="2.非阻塞IO"></a>2.非阻塞IO</h2><p>提供一个read函数，在数据未就绪时返回-1，因此可以通过轮询来处理</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c">arr = new Arr[];<br>listenfd = socket();   <span class="hljs-comment">// 打开一个网络通信套接字</span><br>bind(listenfd);        <span class="hljs-comment">// 绑定</span><br>listen(listenfd);      <span class="hljs-comment">// 监听</span><br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>  connfd = accept(listenfd);  <span class="hljs-comment">// 阻塞 等待建立连接</span><br>  arr.add(connfd);<br>&#125;<br><br><span class="hljs-comment">// 异步线程检测 连接是否可读</span><br>new Tread()&#123;<br>  <span class="hljs-keyword">for</span>(connfd : arr)&#123;<br>    buf = new buf[<span class="hljs-number">1024</span>]; <span class="hljs-comment">// 读取数据容器</span><br>    <span class="hljs-comment">// 非阻塞 read 最重要的是提供了我们在一个线程内管理多个文件描述符的能力</span><br>    <span class="hljs-type">int</span> n = read(connfd, buf);  <span class="hljs-comment">// 检测 connfd 是否可读</span><br>    <span class="hljs-keyword">if</span>(n != <span class="hljs-number">-1</span>)&#123;<br>       newThreadDeal(buf);   <span class="hljs-comment">// 创建新线程处理</span><br>       close(connfd);        <span class="hljs-comment">// 关闭连接 </span><br>       arr.remove(connfd);   <span class="hljs-comment">// 移除已处理的连接</span><br>    &#125;<br>  &#125;<br>&#125;<br><br>newTheadDeal(buf)&#123;<br>  doSomeThing(buf);  <span class="hljs-comment">// 处理数据</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>非阻塞IO不会等待数据到达内核的这个阶段，<strong>提供了我们在一个线程内管理多个FD的能力</strong></li>
+<li><strong>for轮询会消耗大量的CPU</strong>，read进行系统调用也十分消耗资源</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141014440.png" srcset="/img/loading.gif" lazyload alt="image-20240414091804160"></p>
+<h2 id="多路IO复用"><a href="#多路IO复用" class="headerlink" title="多路IO复用"></a><strong>多路IO复用</strong></h2><p> 1 个线程处理 多个 fd 的模式，并且避免无效的工作，<strong>要把所有的时间都用在处理句柄的 IO 上，不能有任何空转，sleep 的时间浪费。</strong> </p>
+<p><strong>如何实现？</strong>：  依靠内核，把想要处理的fd告诉内核，然后线程就休眠，之后只要有一个fd就绪，线程就被唤醒处理</p>
+<h2 id="3-select"><a href="#3-select" class="headerlink" title="3.select"></a>3.select</h2><p>select 是操作系统提供的系统函数，通过它我们可以将文件描述符发送给系统，让<strong>系统内核帮我们遍历检测是否可读</strong>，并告诉我们进行读取数据。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c">arr = new Arr[];<br>listenfd = socket();   <span class="hljs-comment">// 打开一个网络通信套接字</span><br>bind(listenfd);        <span class="hljs-comment">// 绑定</span><br>listen(listenfd);      <span class="hljs-comment">// 监听</span><br><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>  connfd = accept(listenfd);  <span class="hljs-comment">// 阻塞 等待建立连接</span><br>  arr.add(connfd);<br>&#125;<br><br><span class="hljs-comment">// 异步线程检测 通过 select 判断是否有连接可读</span><br>new Tread()&#123;<br>  <span class="hljs-keyword">while</span>(select(arr) &gt; <span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-keyword">for</span>(connfd : arr)&#123;<br>      <span class="hljs-keyword">if</span>(connfd can read)&#123;<br>        <span class="hljs-comment">// 如果套接字可读 创建新线程处理</span><br>        newTheadDeal(connfd);<br>        arr.remove(connfd);   <span class="hljs-comment">// 移除已处理的连接</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br><br>newTheadDeal(connfd)&#123;<br>    buf = new buf[<span class="hljs-number">1024</span>]; <span class="hljs-comment">// 读取数据容器</span><br>    <span class="hljs-type">int</span> n = read(connfd, buf);  <span class="hljs-comment">// 阻塞读取数据</span><br>    doSomeThing(buf);  <span class="hljs-comment">// 处理数据</span><br>    close(connfd);        <span class="hljs-comment">// 关闭连接 </span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141015031.png" srcset="/img/loading.gif" lazyload alt="image-20240414092920920"></p>
+<p><strong>优点：</strong></p>
+<ol>
+<li>同时给操作系统多个fd，然后自己阻塞休眠，由操作系统负责检查是否可读，并通知唤醒我们</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>fd_set需要拷贝两次，用户-&gt;内核-&gt;用户</li>
+<li>内核检测文件描述符可读还是通过遍历实现，当文件描述符数组很长时，遍历操作耗时也很长。</li>
+<li>内核检测完文件描述符数组后，当存在可读的文件描述符数组时，用户态需要再遍历检测一遍。</li>
+<li>最多1024个</li>
+</ol>
+<h2 id="4-poll"><a href="#4-poll" class="headerlink" title="4.poll"></a><strong>4.poll</strong></h2><p>去掉了最大 1024 个文件描述符的限制</p>
+<ol>
+<li>select 使用固定长度的 BitsMap，表示文件描述符集合，而且所支持的文件描述符的个数是有限制的，在 Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最大值为 1024，只能监听 0~1023 的文件描述符。</li>
+<li>poll 不再用 BitsMap 来存储所关注的文件描述符，取而代之用动态数组，以链表形式来组织，突破了 select 的文件描述符个数限制，当然还会受到系统文件描述符限制。</li>
+</ol>
+<h2 id="5-epoll"><a href="#5-epoll" class="headerlink" title="5.epoll"></a>5.epoll</h2><blockquote>
+<p>1.每次调用需要在用户态和内核态之间拷贝文件描述符数组，但高并发场景下这个拷贝的消耗是很大的。<br>方案：内核中保存一份文件描述符，无需用户每次传入，而是仅同步修改部分。</p>
+<p>2.内核检测文件描述符可读还是通过遍历实现，当文件描述符数组很长时，遍历操作耗时也很长。<br>方案：通过事件唤醒机制唤醒替代遍历。</p>
+<p>3.内核检测完文件描述符数组后，当存在可读的文件描述符数组时，用户态需要再遍历检测一遍。<br>方案：仅将可读部分文件描述符同步给用户态，不需要用户态再次遍历。</p>
+</blockquote>
+<h3 id="epoll-create："><a href="#epoll-create：" class="headerlink" title="epoll_create："></a><strong>epoll_create：</strong></h3><p>用于创建 epoll 文件描述符，该文件描述符用于后续的 epoll 操作，参数 size 目前还没有实际用处，我们只要填一个大于 0 的数就行。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141015207.png" srcset="/img/loading.gif" lazyload alt="image-20240414100233473"></p>
+<h3 id="epoll-ctl"><a href="#epoll-ctl" class="headerlink" title="epoll_ctl:"></a><strong>epoll_ctl:</strong></h3><p>epoll_ctl 函数用于增加，删除，修改 epoll 事件，epoll 事件会存储于内核 epoll 结构体红黑树中.</p>
+<p>会注册fd的就绪回调函数为<code>ep_poll_callback</code>，就绪时添加到<code>rdllist</code>，并唤醒<code>wq</code>中等待的线程</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141019114.png" srcset="/img/loading.gif" lazyload alt="image-20240414100247696"></p>
+<h3 id="epoll-wait-："><a href="#epoll-wait-：" class="headerlink" title="epoll_wait ："></a><strong>epoll_wait ：</strong></h3><p>epoll_wait 用于监听套接字事件，可以通过设置超时时间 timeout 来控制监听的行为为阻塞模式还是超时模式。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210940.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>详细的原理实现可以看另一篇文章：从FD到socketFD再到epoll原理</p>
+<h2 id="信号驱动-IO"><a href="#信号驱动-IO" class="headerlink" title="信号驱动 IO:"></a><strong>信号驱动 IO:</strong></h2><p>多路转接解决了一个线程可以监控多个 fd 的问题，但是 select 采用无脑的轮询就显得有点暴力，因为大部分情况下的轮询都是无效的，所以有人就想，别让我总去问数据是否准备就绪，而是等你准备就绪后主动通知我,这边是信号驱动 IO。</p>
+<p>信号驱动 IO 是在调用 sigaction 时候建立一个 SIGIO 的信号联系，当内核准备好数据之后再通过 SIGIO 信号通知线程,此 fd 准备就绪，当线程收到可读信号后，此时再向内核发起 recvfrom 读取数据的请求，因为信号驱动 IO 的模型下,应用线程在发出信号监控后即可返回，不会阻塞，所以一个应用线程也可以同时监控多个 fd。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141012304.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="异步-IO"><a href="#异步-IO" class="headerlink" title="异步 IO"></a><strong>异步 IO</strong></h2><p>应用只需要向内核发送一个读取请求,告诉内核它要读取数据后即刻返回；内核收到请求后会建立一个信号联系，当数据准备就绪，内核会主动把数据从内核复制到用户空间，等所有操作都完成之后，内核会发起一个通知告诉应用，我们称这种模式为异步 IO 模型。</p>
+<p>异步 IO 的优化思路是解决应用程序需要先后发送询问请求、接收数据请求两个阶段的模式，在异步 IO 的模式下，只需要向内核发送一次请求就可以完成状态询问和数拷贝的所有操作。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404141012805.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/IO/" class="print-no-link">#IO</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/20/TechDigest/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%8A%80%E6%9C%AF/" title="内网穿透技术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">内网穿透技术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/12/TechDigest/linux%E4%B8%AD%E6%96%AD%E5%8E%9F%E7%90%86/" title="Linux中断原理">
+                        <span class="hidden-mobile">Linux中断原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从零开始实现秒杀系统（四）：系统优化篇引言在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。 本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。 系统优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始实现秒杀系统（四）：系统优化篇">
+<meta property="og:url" content="http://example.com/2025/02/21/project/seckill/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F4/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="从零开始实现秒杀系统（四）：系统优化篇引言在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。 本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。 系统优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027941.png">
+<meta property="article:published_time" content="2025-02-21T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java项目">
+<meta property="article:tag" content="秒杀系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027941.png">
+  
+  
+  
+  <title>从零开始实现秒杀系统（四）：系统优化篇 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">从零开始实现秒杀系统（四）：系统优化篇</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-21 20:00" pubdate>
+          2025年2月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从零开始实现秒杀系统（四）：系统优化篇</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="从零开始实现秒杀系统（四）：系统优化篇"><a href="#从零开始实现秒杀系统（四）：系统优化篇" class="headerlink" title="从零开始实现秒杀系统（四）：系统优化篇"></a>从零开始实现秒杀系统（四）：系统优化篇</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。</p>
+<p>本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。</p>
+<h2 id="系统优化核心技术"><a href="#系统优化核心技术" class="headerlink" title="系统优化核心技术"></a>系统优化核心技术</h2><h3 id="一、基于Redis的分布式限流保护"><a href="#一、基于Redis的分布式限流保护" class="headerlink" title="一、基于Redis的分布式限流保护"></a>一、基于Redis的分布式限流保护</h3><p>在高并发场景下，没有限流保护的系统很容易被瞬时流量击垮。我们实现了一个基于Redis的分布式令牌桶限流机制，可以有效控制接口的访问频率。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027938.png" srcset="/img/loading.gif" lazyload alt="image-20250310162452284"></p>
+<h4 id="1-1-限流注解设计"><a href="#1-1-限流注解设计" class="headerlink" title="1.1 限流注解设计"></a>1.1 限流注解设计</h4><p>首先，我们设计了一个简单易用的注解，可以轻松地为任何接口添加限流功能：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Target(ElementType.METHOD)</span><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> RateLimit &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 限流唯一标识，用于区分不同接口的限流</span><br><span class="hljs-comment">     */</span><br>    String <span class="hljs-title function_">key</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;&quot;</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 限流模式，支持按用户ID、IP、全局限流</span><br><span class="hljs-comment">     */</span><br>    RateLimitType <span class="hljs-title function_">type</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> RateLimitType.USER;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 令牌生成速率，每秒生成的令牌数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">double</span> <span class="hljs-title function_">rate</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-number">1.0</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 令牌桶容量，允许突发请求的最大数量</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">capacity</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-number">5</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 单次请求消耗的令牌数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">tokens</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-number">1</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 限流提示消息</span><br><span class="hljs-comment">     */</span><br>    String <span class="hljs-title function_">message</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;请求过于频繁，请稍后再试&quot;</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 限流类型枚举</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">enum</span> <span class="hljs-title class_">RateLimitType</span> &#123;<br>        USER,  <span class="hljs-comment">// 按用户ID限流</span><br>        IP,    <span class="hljs-comment">// 按IP限流</span><br>        GLOBAL <span class="hljs-comment">// 全局限流</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="1-2-Redis令牌桶算法实现"><a href="#1-2-Redis令牌桶算法实现" class="headerlink" title="1.2 Redis令牌桶算法实现"></a>1.2 Redis令牌桶算法实现</h4><p>我们使用Lua脚本在Redis中实现了令牌桶算法，确保限流操作的原子性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisRateLimiter</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;<br>    <br>    <span class="hljs-keyword">private</span> DefaultRedisScript&lt;Long&gt; tokenBucketScript;<br>    <br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        tokenBucketScript = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultRedisScript</span>&lt;&gt;();<br>        tokenBucketScript.setScriptSource(<br>            <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceScriptSource</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassPathResource</span>(<span class="hljs-string">&quot;scripts/token_bucket.lua&quot;</span>)));<br>        tokenBucketScript.setResultType(Long.class);<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 尝试获取令牌</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">tryAcquire</span><span class="hljs-params">(String key, <span class="hljs-type">double</span> rate, <span class="hljs-type">int</span> capacity, <span class="hljs-type">int</span> requested)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            List&lt;String&gt; keys = Collections.singletonList(key);<br>            <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();<br>            <br>            <span class="hljs-type">Long</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> redisTemplate.execute(<br>                tokenBucketScript, <br>                keys, <br>                Double.toString(rate), <br>                Integer.toString(capacity), <br>                Long.toString(now),<br>                Integer.toString(requested)<br>            );<br>            <br>            <span class="hljs-keyword">return</span> result != <span class="hljs-literal">null</span> ? result : -<span class="hljs-number">1</span>;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;Error executing token bucket script for key: &#123;&#125;&quot;</span>, key, e);<br>            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中，token_bucket.lua脚本实现了令牌桶核心算法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- 获取基本参数</span><br><span class="hljs-keyword">local</span> key = KEYS[<span class="hljs-number">1</span>]<br><span class="hljs-keyword">local</span> rate = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">1</span>])<br><span class="hljs-keyword">local</span> capacity = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">2</span>])<br><span class="hljs-keyword">local</span> now = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">3</span>])<br><span class="hljs-keyword">local</span> requested = <span class="hljs-built_in">tonumber</span>(ARGV[<span class="hljs-number">4</span>])<br><br><span class="hljs-comment">-- 获取令牌桶当前状态</span><br><span class="hljs-keyword">local</span> bucket = redis.call(<span class="hljs-string">&#x27;hmget&#x27;</span>, key, <span class="hljs-string">&#x27;last_refresh&#x27;</span>, <span class="hljs-string">&#x27;tokens&#x27;</span>)<br><span class="hljs-keyword">local</span> last_refresh = <span class="hljs-built_in">tonumber</span>(bucket[<span class="hljs-number">1</span>]) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span><br><span class="hljs-keyword">local</span> tokens = <span class="hljs-built_in">tonumber</span>(bucket[<span class="hljs-number">2</span>]) <span class="hljs-keyword">or</span> capacity<br><br><span class="hljs-comment">-- 计算时间间隔内新生成的令牌</span><br><span class="hljs-keyword">local</span> elapsed = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, now - last_refresh)<br><span class="hljs-keyword">local</span> new_tokens = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(capacity, tokens + (elapsed / <span class="hljs-number">1000.0</span>) * rate)<br><br><span class="hljs-comment">-- 检查令牌是否足够</span><br><span class="hljs-keyword">if</span> new_tokens &lt; requested <span class="hljs-keyword">then</span><br>    <span class="hljs-comment">-- 令牌不足，计算需要等待的时间</span><br>    <span class="hljs-keyword">local</span> wait_time = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">ceil</span>((requested - new_tokens) * <span class="hljs-number">1000</span> / rate)<br>    <span class="hljs-keyword">return</span> -wait_time<br><span class="hljs-keyword">else</span><br>    <span class="hljs-comment">-- 令牌足够，更新令牌桶</span><br>    <span class="hljs-keyword">local</span> remaining = new_tokens - requested<br>    redis.call(<span class="hljs-string">&#x27;hmset&#x27;</span>, key, <span class="hljs-string">&#x27;last_refresh&#x27;</span>, now, <span class="hljs-string">&#x27;tokens&#x27;</span>, remaining)<br>    redis.call(<span class="hljs-string">&#x27;expire&#x27;</span>, key, <span class="hljs-number">60</span>) <span class="hljs-comment">-- 设置60秒过期时间防止内存泄漏</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-comment">-- 成功获取令牌</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="1-3-限流切面的应用"><a href="#1-3-限流切面的应用" class="headerlink" title="1.3 限流切面的应用"></a>1.3 限流切面的应用</h4><p>使用AOP技术自动拦截带有@RateLimit注解的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Aspect</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RateLimitAspect</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RedisRateLimiter redisRateLimiter;<br>    <br>    <span class="hljs-meta">@Before(&quot;@annotation(com.example.seckill.annotation.RateLimit)&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">rateLimit</span><span class="hljs-params">(JoinPoint point)</span> &#123;<br>        <span class="hljs-type">MethodSignature</span> <span class="hljs-variable">signature</span> <span class="hljs-operator">=</span> (MethodSignature) point.getSignature();<br>        <span class="hljs-type">RateLimit</span> <span class="hljs-variable">rateLimit</span> <span class="hljs-operator">=</span> signature.getMethod().getAnnotation(RateLimit.class);<br>        <br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> buildRateLimitKey(rateLimit, point);<br>        <span class="hljs-type">long</span> <span class="hljs-variable">waitTime</span> <span class="hljs-operator">=</span> redisRateLimiter.tryAcquireWithWaitTime(<br>            key, rateLimit.rate(), rateLimit.capacity(), rateLimit.tokens());<br>        <br>        <span class="hljs-keyword">if</span> (waitTime &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-comment">// 获取令牌失败，需要等待</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> rateLimit.message();<br>            <span class="hljs-keyword">if</span> (waitTime &gt; <span class="hljs-number">1000</span>) &#123;<br>                message += <span class="hljs-string">&quot;，需等待&quot;</span> + (waitTime / <span class="hljs-number">1000</span>) + <span class="hljs-string">&quot;秒&quot;</span>;<br>            &#125;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RateLimitException</span>(message);<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 构建限流键</span><br>    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">buildRateLimitKey</span><span class="hljs-params">(RateLimit rateLimit, JoinPoint point)</span> &#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;rate_limit:&quot;</span>);<br>        <br>        <span class="hljs-keyword">if</span> (!rateLimit.key().isEmpty()) &#123;<br>            key.append(rateLimit.key()).append(<span class="hljs-string">&quot;:&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            key.append(point.getSignature().getDeclaringTypeName())<br>               .append(<span class="hljs-string">&quot;.&quot;</span>)<br>               .append(point.getSignature().getName())<br>               .append(<span class="hljs-string">&quot;:&quot;</span>);<br>        &#125;<br>        <br>        <span class="hljs-keyword">switch</span> (rateLimit.type()) &#123;<br>            <span class="hljs-keyword">case</span> USER:<br>                key.append(<span class="hljs-string">&quot;user:&quot;</span>).append(point.getArgs()[<span class="hljs-number">0</span>]);<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> IP:<br>                <span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> ((ServletRequestAttributes) <br>                    RequestContextHolder.getRequestAttributes()).getRequest();<br>                key.append(<span class="hljs-string">&quot;ip:&quot;</span>).append(getClientIp(request));<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> GLOBAL:<br>                key.append(<span class="hljs-string">&quot;global&quot;</span>);<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">return</span> key.toString();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>应用限流：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/&#123;userId&#125;/&#123;goodsId&#125;&quot;)</span><br><span class="hljs-meta">@RateLimit(</span><br><span class="hljs-meta">    key = &quot;seckill&quot;, </span><br><span class="hljs-meta">    type = RateLimit.RateLimitType.IP, </span><br><span class="hljs-meta">    rate = 0.2,  // 每5秒允许1个请求</span><br><span class="hljs-meta">    capacity = 1, </span><br><span class="hljs-meta">    tokens = 1, </span><br><span class="hljs-meta">    message = &quot;操作频率超限，请稍后再试&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> Result&lt;String&gt; <span class="hljs-title function_">seckill</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@PathVariable(&quot;userId&quot;)</span> Long userId,</span><br><span class="hljs-params">        <span class="hljs-meta">@PathVariable(&quot;goodsId&quot;)</span> Long goodsId)</span> &#123;<br>    <span class="hljs-comment">// 秒杀逻辑...</span><br>&#125;<br><br><span class="hljs-meta">@GetMapping(&quot;/result/&#123;userId&#125;/&#123;goodsId&#125;&quot;)</span><br><span class="hljs-meta">@RateLimit(</span><br><span class="hljs-meta">    key = &quot;result&quot;, </span><br><span class="hljs-meta">    type = RateLimit.RateLimitType.USER, </span><br><span class="hljs-meta">    rate = 1.5,  // 每秒1.5个请求</span><br><span class="hljs-meta">    capacity = 3, </span><br><span class="hljs-meta">    tokens = 1,</span><br><span class="hljs-meta">    message = &quot;查询太频繁，请稍后再试&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; <span class="hljs-title function_">getSeckillResult</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@PathVariable(&quot;userId&quot;)</span> Long userId,</span><br><span class="hljs-params">        <span class="hljs-meta">@PathVariable(&quot;goodsId&quot;)</span> Long goodsId)</span> &#123;<br>    <span class="hljs-comment">// 查询秒杀结果逻辑...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、基于RocketMQ延时消息的订单超时处理"><a href="#二、基于RocketMQ延时消息的订单超时处理" class="headerlink" title="二、基于RocketMQ延时消息的订单超时处理"></a>二、基于RocketMQ延时消息的订单超时处理</h3><p>在秒杀系统中，未支付的订单需要在一定时间后自动取消并释放库存。我们使用RocketMQ的延时消息实现了这一功能。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027939.png" srcset="/img/loading.gif" lazyload alt="image-20250310161900445"></p>
+<h4 id="2-1-订单创建时发送延时消息"><a href="#2-1-订单创建时发送延时消息" class="headerlink" title="2.1 订单创建时发送延时消息"></a>2.1 订单创建时发送延时消息</h4><p>在订单创建成功后，我们发送一条延时消息，用于触发订单超时取消：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendOrderCancellationMessage</span><span class="hljs-params">(String transactionId, <span class="hljs-type">int</span> delayLevel)</span> &#123;<br>    log.info(<span class="hljs-string">&quot;Sending order cancellation message for transaction: &#123;&#125;, delayLevel: &#123;&#125;&quot;</span>, <br>            transactionId, delayLevel);<br>    <br>    Message&lt;String&gt; message = MessageBuilder<br>        .withPayload(transactionId)<br>        .build();<br>    <br>    rocketMQTemplate.asyncSend(<br>        TOPIC_ORDER_CANCEL, <br>        message,<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">SendCallback</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onSuccess</span><span class="hljs-params">(SendResult sendResult)</span> &#123;<br>                log.info(<span class="hljs-string">&quot;Order cancellation message sent successfully for txId: &#123;&#125;&quot;</span>, transactionId);<br>            &#125;<br>            <br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onException</span><span class="hljs-params">(Throwable throwable)</span> &#123;<br>                log.error(<span class="hljs-string">&quot;Failed to send order cancellation message for txId: &#123;&#125;&quot;</span>, <br>                    transactionId, throwable);<br>            &#125;<br>        &#125;, <br>        producer.getSendMsgTimeout(), <br>        delayLevel<br>    );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>RocketMQ支持18个不同的延时等级，我们可以根据业务需要选择合适的延时级别。</p>
+<h4 id="2-2-订单取消消费者实现"><a href="#2-2-订单取消消费者实现" class="headerlink" title="2.2 订单取消消费者实现"></a>2.2 订单取消消费者实现</h4><p>消费者接收到延时消息后，处理订单取消和库存回滚：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@RocketMQMessageListener(</span><br><span class="hljs-meta">    topic = MQProducer.TOPIC_ORDER_CANCEL,</span><br><span class="hljs-meta">    consumerGroup = &quot;order-cancellation-consumer-group&quot;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderCancellationConsumer</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RocketMQListener</span>&lt;String&gt; &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> OrderService orderService;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RedisService redisService;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> GoodsDao goodsDao;<br>    <br>    <span class="hljs-comment">// Lua脚本用于回滚Redis库存</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> DefaultRedisScript&lt;Long&gt; ROLLBACK_STOCK_REDIS_SCRIPT = <br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultRedisScript</span>&lt;&gt;(<br>            <span class="hljs-string">&quot;local stock = redis.call(&#x27;get&#x27;, KEYS[1]) &quot;</span> +<br>            <span class="hljs-string">&quot;if stock then &quot;</span> +<br>            <span class="hljs-string">&quot;   redis.call(&#x27;incr&#x27;, KEYS[1]) &quot;</span> +<br>            <span class="hljs-string">&quot;end &quot;</span> +<br>            <span class="hljs-string">&quot;local reserved = redis.call(&#x27;get&#x27;, KEYS[2]) &quot;</span> +<br>            <span class="hljs-string">&quot;if reserved and tonumber(reserved) &gt; 0 then &quot;</span> +<br>            <span class="hljs-string">&quot;   redis.call(&#x27;decr&#x27;, KEYS[2]) &quot;</span> +<br>            <span class="hljs-string">&quot;end &quot;</span> +<br>            <span class="hljs-string">&quot;return 1&quot;</span>, Long.class);<br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onMessage</span><span class="hljs-params">(String transactionId)</span> &#123;<br>        log.info(<span class="hljs-string">&quot;Received order cancellation message for transaction: &#123;&#125;&quot;</span>, transactionId);<br>        <span class="hljs-keyword">try</span> &#123;<br>            processOrderCancellation(transactionId);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;Error processing order cancellation&quot;</span>, e);<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processOrderCancellation</span><span class="hljs-params">(String transactionId)</span> &#123;<br>        <span class="hljs-comment">// 1. 获取订单信息</span><br>        <span class="hljs-type">SeckillOrder</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> orderService.getOrderByTransactionId(transactionId);<br>        <br>        <span class="hljs-keyword">if</span> (order == <span class="hljs-literal">null</span>) &#123;<br>            log.info(<span class="hljs-string">&quot;Order not found for cancellation, transactionId: &#123;&#125;&quot;</span>, transactionId);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <br>        <span class="hljs-comment">// 2. 检查订单状态，只有未支付的订单才能取消</span><br>        <span class="hljs-keyword">if</span> (order.getStatus() != <span class="hljs-number">0</span>) &#123;<br>            log.info(<span class="hljs-string">&quot;Order already processed (paid or cancelled), transactionId: &#123;&#125;&quot;</span>, <br>                    transactionId, order.getStatus());<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <br>        <span class="hljs-comment">// 3. 更新订单状态为已取消</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">success</span> <span class="hljs-operator">=</span> orderService.cancelOrder(transactionId);<br>        <br>        <span class="hljs-keyword">if</span> (success) &#123;<br>            log.info(<span class="hljs-string">&quot;Order cancelled successfully: &#123;&#125;&quot;</span>, transactionId);<br>            <br>            <span class="hljs-comment">// 4. 回滚库存</span><br>            goodsDao.rollbackStock(order.getGoodsId());<br>            rollbackRedisStock(order.getGoodsId());<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            log.error(<span class="hljs-string">&quot;Failed to cancel order: &#123;&#125;&quot;</span>, transactionId);<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">rollbackRedisStock</span><span class="hljs-params">(Long goodsId)</span> &#123;<br>        redisService.executeScript(<br>            ROLLBACK_STOCK_REDIS_SCRIPT,<br>            Arrays.asList(<br>                redisService.getRealKey(SeckillKey.goodsStock, <span class="hljs-string">&quot;&quot;</span> + goodsId),<br>                redisService.getRealKey(SeckillKey.reservedStock, <span class="hljs-string">&quot;&quot;</span> + goodsId)<br>            )<br>        );<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="三、多级缓存优化库存查询"><a href="#三、多级缓存优化库存查询" class="headerlink" title="三、多级缓存优化库存查询"></a>三、多级缓存优化库存查询</h3><p>为了进一步提高性能，我们实现了基于Guava Cache的本地缓存，与Redis形成多级缓存架构。本地的guava可以进一步加速无库存的判断，为了简化系统库存管理，具体的库存数量信息不使用guava进行存储，guava只用于判断库存是否耗尽。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Local cache for sold-out goods with 5 minutes expiration</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;Long, Boolean&gt; localSoldOutCache = CacheBuilder.newBuilder()<br>    .maximumSize(<span class="hljs-number">1000</span>)  <span class="hljs-comment">// Maximum items in cache</span><br>    .expireAfterWrite(<span class="hljs-number">5</span>, TimeUnit.MINUTES)  <span class="hljs-comment">// Cache entries expire after 5 minutes</span><br>    .build();<br></code></pre></td></tr></table></figure>
+
+<p>在进行库存判断是否耗尽时，先优先从本地guava中判断，减少对redis的依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Mark goods as sold out</span><br><span class="hljs-comment">     */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setGoodsOver</span><span class="hljs-params">(Long goodsId)</span> &#123;<br>    <span class="hljs-comment">// Update Redis</span><br>    redisService.set(SeckillKey.isGoodsOver, <span class="hljs-string">&quot;&quot;</span> + goodsId, <span class="hljs-literal">true</span>);<br><br>    <span class="hljs-comment">// Update local cache</span><br>    localSoldOutCache.put(goodsId, <span class="hljs-literal">true</span>);<br>    log.debug(<span class="hljs-string">&quot;Goods &#123;&#125; marked as sold out in both Redis and local cache&quot;</span>, goodsId);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Check if goods are sold out using local cache first, then Redis</span><br><span class="hljs-comment">     */</span><br><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isGoodsOver</span><span class="hljs-params">(Long goodsId)</span> &#123;<br>    <span class="hljs-comment">// First check local cache (much faster)</span><br>    <span class="hljs-type">Boolean</span> <span class="hljs-variable">isOver</span> <span class="hljs-operator">=</span> localSoldOutCache.getIfPresent(goodsId);<br>    <span class="hljs-keyword">if</span> (isOver != <span class="hljs-literal">null</span> &amp;&amp; isOver) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// If not in local cache, check Redis</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">isSoldOutInRedis</span> <span class="hljs-operator">=</span> redisService.exists(SeckillKey.isGoodsOver, <span class="hljs-string">&quot;&quot;</span> + goodsId);<br><br>    <span class="hljs-comment">// If found in Redis but not in local cache, update local cache</span><br>    <span class="hljs-keyword">if</span> (isSoldOutInRedis) &#123;<br>        localSoldOutCache.put(goodsId, <span class="hljs-literal">true</span>);<br>        log.debug(<span class="hljs-string">&quot;Goods &#123;&#125; sold-out status loaded from Redis to local cache&quot;</span>, goodsId);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> isSoldOutInRedis;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="四、库存数据一致性对账机制"><a href="#四、库存数据一致性对账机制" class="headerlink" title="四、库存数据一致性对账机制"></a>四、库存数据一致性对账机制</h3><p>为了解决Redis与数据库库存可能出现的不一致问题，我们实现了一套库存对账机制。以监控系统缓存和数据库中数据一致性，并在不一致出现时及时告警。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027940.png" srcset="/img/loading.gif" lazyload alt="image-20250310162206333"></p>
+<h4 id="4-1-库存模型设计"><a href="#4-1-库存模型设计" class="headerlink" title="4.1 库存模型设计"></a>4.1 库存模型设计</h4><p>为确保数据一致性，我们设计了库存模型：</p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fix"><span class="hljs-attr">Redis库存 + Redis预占库存 </span>=<span class="hljs-string"> 数据库总库存</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Redis库存</strong>：可售卖的实时库存</li>
+<li><strong>Redis预占库存</strong>：已在Redis减少但尚未在数据库落库的预占量</li>
+<li><strong>数据库总库存</strong>：真实的最终库存数据</li>
+</ul>
+<p>库存状态流转：</p>
+<ol>
+<li>秒杀请求扣减Redis可用库存(goodsStock)并增加预占库存(reservedStock)</li>
+<li>MQ消费减少数据库库存，并减少对应的Redis预占库存</li>
+</ol>
+<p>这种设计确保了即使在消息处理过程中存在延迟，系统仍然能实现一致性对账。</p>
+<h4 id="4-2-对账机制实现"><a href="#4-2-对账机制实现" class="headerlink" title="4.2 对账机制实现"></a>4.2 对账机制实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StockReconciliationService</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> GoodsService goodsService;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> RedisService redisService;<br>    <br>    <span class="hljs-comment">// 对账相关配置</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">ALERT_THRESHOLD</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>; <span class="hljs-comment">// 连续不一致触发告警阈值</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">LOW_STOCK_THRESHOLD_PERCENTAGE</span> <span class="hljs-operator">=</span> <span class="hljs-number">30</span>; <span class="hljs-comment">// 低库存门槛</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">RECONCILE_ALL_ITEMS</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 是否对账所有商品</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">RETRY_DELAY_MS</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span>; <span class="hljs-comment">// 重试间隔</span><br>    <br>    <span class="hljs-comment">// 使用Lua脚本原子获取Redis中的库存数据</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">GET_STOCK_VALUES_SCRIPT</span> <span class="hljs-operator">=</span> <br>        <span class="hljs-string">&quot;local stockValue = redis.call(&#x27;get&#x27;, KEYS[1]) &quot;</span> +<br>        <span class="hljs-string">&quot;local reservedValue = redis.call(&#x27;get&#x27;, KEYS[2]) &quot;</span> +<br>        <span class="hljs-string">&quot;local result = &#123;&#125; &quot;</span> +<br>        <span class="hljs-string">&quot;if stockValue == false then result[1] = &#x27;&#x27; else result[1] = stockValue end &quot;</span> +<br>        <span class="hljs-string">&quot;if reservedValue == false then result[2] = &#x27;&#x27; else result[2] = reservedValue end &quot;</span> +<br>        <span class="hljs-string">&quot;return result&quot;</span>;<br><br>    <span class="hljs-comment">// 定时对账任务</span><br>    <span class="hljs-meta">@Scheduled(fixedRate = 1 * 60 * 1000)</span> <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">scheduledReconciliation</span><span class="hljs-params">()</span> &#123;<br>        log.info(<span class="hljs-string">&quot;Starting scheduled stock reconciliation&quot;</span>);<br>        List&lt;GoodsVo&gt; goodsList = goodsService.listGoodsVo();<br>        <br>        <span class="hljs-keyword">if</span> (goodsList == <span class="hljs-literal">null</span> || goodsList.isEmpty()) &#123;<br>            log.warn(<span class="hljs-string">&quot;No goods found for reconciliation&quot;</span>);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">for</span> (GoodsVo goods : goodsList) &#123;<br>            <span class="hljs-keyword">if</span> (shouldReconcile(goods)) &#123;<br>                reconcileStock(goods.getId());<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="4-2-1-水位线对账策略"><a href="#4-2-1-水位线对账策略" class="headerlink" title="4.2.1 水位线对账策略"></a>4.2.1 水位线对账策略</h5><p>为了减少系统负担，我们基于水位线策略选择性地对商品进行对账：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">shouldReconcile</span><span class="hljs-params">(GoodsVo goods)</span> &#123;<br>    <span class="hljs-keyword">if</span> (RECONCILE_ALL_ITEMS) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 检查Redis库存</span><br>    <span class="hljs-type">Integer</span> <span class="hljs-variable">redisStock</span> <span class="hljs-operator">=</span> redisService.get(SeckillKey.goodsStock, <span class="hljs-string">&quot;&quot;</span> + goods.getId());<br>    <br>    <span class="hljs-comment">// 商品不在Redis中，不需要对账</span><br>    <span class="hljs-keyword">if</span> (redisStock == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 计算当前库存百分比</span><br>    <span class="hljs-type">int</span> <span class="hljs-variable">initialStock</span> <span class="hljs-operator">=</span> goods.getTotalStock();<br>    <span class="hljs-keyword">if</span> (initialStock &lt;= <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 初始库存异常，执行对账</span><br>    &#125;<br>    <br>    <span class="hljs-type">int</span> <span class="hljs-variable">stockPercentage</span> <span class="hljs-operator">=</span> (redisStock * <span class="hljs-number">100</span>) / initialStock;<br>    <span class="hljs-keyword">return</span> stockPercentage &lt;= LOW_STOCK_THRESHOLD_PERCENTAGE; <span class="hljs-comment">// 库存低于水位线才对账</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="4-2-2-对账流程与重试机制"><a href="#4-2-2-对账流程与重试机制" class="headerlink" title="4.2.2 对账流程与重试机制"></a>4.2.2 对账流程与重试机制</h5><p>对账核心逻辑包含了原子性数据采集、一致性校验和自动重试机制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reconcileStock</span><span class="hljs-params">(Long goodsId)</span> &#123;<br>    log.debug(<span class="hljs-string">&quot;Reconciling stock for goods ID: &#123;&#125;&quot;</span>, goodsId);<br>    <br>    <span class="hljs-type">int</span> <span class="hljs-variable">retryCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">isConsistent</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>    <br>    <span class="hljs-comment">// 重试ALERT_THRESHOLD次</span><br>    <span class="hljs-keyword">while</span> (!isConsistent &amp;&amp; retryCount &lt; ALERT_THRESHOLD) &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 获取数据库库存</span><br>            <span class="hljs-type">GoodsVo</span> <span class="hljs-variable">goods</span> <span class="hljs-operator">=</span> goodsService.getGoodsVoByGoodsId(goodsId);<br>            <span class="hljs-keyword">if</span> (goods == <span class="hljs-literal">null</span>) &#123;<br>                log.error(<span class="hljs-string">&quot;Failed to get goods info for ID: &#123;&#125; during reconciliation&quot;</span>, goodsId);<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>            <br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">dbStock</span> <span class="hljs-operator">=</span> goods.getStockCount();<br>            <br>            <span class="hljs-comment">// 原子获取Redis库存和预占库存</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">stockKey</span> <span class="hljs-operator">=</span> redisService.getRealKey(SeckillKey.goodsStock, <span class="hljs-string">&quot;&quot;</span> + goodsId);<br>            <span class="hljs-type">String</span> <span class="hljs-variable">reservedKey</span> <span class="hljs-operator">=</span> redisService.getRealKey(SeckillKey.reservedStock, <span class="hljs-string">&quot;&quot;</span> + goodsId);<br><br>            List&lt;Object&gt; values = redisService.executeScript(<br>                GET_STOCK_VALUES_SCRIPT_OBJ, <br>                Arrays.asList(stockKey, reservedKey)<br>            );<br>            <br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">redisStock</span> <span class="hljs-operator">=</span> values.get(<span class="hljs-number">0</span>) != <span class="hljs-literal">null</span> &amp;&amp; !values.get(<span class="hljs-number">0</span>).toString().isEmpty() ? <br>                Integer.parseInt(values.get(<span class="hljs-number">0</span>).toString()) : <span class="hljs-literal">null</span>;<br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">reservedStock</span> <span class="hljs-operator">=</span> values.get(<span class="hljs-number">1</span>) != <span class="hljs-literal">null</span> &amp;&amp; !values.get(<span class="hljs-number">1</span>).toString().isEmpty() ? <br>                Integer.parseInt(values.get(<span class="hljs-number">1</span>).toString()) : <span class="hljs-number">0</span>;<br>            <br>            <span class="hljs-keyword">if</span> (redisStock == <span class="hljs-literal">null</span>) &#123;<br>                log.warn(<span class="hljs-string">&quot;Redis stock not found for goods: &#123;&#125;&quot;</span>, goodsId);<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>            <br>            <span class="hljs-comment">// 核心对账公式: Redis库存 + 预占库存 = DB库存</span><br>            isConsistent = (redisStock + reservedStock == dbStock);<br>            <br>            <span class="hljs-keyword">if</span> (!isConsistent) &#123;<br>                retryCount++;<br>                log.warn(<span class="hljs-string">&quot;Stock inconsistency detected for goods &#123;&#125;: Redis(&#123;&#125;) + Reserved(&#123;&#125;) = All(&#123;&#125;) != DB(&#123;&#125;), retry: &#123;&#125;/&#123;&#125;&quot;</span>, <br>                        goodsId, redisStock, reservedStock, redisStock + reservedStock, dbStock, retryCount, ALERT_THRESHOLD);<br>                <br>                <span class="hljs-keyword">if</span> (retryCount &gt;= ALERT_THRESHOLD) &#123;<br>                    <span class="hljs-comment">// 连续不一致达到阈值，发送告警</span><br>                    sendAlert(goodsId, redisStock, reservedStock, dbStock);<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-comment">// 重试前等待一段时间</span><br>                    Thread.sleep(RETRY_DELAY_MS);<br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                log.info(<span class="hljs-string">&quot;Stock reconciliation successful for goods &#123;&#125;: Redis(&#123;&#125;) + Reserved(&#123;&#125;) = DB(&#123;&#125;)&quot;</span>, <br>                        goodsId, redisStock, reservedStock, dbStock);<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            retryCount++;<br>            log.error(<span class="hljs-string">&quot;Error during stock reconciliation for goods: &#123;&#125;, retry: &#123;&#125;/&#123;&#125;&quot;</span>, <br>                     goodsId, retryCount, ALERT_THRESHOLD, e);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="4-2-3-告警机制"><a href="#4-2-3-告警机制" class="headerlink" title="4.2.3 告警机制"></a>4.2.3 告警机制</h5><p>当多次对账依然不一致时，系统会触发告警机制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendAlert</span><span class="hljs-params">(Long goodsId, Integer redisStock, Integer reservedStock, Integer dbStock)</span> &#123;<br>    <span class="hljs-comment">// 集成各种告警系统（邮件、短信、企业微信等）</span><br>    log.error(<span class="hljs-string">&quot;ALERT: Persistent stock inconsistency for goods &#123;&#125;: Redis(&#123;&#125;) + Reserved(&#123;&#125;) != DB(&#123;&#125;)&quot;</span>, <br>            goodsId, redisStock, reservedStock, dbStock);<br>    <br>    <span class="hljs-comment">// 生产环境中，添加发送邮件或消息的告警代码</span><br>    <span class="hljs-comment">// alertService.send(...);</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了秒杀系统的几个关键优化技术：</p>
+<ol>
+<li><strong>基于Redis的分布式限流</strong>：使用令牌桶算法实现精确的流量控制，保护系统免受流量峰值冲击</li>
+<li><strong>基于RocketMQ的延时消息</strong>：实现可靠的订单超时自动取消，确保库存正确释放</li>
+<li><strong>多级缓存架构</strong>：结合Guava本地缓存和Redis分布式缓存，进一步提升系统性能</li>
+<li><strong>库存对账机制</strong>：确保Redis与数据库之间的库存数据一致性</li>
+</ol>
+<p>通过这些优化，我们的秒杀系统不仅能够应对高并发场景，还能在保证性能的同时确保数据一致性和系统可靠性。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027941.png" srcset="/img/loading.gif" lazyload alt="image-20250310164130689"></p>
+<hr>
+<p>本文源码已开源在GitHub：<a target="_blank" rel="noopener" href="https://github.com/Goinggoinggoing/seckill">Goinggoinggoing&#x2F;seckill</a></p>
+<p>如有疑问或建议，欢迎在评论区讨论！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java%E9%A1%B9%E7%9B%AE/" class="print-no-link">#java项目</a>
+      
+        <a href="/tags/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/" class="print-no-link">#秒杀系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/10/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" title="算法基础">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">算法基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/14/project/seckill/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F3/" title="从零开始实现秒杀系统（三）：RocketMQ消息队列篇">
+                        <span class="hidden-mobile">从零开始实现秒杀系统（三）：RocketMQ消息队列篇</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

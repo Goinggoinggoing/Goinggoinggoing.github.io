@@ -1,0 +1,1173 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="https:&#x2F;&#x2F;zh-v2.d2l.ai&#x2F;chapter_convolutional-modern&#x2F;googlenet.html 课程安排 - 动手学深度学习课程 (d2l.ai) 动手学深度学习AI map   预备基本操作1234567891011121314151617181920212223242526X &#x3D; torch.arange(12, dtype&#x3D;torch.float32).re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动手学深度学习CV">
+<meta property="og:url" content="http://example.com/2021/08/20/dl/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0CV/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="https:&#x2F;&#x2F;zh-v2.d2l.ai&#x2F;chapter_convolutional-modern&#x2F;googlenet.html 课程安排 - 动手学深度学习课程 (d2l.ai) 动手学深度学习AI map   预备基本操作1234567891011121314151617181920212223242526X &#x3D; torch.arange(12, dtype&#x3D;torch.float32).re">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151329785.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151334475.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335071.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335072.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335073.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335074.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335075.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335076.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335077.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335078.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335079.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335080.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335081.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335082.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335083.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335084.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335085.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335086.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335087.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335088.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335089.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335090.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335091.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335092.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335093.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335094.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335095.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335096.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335097.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335098.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335099.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335100.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335101.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335102.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335103.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335104.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335105.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335106.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335107.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335108.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335109.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335110.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335111.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335112.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335113.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335114.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335116.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335117.png">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335118.png">
+<meta property="article:published_time" content="2021-08-20T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="cv">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151329785.png">
+  
+  
+  
+  <title>动手学深度学习CV - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">动手学深度学习CV</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-08-20 20:00" pubdate>
+          2021年8月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">动手学深度学习CV</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html">https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://course.d2l.ai/zh-v2/">课程安排 - 动手学深度学习课程 (d2l.ai)</a></p>
+<h1 id="动手学深度学习"><a href="#动手学深度学习" class="headerlink" title="动手学深度学习"></a>动手学深度学习</h1><p>AI map</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151329785.png" srcset="/img/loading.gif" lazyload alt="image-20230515132921268" style="zoom:67%;" />
+
+<h3 id="预备"><a href="#预备" class="headerlink" title="预备"></a>预备</h3><h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python">X = torch.arange(<span class="hljs-number">12</span>, dtype=torch.float32).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>))<br>torch.cat((X, Y), dim=<span class="hljs-number">0</span>)  <span class="hljs-comment"># 合并</span><br>a.T <span class="hljs-comment"># 转置</span><br>a.<span class="hljs-built_in">sum</span>(axis=<span class="hljs-number">1</span>) a.<span class="hljs-built_in">sum</span>(axis=<span class="hljs-number">1</span>, keepdims=<span class="hljs-literal">True</span>) <br>a.mean() a.numel()<br><br>torch.dot(x,y) <span class="hljs-comment"># 向量点积</span><br>torch.mv(A,x)  <span class="hljs-comment"># 矩阵*向量</span><br>torch.mm(A,A)  <span class="hljs-comment"># 矩阵乘</span><br>torch.norm(A)  <span class="hljs-comment"># 二范数</span><br><br><span class="hljs-comment"># 广播机制自动扩展</span><br>a = torch.arange(<span class="hljs-number">3</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">1</span>))<br>b = torch.arange(<span class="hljs-number">2</span>).reshape((<span class="hljs-number">1</span>, <span class="hljs-number">2</span>))<br>a+b<br><br><span class="hljs-comment"># 内存机制</span><br>X = Y		<span class="hljs-comment"># id相同</span><br>Y += X     	<span class="hljs-comment"># id(Y)不变</span><br><br>X = Y.clone() <span class="hljs-comment">#id 变了</span><br>Y = Y + X  	<span class="hljs-comment"># id(Y)变了</span><br><br><span class="hljs-comment"># numpy 相互转换</span><br>A = torch.tensor(A)<br>A = A.numpy()<br></code></pre></td></tr></table></figure>
+
+<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 创建数据csv文件</span><br>os.makedirs(os.path.join(<span class="hljs-string">&#x27;..&#x27;</span>, <span class="hljs-string">&#x27;data&#x27;</span>), exist_ok=<span class="hljs-literal">True</span>)<br>data_file = os.path.join(<span class="hljs-string">&#x27;..&#x27;</span>, <span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-string">&#x27;house_tiny.csv&#x27;</span>)<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(data_file, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    f.write(<span class="hljs-string">&#x27;NumRooms,	Alley,	Price\n&#x27;</span>)  <span class="hljs-comment"># 列名</span><br>    f.write(<span class="hljs-string">&#x27;NA,		Pave,	127500\n&#x27;</span>)  <span class="hljs-comment"># 每行表示一个数据样本</span><br>    f.write(<span class="hljs-string">&#x27;2,			NA,		106000\n&#x27;</span>)<br><br><span class="hljs-comment"># 读取csv</span><br>data = pd.read_csv(data_file)<br>data = data.fillna(data.mean())  			<span class="hljs-comment"># 处理数值中的NA</span><br><span class="hljs-built_in">print</span>(data)<br>data = pd.get_dummies(data, dummy_na=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 将数据转为0 1，添加新的列</span><br>torch.tensor(data.values)<br></code></pre></td></tr></table></figure>
+
+<h4 id="向量求导"><a href="#向量求导" class="headerlink" title="向量求导"></a>向量求导</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151334475.png" srcset="/img/loading.gif" lazyload alt="image-20210729204049868" style="zoom:50%;" />
+
+<h4 id="正向累积与反向求导"><a href="#正向累积与反向求导" class="headerlink" title="正向累积与反向求导"></a>正向累积与反向求导</h4><p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335071.png" srcset="/img/loading.gif" lazyload alt="image-20210715122123643"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335072.png" srcset="/img/loading.gif" lazyload alt="image-20210715122132742" style="zoom:50%;" />
+
+
+
+<h4 id="自动求导"><a href="#自动求导" class="headerlink" title="自动求导"></a>自动求导</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python">x =  torch.arange(<span class="hljs-number">4.0</span>)<br>x.requires_grad_(<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 等价于 `x = torch.arange(4.0, requires_grad=True)`</span><br>y = <span class="hljs-number">2</span> * torch.dot(x, x) <span class="hljs-comment"># loss一般为标量</span><br>y.backward() <span class="hljs-comment"># 反向传播</span><br>x.grad<br>tensor([ <span class="hljs-number">0.</span>,  <span class="hljs-number">4.</span>,  <span class="hljs-number">8.</span>, <span class="hljs-number">12.</span>])<br><br><span class="hljs-comment"># 梯度分离计算</span><br>x.grad.zero_()<br>y = x * x<br>u = y.detach()      <span class="hljs-comment"># u不计算梯度,相当于常数，从计算图剥离</span><br>z = u * x<br>z.<span class="hljs-built_in">sum</span>().backward()  <span class="hljs-comment">#非标量求sum，使得标量</span><br>x.grad == u<br></code></pre></td></tr></table></figure>
+
+<p>sinx 和 sinx的求导</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">x=torch.arange(<span class="hljs-number">0.</span>,<span class="hljs-number">10.</span>,<span class="hljs-number">0.1</span>)x.requires_grad_(<span class="hljs-literal">True</span>)y=torch.sin(x)y.<span class="hljs-built_in">sum</span>().backward()plt.plot(x.detach(), y.detach())plt.plot(x.detach(), x.grad)<br></code></pre></td></tr></table></figure>
+
+<p>帮助文档</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">help</span>(torch.ones)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>模型：y &#x3D; &lt;x,w&gt; + b</p>
+<p>损失：（y-y)^2^ </p>
+<p>关于w求导，有显示解</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335073.png" srcset="/img/loading.gif" lazyload alt="image-20210729210215127" style="zoom:50%;" />
+
+<h4 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335074.png" srcset="/img/loading.gif" lazyload alt="image-20210729210517365" style="zoom: 50%;" />
+
+<h5 id="BGD"><a href="#BGD" class="headerlink" title="BGD"></a><strong>BGD</strong></h5><p>(Batch Gradient Descent)</p>
+<p>​			使用全部数据集</p>
+<h5 id="SGD"><a href="#SGD" class="headerlink" title="SGD"></a><strong>SGD</strong></h5><p>（stochastic gradient descent）</p>
+<p>​			使用1个数据</p>
+<h5 id="MBGD"><a href="#MBGD" class="headerlink" title="MBGD"></a>MBGD</h5><p>（mini-batch Gradient Descent）</p>
+<p>​			使用batchsize</p>
+<h5 id="动量法："><a href="#动量法：" class="headerlink" title="动量法："></a><strong>动量法：</strong></h5><p>梯度更新 &#x3D; 当前的梯度方向*0.1  +  之前的累加 (v) *0.9  (u) ，还可以逃出局部最优解   <strong>0.9</strong></p>
+<h5 id="自适应梯度法"><a href="#自适应梯度法" class="headerlink" title="自适应梯度法"></a><strong>自适应梯度法</strong></h5><p><strong>RMSProp：</strong>调整学习率  <strong>0.999</strong></p>
+<p>​		对震荡方向减小变化，非震荡方向增大变化，变化值保存到r中,用梯度的平方表示震荡</p>
+<h5 id="adam："><a href="#adam：" class="headerlink" title="adam："></a><strong>adam</strong>：</h5><p>​	动量法+自适应+修正解决冷启动</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335075.png" srcset="/img/loading.gif" lazyload alt="image-20210801153746463" style="zoom: 80%;" />
+
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>1.生成数据</p>
+<p>2.生成batchsize迭代器</p>
+<p>3.参数与模型定义 net &#x3D; nn.Sequential(nn.Linear(2, 1))</p>
+<p>4.损失函数与优化 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 损失函数默认是batch中 平均</span><br>nn.MSELoss() <br>torch.optim.SGD(net.parameters(), lr=<span class="hljs-number">0.03</span>)<br><span class="hljs-keyword">or</span> <br><span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> params:<br>	param -= lr * param.grad / batch_size<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化参数</li>
+<li>重复，直到完成<ul>
+<li>计算损失                                           <strong>l&#x3D;loss(net(X), y)</strong></li>
+<li>计算梯度 g←∂(w,b)1|B|∑i∈Bl(x(i),y(i),w,b)g←∂(w,b)1|B|∑i∈Bl(x(i),y(i),w,b)   <strong>l.backward()</strong></li>
+<li>更新参数 (w,b)←(w,b)−ηg               <strong>trainer.step()</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h4><p>softmax转为概率，交叉熵来衡量概率区别</p>
+<h4 id="图片分类"><a href="#图片分类" class="headerlink" title="图片分类"></a>图片分类</h4><p>784输入 ， 10输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">mnist_train = torchvision.datasets.FashionMNIST(root=<span class="hljs-string">&quot;../data&quot;</span>, train=<span class="hljs-literal">True</span>,                                                transform=trans,                                                download=<span class="hljs-literal">True</span>)train_iter = data.DataLoader(mnist_train, batch_size, shuffle=<span class="hljs-literal">True</span>,                             num_workers=get_dataloader_workers())<br></code></pre></td></tr></table></figure>
+
+<p>自定义croos_entropy需要先softmax，后面还需要sum；torch的都不用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">softmax</span>(<span class="hljs-params">X</span>):    <br>    X_exp = torch.exp(X)    <br>    partition = X_exp.<span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span>, keepdim=<span class="hljs-literal">True</span>)    <br>    <span class="hljs-keyword">return</span> X_exp / partition  <br><span class="hljs-comment"># 这里应用了广播机制</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">net</span>(<span class="hljs-params">X</span>):    <br>    <span class="hljs-keyword">return</span> softmax(np.dot(X.reshape((-<span class="hljs-number">1</span>, W.shape[<span class="hljs-number">0</span>])), W) + b)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cross_entropy</span>(<span class="hljs-params">y_hat, y</span>):    <br>    <span class="hljs-keyword">return</span> -np.log(y_hat[<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(y_hat)), y])<br>y_hat[<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(y_hat)), y] <span class="hljs-comment"># 取出每个实际标签的得分</span><br></code></pre></td></tr></table></figure>
+
+<p>net</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">net = nn.Sequential(nn.Flatten(), nn.Linear(<span class="hljs-number">784</span>, <span class="hljs-number">10</span>))<br></code></pre></td></tr></table></figure>
+
+<p>一次epoch训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_epoch_ch3</span>(<span class="hljs-params">net, train_iter, loss, updater</span>):  <span class="hljs-comment">#@save</span><br>    <span class="hljs-string">&quot;&quot;&quot;训练模型一个迭代周期（定义见第3章）。&quot;&quot;&quot;</span><br>    <span class="hljs-comment"># 将模型设置为训练模式</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(net, torch.nn.Module):<br>        net.train()<br>    <span class="hljs-comment"># 训练损失总和、训练准确度总和、样本数</span><br>    metric = Accumulator(<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">for</span> X, y <span class="hljs-keyword">in</span> train_iter:<br>        <span class="hljs-comment"># 计算梯度并更新参数</span><br>        y_hat = net(X)<br>        l = loss(y_hat, y)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(updater, torch.optim.Optimizer):<br>            <span class="hljs-comment"># 使用PyTorch内置的优化器和损失函数</span><br>            updater.zero_grad()<br>            l.backward()<br>            updater.step()<br>            metric.add(<br>                <span class="hljs-built_in">float</span>(l) * <span class="hljs-built_in">len</span>(y), accuracy(y_hat, y),<br>                y.size().numel())<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># 使用定制的优化器和损失函数</span><br>            l.<span class="hljs-built_in">sum</span>().backward()<br>            updater(X.shape[<span class="hljs-number">0</span>])<br>            metric.add(<span class="hljs-built_in">float</span>(l.<span class="hljs-built_in">sum</span>()), accuracy(y_hat, y), y.numel())<br>    <span class="hljs-comment"># 返回训练损失和训练准确率</span><br>    <span class="hljs-keyword">return</span> metric[<span class="hljs-number">0</span>] / metric[<span class="hljs-number">2</span>], metric[<span class="hljs-number">1</span>] / metric[<span class="hljs-number">2</span>]<br></code></pre></td></tr></table></figure>
+
+<p>多次epoch，传入网络，训练数据，测试数据，loss，迭代次数，优化器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_ch3</span>(<span class="hljs-params">net, train_iter, test_iter, loss, num_epochs, updater</span>):	<span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epochs):        train_metrics = train_epoch_ch3(net, train_iter, loss, updater)        <span class="hljs-comment"># 每次epoch后进行一次评估        test_acc = evaluate_accuracy(net, test_iter)</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h3><p>Multilayer Perceptro</p>
+<p>线性分类器只能产生线性分类器，XOR函数不能拟合</p>
+<p>多层线性＋激活函数 sigmoid tanh relu</p>
+<p>SVM多超参数不敏感，用起来更简单</p>
+<p>深层比浅层更好训练</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335076.png" srcset="/img/loading.gif" lazyload alt="image-20210802172049923" style="zoom:50%;" />
+
+<h4 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h4><p>训练误差，泛化误差</p>
+<p>训练集 、验证集、 测试集</p>
+<p>训练集训练参数，验证集来选择模型超参数</p>
+<h5 id="k折交叉验证"><a href="#k折交叉验证" class="headerlink" title="k折交叉验证"></a>k折交叉验证</h5><p>​		小数据集：K次模型训练和验证，每次在K−1个子集上进行训练，并在剩余的一个子集验证，K次实验的结果取平均来估计训练和验证误差。k&#x3D;5、10</p>
+<h5 id="过拟合欠拟合"><a href="#过拟合欠拟合" class="headerlink" title="过拟合欠拟合"></a>过拟合欠拟合</h5><p>过拟合：模型相比于数据过于复杂</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335077.png" srcset="/img/loading.gif" lazyload alt="image-20210803135322068"></p>
+<p>模型输入为x^0  x^1  x^2 ….</p>
+<p>当模型给到了x^20次方时，会过拟合</p>
+<h4 id="L2范数"><a href="#L2范数" class="headerlink" title="L2范数"></a>L2范数</h4><p><strong>手动实现</strong>：loss中加上一个损失，lambd&#x3D;8</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">l = loss(net(X), y) + lambd *  torch.<span class="hljs-built_in">sum</span>(w.<span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>)) / <span class="hljs-number">2</span><br>l.<span class="hljs-built_in">sum</span>().backward()<br>d2l.sgd([w, b], lr, batch_size)<br></code></pre></td></tr></table></figure>
+
+<p><strong>迭代器</strong>：weight_decay &#x3D; 0.001</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 都有衰减</span><br>trainer = torch.optim.SGD(net.parameters(),weight_decay = wd, lr=lr)<br><span class="hljs-comment"># 偏置参数没有衰减。</span><br>trainer = torch.optim.SGD([&#123;<br>    <span class="hljs-string">&quot;params&quot;</span>: net[<span class="hljs-number">0</span>].weight,<span class="hljs-string">&#x27;weight_decay&#x27;</span>: wd&#125;, &#123;<br>    <span class="hljs-string">&quot;params&quot;</span>: net[<span class="hljs-number">0</span>].bias&#125;], <br>    lr=lr)<br><br>	trainer.zero_grad()<br>	l = loss(net(X), y)<br>	l.backward()<br>    trainer.step()<br></code></pre></td></tr></table></figure>
+
+<p>L1: torch.sum( torch.abs(w) )</p>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><p>全连接上，比L2好一点</p>
+<p>随机中间层变成0，p概率。总体期望不能变，需要除以(1-p) ;       p&#x3D;0.5  0.1  0.9</p>
+<p><strong>自己实现</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dropout_layer</span>(<span class="hljs-params">X, dropout</span>):<br>    <span class="hljs-keyword">assert</span> <span class="hljs-number">0</span> &lt;= dropout &lt;= <span class="hljs-number">1</span><br>    <span class="hljs-comment"># 在本情况中，所有元素都被丢弃。</span><br>    <span class="hljs-keyword">if</span> dropout == <span class="hljs-number">1</span>:<br>        <span class="hljs-keyword">return</span> torch.zeros_like(X)<br>    <span class="hljs-comment"># 在本情况中，所有元素都被保留。</span><br>    <span class="hljs-keyword">if</span> dropout == <span class="hljs-number">0</span>:<br>        <span class="hljs-keyword">return</span> X<br>    mask = (torch.Tensor(X.shape).uniform_(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>) &gt; dropout).<span class="hljs-built_in">float</span>()<br>    <span class="hljs-keyword">return</span> mask * X / (<span class="hljs-number">1.0</span> - dropout)<br><br>H1 = <span class="hljs-variable language_">self</span>.relu(<span class="hljs-variable language_">self</span>.lin1(X.reshape((-<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.num_inputs))))<br><span class="hljs-comment"># 只有在训练模型时才使用dropout，测试时直接跳过</span><br><span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.training == <span class="hljs-literal">True</span>:<br>    <span class="hljs-comment"># 在第一个全连接层之后添加一个dropout层</span><br>    H1 = dropout_layer(H1, dropout1)<br></code></pre></td></tr></table></figure>
+
+<p><strong>torch</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">nn.Dropout(p=<span class="hljs-number">0.5</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="数据稳定性"><a href="#数据稳定性" class="headerlink" title="数据稳定性"></a>数据稳定性</h4><p>梯度消失和梯度爆炸：sigmoid导数 ： y(1-y)      当多个相乘后就可能很小；</p>
+<p>乘法变加法：ResNet LSTM</p>
+<p>权重初始化、激活函数选择</p>
+<h4 id="房价预测"><a href="#房价预测" class="headerlink" title="房价预测"></a>房价预测</h4><p>数据量较少，k折交叉验证</p>
+<p>1.数据列标准化，并填空值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">numeric_features = all_features.dtypes[all_features.dtypes != <span class="hljs-string">&#x27;object&#x27;</span>].index<br>all_features[numeric_features] = all_features[numeric_features].apply(    <span class="hljs-keyword">lambda</span> x: (x - x.mean()) / (x.std()))<br><span class="hljs-comment"># 在标准化数据之后，所有数据都意味着消失，因此我们可以将缺失值设置为0</span><br>all_features[numeric_features] = all_features[numeric_features].fillna(<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p>2.非数据onehot，NAN也算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">all_features = pd.get_dummies(all_features, dummy_na=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>3.损失函数mse、评价指标如下、迭代器adam(学习率不敏感)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335078.png" srcset="/img/loading.gif" lazyload alt="image-20210809134630261"></p>
+<p>对于少量数据k验证，使用多层感知机后发现过拟合了</p>
+<h3 id="房价预测-1"><a href="#房价预测-1" class="headerlink" title="房价预测"></a>房价预测</h3><p>数组大：对大数值log</p>
+<p>文本特征：onehot是不行的，需要将文本求特征</p>
+<p>训练数据前6月，公榜后3个月，私榜再后3个月</p>
+<p>只取数字-&gt;取文本unique较少的部分</p>
+<p>3层线性加L2，lr0.02，损失函数越来越多<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335079.png" srcset="/img/loading.gif" lazyload alt="image-20210809191439398" style="zoom:50%;" /></p>
+<p>4层线性，lr&#x3D;0.05,测试集误差在0.3左右<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335080.png" srcset="/img/loading.gif" lazyload alt="image-20210809191904988" style="zoom:50%;" /></p>
+<p>lr&#x3D;0.02 L2&#x3D;0.001<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335081.png" srcset="/img/loading.gif" lazyload alt="image-20210809192441435" style="zoom:50%;" />L2&#x3D;0<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335082.png" srcset="/img/loading.gif" lazyload alt="image-20210809192626754" style="zoom:50%;" /></p>
+<p>5层 lr&#x3D;0.02<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335083.png" srcset="/img/loading.gif" lazyload alt="image-20210809192835180" style="zoom: 33%;" />batchsize128<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335084.png" srcset="/img/loading.gif" lazyload alt="image-20210809193317967" style="zoom:50%;" /></p>
+<p>4层 0.05, 0, 128<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335085.png" srcset="/img/loading.gif" lazyload alt="image-20210809193927803" style="zoom:50%;" /></p>
+<h3 id="卷积网络"><a href="#卷积网络" class="headerlink" title="卷积网络"></a>卷积网络</h3><h4 id="卷积核"><a href="#卷积核" class="headerlink" title="卷积核"></a>卷积核</h4><p>二维全连接加限制</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335086.png" srcset="/img/loading.gif" lazyload alt="image-20210810114817749" style="zoom:67%;" />
+
+<p>平移不变性：卷积核不依赖于位置<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335087.png" srcset="/img/loading.gif" lazyload alt="image-20210810111608989" style="zoom:50%;" /></p>
+<p>局部性：只由周围一定范围影响，限制ab范围</p>
+<p><strong>二维互相关运算：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">corr2d</span>(<span class="hljs-params">X, K</span>):  <span class="hljs-comment">#@save</span><br>    <span class="hljs-string">&quot;&quot;&quot;计算二维互相关运算。&quot;&quot;&quot;</span><br>    h, w = K.shape<br>    Y = torch.zeros((X.shape[<span class="hljs-number">0</span>] - h + <span class="hljs-number">1</span>, X.shape[<span class="hljs-number">1</span>] - w + <span class="hljs-number">1</span>))<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(Y.shape[<span class="hljs-number">0</span>]):<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(Y.shape[<span class="hljs-number">1</span>]):<br>            Y[i, j] = (X[i:i + h, j:j + w] * K).<span class="hljs-built_in">sum</span>()<br>    <span class="hljs-keyword">return</span> Y<br></code></pre></td></tr></table></figure>
+
+<p><strong>卷积层</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Conv2D</span>(nn.Module):    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, kernel_size,bias=<span class="hljs-literal">False</span></span>):        <br>        <span class="hljs-built_in">super</span>().__init__()        <br>        <span class="hljs-variable language_">self</span>.weight = nn.Parameter(torch.rand(kernel_size))        <br>        <span class="hljs-variable language_">self</span>.bias = nn.Parameter(torch.zeros(<span class="hljs-number">1</span>))        <br>        <span class="hljs-variable language_">self</span>.is_bias = bias    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):        <br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_bias:            <br>            <span class="hljs-keyword">return</span> corr2d(x, <span class="hljs-variable language_">self</span>.weight) + <span class="hljs-variable language_">self</span>.bias        <br>        <span class="hljs-keyword">else</span>:            <br>            <span class="hljs-keyword">return</span> corr2d(x, <span class="hljs-variable language_">self</span>.weight)<br></code></pre></td></tr></table></figure>
+
+<p><strong>实验：</strong>训练一个边缘卷积核，包括使用自己的卷积层</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335088.png" srcset="/img/loading.gif" lazyload alt="image-20210810131342542"></p>
+<p>一般2p &#x3D; k - 1，在这种情况下且原来大小w能被s整除，w &#x3D; w&#x2F;s ,  s影响计算量</p>
+<p><strong>多输入通道</strong>：ci每一个输入通道一个核，求和后得到一个输出  ( ci * h * w) * ( ci * h * w)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">corr2d_multi_in</span>(<span class="hljs-params">X, K</span>):<br>    <span class="hljs-comment"># 先遍历 “X” 和 “K” 的第0个维度（通道维度），再把它们加在一起</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(d2l.corr2d(x, k) <span class="hljs-keyword">for</span> x, k <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(X, K))<br></code></pre></td></tr></table></figure>
+
+<p><strong>多输出通道</strong>：c0每个输出多次求多输入通道     ( ci * h * w)    *  ( c0 * ci * h * w)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">corr2d_multi_in_out</span>(<span class="hljs-params">X, K</span>):<br>    <span class="hljs-comment"># 迭代“K”的第0个维度，每次都对输入“X”执行互相关运算。</span><br>    <span class="hljs-comment"># 最后将所有结果都叠加在一起</span><br>    <span class="hljs-keyword">return</span> torch.stack([corr2d_multi_in(X, k) <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> K], <span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335089.png" srcset="/img/loading.gif" lazyload alt="image-20210810134504645"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335090.png" srcset="/img/loading.gif" lazyload alt="image-20210810134730194" style="zoom:50%;" />
+
+<p>参数量：C * C * H * W</p>
+<h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><p>使用经典网络还是自己设计：使用经典，微调         resnet</p>
+<p>3 * 3可以提取空间信息； 1 * 1可以做通道融合   ，二者结合当卷积可以节约计算量</p>
+<p>1d卷积可以处理文本</p>
+<p>3d卷积处理视频或深度图片</p>
+<h4 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h4><p>对于每一个输出通道进行，最大、平均。通常步长等于核大小</p>
+<p><strong>减小运算量、增大感受野、非极大抑制</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">Y[i, j] = X[i: i + p_h, j: j + p_w].<span class="hljs-built_in">max</span>()<br></code></pre></td></tr></table></figure>
+
+<p>池化现在用的越来越少，卷积中可以加stride。数据加了增强，不需要池化来消除便宜</p>
+<p>缩小两倍，尺寸不变：nn.MaxPool2d(kernel_size&#x3D;2,stride&#x3D;2)   vgg</p>
+<p>​										nn.MaxPool2d(kernel_size&#x3D;3, stride&#x3D;2, padding&#x3D;1)         googlenet</p>
+<h3 id="经典网络"><a href="#经典网络" class="headerlink" title="经典网络"></a>经典网络</h3><p>机器学习：<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335091.png" srcset="/img/loading.gif" lazyload alt="image-20210810155949246" style="zoom:50%;" /></p>
+<p>关键是特征提取，然后SVM等</p>
+<h4 id="0-LeNet"><a href="#0-LeNet" class="headerlink" title="0.LeNet"></a>0.LeNet</h4><p>和MLP比起来，模型量小了，overfitting小了</p>
+<p>​	conv -&gt; subsampling-&gt;conv-&gt;subsampling-&gt;FC-&gt;FC-&gt;FC     2conv+3FC</p>
+<p>lr 0.9-&gt;0.5  sigmoid-&gt;ReLU     acc上升0.876</p>
+<h4 id="1-AlexNet"><a href="#1-AlexNet" class="headerlink" title="1.AlexNet"></a>1.AlexNet</h4><p><strong>dropout   ReLU  MaxPooling   数据增强</strong></p>
+<p>10倍参数，250倍计算量LeNet</p>
+<p>​	5个conv + 3个FCN（Dropout）</p>
+<p>acc 0.883</p>
+<h4 id="2-VGG"><a href="#2-VGG" class="headerlink" title="2.VGG"></a>2.VGG</h4><p>vgg块：多个3*3卷积 + 池化            每次宽高减半，通道加倍</p>
+<p>最后同样3个FCN（Dropout）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python">conv_arch11 = ((<span class="hljs-number">1</span>, <span class="hljs-number">64</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">128</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">256</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">512</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">512</span>))<br>conv_arch16 = ((<span class="hljs-number">2</span>, <span class="hljs-number">64</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">128</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">256</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">512</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">512</span>))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">vgg_block</span>(<span class="hljs-params">num_convs, in_channels, out_channels</span>):<br>    layers = []<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_convs):<br>        layers.append(nn.Conv2d(in_channels, out_channels,<br>                                kernel_size=<span class="hljs-number">3</span>, padding=<span class="hljs-number">1</span>))<br>        layers.append(nn.ReLU())<br>        in_channels = out_channels<br>    layers.append(nn.MaxPool2d(kernel_size=<span class="hljs-number">2</span>,stride=<span class="hljs-number">2</span>))<br>    <span class="hljs-keyword">return</span> nn.Sequential(*layers)<br></code></pre></td></tr></table></figure>
+
+<p>这里降低vgg11通道数进行训练，batchsize&#x3D;16，训练了1h，过拟合明显</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">train</span> acc <span class="hljs-number">0</span>.<span class="hljs-number">964</span>, test acc <span class="hljs-number">0</span>.<span class="hljs-number">928</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-NIN"><a href="#3-NIN" class="headerlink" title="3.NIN"></a>3.NIN</h4><p>第一个FC的参数量太大了，很容易<strong>过拟合</strong>。NIN完全<strong>放弃全连接</strong></p>
+<p>NIN块：卷积+2个1*1卷积，然后加maxpool。</p>
+<p>最后留10通道<strong>每个通道</strong>全局最大池化<strong>nn.AdaptiveAvgPool2d(1)</strong>, 全局池化也可以用来中间降低复杂度，但收敛更慢</p>
+<h4 id="4-GoogleNet"><a href="#4-GoogleNet" class="headerlink" title="4.GoogleNet"></a>4.GoogleNet</h4><p>inception输入输出大小不变,步长都是1。block：多个Inception后加一个maxpool</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335092.png" srcset="/img/loading.gif" lazyload alt="image-20210810200812388" style="zoom: 50%;" />
+
+<p>大量使用1 * 1 ，最后1024通道GlobalAvgPool后传入FC。并行通道提升网络复杂度</p>
+<p>前两大段卷积提取，降低8倍大小。</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335093.png" srcset="/img/loading.gif" lazyload alt="image-20210810202558830" style="zoom:50%;" />
+
+<p>v2使用batch normalization</p>
+<p>v3修改inception，使用3*3级联代替5 *5，和使用1 * 3、3 * 1卷积</p>
+<p>v4使用残差</p>
+<h4 id="5-归一化"><a href="#5-归一化" class="headerlink" title="5.归一化"></a>5.归一化</h4><p>通过一个batch中的均值和方差来提高<strong>数值稳定性</strong>。固定小批量中的均值和方差，加速收敛速度但不改变准确率。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335094.png" srcset="/img/loading.gif" lazyload alt="image-20210811130833324"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335095.png" srcset="/img/loading.gif" lazyload alt="image-20210811135140140" style="zoom:67%;" />
+
+<p>全连接对batch求     											mean &#x3D; X.mean(dim&#x3D;0)         预测时就只有一个，所以用全局的</p>
+<p>卷积层对某一通道所有元素所有batch求		   mean &#x3D; X.mean(dim&#x3D;(0, 2, 3), keepdim&#x3D;True)</p>
+<p>u σ在<strong>推理</strong>时使用<strong>全局</strong>的，在训练中不断动量更新。<strong>训练</strong>时为当前数据的</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># 训练模式下，用当前的均值和方差做标准化</span><br><span class="hljs-attr">X_hat</span> = (X - mean) / torch.sqrt(var + eps)<br><span class="hljs-comment"># 更新移动平均的均值和方差</span><br><span class="hljs-attr">moving_mean</span> = momentum * moving_mean + (<span class="hljs-number">1.0</span> - momentum) * mean<br><span class="hljs-attr">moving_var</span> = momentum * moving_var + (<span class="hljs-number">1.0</span> - momentum) * var<br></code></pre></td></tr></table></figure>
+
+<p>γ β是归一化层参数，不断训练</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss">Y = <span class="hljs-built_in">gamma</span> * X_hat + <span class="hljs-built_in">beta</span>  <span class="hljs-meta"># 缩放和移位</span><br><span class="hljs-keyword">return</span> Y<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p>参数：输入维度、全连接还是卷积</p>
+<p>原论文：<strong>梯度爆炸和梯度消失在引入bn层之后基本解决</strong></p>
+<p>用在LeNet上 原来50epoch现在只需要10epoch来达到0.875</p>
+<h4 id="6-RestNet"><a href="#6-RestNet" class="headerlink" title="6.RestNet"></a>6.RestNet</h4><p><strong>函数角度：</strong>不断加大模型的复杂度，并且包括原来的内容</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335096.png" srcset="/img/loading.gif" lazyload alt="image-20210811140847581" style="zoom: 67%;" />
+
+<p><strong>梯度角度：</strong>前面的w还是能更新，处了乘法边还有一条边。</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335097.png" srcset="/img/loading.gif" lazyload alt="image-20210811152206875" style="zoom: 50%;" />
+
+<p>Residual块：主干2个卷积；如果加通道，分支1*1卷积改变通道和大小。有原大小 和 大小减半通道加倍两种</p>
+<p>​				卷积 归一  激活 卷积 归一  +x   激活</p>
+<p>resnet_block：多个Residual（2个），第一个进行通道加倍大小减半，别的为普通的</p>
+<p><strong>res18</strong>：单次卷积 + 4个block（第一个不改通道） + AdaptiveAvgPool2d FC</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335098.png" srcset="/img/loading.gif" lazyload alt="image-20210811150840115"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">res18：<br>	train acc <span class="hljs-number">0.996</span>, test acc <span class="hljs-number">0.918</span> 明显过拟合，但精度特别高<br>	<span class="hljs-number">658.9</span> examples/sec<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">res34</span>:<br>	<span class="hljs-attribute">train</span> acc <span class="hljs-number">0</span>.<span class="hljs-number">983</span>, test acc <span class="hljs-number">0</span>.<span class="hljs-number">903</span><br>	<span class="hljs-attribute">369</span>.<span class="hljs-number">8</span> examples/sec<br></code></pre></td></tr></table></figure>
+
+<p> 改良版：“批量归一化、激活和卷积”结构</p>
+<p><strong>Res50</strong>：Bottleneck：先卷积缩小通道，再用3*3卷积（stride在这一层），最后再扩大通道</p>
+<p>in_places：输入通道数</p>
+<p>places：中转小通道数，输出通道为expansion  * places</p>
+<p>stride&#x3D;1：是否缩小</p>
+<p>downsampling&#x3D;False：级联Bottleneck的第一个需要，表示通道是否变化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_layer</span>(<span class="hljs-params">self, in_places, places, block, stride</span>):<br>        layers = []<br>        <span class="hljs-comment"># 进去in_places，出来places * expansion。所以downsampling</span><br>        <span class="hljs-comment"># stride第一个layer时=1 </span><br>        layers.append(Bottleneck(in_places, places,stride, downsampling =<span class="hljs-literal">True</span>))<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, block):<br>            layers.append(Bottleneck(places*<span class="hljs-variable language_">self</span>.expansion, places))<br><br>        <span class="hljs-keyword">return</span> nn.Sequential(*layers)<br>    <br>ResNet50([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>])  ResNet101([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">23</span>, <span class="hljs-number">3</span>])  ResNet512([<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">36</span>, <span class="hljs-number">3</span>])<br><span class="hljs-variable language_">self</span>.layer1 = <span class="hljs-variable language_">self</span>.make_layer(in_places = <span class="hljs-number">64</span>, places= <span class="hljs-number">64</span>, block=blocks[<span class="hljs-number">0</span>], stride=<span class="hljs-number">1</span>)<br><span class="hljs-variable language_">self</span>.layer2 = <span class="hljs-variable language_">self</span>.make_layer(in_places = <span class="hljs-number">256</span>,places=<span class="hljs-number">128</span>, block=blocks[<span class="hljs-number">1</span>], stride=<span class="hljs-number">2</span>)<br><span class="hljs-variable language_">self</span>.layer3 = <span class="hljs-variable language_">self</span>.make_layer(in_places=<span class="hljs-number">512</span>,places=<span class="hljs-number">256</span>, block=blocks[<span class="hljs-number">2</span>], stride=<span class="hljs-number">2</span>)<br><span class="hljs-variable language_">self</span>.layer4 = <span class="hljs-variable language_">self</span>.make_layer(in_places=<span class="hljs-number">1024</span>,places=<span class="hljs-number">512</span>, block=blocks[<span class="hljs-number">3</span>], stride=<span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="7-DenseNet"><a href="#7-DenseNet" class="headerlink" title="7.DenseNet"></a>7.DenseNet</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335099.png" srcset="/img/loading.gif" lazyload alt="image-20210811154128250" style="zoom:67%;" />
+
+<p>DenseBlock：卷积后和卷积前进行堆叠 ，num_convs(堆叠次数), input_channels, growth_rate(每次成长通道数)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python">	<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_convs):<br>        layer.append(conv_block(<br>            num_channels * i + input_channels, num_channels))<br>    <span class="hljs-variable language_">self</span>.net = nn.Sequential(*layer)<br><span class="hljs-keyword">for</span> blk <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.net:<br>    Y = blk(X)<br>    <span class="hljs-comment"># 连接通道维度上每个块的输入和输出</span><br>    X = torch.cat((X, Y), dim=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="kaggle"><a href="#kaggle" class="headerlink" title="kaggle"></a>kaggle</h4><p><a target="_blank" rel="noopener" href="https://www.kaggle.com/competitions/classify-leaves">https://www.kaggle.com/competitions/classify-leaves</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/sheepwang/leaf-classification-eda-model">https://www.kaggle.com/sheepwang/leaf-classification-eda-model</a></p>
+<p>类型处理：转为集合再转列表再排序，最后放入字典中class2idx</p>
+<p>timm模型库</p>
+<p><strong>模型融合：</strong>softmax融合或者3模型投票</p>
+<p><strong>tta</strong>：自动将测试图片进行变换</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335100.png" srcset="/img/loading.gif" lazyload alt="image-20210822223718937"></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38208912/article/details/104976458">图像分类竞赛——Test Time Augmentation（TTA）_再困也得吃的博客-CSDN博客</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">pip install ttach <span class="hljs-comment">#Test Time Augmentation</span><br>tta_model = tta.ClassificationTTAWrapper(model, tta.aliases.five_crop_transform(),  merge_mode=<span class="hljs-string">&#x27;mean&#x27;</span>)<br>y_hat = tta_model(x)<br></code></pre></td></tr></table></figure>
+
+<p>lr &#x3D; 0.1 波动很大，lr太大了</p>
+<p>resnet34预训练   lr &#x3D; 0.01  SGD<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335101.png" srcset="/img/loading.gif" lazyload alt="image-20210811205844447" style="zoom: 80%;" /></p>
+<p>resnet34无预训练  lr &#x3D; 0.01<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335102.png" srcset="/img/loading.gif" lazyload alt="image-20210811212948245" style="zoom:50%;" /></p>
+<p>自己的resnet34 lr &#x3D; 0.01<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335103.png" srcset="/img/loading.gif" lazyload alt="image-20210811215448723" style="zoom:50%;" /></p>
+<p>自己的resnet50  lr &#x3D; 0.01<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335104.png" srcset="/img/loading.gif" lazyload alt="image-20210811221815881" style="zoom: 50%;" /></p>
+<p>网络：efficientnet_pytorch , seresnext50_32x4d,  resnet50,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">!pip install timm<br>model_1 = timm.create_model(<span class="hljs-string">&#x27;seresnext50_32x4d&#x27;</span>, pretrained=<span class="hljs-literal">True</span>)<br>model_1.fc = nn.Linear(model_1.fc.in_features, <span class="hljs-number">176</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>renet34       1e-4     64</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335105.png" srcset="/img/loading.gif" lazyload alt="image-20210812015137028" style="zoom:67%;" />
+
+<h5 id="resnet50"><a href="#resnet50" class="headerlink" title="resnet50"></a>resnet50</h5><p>​	b&#x3D;128（最大）  3.5mins       b&#x3D;16 6mins               b&#x3D;16 7mins 本地</p>
+<p>​					本地的5轮达到最佳0.884，云端大约0.94</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">k折 train:<span class="hljs-number">0.9831</span>  test：<span class="hljs-number">0.9082</span> 最好的有<span class="hljs-number">0.93</span>        score:<span class="hljs-number">0.92204</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="efficientb5"><a href="#efficientb5" class="headerlink" title="efficientb5"></a>efficientb5</h5><p>​             b&#x3D;32          epo&#x3D;5:     </p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335106.png" srcset="/img/loading.gif" lazyload alt="image-20210812112126130" style="zoom:67%;" />
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">k折  train:<span class="hljs-number">0.9727</span>  test:<span class="hljs-number">0.9418</span>   			Score: <span class="hljs-number">0.93613</span><br></code></pre></td></tr></table></figure>
+
+<p>数据增广+ 标准化  + cos （主要效果）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">train acc:<span class="hljs-number">0.9988</span>, test acc:<span class="hljs-number">0.9548</span>            score：<span class="hljs-number">0.96386</span><br></code></pre></td></tr></table></figure>
+
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335107.png" srcset="/img/loading.gif" lazyload alt="image-20210813231542618" style="zoom: 67%;" />
+
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mel">工业实际与打比赛的要求确实不一样，工业更多专注数据质量（数据每天都在变化），打比赛是调模型（因为是死数据），工业是<span class="hljs-number">85</span>%精度可以部署测试，然后不断增强数据质量，不断喂大量数据，基本<span class="hljs-number">3</span>个月-半年后，模型基本可以达到<span class="hljs-number">95</span>%以上是没问题的，然后部署生产环境，闭环落地！<br>工业界<span class="hljs-number">80</span>%时间在和数据打交道<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="多GPU"><a href="#多GPU" class="headerlink" title="多GPU"></a>多GPU</h4><p>GPU batchsize越大，越能发挥性能。但需要的epoch更多</p>
+<p>数据并行性：batchsize分到不同gpu上，最后梯度一起求和求平均</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335108.png" srcset="/img/loading.gif" lazyload alt="image-20210813133655919" style="zoom: 67%;" />
+
+<p>模型并行性：一个模型太大了放不下</p>
+<h5 id="all-reduce"><a href="#all-reduce" class="headerlink" title="all_reduce"></a>all_reduce</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 将梯度信息累加起来</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">allreduce</span>(<span class="hljs-params">data</span>):<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(data)):<br>        data[<span class="hljs-number">0</span>][:] += data[i].to(data[<span class="hljs-number">0</span>].device)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(data)):<br>        data[i] = data[<span class="hljs-number">0</span>].to(data[i].device)<br></code></pre></td></tr></table></figure>
+
+<p>训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_batch</span>(<span class="hljs-params">X, y, device_params, devices, lr</span>):<br>    X_shards, y_shards = split_batch(X, y, devices)<br>    <span class="hljs-comment"># 在每个GPU上分别计算损失</span><br>    ls = [loss(lenet(X_shard, device_W), y_shard).<span class="hljs-built_in">sum</span>()<br>          <span class="hljs-keyword">for</span> X_shard, y_shard, device_W <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(<br>              X_shards, y_shards, device_params)]<br>    <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> ls:  <span class="hljs-comment"># 反向传播在每个GPU上分别执行</span><br>        l.backward()<br>    <span class="hljs-comment"># 将每个GPU的所有梯度相加，并将其广播到所有GPU</span><br>    <span class="hljs-keyword">with</span> torch.no_grad():<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(device_params[<span class="hljs-number">0</span>])):<br>            allreduce([device_params[c][i].grad <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(devices))])<br>    <span class="hljs-comment"># 在每个GPU上分别更新模型参数</span><br>    <span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> device_params:<br>        d2l.sgd(param, lr, X.shape[<span class="hljs-number">0</span>]) <span class="hljs-comment"># 在这里，我们使用全尺寸的小批量</span><br></code></pre></td></tr></table></figure>
+
+<p>简洁：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">net = nn.DataParallel(net, device_ids=devices)<br>X, y = X.to(devices[<span class="hljs-number">0</span>]), y.to(devices[<span class="hljs-number">0</span>])<br></code></pre></td></tr></table></figure>
+
+<h4 id="分布式训练"><a href="#分布式训练" class="headerlink" title="分布式训练"></a>分布式训练</h4><p>需要网络通信：先本地all_reduce，网络通信再all_reduce</p>
+<p>t  &#x3D;  max( 计算时间， 通信时间 )。但增加batchsize需要更多epoch</p>
+<p>读取速度也可能慢：多进程</p>
+<h3 id="视觉"><a href="#视觉" class="headerlink" title="视觉"></a>视觉</h3><h4 id="数据增广"><a href="#数据增广" class="headerlink" title="数据增广"></a>数据增广</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python">需要PIL.Image.<span class="hljs-built_in">open</span>()读入RGB图像<br><br>transform = transforms.Compose([<br>    <span class="hljs-comment">#transforms.Resize(256),      短边到256，长边跟着变</span><br>    <span class="hljs-comment">#transforms.CenterCrop(224),  取出正方形</span><br>    transforms.Resize(<span class="hljs-number">224</span>),<br>    transforms.CenterCrop(<span class="hljs-number">224</span>),  <span class="hljs-comment"># 取出正方形</span><br>    transforms.RandomHorizontalFlip(p=<span class="hljs-number">0.5</span>),   <span class="hljs-comment">#随机水平翻转</span><br>    transforms.RandomVerticalFlip(p=<span class="hljs-number">0.5</span>),     <span class="hljs-comment">#除了水平竖直反转之外其他的处理方法貌似都会降低acc</span><br>    <span class="hljs-comment">#transforms.RandomResizedCrop((224, 224), scale=(0.7, 1),ratio(0.75,1.25)),  随机裁剪为不同的大小scale和宽高比ratio，然后缩放所裁剪得到的图像为制定的大小</span><br>    <span class="hljs-comment">#transforms.RandomCrop((60, 120)), # 随机剪裁</span><br>    <span class="hljs-comment"># transforms.ColorJitter(0.3, 0.3, 0.2), # 修改亮度、对比度和饱和度</span><br>    <span class="hljs-comment">#transforms.RandomRotation(180), # 依degrees 随机旋转一定角度   10</span><br>    transforms.ToTensor(),<br>    transforms.Normalize([<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], [<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>])<br>])<br><br>test_augs = torchvision.transforms.Compose([<br>    torchvision.transforms.Resize(<span class="hljs-number">256</span>),<br>    torchvision.transforms.CenterCrop(<span class="hljs-number">224</span>),<br>    torchvision.transforms.ToTensor(),<br>    transforms.Normalize([<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], [<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>])<br>])<br></code></pre></td></tr></table></figure>
+
+<h4 id="微调"><a href="#微调" class="headerlink" title="微调"></a>微调</h4><p>神经网络前面卷积网络是<strong>特征提取</strong>，利用已经训练好的网络来训练我们的数据。</p>
+<p>底层的信息为更好的特征，可以固定住</p>
+<p>微调前面的参数，重点fc参数  ，learning_rate &#x3D; 5e-5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_trainer</span>(<span class="hljs-params">net, learning_rate, param_group = <span class="hljs-literal">True</span></span>)<br>	<span class="hljs-keyword">if</span> param_group:<br>        params_1x = [param <span class="hljs-keyword">for</span> name, param <span class="hljs-keyword">in</span> net.named_parameters()<br>             <span class="hljs-keyword">if</span> name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;fc.weight&quot;</span>, <span class="hljs-string">&quot;fc.bias&quot;</span>]]<br>        <br>        trainer = torch.optim.SGD([&#123;<span class="hljs-string">&#x27;params&#x27;</span>: params_1x&#125;,<br>                                   &#123;<span class="hljs-string">&#x27;params&#x27;</span>: net.fc.parameters(),<br>                                    <span class="hljs-string">&#x27;lr&#x27;</span>: learning_rate * <span class="hljs-number">10</span>&#125;],<br>                                lr=learning_rate, weight_decay=<span class="hljs-number">0.001</span>)<br>    <span class="hljs-keyword">else</span>:<br>        trainer = torch.optim.SGD(net.parameters(), lr=learning_rate,<br>                                  weight_decay=<span class="hljs-number">0.001</span>)<br>    <span class="hljs-keyword">return</span> trainer<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="detect"><a href="#detect" class="headerlink" title="detect"></a>detect</h4><p>COCO数据集：80类，330k张，1.5M个物体</p>
+<p><strong>画框</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-comment">#@save</span><br>dog_bbox = [<span class="hljs-number">60.0</span>, <span class="hljs-number">45.0</span>, <span class="hljs-number">90.0</span>, <span class="hljs-number">100.0</span>]<br><br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-comment">#@save  # 将边界框 (左上x, 左上y, 右下x, 右下y) 格式转换成 matplotlib 格式：</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">bbox_to_rect</span>(<span class="hljs-params">bbox, color</span>):<br>    <span class="hljs-comment"># ((左上x, 左上y), 宽, 高)</span><br>    <span class="hljs-keyword">return</span> plt.Rectangle(<br>        xy=(bbox[<span class="hljs-number">0</span>], bbox[<span class="hljs-number">1</span>]), width=bbox[<span class="hljs-number">2</span>]-bbox[<span class="hljs-number">0</span>], height=bbox[<span class="hljs-number">3</span>]-bbox[<span class="hljs-number">1</span>],<br>        fill=<span class="hljs-literal">False</span>, edgecolor=color, linewidth=<span class="hljs-number">2</span>)<br><span class="hljs-comment"># 显示一个边框</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">show_bbox</span>(<span class="hljs-params">ax, img, box</span>):<br>    ax.imshow(img)<span class="hljs-comment"># 图片</span><br>    ax.axes.add_patch(bbox_to_rect(box, <span class="hljs-string">&#x27;blue&#x27;</span>))<span class="hljs-comment"># 框</span><br><br>img = plt.imread(<span class="hljs-string">&#x27;../img/catdog.jpg&#x27;</span>)<br>fig = plt.figure() <span class="hljs-comment"># 画布</span><br>ax1 = fig.add_subplot(<span class="hljs-number">111</span>) <span class="hljs-comment"># 画1行1列个图形的第1个</span><br>show_bbox(ax1, img, dog_bbox)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>香蕉：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">											    最多物体数量   标号，框<br>(torch<span class="hljs-selector-class">.Size</span>(<span class="hljs-selector-attr">[32, 3, 256, 256]</span>), torch<span class="hljs-selector-class">.Size</span>(<span class="hljs-selector-attr">[32, 1,           5]</span>))<br></code></pre></td></tr></table></figure>
+
+
+
+<p>13 * 13 * 3*（20+1+4）<br>    3个框 20个种类  1是否有物体  4调整框</p>
+<p>IoU：交集比上并集</p>
+<p>锚框和边缘框对应</p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335109.png" srcset="/img/loading.gif" lazyload alt="image-20210814193726246" style="zoom:50%;" />
+
+
+
+<p>生成锚框</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># (1, 3, h, w) [0.75, 0.5, 0.25], [1, 2, 0.5]      s√r  和 s /√r  每像素点</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">multibox_prior</span>(<span class="hljs-params">data, sizes, ratios</span>):<br>    <span class="hljs-keyword">return</span> [x,<span class="hljs-number">4</span>]<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">(x,<span class="hljs-number">4</span>)  (y,<span class="hljs-number">4</span>)   返回(x, y) IoU 矩阵<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">box_iou</span>(<span class="hljs-params">boxes1, boxes2</span>):<br></code></pre></td></tr></table></figure>
+
+<p>将anchors根据iou分配到真实框上，小于阈值分配-1。注意分配顺序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#@save 一个数组a[i]=j 对于每个锚框i，分配的真实边界框j,分配阈值iou_threshold</span><br>								(x,<span class="hljs-number">4</span>)  (y,<span class="hljs-number">4</span>)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">assign_anchor_to_bbox</span>(<span class="hljs-params">ground_truth, anchors, device, iou_threshold=<span class="hljs-number">0.5</span></span>):<br></code></pre></td></tr></table></figure>
+
+
+
+<p>两组对应框之间的偏移</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#@save  (x,4)  (x,4)   -&gt;  (x, 4)  中心、wh的偏移</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">offset_boxes</span>(<span class="hljs-params">anchors, assigned_bb, eps=<span class="hljs-number">1e-6</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;对锚框偏移量的转换。&quot;&quot;&quot;</span><br>    c_anc = box_corner_to_center(anchors)<br>    c_assigned_bb = box_corner_to_center(assigned_bb)<br>    offset_xy = <span class="hljs-number">10</span> * (c_assigned_bb[:, :<span class="hljs-number">2</span>] - c_anc[:, :<span class="hljs-number">2</span>]) / c_anc[:, <span class="hljs-number">2</span>:]<br>    offset_wh = <span class="hljs-number">5</span> * torch.log(eps + c_assigned_bb[:, <span class="hljs-number">2</span>:] / c_anc[:, <span class="hljs-number">2</span>:])<br>    offset = torch.cat([offset_xy, offset_wh], axis=<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> offset<br></code></pre></td></tr></table></figure>
+
+
+
+<p>将网络中锚框与真实框对应，求出偏移值、mask和 真实类别+1（0为背景，iou小于阈值）</p>
+<p>​		一个真实框可以有多个anchor</p>
+<p>​		未分配的则是assign_anchor_to_bbox阈值不达标的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#@save</span><br><span class="hljs-comment"># (b, num_anchors, 4)        (b, num_labels, 5)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">multibox_target</span>(<span class="hljs-params">anchors, labels</span>):<br>    <span class="hljs-keyword">return</span> 偏移，mask，类别<br>		(b,num_anchors*<span class="hljs-number">4</span>)   (b,num_anchors*<span class="hljs-number">4</span>)    (n,num_anchors)<br>其中负类（小于阈值的anchor）的偏移被mask消除了<br></code></pre></td></tr></table></figure>
+
+
+
+<p>nms</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#@save</span><br><span class="hljs-comment"># 传入(nums,4) (nums) 返回留下的预测框下标数组  [x]</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">nms</span>(<span class="hljs-params">boxes, scores, iou_threshold</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;对预测边界框的置信度进行排序。&quot;&quot;&quot;</span><br>    B = torch.argsort(scores, dim=-<span class="hljs-number">1</span>, descending=<span class="hljs-literal">True</span>)<br>    keep = []  <span class="hljs-comment"># 保留预测边界框的指标</span><br>    <span class="hljs-keyword">while</span> B.numel() &gt; <span class="hljs-number">0</span>:<br>        i = B[<span class="hljs-number">0</span>]<br>        keep.append(i)<br>        <span class="hljs-keyword">if</span> B.numel() == <span class="hljs-number">1</span>: <span class="hljs-keyword">break</span><br>        iou = box_iou(boxes[i, :].reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">4</span>),<br>                      boxes[B[<span class="hljs-number">1</span>:], :].reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">4</span>)).reshape(-<span class="hljs-number">1</span>)<br>        inds = torch.nonzero(iou &lt;= iou_threshold).reshape(-<span class="hljs-number">1</span>)<br>        B = B[inds + <span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">return</span> torch.tensor(keep, device=boxes.device)<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#                     (b,classes+1,n)  (b,n*4)   (b,n,4)     (NMS阈值)    (背景阈值)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">multibox_detection</span>(<span class="hljs-params">cls_probs, offset_preds, anchors, nms_threshold=<span class="hljs-number">0.5</span>,</span><br><span class="hljs-params">                       pos_threshold=<span class="hljs-number">0.009999999</span></span>):<br>    这里将背景的conf设为<span class="hljs-number">1</span>-conf，类别设为-<span class="hljs-number">1</span><br>    返回 (b, outn, classes+conf+4pos)<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="常见算法"><a href="#常见算法" class="headerlink" title="常见算法"></a>常见算法</h4><p>RCNN&#x2F;  FastR-CNN&#x2F;  FasterR-CNN   精度高速度慢。</p>
+<p>SSD</p>
+<p>YOLO</p>
+<p>CenterNet</p>
+<p>高精度图片中小物体的分类。卫星图片。需要特殊处理，有一套成熟方法</p>
+<h4 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h4><h5 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h5><p>per &#x3D; len(sizes) + len(ratios) - 1  每个像素点的anchor个数</p>
+<p>每一次blk后，生成num_an (h * w * per)个锚框，同时输入到卷积网络每个像素点输出per*(classes+1)个类别预测和per * 4位置预测。所以每个blk有1个主网络blk，2个分支pred。低层框比较小 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">blk_forward</span>(<span class="hljs-params">X, blk, size, ratio, cls_predictor, bbox_predictor</span>):<br>    Y = blk(X)<br>    anchors = d2l.multibox_prior(Y, sizes=size, ratios=ratio) <span class="hljs-comment"># 生成anchors框 不同层不一样</span><br>    cls_preds = cls_predictor(Y)   <span class="hljs-comment"># 框的类别预测</span><br>    bbox_preds = bbox_predictor(Y) <span class="hljs-comment"># 框的位置偏移</span><br>    <span class="hljs-keyword">return</span> (Y, anchors, cls_preds, bbox_preds)<br></code></pre></td></tr></table></figure>
+
+<p>(Y,   anchors,                 cls_preds,                                        bbox_preds) </p>
+<p>Y，[1, num_anchors,  4],   [b,  per* (classes+1),  h,  w],    [b,  per * 4,  h,  w]</p>
+<p><strong>总体网络</strong>：由于不同维度h，w不一样，所以将后面的打平堆叠，打平前permute(0, 2, 3, 1)  将c放到最后一维度。将blk返回值堆叠；类别还需要reshape出c+1用来预测；anchors 直接在dim&#x3D;1cat，返回</p>
+<p><strong>anchors</strong>  [1, num_an, 4],   <strong>cls_preds</strong>  [b, num_an, classes+1],    <strong>bbox_preds</strong>  [b, num_an*4]</p>
+<p>(32^2^+16^2^+8^2^4^2^+1^2^)×4&#x3D;5444   ，4是per，底数是特征图宽</p>
+<p>得到全部anchors后与预测Y对应 **multibox_target(anchors, Y)**，返回 bbox_offset, bbox_mask, class_labels。代表着真实的标签</p>
+<p>（这里anchors每张图<strong>都一样</strong>，但留下来算loss的需要满足和label大于阈值） Y：[b, 5]</p>
+<p>bbox_offset与bbox_preds  计算L1损失函数     需要mask去除背景的偏移损失</p>
+<p>class_labels与cls_preds       计算分类损失</p>
+<h5 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h5><p>类别损失：交叉熵 由于有多个框，直接reshape到batch维度上。最后dim&#x3D;1取mean求出每张图平均损失值 [b]</p>
+<p>偏移损失：L1loss。乘上mask后传入，最后取mean</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python">cls_loss = nn.CrossEntropyLoss(reduction=<span class="hljs-string">&#x27;none&#x27;</span>)<br>bbox_loss = nn.L1Loss(reduction=<span class="hljs-string">&#x27;none&#x27;</span>)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">calc_loss</span>(<span class="hljs-params">cls_preds, cls_labels, bbox_preds, bbox_labels, bbox_masks</span>):<br>    batch_size, num_classes = cls_preds.shape[<span class="hljs-number">0</span>], cls_preds.shape[<span class="hljs-number">2</span>]<br>    cls = cls_loss(cls_preds.reshape(-<span class="hljs-number">1</span>, num_classes),<br>                   cls_labels.reshape(-<span class="hljs-number">1</span>)).reshape(batch_size, -<span class="hljs-number">1</span>).mean(dim=<span class="hljs-number">1</span>)<br>    bbox = bbox_loss(bbox_preds * bbox_masks,<br>                     bbox_labels * bbox_masks).mean(dim=<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> cls + bbox<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">predict</span>(<span class="hljs-params">X</span>):<br>    net.<span class="hljs-built_in">eval</span>()<br>    anchors, cls_preds, bbox_preds = net(X.to(device))<br>    cls_probs = F.softmax(cls_preds, dim=<span class="hljs-number">2</span>).permute(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>)        <span class="hljs-comment"># 计算出概率 移到dim=1</span><br>    <span class="hljs-comment"># 把框加上偏移，非极大抑制，背景抑制后返回[b,x,classes+conf+4pos]</span><br>    output = d2l.multibox_detection(cls_probs, bbox_preds, anchors)<br>    <span class="hljs-comment"># 只留下框</span><br>    idx = [i <span class="hljs-keyword">for</span> i, row <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(output[<span class="hljs-number">0</span>]) <span class="hljs-keyword">if</span> row[<span class="hljs-number">0</span>] != -<span class="hljs-number">1</span>]<br>    <span class="hljs-keyword">return</span> output[<span class="hljs-number">0</span>, idx]<br><span class="hljs-number">5444</span>  -nms&gt;   <span class="hljs-number">449</span>  -背景抑制&gt;  <span class="hljs-number">51</span>   -输出再次抑制&gt;    <span class="hljs-number">4</span> <br></code></pre></td></tr></table></figure>
+
+<h5 id="改进："><a href="#改进：" class="headerlink" title="改进："></a><strong>改进：</strong></h5><p>平滑l1：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335110.png" srcset="/img/loading.gif" lazyload alt="image-20210816153354419"></p>
+<p>focal 损失函数：重点在正样本但预测概率小的损失</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335111.png" srcset="/img/loading.gif" lazyload alt="image-20210816153128924"></p>
+<h5 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h5><p>​	特别长的物体：设置<strong>ratio</strong></p>
+<p>​	怕L2loss特别大，超出范围</p>
+<p>​	多个<strong>loss</strong>相加，需要<strong>加权重</strong>使得loss数量级差不多</p>
+<p>​	NMS的计算量特别大，需要特殊技巧</p>
+<p>​	backbone还是预训练的图片分类模型</p>
+<p>​	树莓派上跑detect用yolo</p>
+<p>​	没有固定现状的物体检测（土壤）：语义分割</p>
+<h4 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h4><p>数据集VOC2012        自动驾驶车辆和医疗图像诊断</p>
+<p>color2label数组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#@save</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">voc_colormap2label</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;构建从RGB到VOC类别索引的映射。&quot;&quot;&quot;</span><br>    colormap2label = torch.zeros(<span class="hljs-number">256</span> ** <span class="hljs-number">3</span>, dtype=torch.long)<br>    <span class="hljs-keyword">for</span> i, colormap <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(VOC_COLORMAP):<br>        colormap2label[<br>            (colormap[<span class="hljs-number">0</span>] * <span class="hljs-number">256</span> + colormap[<span class="hljs-number">1</span>]) * <span class="hljs-number">256</span> + colormap[<span class="hljs-number">2</span>]] = i<br>    <span class="hljs-keyword">return</span> colormap2label<br><br><span class="hljs-comment">#@save  传入的是tensor 0~255 (c, h, w)   传出id</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">voc_label_indices</span>(<span class="hljs-params">colormap, colormap2label</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;将VOC标签中的RGB值映射到它们的类别索引。&quot;&quot;&quot;</span><br>    colormap = colormap.permute(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>).numpy().astype(<span class="hljs-string">&#x27;int32&#x27;</span>)<br>    idx = ((colormap[:, :, <span class="hljs-number">0</span>] * <span class="hljs-number">256</span> + colormap[:, :, <span class="hljs-number">1</span>]) * <span class="hljs-number">256</span><br>           + colormap[:, :, <span class="hljs-number">2</span>])<br>    <span class="hljs-keyword">return</span> colormap2label[idx]<br></code></pre></td></tr></table></figure>
+
+<p>随机剪裁： feature和label放到一起进行，(c,h,w)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">voc_rand_crop</span>(<span class="hljs-params">feature, label, height, width</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;随机裁剪特征和标签图像。&quot;&quot;&quot;</span><br>    rect = torchvision.transforms.RandomCrop.get_params(<br>        feature, (height, width))<br>    feature = torchvision.transforms.functional.crop(feature, *rect)<br>    label = torchvision.transforms.functional.crop(label, *rect)<br>    <span class="hljs-keyword">return</span> feature, label<br></code></pre></td></tr></table></figure>
+
+<p>过滤：滤去小于剪裁大小的图片，在dataset init时就需要去除样本id数组</p>
+<p>人的语义分割比较容易，但是光线影响很大。应该比较成熟了 </p>
+<p>在3d语义分割的情况下，存在深度图，理论上分割更容易</p>
+<p>自动驾驶：距离       速度、加速度      十几二十个摄像头 模型融合。特斯拉纯视觉， google、国内激光雷达</p>
+<h4 id="FCN"><a href="#FCN" class="headerlink" title="FCN"></a>FCN</h4><p>转置卷积实现尺寸变大，也有最近邻插值，双线性插值（初始化核）</p>
+<p><strong>卷积</strong>：一群值转化为一个值的关系</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lanadeus/article/details/82534425">轻松理解转置卷积(transposed convolution)或反卷积(deconvolution)_lanadeus-CSDN博客_转置卷积</a></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335112.png" srcset="/img/loading.gif" lazyload alt="image-20210816214009010"></p>
+<img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335113.png" srcset="/img/loading.gif" lazyload alt="image-20210816213950481" style="zoom:67%;" />
+
+<p><strong>转置卷积：</strong>原来一个值转化为一群值的对应关系，值上与原来无关（<strong>从信息论的角度看,卷积是不可逆的.所以这里说的并不是从output矩阵和kernel矩阵计算出原始的input矩阵.而是计算出一个保持了位置性关系的矩阵.</strong>)</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335114.png" srcset="/img/loading.gif" lazyload alt="image-20210816215400555"></p>
+<p>超参数相同时，形状为逆变换</p>
+<p>理解：填充k-p-1后， stride为将原矩阵在行列之间插s-1零行，再做传统卷积</p>
+<p>转置卷积的等价乘法矩阵 &#x3D; 卷积核的乘法矩阵.T</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">d2l.corr2d(X, K) == torch.matmul(W, X.reshape(-<span class="hljs-number">1</span>)).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>trans_conv(Y, K) == torch.matmul(W.T, Y.reshape(-<span class="hljs-number">1</span>)).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
+
+<p>计算方法：1.相乘相加  2.倒转 扩充 正常卷积</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335116.png" srcset="/img/loading.gif" lazyload alt="image-20210817141016427" style="zoom: 50%;" /><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335117.png" srcset="/img/loading.gif" lazyload alt="image-20210817140913096" style="zoom: 50%;" /></p>
+<p>FCN转置卷积： k-2p-s&#x3D;0  双线性插值初始化</p>
+<p>损失函数：直接cross_entropy ,分类维度在x的第二维度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">x = torch.rand((<span class="hljs-number">32</span>, <span class="hljs-number">21</span>, <span class="hljs-number">320</span>,<span class="hljs-number">480</span>))<br>y = torch.ones((<span class="hljs-number">32</span>, <span class="hljs-number">320</span>, <span class="hljs-number">480</span>)).long()<br>F.cross_entropy(x, y)  <span class="hljs-comment"># nn.CrossEntropyLoss()(x, y)</span><br></code></pre></td></tr></table></figure>
+
+<p>训练时，由于loss在一个batch上取平均值，比d2l小，所以要调大lr，否者会陷入<strong>局部最优</strong>，输出全黑</p>
+<h4 id="样式迁移"><a href="#样式迁移" class="headerlink" title="样式迁移"></a>样式迁移</h4><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305151335118.png" srcset="/img/loading.gif" lazyload alt="image-20210817141542897" style="zoom: 80%;" />
+
+<p>网络提取特征后，某些层上的<strong>特征相似</strong>：gram矩阵       内容相似：直接对应位置MSE</p>
+<p>内容特征深层次越好（忽略细节） [25]   风格特征多层结合[0, 5, 10, 19, 28]</p>
+<p><strong>风格矩阵：</strong></p>
+<p>​	对角线元素提供了不同特征图（a1，a2 … ，an）各自的信息，其余元素提供了不同特征图之间的相关信息。</p>
+<p>contents_Y,  styles_Y是提前准备好的。X为输入也是调整的对象，初始化为内容图img.weight.data.copy_(X.data)</p>
+<p><strong>迭代：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 将X输入到网络中提取特征</span><br>contents_Y_hat, styles_Y_hat = extract_features(X, content_layers, style_layers)<br><span class="hljs-comment"># 根据特征与提前准备好的特征相比较，计算出损失</span><br>contents_l, styles_l, tv_l, l = compute_loss(<br>    X, contents_Y_hat, styles_Y_hat, contents_Y, styles_Y_gram)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>loss：</strong>分为3部分, 内容（均方差）、风格（风格矩阵W *W.T的均方差)、平滑度损失</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python">content_weight, style_weight, tv_weight = <span class="hljs-number">1</span>, <span class="hljs-number">1e3</span>, <span class="hljs-number">10</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_loss</span>(<span class="hljs-params">X, contents_Y_hat, styles_Y_hat, contents_Y, styles_Y_gram</span>):<br>    <span class="hljs-comment"># 分别计算内容损失、样式损失和总变差损失</span><br>    contents_l = [content_loss(Y_hat, Y) * content_weight <span class="hljs-keyword">for</span> Y_hat, Y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(<br>        contents_Y_hat, contents_Y)]<br>    styles_l = [style_loss(Y_hat, Y) * style_weight <span class="hljs-keyword">for</span> Y_hat, Y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(<br>        styles_Y_hat, styles_Y_gram)]<br>    tv_l = tv_loss(X) * tv_weight<br>    <span class="hljs-comment"># 对所有损失求和</span><br>    l = <span class="hljs-built_in">sum</span>(<span class="hljs-number">10</span> * styles_l + contents_l + [tv_l]) <span class="hljs-comment"># 一个长列表</span><br>    <span class="hljs-keyword">return</span> contents_l, styles_l, tv_l, l<br></code></pre></td></tr></table></figure>
+
+
+
+<p>大图片迁移：用小图迁移后，放大然后作为起始</p>
+<h3 id="牛仔行头检测"><a href="#牛仔行头检测" class="headerlink" title="牛仔行头检测"></a>牛仔行头检测</h3><p>样本不平衡</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/DL/" class="category-chain-item">DL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/DL/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="category-chain-item">动手学深度学习</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/cv/" class="print-no-link">#cv</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/09/08/%E6%9C%BA%E7%BB%84/" title="计算机组成原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机组成原理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/08/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="操作系统">
+                        <span class="hidden-mobile">操作系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

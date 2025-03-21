@@ -1,0 +1,920 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/logo.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#B1A58E">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="FDfd 是什么？fd 是 File descriptor 的缩写，中文名叫做：文件描述符。文件描述符是一个非负整数，本质上是一个进程相关的索引值 什么时候拿到的 fd ？ 当打开一个文件时，内核向进程返回一个文件描述符（ open 系统调用得到 ），后续 read、write 这个文件时，则只需要用这个文件描述符来标识该文件，将其作为参数传入 read、write 。 fd 的值范围是什么？ 在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从FD到socketFD再到epoll原理">
+<meta property="og:url" content="http://example.com/2024/04/09/TechDigest/%E4%BB%8EFD%E5%88%B0socketFD%E5%86%8D%E5%88%B0epoll%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Xun&#39;s Blog">
+<meta property="og:description" content="FDfd 是什么？fd 是 File descriptor 的缩写，中文名叫做：文件描述符。文件描述符是一个非负整数，本质上是一个进程相关的索引值 什么时候拿到的 fd ？ 当打开一个文件时，内核向进程返回一个文件描述符（ open 系统调用得到 ），后续 read、write 这个文件时，则只需要用这个文件描述符来标识该文件，将其作为参数传入 read、write 。 fd 的值范围是什么？ 在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210932.jpg">
+<meta property="article:published_time" content="2024-04-09T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="文章精读">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210932.jpg">
+  
+  
+  
+  <title>从FD到socketFD再到epoll原理 - Xun&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"GEluhFhlvVVyi1wC9RzB0vSk-MdYXbMMI","app_key":"9ng4wvU8n0568liU440awYcT","server_url":"https://proxy.bytewaver.top/proxy/geluhfhl.api.lncldglobal.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong> </strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg/pink-small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">从FD到socketFD再到epoll原理</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-09 20:00" pubdate>
+          2024年4月9日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从FD到socketFD再到epoll原理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="FD"><a href="#FD" class="headerlink" title="FD"></a>FD</h1><h2 id="fd-是什么？"><a href="#fd-是什么？" class="headerlink" title="fd 是什么？"></a><strong><code>fd</code> 是什么？</strong></h2><p><code>fd</code> 是 <code>File descriptor</code> 的缩写，中文名叫做：<strong>文件描述符</strong>。<strong>文件描述符</strong>是一个非负整数，<strong>本质上是一个进程相关的索引值</strong></p>
+<p><strong>什么时候拿到的 <code>fd</code> ？</strong></p>
+<p>当打开一个文件时，内核向进程返回一个文件描述符（ <code>open</code> 系统调用得到 ），后续 <code>read</code>、<code>write</code> 这个文件时，则只需要用这个<strong>文件描述符</strong>来标识该文件，将其作为参数传入 <code>read</code>、<code>write</code> 。</p>
+<p><strong>fd 的值范围是什么？</strong></p>
+<p>在 POSIX 语义中，0，1，2 这三个 fd 值已经被赋予特殊含义，分别是标准输入（ STDIN_FILENO ），标准输出（ STDOUT_FILENO ），标准错误（ STDERR_FILENO ）。</p>
+<p>文件描述符是有一个范围的：0 ～ OPEN_MAX-1 ，最早期的 UNIX 系统中范围很小，现在的主流系统单就这个值来说，变化范围是几乎不受限制的，只受到系统硬件配置和系统管理员配置的约束。</p>
+<p>你可以通过 <code>ulimit</code> 命令查看当前系统的配置：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">ulimit -n<br>4864<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="窥探-Linux-内核"><a href="#窥探-Linux-内核" class="headerlink" title="窥探 Linux 内核"></a><strong>窥探 Linux 内核</strong></h2><p>用户使用系统调用 <code>open</code> 或者 <code>creat</code> 来打开或创建一个文件，用户态得到的结果值就是 <code>fd</code>；</p>
+<h3 id="task-struct"><a href="#task-struct" class="headerlink" title="task_struct"></a><strong><code>task_struct</code></strong></h3><p>首先，我们知道进程的抽象是基于 <code>struct task_struct</code> 结构体，当创建一个进程，其实也就是 <code>new</code> 一个 <code>struct task_struct</code> 出来，这是 Linux 里面最复杂的结构体之一 ，成员字段非常多，我们今天不需要详解这个结构体，我稍微简化一下，只提取我们今天需要理解的字段如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">task_struct</span> &#123;</span><br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-comment">/* Open file information: */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">files_struct</span>     *<span class="hljs-title">files</span>;</span><br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>files</code> 这个字段就是今天的主角之一, 管理着该进程打开的所有文件</p>
+<h3 id="files-struct"><a href="#files-struct" class="headerlink" title="files_struct"></a><strong><code>files_struct</code></strong></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c">*<br> * Open file table structure<br> */<br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">files_struct</span> &#123;</span><br>    <span class="hljs-comment">// 读相关字段</span><br>    <span class="hljs-type">atomic_t</span> count;<br>    <span class="hljs-type">bool</span> resize_in_progress;<br>    <span class="hljs-type">wait_queue_head_t</span> resize_wait;<br><br>    <span class="hljs-comment">// 打开的文件管理结构</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fdtable</span> __<span class="hljs-title">rcu</span> *<span class="hljs-title">fdt</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fdtable</span> <span class="hljs-title">fdtab</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fdtable</span> // 本质上是 <span class="hljs-title">file</span> __<span class="hljs-title">rcu</span> **<span class="hljs-title">fd</span>;</span>      <span class="hljs-comment">/* current fd array */</span><br><br>    <span class="hljs-comment">// 写相关字段</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> next_fd;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> close_on_exec_init[<span class="hljs-number">1</span>];<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> open_fds_init[<span class="hljs-number">1</span>];<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> full_fds_bits_init[<span class="hljs-number">1</span>];<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> * <span class="hljs-title">fd_array</span>[<span class="hljs-title">NR_OPEN_DEFAULT</span>];</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>既然管理进程打开所有的文件，那当然需要一个<strong>数组</strong>，有两个地方存储了数组：</p>
+<ol>
+<li><p><code>struct file * fd_array[NR_OPEN_DEFAULT]</code> 是一个静态数组，随着 <code>files_struct</code> 结构体分配出来的，在 64 位系统上，静态数组大小为 64；</p>
+</li>
+<li><p><code>struct fdtable</code> 也是个数组管理结构，只不过这个是一个动态数组，数组边界是用字段描述的；</p>
+<blockquote>
+<p><strong>思考：为什么会有这种静态 + 动态的方式？</strong></p>
+<p>性能和资源的权衡 ！大部分进程只会打开少量的文件，所以静态数组就够了，这样就不用另外分配内存。如果超过了静态数组的阈值，那么就动态扩展。</p>
+</blockquote>
+</li>
+</ol>
+<p>为什么说fd就是一个索引：**<code>fd</code> 其实就是就是这个数组的索引，也就是数组的槽位编号而已。**</p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a><strong><code>file</code></strong></h3><p>也就是fd指向的对象，表示当前进程打开的某个文件；关键信息：<strong>当前文件偏移，inode 结构地址</strong>；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> &#123;</span><br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">path</span>                     <span class="hljs-title">f_path</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span>                    *<span class="hljs-title">f_inode</span>;</span><br>    <span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file_operations</span>    *<span class="hljs-title">f_op</span>;</span><br><br>    <span class="hljs-type">atomic_long_t</span>                    f_count;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>                     f_flags;<br>    <span class="hljs-type">fmode_t</span>                          f_mode;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">mutex</span>                     <span class="hljs-title">f_pos_lock</span>;</span><br>    <span class="hljs-type">loff_t</span>                           f_pos;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fown_struct</span>               <span class="hljs-title">f_owner</span>;</span><br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>f_path</code> ：标识文件名</p>
+</li>
+<li><p><code>f_inode</code> ：非常重要的一个字段，<code>inode</code> 这个是 vfs 的 <code>inode</code> 类型，是基于具体文件系统之上的抽象封装；（文件系统共享）</p>
+</li>
+<li><p><code>f_pos</code> ： 这个字段非常重要，偏移，对，<strong>就是当前文件偏移</strong>。还记得上一篇 IO 基础里也提过偏移对吧，指的就是这个，<code>f_pos</code> 在 <code>open</code> 的时候会设置成默认值，<code>seek</code> 的时候可以更改，从而影响到 <code>write/read</code> 的位置；</p>
+</li>
+<li><p><code>f_op</code>:根据你的“文件”类型赋值的（也就是指向了 <code>struct inode</code> 中的 <code>i_fop</code>），比如 ext2 的文件，那么就是 <code>ext2_file_operations</code></p>
+</li>
+<li><p>file是当前进程打开的某个文件，那会进程间共享吗？  一般不会，但会 fork时</p>
+</li>
+<li><p>在同一个进程中，多个 <code>fd</code> 可能指向同一个 file 结构吗？   <code>dup</code>命令</p>
+</li>
+</ul>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210932.jpg" srcset="/img/loading.gif" lazyload alt="v2-1b0afa95e56ddf0cdd95ee2ad1d75d09_r"></p>
+<h3 id="inode"><a href="#inode" class="headerlink" title="inode"></a><code>inode</code></h3><p><code>struct file</code> 结构体里面有一个 inode 的指针，这个指向的 inode 并没有直接指向具体文件系统的 inode ，而是操作系统抽象出来的一层虚拟文件系统，叫做 <strong>VFS （ Virtual File System ）</strong>，然后在 VFS 之下才是真正的文件系统，比如 ext4 之类的。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210933.png" srcset="/img/loading.gif" lazyload alt="image-20240409145416828"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span> &#123;</span><br>    <span class="hljs-comment">// 文件相关的基本信息（权限，模式，uid，gid等）</span><br>    <span class="hljs-type">umode_t</span>             i_mode;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span>      i_opflags;<br>    <span class="hljs-type">kuid_t</span>              i_uid;<br>    <span class="hljs-type">kgid_t</span>              i_gid;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>        i_flags;<br>    <span class="hljs-comment">// 回调函数</span><br>    <span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode_operations</span>   *<span class="hljs-title">i_op</span>;</span> <span class="hljs-comment">// 创建、删除、读取inode</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">super_block</span>              *<span class="hljs-title">i_sb</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">address_space</span>            *<span class="hljs-title">i_mapping</span>;</span><br>    <span class="hljs-comment">// 文件大小，atime，ctime，mtime等</span><br>    <span class="hljs-type">loff_t</span>              i_size;<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">timespec64</span>   <span class="hljs-title">i_atime</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">timespec64</span>   <span class="hljs-title">i_mtime</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">timespec64</span>   <span class="hljs-title">i_ctime</span>;</span><br>    <span class="hljs-comment">// 回调函数</span><br>    <span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file_operations</span>    *<span class="hljs-title">i_fop</span>;</span> <span class="hljs-comment">// 读取、写入、定位文件指针</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">address_space</span>            <span class="hljs-title">i_data</span>;</span><br>    <span class="hljs-comment">// 指向后端具体文件系统的特殊数据</span><br>    <span class="hljs-type">void</span>    *i_private;     <span class="hljs-comment">/* fs or device private pointer */</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p> <code>i_fop</code> 回调函数在构造 <code>inode</code> 的时候，就注册成了后端的文件系统函数，假设有一个名为 <code>ext4_file_operations</code> 的结构体，它包含了针对 ext4 文件系统的操作函数的指针。那么，<code>i_fop</code> 指针可以被设置为指向这个结构体，从而允许操作 ext4 文件系统中的文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file_operations</span> &#123;</span><br>    <span class="hljs-type">int</span> (*open)(<span class="hljs-keyword">struct</span> inode *inode, <span class="hljs-keyword">struct</span> file *filp);<br>    <span class="hljs-type">ssize_t</span> (*read)(<span class="hljs-keyword">struct</span> file *filp, <span class="hljs-type">char</span> __user *buf, <span class="hljs-type">size_t</span> len, <span class="hljs-type">loff_t</span> *ppos);<br>    <span class="hljs-type">ssize_t</span> (*write)(<span class="hljs-keyword">struct</span> file *filp, <span class="hljs-type">const</span> <span class="hljs-type">char</span> __user *buf, <span class="hljs-type">size_t</span> len, <span class="hljs-type">loff_t</span> *ppos);<br>    <span class="hljs-type">int</span> (*release)(<span class="hljs-keyword">struct</span> inode *inode, <span class="hljs-keyword">struct</span> file *filp);<br>    <span class="hljs-comment">// 其他操作函数指针</span><br>&#125;;<br><br><span class="hljs-comment">// 用于 ext4 文件系统的操作函数 每实现一个文件系统的时候，就要实现这个文件调用</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file_operations</span> <span class="hljs-title">ext4_file_operations</span> =</span> &#123;<br>    .open = ext4_open,<br>    .read = ext4_read,<br>    .write = ext4_write,<br>    .release = ext4_release,<br>    <span class="hljs-comment">// 其他函数指针的初始化</span><br>&#125;;<br><br><span class="hljs-comment">// 然后在使用 inode 结构体时将 i_fop 指向 ext4_file_operations</span><br>inode-&gt;i_fop = &amp;ext4_file_operations;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><code>vfs  inode</code>  是下一层的抽象（如ext4_inode_info）， 所有文件系统共性的东西抽象到 <code>vfs  inode</code> ，不同文件系统差异的东西放在各自的 <code>inode</code> 结构体中。c语言中的继承是通过结构体的组合实现的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ext4_inode_info</span> &#123;</span><br>    <span class="hljs-comment">// ext4 inode 特色字段</span><br>    <span class="hljs-comment">// ...</span><br>    <br>    <span class="hljs-comment">// 重要！！！</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span>    <span class="hljs-title">vfs_inode</span>;</span>  <br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>分配 inode 的时候，其实分配的是 <code>ext4_inode_info</code> 结构体，包含了 vfs inode，然后对外给出去 vfs_inode 字段的地址即可。VFS 层拿 inode 的地址使用，底下文件系统强转类型后<code>(struct ext4_inode_info *)(vfs_inode地址 - vfs_inode在ext4_inode_info中的偏移)</code>，取外层的 ext4_inode_info 地址使用。</p>
+<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><ol>
+<li>用户操作文件时，open会得到一个FD</li>
+<li>FD本质来讲是一个数组索引，结构体 <code>task_struct</code> 对应一个抽象的进程，<code>files_struct</code> 是这个进程管理<strong>该进程打开的文件</strong>数组管理器。也就是fd是进程中的<code>task_struct.files_struct.fd_array</code>的下标，指向file结构体</li>
+<li><code>file</code> 结构：表征一个打开的文件，内部包含关键的字段有：<strong>当前文件偏移，inode 结构地址</strong>；该结构虽然由进程触发创建，但是 <code>file</code>  结构可以在进程间共享；（fork）</li>
+<li><code>inode</code> 属于文件系统级别的概念，只由文件系统管理维护，进程间共享 (当多个进程写同一个文件的时候，由于一个文件最终是落到全局唯一的一个 <code>inode</code> 上，这种并发场景则可能产生用户不可预期的结果；)</li>
+</ol>
+<h1 id="socket-FD"><a href="#socket-FD" class="headerlink" title="socket FD"></a>socket FD</h1><p><code>socket</code> 可能你还没反应过来，中文名：<strong>套接字</strong> </p>
+<p>socket是为了方便网络编程设计出的接口，视为应用程序与传输层之间的桥梁，它为应用程序提供了一个通用的、与底层传输协议无关的接口，使得不同应用程序可以方便地进行网络通信。实现可以是基于TCP、UDP的，使我们不用考虑tcp udp 以及内核网络的传输功能</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210934.png" srcset="/img/loading.gif" lazyload alt="image-20240409150104889"></p>
+<ol>
+<li>客户端和服务端都用 <code>socket</code> 调用创建套接字；</li>
+<li>服务端用 <code>bind</code> 绑定监听地址，用 <code>listen</code> 把套接字转化为监听套接字，用 <code>accept</code> 捞取一个客户端来的连接；</li>
+<li>客户端用 <code>connect</code> 进行建连，用 <code>write/read</code> 进行网络 IO；（这里connect就像open一个本地文件一样，这就是socket给我们带来的方便）</li>
+</ol>
+<p>我们可以基于socket 构建我们想要的应用层协议 例如<code>http resp</code>, 写一个resp读取redis</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Void <span class="hljs-title function_">test</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-keyword">try</span> (<span class="hljs-type">Socket</span> <span class="hljs-variable">socket</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Socket</span>(<span class="hljs-string">&quot;localhost&quot;</span>, <span class="hljs-number">6379</span>);<br>             <span class="hljs-type">PrintWriter</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PrintWriter</span>(socket.getOutputStream(), <span class="hljs-literal">true</span>);<br>             <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InputStreamReader</span>(socket.getInputStream()))) &#123;<br><br>            out.println(send(<span class="hljs-string">&quot;SET&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;小明&quot;</span>));<br>            System.out.println(parseResponse(in));<br><br><br>            out.println(send(<span class="hljs-string">&quot;SET&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>));<br>            System.out.println(parseResponse(in));<br><br><br>            out.println(send(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>));<br>            System.out.println(parseResponse(in));<br><br>            out.println(send(<span class="hljs-string">&quot;MGET&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>));<br>            System.out.println(parseResponse(in));<br><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">send</span><span class="hljs-params">(String... args)</span>&#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">command</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>        command.append(<span class="hljs-string">&quot;*&quot;</span>).append(args.length).append(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>        <span class="hljs-keyword">for</span> (String arg : args) &#123;<br>            command.append(<span class="hljs-string">&quot;$&quot;</span>).append(arg.getBytes().length).append(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>            command.append(arg).append(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> command.toString();<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Object <span class="hljs-title function_">parseResponse</span><span class="hljs-params">(BufferedReader in)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> in.readLine();<br>        <span class="hljs-keyword">if</span> (line.startsWith(<span class="hljs-string">&quot;+&quot;</span>)) &#123; <span class="hljs-comment">// 单行回复</span><br>            <span class="hljs-keyword">return</span> line.substring(<span class="hljs-number">1</span>);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (line.startsWith(<span class="hljs-string">&quot;-&quot;</span>)) &#123; <span class="hljs-comment">// 错误消息</span><br>            <span class="hljs-keyword">return</span> line.substring(<span class="hljs-number">1</span>);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (line.startsWith(<span class="hljs-string">&quot;:&quot;</span>)) &#123; <span class="hljs-comment">// 整数回复</span><br>            <span class="hljs-keyword">return</span> Integer.parseInt(line.substring(<span class="hljs-number">1</span>));<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (line.startsWith(<span class="hljs-string">&quot;$&quot;</span>)) &#123; <span class="hljs-comment">// 批量字符串回复</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> Integer.parseInt(line.substring(<span class="hljs-number">1</span>));<br>            <span class="hljs-keyword">if</span> (length == -<span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// &quot;$-1&quot; 表示 null</span><br>            &#125;<br>            <span class="hljs-keyword">return</span> in.readLine(); <span class="hljs-comment">// 这里偷懒直接读取 按道理要按照长度</span><br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (line.startsWith(<span class="hljs-string">&quot;*&quot;</span>)) &#123; <span class="hljs-comment">// 数组回复</span><br>            <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> Integer.parseInt(line.substring(<span class="hljs-number">1</span>));<br>            List&lt;Object&gt; array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; count; i++) &#123;<br>                array.add(parseResponse(in)); <span class="hljs-comment">// 递归解析数组中的每个元素</span><br>            &#125;<br>            <span class="hljs-keyword">return</span> array;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// 未知类型</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="socket-fd-的类型"><a href="#socket-fd-的类型" class="headerlink" title="socket fd 的类型"></a><strong>socket fd 的类型</strong></h2><p>上面我们提到了套接字，这是我们网络编程的主体，套接字由 <code>socket()</code> 系统调用创建，但你可知套接字其实可分为两种类型，监听套接字和普通套接字。而监听套接字是由 <code>listen()</code> 把 socket fd 转化而成。</p>
+<h3 id="监听套接字"><a href="#监听套接字" class="headerlink" title="监听套接字"></a><strong>监听套接字</strong></h3><p>对于监听套接字，不走数据流，只管理连接的建立。<code>accept</code> 将从全连接队列获取一个创建好的 socket（ 3 次握手完成），对于监听套接字的可读事件就是全连接队列非空。</p>
+<p>对于监听套接字，我们只在乎可读事件。</p>
+<h3 id="普通套接字"><a href="#普通套接字" class="headerlink" title="普通套接字"></a><strong>普通套接字</strong></h3><p>普通套接字就是走数据流的，也就是网络 IO，针对普通套接字我们关注可读可写事件。在说 socket 的可读可写事件之前，我们先捋顺套接字的读写大概是什么样子吧。</p>
+<p>套接字层是内核提供给程序员用来网络编程的，程序猿读写都是针对套接字而言，那么 <code>write( socketfd, /* 参数 */)</code> 和 <code>read( socketfd, /* 参数 */)</code> 都会发生什么呢？</p>
+<ul>
+<li>write 数据到 socketfd，大部分情况下，数据写到 socket 的内存 buffer，就结束了，并没有发送到对端网络（异步发送）；</li>
+<li>read socketfd 的数据，也只是从 socket 的 内存 buffer 里读数据而已，而不是从网卡读（虽然数据是从网卡一层层递上来的）；</li>
+</ul>
+<p>也就是说，程序猿而言，是跟 socket 打交道，内核屏蔽了底层的细节。</p>
+<p>那说回来 socket 的可读可写事件就很容易理解了。</p>
+<ul>
+<li>socketfd 可读：其实就是 socket buffer 内有数据（超过阈值 SO_RCLOWAT ）；</li>
+<li>socketfd 可写：就是 socket buffer 还有空间让你写（阈值 SO_SNDLOWAT ）；</li>
+</ul>
+<h2 id="sockfs-文件系统"><a href="#sockfs-文件系统" class="headerlink" title="sockfs 文件系统"></a><strong>sockfs 文件系统</strong></h2><p>之前在fd中提到，<strong>vfs 层使用的是 inode，ext4 层使用的是 <code>ext4_inode_info</code> ，不同层次通过地址的强制转化类型来切换结构体。</strong></p>
+<p>那么类似，sockfs 也是如此，sockfs 作为文件系统，也有自己特色的 “inode”，这个类型就是 <code>struct socket_alloc</code> ，如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">socket_alloc</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">socket</span> <span class="hljs-title">socket</span>;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">inode</span> <span class="hljs-title">vfs_inode</span>;</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>这个结构体关联 socket 和 inode 两个角色，是“文件”抽象的核心之一。分配 <code>struct socket</code> 结构体其实是分配了 <code>struct socket_alloc</code> 结构体，然后返回了 <code>socket_alloc-&gt;socket</code>  字段的地址而已。但还是可以通过地址的偏移拿到整个socket_alloc</p>
+<blockquote>
+<p><code>struct socket</code> 是内核抽象出的一个通用结构体，主要作用是放置了一些跟 fs 相关的字段，而真正跟网络通信相关的字段结构体是 <code>struct sock</code> 。它们内部有相互的指针，可以获取到对方的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">socket</span> &#123;</span><br>    <span class="hljs-type">int</span> type;               <span class="hljs-comment">// 套接字类型 (SOCK_STREAM, SOCK_DGRAM, etc.)</span><br>    <span class="hljs-type">int</span> state;              <span class="hljs-comment">// 套接字状态 (ESTABLISHED, LISTEN, etc.)</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sock</span> *<span class="hljs-title">sk</span>;</span>        <span class="hljs-comment">// 指向关联的底层套接字对象的指针</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">file</span> *<span class="hljs-title">file</span>;</span>      <span class="hljs-comment">// 与套接字关联的文件</span><br>    <span class="hljs-comment">// 其他成员...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sock</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">socket</span> *<span class="hljs-title">sk_socket</span>;</span> <span class="hljs-comment">// 指向上层 socket 结构体的指针</span><br>    <span class="hljs-comment">/* 套接字状态 */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> sk_family;  <span class="hljs-comment">// 地址族 (AF_INET, AF_INET6, etc.)</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> sk_state;    <span class="hljs-comment">// 套接字状态 (TCP: ESTABLISHED, LISTEN, etc.)</span><br>    <br>    <span class="hljs-comment">/* 通用信息 */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proto</span> *<span class="hljs-title">sk_prot</span>;</span>     <span class="hljs-comment">// 指向协议特定信息的指针 tcp_prot  udp_prot </span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sock</span> *<span class="hljs-title">sk_peer</span>;</span>      <span class="hljs-comment">// 对等套接字 (用于连接套接字)</span><br><br>    <span class="hljs-comment">/* 地址信息 */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">sk_rcvaddr</span>;</span> <span class="hljs-comment">// 接收地址信息</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">sk_daddr</span>;</span>   <span class="hljs-comment">// 目的地址信息</span><br><br>    <span class="hljs-comment">/* 数据缓冲区 */</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sk_buff_head</span> <span class="hljs-title">sk_receive_queue</span>;</span> <span class="hljs-comment">// 接收队列 指向sk_buff </span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sk_buff_head</span> <span class="hljs-title">sk_write_queue</span>;</span>   <span class="hljs-comment">// 发送队列</span><br><br>    <span class="hljs-comment">/* 套接字选项 */</span><br>    <span class="hljs-type">int</span> sk_rcvbuf;  <span class="hljs-comment">// 接收缓冲区大小</span><br>    <span class="hljs-type">int</span> sk_sndbuf;  <span class="hljs-comment">// 发送缓冲区大小</span><br>    <br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">socket_wq</span> __<span class="hljs-title">rcu</span>	*<span class="hljs-title">sk_wq</span>;</span> <span class="hljs-comment">// 新版本通过sk_sleep() 间接访问</span><br><br>    <span class="hljs-comment">/* 其他成员 */</span><br>    <span class="hljs-comment">// ...</span><br>&#125;;<br><br></code></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210935.png" srcset="/img/loading.gif" lazyload alt="image-20240409173406945"></p>
+<p><strong>vfs 层用的时候给 inode 字段的地址，socket 层的时候给 socket 字段的地址。不同抽象层面对于同一个内存块的理解不同，强制转化类型，然后各自使用</strong></p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210936.png" srcset="/img/loading.gif" lazyload alt="image-20240409160907186"></p>
+<h2 id="socket创建"><a href="#socket创建" class="headerlink" title="socket创建"></a>socket创建</h2><p>socket 系统调用对应了 <code>__sys_socket</code> 这个函数。这个函数主要做两件事情：</p>
+<ol>
+<li>第一件事：调用 <code>socket_create</code> 函数创建好 socket 相关的结构体，主要是 <code>struct socket</code> ，还有与之关联的 <code>socket sock</code> 结构，再往下就是具体网络协议对应的结构体（旁白：这里实现细节过于复杂，不在文章主干，故略去 10 万字）；</li>
+<li>第二件事：调用 <code>sock_map_fd</code> 函数创建好 <code>struct file</code> 这个结构体，并与第一步创建出的 <code>struct socket</code> 关联起来；</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ctext">__sys_socket<br>    // 创建 struct socket 结构体<br>    -&gt; sock_create<br>            // 创建 struct socket 结构，并且关联特殊 inode<br>            -&gt; sock_alloc<br>            // pf 是根据 family 从 net_families 这个全局表中取出的操作函数表，用来创建具体网络协议结构的;  <br>            // 比如 IPv4 对应的 family 就是 AF_INET ，对应的函数是 inet_create<br>            // 在这里面会赋值 sock-&gt;ops 为对应协议族的操作函数表（比如 inet_stream_ops）<br>            -&gt; pf-&gt;create<br>                    // struct sock 结构体的创建（sk-&gt;sk_prot 的赋值就在这里，比如 tcp_prot ）<br>                    -&gt; sk_alloc<br>                    // struct sock 结构体的初始化(比如 sk_receive_queue, sk_write_queue, sk_error_queue 就是在这里初始化的)<br>                    // 可读写的关键函数 sock_def_readable，sock_def_write_space 也是在这里赋值的<br>                    -&gt; sock_init_data<br>    // 创建 struct file 结构体，并且关联 struct socket<br>    -&gt; sock_map_fd<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><code>socket( )</code> 函数只负责创建出适配具体网络协议的资源（内存、结构体、队列等），并<strong>没有和具体地址绑定</strong>；</li>
+<li><code>socket( )</code> 返回的是非负整数的 fd，与 <code>struct file</code> 对应，而 <code>struct file</code> 则与具体的 <code>struct socket</code> 关联，从而实现<strong>一切皆文件</strong>的封装的一部分（另一部分 inode 的创建处理在 sock_alloc 的函数里体现）；</li>
+</ol>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210937.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h1><h2 id="阻塞IO"><a href="#阻塞IO" class="headerlink" title="阻塞IO"></a><strong>阻塞IO</strong></h2><p>阻塞IO中用户进程阻塞以及唤醒原理</p>
+<p>用户进程发起系统IO调用时，这里我们拿<code>read</code>举例，用户进程会在<code>内核态</code>查看对应<code>Socket</code>接收缓冲区是否有数据到来。</p>
+<ul>
+<li><code>Socket</code>接收缓冲区有数据，则拷贝数据到<code>用户空间</code>，系统调用返回。</li>
+<li><code>Socket</code>接收缓冲区没有数据，则用户进程让出<code>CPU</code>进入<code>阻塞状态</code>，当数据到达接收缓冲区时，用户进程会被唤醒，从<code>阻塞状态</code>进入<code>就绪状态</code>，等待CPU调度。</li>
+</ul>
+<p>本小节我们就来看下用户进程是如何<code>阻塞</code>在<code>Socket</code>上，又是如何在<code>Socket</code>上被唤醒的。<strong>理解这个过程很重要，对我们理解epoll的事件通知过程很有帮助</strong></p>
+<ul>
+<li>首先我们在用户进程中对<code>Socket</code>进行<code>read</code>系统调用时，用户进程会从<code>用户态</code>转为<code>内核态</code>。</li>
+<li>在进程的<code>struct task_struct</code>结构找到<code>fd_array</code>，并根据<code>Socket</code>的文件描述符<code>fd</code>找到对应的<code>struct file</code>，调用<code>struct file</code>中的文件操作函数结合<code>file_operations</code>，<code>read</code>系统调用对应的是<code>sock_read_iter</code>。</li>
+<li>在<code>sock_read_iter</code>函数中找到<code>struct file</code>指向的<code>struct socket</code>，并调用<code>socket-&gt;ops-&gt;recvmsg</code>，这里我们知道调用的是<code>inet_stream_ops</code>集合中定义的<code>inet_recvmsg</code>。在<code>inet_recvmsg</code>中会找到<code>struct sock</code>，并调用<code>sock-&gt;skprot-&gt;recvmsg</code>,这里调用的是<code>tcp_prot</code>集合中定义的<code>tcp_recvmsg</code>函数。</li>
+</ul>
+<h3 id="进入等待"><a href="#进入等待" class="headerlink" title="进入等待"></a>进入等待</h3><p>当调用fd.read并且没有足够数据时, <strong>创建一个wait_queue_t 对象（包含当前线程，回调函数）挂接到这个 socket 的 <code>sk-&gt;sk_wq</code> 中</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">tcp_recvmsg</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> kiocb *iocb, <span class="hljs-keyword">struct</span> sock *sk, <span class="hljs-keyword">struct</span> msghdr *msg,</span><br><span class="hljs-params">  <span class="hljs-type">size_t</span> len, <span class="hljs-type">int</span> nonblock, <span class="hljs-type">int</span> flags, <span class="hljs-type">int</span> *addr_len)</span><br>&#123;<br>    .................省略非核心代码...............<br>   <span class="hljs-comment">//访问sock对象中定义的接收队列</span><br>  skb_queue_walk(&amp;sk-&gt;sk_receive_queue, skb) &#123;<br><br>    .................省略非核心代码...............<br><br>  <span class="hljs-comment">//没有收到足够数据，调用sk_wait_data 阻塞当前进程</span><br>  sk_wait_data(sk, &amp;timeo);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">sk_wait_data</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> sock *sk, <span class="hljs-type">long</span> *timeo)</span><br>&#123;<br> <span class="hljs-comment">//创建struct sock中等待队列上的元素wait_queue_t</span><br> <span class="hljs-comment">//将进程描述符和回调函数autoremove_wake_function关联到wait_queue_t中</span><br> DEFINE_WAIT(wait);<br><br> <span class="hljs-comment">// 调用 sk_sleep 获取 sock 对象下的等待队列的头指针wait_queue_head_t</span><br> <span class="hljs-comment">// 调用prepare_to_wait将新创建的等待项wait_queue_t插入到等待队列中，并将进程状态设置为可打断 INTERRUPTIBLE</span><br> prepare_to_wait(sk_sleep(sk), &amp;wait, TASK_INTERRUPTIBLE);<br> set_bit(SOCK_ASYNC_WAITDATA, &amp;sk-&gt;sk_socket-&gt;flags);<br>    <br> ...<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEFINE_WAIT(name) DEFINE_WAIT_FUNC(name, autoremove_wake_function)</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEFINE_WAIT_FUNC(name, function)    \</span><br><span class="hljs-meta"> wait_queue_t name = &#123;      \</span><br><span class="hljs-meta">  .private = current,    \</span><br><span class="hljs-meta">  .func  = function,    \</span><br><span class="hljs-meta">  .task_list</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>等待类型<code>wait_queue_t</code>中的<code>private</code>用来关联<code>阻塞</code>在当前<code>socket</code>上的用户进程<code>fd</code>。<code>func</code>用来关联等待项上注册的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:%222535104311%22%7D">回调函数</a>。这里注册的是<code>autoremove_wake_function</code>。</p>
+<h3 id="唤醒"><a href="#唤醒" class="headerlink" title="唤醒"></a>唤醒</h3><ul>
+<li><p>当网络数据包到达网卡时，网卡通过<code>DMA</code>的方式将数据放到<code>RingBuffer</code>中。</p>
+</li>
+<li><p>然后向CPU发起硬中断，在硬中断响应程序中创建<code>sk_buffer</code>，并将网络数据拷贝至<code>sk_buffer</code>中。</p>
+</li>
+<li><p>随后发起<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E8%BD%AF%E4%B8%AD%E6%96%AD&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:%222535104311%22%7D">软中断</a>，内核线程<code>ksoftirqd</code>响应软中断，调用<code>poll函数</code>将<code>sk_buffer</code>送往内核协议栈做层层协议处理。</p>
+</li>
+<li><p>在传输层<code>tcp_rcv 函数</code>中，去掉TCP头，根据<code>四元组（源IP，源端口，目的IP，目的端口）</code>查找对应的<code>Socket</code>。</p>
+</li>
+<li><p>最后将<code>sk_buffer</code>放到<code>Socket</code>中的接收队列<code>sk_receive_queue</code>里。</p>
+</li>
+<li><p>接着就会调用<code>数据就绪函数回调指针sk_data_ready</code>，前边我们提到，这个函数指针在初始化的时候指向了<code>sock_def_readable</code>函数。</p>
+<ul>
+<li>获取<code>socket-&gt;sock-&gt;sk_wq</code>等待队列。在<code>wake_up_common</code>函数中从等待队列<code>sk_wq</code>中找出<code>一个</code>等待项<code>wait_queue_t</code>，回调注册在该等待项上的<code>func</code>回调函数（<code>wait_queue_t-&gt;func</code>）,创建等待项<code>wait_queue_t</code>是我们提到，这里注册的回调函数是<code>autoremove_wake_function</code>（等待项<code>wait_queue_t</code>上的<code>private</code>关联的<code>阻塞进程fd</code>调用<code>try_to_wake_up</code>唤醒阻塞在该<code>Socket</code>上的进程）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><h3 id="创建epoll对象"><a href="#创建epoll对象" class="headerlink" title="创建epoll对象"></a><strong>创建epoll对象</strong></h3><p><code>epoll_create</code>是内核提供给我们创建<code>epoll</code>对象的一个系统调用，当我们在用户进程中调用<code>epoll_create</code>时，内核会为我们创建一个<code>struct eventpoll</code>对象，并且也有相应的<code>struct file</code>与之关联，同样需要把这个<code>struct eventpoll</code>对象所关联的<code>struct file</code>放入进程打开的文件列表<code>fd_array</code>中管理。</p>
+<blockquote>
+<p>熟悉了<code>Socket</code>的创建逻辑，<code>epoll</code>的创建逻辑也就不难理解了。</p>
+<p><code>struct eventpoll</code>对象关联的<code>struct file</code>中的<code>file_operations 指针</code>指向的是<code>eventpoll_fops</code>操作函数集合。</p>
+</blockquote>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">static const struct file_operations eventpoll_fops = &#123;<br>     .release = ep_eventpoll_release;<br>     .poll = ep_eventpoll_poll,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">eventpoll</span> &#123;</span><br><br>    <span class="hljs-comment">//等待队列，阻塞在epoll上的进程会放在这里</span><br>    <span class="hljs-type">wait_queue_head_t</span> wq;<br><br>    <span class="hljs-comment">//就绪队列，IO就绪的socket连接会放在这里</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">list_head</span> <span class="hljs-title">rdllist</span>;</span><br><br>    <span class="hljs-comment">//红黑树用来管理所有监听的socket连接</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rb_root</span> <span class="hljs-title">rbr</span>;</span><br><br>    ......<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>wait_queue_head_t wq：</code>epoll中的等待队列，队列里存放的是<code>阻塞</code>在<code>epoll</code>上的用户进程。在<code>IO就绪</code>的时候<code>epoll</code>可以通过这个队列找到这些<code>阻塞</code>的进程并唤醒它们，从而执行<code>IO调用</code>读写<code>Socket</code>上的数据。</li>
+</ul>
+<blockquote>
+<p>这里注意与<code>Socket</code>中的等待队列区分！！！</p>
+</blockquote>
+<ul>
+<li><code>struct list_head rdllist：</code>epoll中的就绪队列，队列里存放的是都是<code>IO就绪</code>的<code>Socket</code>，被唤醒的用户进程可以直接读取这个队列获取<code>IO活跃</code>的<code>Socket</code>。无需再次遍历整个<code>Socket</code>集合。</li>
+</ul>
+<blockquote>
+<p>这里正是<code>epoll</code>比<code>select ，poll</code>高效之处，<code>select ，poll</code>返回的是全部的<code>socket</code>连接，我们需要在<code>用户空间</code>再次遍历找出真正<code>IO活跃</code>的<code>Socket</code>连接。 而<code>epoll</code>只是返回<code>IO活跃</code>的<code>Socket</code>连接。用户进程可以直接进行IO操作。</p>
+</blockquote>
+<ul>
+<li><code>struct rb_root rbr :</code> 由于红黑树在<code>查找</code>，<code>插入</code>，<code>删除</code>等综合性能方面是最优的，所以epoll内部使用一颗红黑树来管理海量的<code>Socket</code>连接。</li>
+</ul>
+<blockquote>
+<p><code>select</code>用<code>数组</code>管理连接，<code>poll</code>用<code>链表</code>管理连接。</p>
+</blockquote>
+<h3 id="添加socket"><a href="#添加socket" class="headerlink" title="添加socket"></a>添加socket</h3><p>首先要在epoll内核中创建一个表示<code>Socket连接</code>的数据结构<code>struct epitem</code>，而在<code>epoll</code>中为了综合性能的考虑，采用一颗红黑树来管理这些海量<code>socket连接</code>。所以<code>struct epitem</code>是一个红黑树节点。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210938.png" srcset="/img/loading.gif" lazyload alt="image-20240409204207268"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epitem</span></span><br><span class="hljs-class">&#123;</span><br>      <span class="hljs-comment">//指向所属epoll对象</span><br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">eventpoll</span> *<span class="hljs-title">ep</span>;</span> <br>      <span class="hljs-comment">//注册的感兴趣的事件,也就是用户空间的epoll_event     </span><br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epoll_event</span> <span class="hljs-title">event</span>;</span> <br>      <span class="hljs-comment">//指向epoll对象中的就绪队列</span><br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">list_head</span> <span class="hljs-title">rdllink</span>;</span>  <br>      <span class="hljs-comment">//指向epoll中对应的红黑树节点</span><br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rb_node</span> <span class="hljs-title">rbn</span>;</span>     <br>      <span class="hljs-comment">//指向epitem所表示的socket-&gt;file结构以及对应的fd</span><br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epoll_filefd</span> <span class="hljs-title">ffd</span>;</span>                  <br>  &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在内核中创建完表示<code>Socket连接</code>的数据结构<code>struct epitem</code>后，我们就需要在<code>Socket</code>中的等待队列上创建等待项<code>wait_queue_t</code>并且注册<code>epoll的回调函数ep_poll_callback</code>。</p>
+<blockquote>
+<p>通过<code>《阻塞IO中用户进程阻塞以及唤醒原理》</code>小节的铺垫，我想大家已经猜到这一步的意义所在了吧！当时在等待项<code>wait_queue_t</code>中注册的是<code>autoremove_wake_function</code>回调函数。而在这里注册的就是epoll的回调函数<code>ep_poll_callback</code></p>
+<ul>
+<li>之前如果当前socket就绪了，会根据wq中<code>autoremove_wake_function</code>激活private 也就是被阻塞的线程</li>
+<li>现在是<code>ep_poll_callback</code>：找到当前当前socket的<code>epitem</code>，放入<code>epoll</code>中的就绪队列中。</li>
+</ul>
+</blockquote>
+<p>如何找到epitem呢？<code>wait_queue_t</code>只有一个回调函数和一个null指针</p>
+<blockquote>
+<p><strong>为什么private为null</strong></p>
+<p>因为这里<code>Socket</code>是交给<code>epoll</code>来管理的，阻塞在<code>Socket</code>上的进程是也由<code>epoll</code>来唤醒。在等待项<code>wait_queue_t</code>注册的<code>func</code>是<code>ep_poll_callback</code>而不是<code>autoremove_wake_function</code>，<code>阻塞进程</code>并不需要<code>autoremove_wake_function</code>来唤醒，所以这里设置<code>private</code>为<code>null</code></p>
+</blockquote>
+<blockquote>
+<p><strong>如何找到epitem呢？</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">eppoll_entry</span> &#123;</span> <br>   <span class="hljs-comment">//指向关联的epitem</span><br>   <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">epitem</span> *<span class="hljs-title">base</span>;</span> <br><br>  <span class="hljs-comment">// 关联监听socket中等待队列中的等待项 (private = null  func = ep_poll_callback)</span><br>   <span class="hljs-type">wait_queue_t</span> wait;   <br><br>   <span class="hljs-comment">// 监听socket中等待队列头指针</span><br>   <span class="hljs-type">wait_queue_head_t</span> *whead; <br>    .........<br>  &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>引入一个eppoll_entry包裹住wait_queue_t，通过<code>container_of宏</code>找到<code>eppoll_entry</code>，继而找到<code>epitem</code>了。</p>
+<p>（<code>container_of</code>在Linux内核中是一个常用的宏，用于从包含在某个结构中的指针获得结构本身的指针，通俗地讲就是通过结构体变量中某个<strong>成员的首地址-偏移量</strong>进而获得整个结构体变量的首地址。）</p>
+</blockquote>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210939.png" srcset="/img/loading.gif" lazyload alt="image-20240409205353996"></p>
+<h3 id="epoll-wait"><a href="#epoll-wait" class="headerlink" title="epoll_wait"></a><strong>epoll_wait</strong></h3><p>用户程序调用<code>epoll_wait</code>后，内核首先会查找epoll中的就绪队列<code>eventpoll-&gt;rdllist</code>是否有<code>IO就绪</code>的<code>epitem</code>。<code>epitem</code>里封装了<code>socket</code>的信息。如果就绪队列中有就绪的<code>epitem</code>，就将<code>就绪的socket</code>信息封装到<code>epoll_event</code>返回。</p>
+<p>如果<code>eventpoll-&gt;rdllist</code>就绪队列中没有<code>IO就绪</code>的<code>epitem</code>，则会创建等待项<code>wait_queue_t</code>，将用户进程的<code>fd</code>关联到<code>wait_queue_t-&gt;private</code>上，并在等待项<code>wait_queue_t-&gt;func</code>上注册回调函数<code>default_wake_function</code>。最后将等待项添加到<code>epoll</code>中的等待队列中。用户进程让出CPU，进入<code>阻塞状态</code>。</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210940.png" srcset="/img/loading.gif" lazyload alt="image-20240409211435167"></p>
+<blockquote>
+<p>这里和<code>阻塞IO模型</code>中的阻塞原理是一样的，只不过在<code>阻塞IO模型</code>中注册到等待项<code>wait_queue_t-&gt;func</code>上的是<code>autoremove_wake_function</code>，并将等待项添加到<code>socket</code>中的等待队列中。这里注册的是<code>default_wake_function</code>，将等待项添加到<code>epoll</code>中的等待队列上。</p>
+</blockquote>
+<p>至此，整个epoll变成了：</p>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210941.png" srcset="/img/loading.gif" lazyload alt="image-20240409211543969"></p>
+<p>当网络数据包在软中断中经过内核协议栈的处理到达<code>socket</code>的接收缓冲区时，紧接着会调用socket的数据就绪回调指针<code>sk_data_ready</code>，回调函数为<code>sock_def_readable</code>。在<code>socket</code>的等待队列中找出等待项，其中等待项中注册的回调函数为<code>ep_poll_callback</code>。</p>
+<p>在回调函数<code>ep_poll_callback</code>中，根据<code>struct eppoll_entry</code>中的<code>struct wait_queue_t wait</code>通过<code>container_of宏</code>找到<code>eppoll_entry</code>对象并通过它的<code>base</code>指针找到封装<code>socket</code>的数据结构<code>struct epitem</code>，并将它加入到<code>epoll</code>中的就绪队列<code>rdllist</code>中。</p>
+<p>随后查看<code>epoll</code>中的等待队列中是否有等待项，也就是说查看是否有进程阻塞在<code>epoll_wait</code>上等待<code>IO就绪</code>的<code>socket</code>。如果没有等待项，则软<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:%222535104311%22%7D">中断处理</a>完成</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><p><code>sk_wq</code>是<code>sock</code>结构中的一个重要部分，表示的是socket等待队列。代表着有哪些对象（线程读、epoll_ctl）关注着当前的socket，当前socket可读或可写时，就要通知wq上的对象，通知的方法挂载时设置的回调函数</p>
+<p><code>sk_wq</code>主要用于以下几种情形：</p>
+<ul>
+<li><strong>发送操作时的阻塞管理</strong>：当发送缓冲区不够用时，试图发送数据的进程将会被放入等待队列</li>
+<li><strong>接收操作时的阻塞管理</strong>：当接收缓冲区没有数据时，试图读取数据的进程将会被放入等待队列</li>
+<li><strong>异步IO和事件通知</strong>：<code>sk_wq</code>也与异步IO操作和某些类型的事件通知机制（如<code>epoll</code>）相关，使得应用程序能够有效地等待多个IO事件。</li>
+</ul>
+</li>
+<li><p>在阻塞io中，如果数据没有就绪，创建<code>wait_queue_t</code>{当前线程、唤醒的回调}加入到<code>socket-&gt;sock-&gt;sk_wq</code>，在就绪时会调用回调唤醒该线程</p>
+</li>
+<li><p>在epoll中，创建了一个epoll同时对象管理多个socket，epoll对象也是文件，也包含<code>wq</code>，记录着所有<strong>epoll_wait</strong>等待的线程以及<code>default_wake_function</code>；</p>
+</li>
+<li><p>epoll对象使用红黑树管理全部socket，<code>rdllist</code>为就序列表，当添加一个socket时</p>
+<ol>
+<li>添加到红黑树中<code>epitem</code>节点</li>
+<li>在<code>Socket</code>中的等待队列上创建等待项<code>wait_queue_t</code>并且注册<code>epoll的回调函数ep_poll_callback</code>, 这里之前代表着被阻塞的进程，就绪时需要去唤醒；现在代表着你就绪了来通知我epoll就行（把<code>epitem</code>加入到<code>rdllist</code>，同时检查epoll的<code>wq</code>，有就回调唤醒）</li>
+</ol>
+</li>
+</ul>
+<section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/486578358/answer/2535104311"><em>epoll</em> 原理是如何实现的？</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/364617329">存储基础 — 文件描述符 fd 究竟是什么？</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/399651675">Linux fd 系列 — socket fd 是什么？</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/393747291">深入理解 Linux 的 epoll 机制</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="category-chain-item">计算机基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/12/TechDigest/linux%E4%B8%AD%E6%96%AD%E5%8E%9F%E7%90%86/" title="Linux中断原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux中断原理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/08/TechDigest/%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" title="常见加密算法">
+                        <span class="hidden-mobile">常见加密算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.14.1/waline.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.14.1/waline.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.bytewaver.top/","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10,"reaction":true},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
