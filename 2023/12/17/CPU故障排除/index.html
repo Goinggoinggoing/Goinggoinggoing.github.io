@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="CPU故障排查背景在压测考试的时候，无意间看到resource、teacher-admin等微服务CPU利用率百分之百，询问相关负责同学并不了解，于是自己寻找了一下原因。   方法jstack​	jstack可以定位线程的执行情况，因此直接进入pod内部执行，发现并没有找到此命令，查看dockerfile打包文件发现打包时是基于jre镜像构建的，并没有jdk中的其他工具，因此需要先安装工具。此外T">
+    <meta name="description" content="在压测考试期间，作者发现resource、teacher-admin等微服务的CPU利用率达到100%，但相关负责同学并不了解原因。经过排查，作者发现需要进入pod内部使用jstack等工具进行线程分析，但pod基于jre镜像构建，缺少jdk工具，因此通过配置阿里云镜像源并安装procps、openjdk-11-jdk等工具解决了环境问题。    作者通过TOP命令定位进程pid，结合ps和jst">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CPU故障排查">
 <meta property="og:url" content="http://example.com/2023/12/17/CPU%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="CPU故障排查背景在压测考试的时候，无意间看到resource、teacher-admin等微服务CPU利用率百分之百，询问相关负责同学并不了解，于是自己寻找了一下原因。   方法jstack​	jstack可以定位线程的执行情况，因此直接进入pod内部执行，发现并没有找到此命令，查看dockerfile打包文件发现打包时是基于jre镜像构建的，并没有jdk中的其他工具，因此需要先安装工具。此外T">
+<meta property="og:description" content="在压测考试期间，作者发现resource、teacher-admin等微服务的CPU利用率达到100%，但相关负责同学并不了解原因。经过排查，作者发现需要进入pod内部使用jstack等工具进行线程分析，但pod基于jre镜像构建，缺少jdk工具，因此通过配置阿里云镜像源并安装procps、openjdk-11-jdk等工具解决了环境问题。    作者通过TOP命令定位进程pid，结合ps和jst">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312251349397.png">
 <meta property="article:published_time" content="2023-12-17T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T07:57:13.909Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="后端">
 <meta property="article:tag" content="java">
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          861 字
+          1.3k 字
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          8 分钟
+          11 分钟
         
       </span>
     
@@ -316,7 +316,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="CPU故障排查"><a href="#CPU故障排查" class="headerlink" title="CPU故障排查"></a>CPU故障排查</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在压测考试的时候，无意间看到resource、teacher-admin等微服务CPU利用率百分之百，询问相关负责同学并不了解，于是自己寻找了一下原因。</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>在压测考试期间，作者发现resource、teacher-admin等微服务的CPU利用率达到100%，但相关负责同学并不了解原因。经过排查，作者发现需要进入pod内部使用jstack等工具进行线程分析，但pod基于jre镜像构建，缺少jdk工具，因此通过配置阿里云镜像源并安装procps、openjdk-11-jdk等工具解决了环境问题。    作者通过TOP命令定位进程pid，结合ps和jstack命令分析线程执行情况，但未能获取具体代码信息，转而使用arthas工具。通过arthas最终定位到问题代码——一段为nacos添加配置监听器的逻辑。开发同学误解了官方文档中while(true)的作用，错误地认为需要保持线程存活以防止守护线程退出（实际nacos会自动维护监听线程）。这段冗余代码导致CPU持续满载，若多次调用甚至会使CPU占用达200%。    问题代码位于公共模块的静态代码块中，当类被加载时会触发，导致部分pod出现高CPU现象。此外，该问题引发k8s集群动态扩容，加剧了资源消耗。修复后，集群CPU使用率显著下降，并缩减了3台4核16G的机器资源。作者强调，正式代码中无需保留while循环，仅需正确使用addListener即可，同时指出即使保留Thread.sleep(1000)也不会导致CPU满载。最终问题根源在于对守护线程机制的误解和冗余代码的设计。</p>
+</blockquote>
+<h1 id="CPU故障排查"><a href="#CPU故障排查" class="headerlink" title="CPU故障排查"></a>CPU故障排查</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在压测考试的时候，无意间看到resource、teacher-admin等微服务CPU利用率百分之百，询问相关负责同学并不了解，于是自己寻找了一下原因。</p>
 <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202312251349397.png" srcset="/img/loading.gif" lazyload alt="image-20231225130326585" style="zoom:50%;" />
 
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><h3 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h3><p>​	jstack可以定位线程的执行情况，因此直接进入pod内部执行，发现并没有找到此命令，查看dockerfile打包文件发现打包时是基于jre镜像构建的，并没有jdk中的其他工具，因此需要先安装工具。此外TOP等命令也没有，需要安装</p>

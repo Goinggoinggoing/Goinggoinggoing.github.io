@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="引入 硬件选择 安装 半洗白：黑群晖激活Advanced Media Extensions（AME）解码HEVC视频和HEIC图片|美的|补丁_新浪新闻 (sina.com.cn)  图片备份 群晖NAS 11期-使用群晖套件Photos进行家庭相册管理 图片备份注意事项：dsm7 群晖synology photos备份照片的坑(备份方法 人脸 视频缩略图） - 知乎 (zhihu.com) 官网">
+    <meta name="description" content="本文主要讨论了NAS（网络附加存储）的性能优化、视频编解码技术以及影音服务器的转码功能。    1. **NAS传输速度与硬件选择**：      - 实际传输速度受网口和硬盘速度限制，千兆网络环境下机械硬盘已能满足需求，阵列可提升速度，但随机读写可能较慢。      - WiFi通常无法达到千兆网速，适合有线连接的高带宽场景（如900Mbps视频剪辑）。    2. **影音服务器与转码功能**">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nas入门">
 <meta property="og:url" content="http://example.com/2024/04/22/TechDigest/nas%E5%85%A5%E9%97%A8/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="引入 硬件选择 安装 半洗白：黑群晖激活Advanced Media Extensions（AME）解码HEVC视频和HEIC图片|美的|补丁_新浪新闻 (sina.com.cn)  图片备份 群晖NAS 11期-使用群晖套件Photos进行家庭相册管理 图片备份注意事项：dsm7 群晖synology photos备份照片的坑(备份方法 人脸 视频缩略图） - 知乎 (zhihu.com) 官网">
+<meta property="og:description" content="本文主要讨论了NAS（网络附加存储）的性能优化、视频编解码技术以及影音服务器的转码功能。    1. **NAS传输速度与硬件选择**：      - 实际传输速度受网口和硬盘速度限制，千兆网络环境下机械硬盘已能满足需求，阵列可提升速度，但随机读写可能较慢。      - WiFi通常无法达到千兆网速，适合有线连接的高带宽场景（如900Mbps视频剪辑）。    2. **影音服务器与转码功能**">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404221725956.png">
 <meta property="article:published_time" content="2024-04-22T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:10:30.867Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="IO">
 <meta property="article:tag" content="nas">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          909 字
+          1.3k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          8 分钟
+          11 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><ul>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>本文主要讨论了NAS（网络附加存储）的性能优化、视频编解码技术以及影音服务器的转码功能。    1. <strong>NAS传输速度与硬件选择</strong>：      - 实际传输速度受网口和硬盘速度限制，千兆网络环境下机械硬盘已能满足需求，阵列可提升速度，但随机读写可能较慢。      - WiFi通常无法达到千兆网速，适合有线连接的高带宽场景（如900Mbps视频剪辑）。    2. <strong>影音服务器与转码功能</strong>：      - NAS作为服务器存储视频文件，客户端（手机、电视等）负责播放。      - 常见视频编码标准包括H.264（兼容性好）、H.265（高效压缩，适合4K&#x2F;8K）和AV1（开源但硬件支持有限）。      - <strong>转码作用</strong>：通过解码+重新编码，调整视频格式、分辨率或码率，以适应不同设备或网络条件。例如，将4K视频转为1080p以节省带宽。      - 两种播放方式：        - 直接传输原始文件（需客户端支持解码，依赖高带宽）；        - NAS实时转码（降低客户端性能要求，但需NAS硬件支持）。    3. <strong>图床搭建问题</strong>：      - 通过Docker部署Lsky图床，配合PicGo插件实现图片上传，但异地访问需依赖Cloudflare，可能导致网速下降。    全文涵盖存储性能优化、视频编解码技术及实际应用场景，为NAS用户提供技术参考。</p>
+</blockquote>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yu411274j">硬件选择</a></li>
 <li><a target="_blank" rel="noopener" href="https://wp.gxnas.com/11849.html">安装</a></li>
 <li>半洗白：<a target="_blank" rel="noopener" href="https://k.sina.com.cn/article_1823348853_6cae187502001dxp7.html">黑群晖激活Advanced Media Extensions（AME）解码HEVC视频和HEIC图片|美的|补丁_新浪新闻 (sina.com.cn)</a></li>

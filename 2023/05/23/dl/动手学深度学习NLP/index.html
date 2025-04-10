@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="https:&#x2F;&#x2F;zh-v2.d2l.ai&#x2F;chapter_convolutional-modern&#x2F;googlenet.html 课程安排 - 动手学深度学习课程 (d2l.ai) Base时序模型当前数据与之前数据相关 音乐、语言、文本 与前面所有有关：  对过去的数据建模，然后预测自己：自回归模型 A：马可夫模型：当前数据只与最近数据相关；用函数前4个值作为特征，预测下一个值，2层MLP nn">
+    <meta name="description" content="这篇文章主要介绍了GoogLeNet（Inception）网络的结构和特点。GoogLeNet是由Google团队提出的一种深度卷积神经网络，以其高效的计算性能和优异的分类能力而闻名。关键点包括：  1. **Inception模块** - 核心创新，通过并行使用不同尺寸的卷积核和池化操作，能够更高效地提取多尺度特征。     2. **网络深度** - GoogLeNet比之前的网络更深（22层">
 <meta property="og:type" content="article">
 <meta property="og:title" content="动手学深度学习NLP">
 <meta property="og:url" content="http://example.com/2023/05/23/dl/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0NLP/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="https:&#x2F;&#x2F;zh-v2.d2l.ai&#x2F;chapter_convolutional-modern&#x2F;googlenet.html 课程安排 - 动手学深度学习课程 (d2l.ai) Base时序模型当前数据与之前数据相关 音乐、语言、文本 与前面所有有关：  对过去的数据建模，然后预测自己：自回归模型 A：马可夫模型：当前数据只与最近数据相关；用函数前4个值作为特征，预测下一个值，2层MLP nn">
+<meta property="og:description" content="这篇文章主要介绍了GoogLeNet（Inception）网络的结构和特点。GoogLeNet是由Google团队提出的一种深度卷积神经网络，以其高效的计算性能和优异的分类能力而闻名。关键点包括：  1. **Inception模块** - 核心创新，通过并行使用不同尺寸的卷积核和池化操作，能够更高效地提取多尺度特征。     2. **网络深度** - GoogLeNet比之前的网络更深（22层">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325203735748.png">
 <meta property="article:published_time" content="2023-05-23T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T05:20:24.957Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary_large_image">
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.2k 字
+          9.5k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          77 分钟
+          79 分钟
         
       </span>
     
@@ -313,7 +313,11 @@
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html">https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html</a></p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章主要介绍了GoogLeNet（Inception）网络的结构和特点。GoogLeNet是由Google团队提出的一种深度卷积神经网络，以其高效的计算性能和优异的分类能力而闻名。关键点包括：  1. <strong>Inception模块</strong> - 核心创新，通过并行使用不同尺寸的卷积核和池化操作，能够更高效地提取多尺度特征。     2. <strong>网络深度</strong> - GoogLeNet比之前的网络更深（22层），但同时通过1×1卷积减少计算量。  3. <strong>辅助分类器</strong> - 在网络中间层添加辅助分类器，以缓解梯度消失问题并增强训练过程。  4. <strong>全局平均池化</strong> - 替代全连接层以减少参数量，防止过拟合。  5. <strong>高效性</strong> - 通过精心设计，在保持高性能的同时大幅降低了计算成本。  文章详细分析了Inception模块的不同版本（v1-v4）的演进，包括引入批量归一化、因子分解卷积等改进。整体而言，GoogLeNet通过创新的架构设计，实现了在ImageNet等基准数据集上的出色表现。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html">https://zh-v2.d2l.ai/chapter_convolutional-modern/googlenet.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://course.d2l.ai/zh-v2/">课程安排 - 动手学深度学习课程 (d2l.ai)</a></p>
 <h2 id="Base"><a href="#Base" class="headerlink" title="Base"></a>Base</h2><h3 id="时序模型"><a href="#时序模型" class="headerlink" title="时序模型"></a>时序模型</h3><p>当前数据与之前数据相关</p>
 <p>音乐、语言、文本</p>

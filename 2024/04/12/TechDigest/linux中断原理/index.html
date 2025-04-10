@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="引入什么是中断？ 为什么需要中断？ 中断是操作系统中一种重要的机制，可以让处理器中断当前的执行程序，转向另外一个特定的程序，并在处理完成后返回当前执行程序。 123while(true)&#123;	dosomething();&#125;  如果没有中断，处理器只能完全处理完一个任务后，才能处理下一个任务，无法实现任务切换和多任务并发(我如果键盘按下一个按钮，系统可能很久后才能反应) 中断根据实">
+    <meta name="description" content="中断是操作系统中关键机制，允许处理器暂停当前任务，转而执行另一特定程序，处理完成后恢复原任务。中断解决了顺序执行的局限性，使系统能够响应外部事件（如键盘输入）并支持多任务并发。它分为硬件中断和软件中断两类。  **硬件中断**包括外部设备触发的异步中断（如I&#x2F;O事件）和CPU内部同步产生的异常（如缺页或非法指令）。CPU通过可编程中断控制器管理外部中断，其中控制器的IRQ引脚与中断号关联，设备触发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux中断原理">
 <meta property="og:url" content="http://example.com/2024/04/12/TechDigest/linux%E4%B8%AD%E6%96%AD%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="引入什么是中断？ 为什么需要中断？ 中断是操作系统中一种重要的机制，可以让处理器中断当前的执行程序，转向另外一个特定的程序，并在处理完成后返回当前执行程序。 123while(true)&#123;	dosomething();&#125;  如果没有中断，处理器只能完全处理完一个任务后，才能处理下一个任务，无法实现任务切换和多任务并发(我如果键盘按下一个按钮，系统可能很久后才能反应) 中断根据实">
+<meta property="og:description" content="中断是操作系统中关键机制，允许处理器暂停当前任务，转而执行另一特定程序，处理完成后恢复原任务。中断解决了顺序执行的局限性，使系统能够响应外部事件（如键盘输入）并支持多任务并发。它分为硬件中断和软件中断两类。  **硬件中断**包括外部设备触发的异步中断（如I&#x2F;O事件）和CPU内部同步产生的异常（如缺页或非法指令）。CPU通过可编程中断控制器管理外部中断，其中控制器的IRQ引脚与中断号关联，设备触发">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121642365.png">
 <meta property="article:published_time" content="2024-04-12T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:08:40.172Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="linux">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k 字
+          2k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          13 分钟
+          17 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>什么是中断？ 为什么需要中断？</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>中断是操作系统中关键机制，允许处理器暂停当前任务，转而执行另一特定程序，处理完成后恢复原任务。中断解决了顺序执行的局限性，使系统能够响应外部事件（如键盘输入）并支持多任务并发。它分为硬件中断和软件中断两类。  <strong>硬件中断</strong>包括外部设备触发的异步中断（如I&#x2F;O事件）和CPU内部同步产生的异常（如缺页或非法指令）。CPU通过可编程中断控制器管理外部中断，其中控制器的IRQ引脚与中断号关联，设备触发时通知CPU读取中断号。异常则由CPU直接生成或通过指令（如INT n）主动触发（如系统调用）。  中断处理依赖<strong>中断描述符表（IDT）</strong>，其中存储中断号对应的处理函数地址。操作系统初始化时填充IDT（如设置缺页、系统调用等入口），CPU通过IDTR寄存器定位IDT，检测到中断后保存现场、跳转到处理函数，最后恢复现场继续原任务。  <strong>软件中断</strong>由内核守护进程（如ksoftirqd）轮询内存中的中断标志位触发，通过软中断向量表调用对应函数，常用于网络接收等延迟敏感场景。例如，网卡通过硬中断通知数据到达后，由软中断实际处理数据包，避免长时间占用CPU。  总结：   1. <strong>触发</strong>：硬中断通过物理信号或指令，软中断通过内存标志位。   2. <strong>响应</strong>：硬中断立即处理，软中断由内核线程轮询执行。   3. <strong>应用</strong>：硬中断处理紧急事件，软中断实现复杂任务分解（如网络协议栈）。  该机制平衡了实时性与效率，是操作系统多任务和外部响应的核心基础。</p>
+</blockquote>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>什么是中断？ 为什么需要中断？</p>
 <p>中断是操作系统中一种重要的机制，可以让处理器中断当前的执行程序，转向另外一个特定的程序，并在处理完成后返回当前执行程序。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>	<span class="hljs-built_in">dosomething</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 

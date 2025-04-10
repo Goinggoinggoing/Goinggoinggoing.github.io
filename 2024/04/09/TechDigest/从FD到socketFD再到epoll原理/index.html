@@ -19,20 +19,20 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="FDfd 是什么？fd 是 File descriptor 的缩写，中文名叫做：文件描述符。文件描述符是一个非负整数，本质上是一个进程相关的索引值 什么时候拿到的 fd ？ 当打开一个文件时，内核向进程返回一个文件描述符（ open 系统调用得到 ），后续 read、write 这个文件时，则只需要用这个文件描述符来标识该文件，将其作为参数传入 read、write 。 fd 的值范围是什么？ 在">
+    <meta name="description" content="fd（文件描述符）是 File descriptor 的缩写，是一个非负整数，本质上是进程相关的索引值。当打开一个文件时，内核通过系统调用（如 &#96;open&#96;）向进程返回文件描述符，之后通过该描述符进行文件的读写操作。  fd 的取值范围是 0 到 OPEN_MAX-1，其中 0、1、2 已被 POSIX 标准赋予特殊含义，分别是标准输入、标准输出和标准错误。用户可通过 &#96;ulimit&#96; 命令查看当">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从FD到socketFD再到epoll原理">
 <meta property="og:url" content="http://example.com/2024/04/09/TechDigest/%E4%BB%8EFD%E5%88%B0socketFD%E5%86%8D%E5%88%B0epoll%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="FDfd 是什么？fd 是 File descriptor 的缩写，中文名叫做：文件描述符。文件描述符是一个非负整数，本质上是一个进程相关的索引值 什么时候拿到的 fd ？ 当打开一个文件时，内核向进程返回一个文件描述符（ open 系统调用得到 ），后续 read、write 这个文件时，则只需要用这个文件描述符来标识该文件，将其作为参数传入 read、write 。 fd 的值范围是什么？ 在">
+<meta property="og:description" content="fd（文件描述符）是 File descriptor 的缩写，是一个非负整数，本质上是进程相关的索引值。当打开一个文件时，内核通过系统调用（如 &#96;open&#96;）向进程返回文件描述符，之后通过该描述符进行文件的读写操作。  fd 的取值范围是 0 到 OPEN_MAX-1，其中 0、1、2 已被 POSIX 标准赋予特殊含义，分别是标准输入、标准输出和标准错误。用户可通过 &#96;ulimit&#96; 命令查看当">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210932.jpg">
 <meta property="article:published_time" content="2024-04-09T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:14:05.557Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="操作系统">
-<meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="文章精读">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404092210932.jpg">
   
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.2k 字
+          6.8k 字
         
       </span>
     
@@ -251,7 +251,7 @@
         
         
         
-          53 分钟
+          57 分钟
         
       </span>
     
@@ -315,7 +315,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="FD"><a href="#FD" class="headerlink" title="FD"></a>FD</h1><h2 id="fd-是什么？"><a href="#fd-是什么？" class="headerlink" title="fd 是什么？"></a><strong><code>fd</code> 是什么？</strong></h2><p><code>fd</code> 是 <code>File descriptor</code> 的缩写，中文名叫做：<strong>文件描述符</strong>。<strong>文件描述符</strong>是一个非负整数，<strong>本质上是一个进程相关的索引值</strong></p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>fd（文件描述符）是 File descriptor 的缩写，是一个非负整数，本质上是进程相关的索引值。当打开一个文件时，内核通过系统调用（如 <code>open</code>）向进程返回文件描述符，之后通过该描述符进行文件的读写操作。  fd 的取值范围是 0 到 OPEN_MAX-1，其中 0、1、2 已被 POSIX 标准赋予特殊含义，分别是标准输入、标准输出和标准错误。用户可通过 <code>ulimit</code> 命令查看当前系统的文件描述符限制。  文件描述符在进程中通过 <code>task_struct</code> 结构管理，其中 <code>files_struct</code> 结构负责记录进程打开的文件信息。<code>files_struct</code> 包含两个关键部分：静态数组 <code>fd_array</code>（默认 64 个元素）和动态扩容的 <code>fdtable</code>。<code>fd</code> 本质上是数组索引，指向进程的 <code>file</code> 结构。  <code>file</code> 结构记录打开文件的信息，如当前文件偏移量和 <code>inode</code> 指针，可以跨进程共享（如 <code>fork</code> 时）。<code>inode</code> 是虚拟文件系统（VFS）的抽象，管理文件的元数据（如权限、大小、时间戳）和指向具体文件系统（如 ext4）操作的函数指针，不同文件系统通过继承和组合实现差异化支持。  socket（套接字）是网络编程的抽象接口，被视为应用层和传输层之间的桥梁，封装了 TCP&#x2F;UDP 等协议的细节。当 <code>socket()</code> 创建套接字时，内核生成 <code>struct socket</code> 和 <code>struct sock</code> 结构，分别负责文件抽象和协议相关操作。<code>sock</code> 结构包含接收和发送队列、缓冲区大小及数据就绪回调函数（如 <code>sk_data_ready</code>）。  阻塞 IO 中，若无数据可读，进程会挂接到 <code>sock-&gt;sk_wq</code> 等待队列；数据到达时，回调函数唤醒进程。epoll 通过红黑树高效管理大量 socket，将就绪事件放入 <code>rdllist</code> 队列，避免遍历全部连接，并利用回调机制通知用户进程。  总结：fd 是进程访问文件或 socket 的句柄，内核通过多层结构（如 <code>file</code>、<code>inode</code>、<code>socket</code>）实现抽象和高效管理。epoll 则通过事件驱动和红黑树优化，显著提升高并发场景下的 IO 效率。</p>
+</blockquote>
+<h1 id="FD"><a href="#FD" class="headerlink" title="FD"></a>FD</h1><h2 id="fd-是什么？"><a href="#fd-是什么？" class="headerlink" title="fd 是什么？"></a><strong><code>fd</code> 是什么？</strong></h2><p><code>fd</code> 是 <code>File descriptor</code> 的缩写，中文名叫做：<strong>文件描述符</strong>。<strong>文件描述符</strong>是一个非负整数，<strong>本质上是一个进程相关的索引值</strong></p>
 <p><strong>什么时候拿到的 <code>fd</code> ？</strong></p>
 <p>当打开一个文件时，内核向进程返回一个文件描述符（ <code>open</code> 系统调用得到 ），后续 <code>read</code>、<code>write</code> 这个文件时，则只需要用这个<strong>文件描述符</strong>来标识该文件，将其作为参数传入 <code>read</code>、<code>write</code> 。</p>
 <p><strong>fd 的值范围是什么？</strong></p>
@@ -595,9 +599,9 @@
       
         <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
       
-        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
-      
         <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
       
     </div>
   

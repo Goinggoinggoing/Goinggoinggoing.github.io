@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ThreadLocal 为每一个线程开辟了一个空间Map，用于存储变量 用额外的空间使得线程之间互不影响 用途：在一个线程中，存储用户的信息，使得整个线程链路都可以访问到，并且线程之间互不影响  1234567891011121314151617181920public void set(T value) &#123;    Thread t &#x3D; Thread.currentThread();">
+    <meta name="description" content="该文章讨论了线程本地存储（ThreadLocal）及其扩展机制，包括InheritableThreadLocal和TransmittableThreadLocal（TTL）的原理与实现，以及它们的应用场景和局限性。以下是核心内容的总结：  1. **ThreadLocal基础**      - ThreadLocal为每个线程分配独立的空间（ThreadLocalMap），存储线程私有变量，确保线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TL_ITL_TTL原理">
 <meta property="og:url" content="http://example.com/2024/05/10/TechDigest/TL_ITL_TTL%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="ThreadLocal 为每一个线程开辟了一个空间Map，用于存储变量 用额外的空间使得线程之间互不影响 用途：在一个线程中，存储用户的信息，使得整个线程链路都可以访问到，并且线程之间互不影响  1234567891011121314151617181920public void set(T value) &#123;    Thread t &#x3D; Thread.currentThread();">
+<meta property="og:description" content="该文章讨论了线程本地存储（ThreadLocal）及其扩展机制，包括InheritableThreadLocal和TransmittableThreadLocal（TTL）的原理与实现，以及它们的应用场景和局限性。以下是核心内容的总结：  1. **ThreadLocal基础**      - ThreadLocal为每个线程分配独立的空间（ThreadLocalMap），存储线程私有变量，确保线">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240812172504429.png">
 <meta property="article:published_time" content="2024-05-10T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T08:55:51.589Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="多线程">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          992 字
+          1.4k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          9 分钟
+          12 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><ul>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>该文章讨论了线程本地存储（ThreadLocal）及其扩展机制，包括InheritableThreadLocal和TransmittableThreadLocal（TTL）的原理与实现，以及它们的应用场景和局限性。以下是核心内容的总结：  1. <strong>ThreadLocal基础</strong>      - ThreadLocal为每个线程分配独立的空间（ThreadLocalMap），存储线程私有变量，确保线程隔离。      - 用途：存储线程链路中的用户信息（如请求上下文），线程间互不干扰。      - 底层通过弱引用（WeakReference）的Entry数组实现，哈希冲突时使用线性探测。  2. <strong>父子线程传递问题</strong>      - <strong>普通ThreadLocal的局限</strong>：子线程无法继承父线程的ThreadLocal变量（子线程读取为null）。      - <strong>InheritableThreadLocal的改进</strong>：        - 通过<code>inheritableThreadLocals</code>空间在子线程创建时复制父线程的Entry，实现继承。        - 但仅支持线程创建时的静态传递，无法应对线程池复用线程的场景（值不会更新）。  3. <strong>线程池场景的解决方案——TransmittableThreadLocal（TTL）</strong>      - <strong>核心思想</strong>：在执行任务时动态拷贝父线程的TTL变量（而非线程创建时）。      - <strong>实现机制</strong>：        - 通过<code>TtlRunnable</code>装饰器在任务执行前备份父线程的TTL值，执行后恢复。        - <code>holder</code>（InheritableThreadLocal集合）记录所有需传递的TTL变量，通过<code>capture</code>、<code>replay</code>和<code>restore</code>完成值传递与还原。      - <strong>优势</strong>：支持线程池等动态线程复用场景，确保任务执行时能获取最新的父线程变量。  4. <strong>应用场景</strong>      - <strong>分布式跟踪</strong>：传递请求链路标识（如TraceID）。      - <strong>日志上下文</strong>：跨线程记录用户会话信息。      - <strong>Session级缓存</strong>：线程安全的用户数据存储。      - <strong>跨框架&#x2F;SDK通信</strong>：上层向下层透传上下文（如租户ID）。    5. …</p>
+</blockquote>
+<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><ul>
 <li>为每一个线程开辟了一个空间Map，用于存储变量</li>
 <li>用额外的空间使得线程之间互不影响</li>
 <li>用途：在一个线程中，存储用户的信息，使得整个线程链路都可以访问到，并且线程之间互不影响</li>

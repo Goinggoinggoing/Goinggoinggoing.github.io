@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="引入对整个考试系统再次进行压测，并给出排查瓶颈以及不断优化的过程 可能影响性能因素 代码（设计缓存是否命中） exam pod数量，pod的Xmx gateway 、usercenter 数量  redis  mysql 索引 本地网速  最简单查看是否是瓶颈的方式：cpu利用率 压测参数 人数x&#x3D;6k~10k  warm-up&#x3D;100s  题目延时5~195s，平均delay">
+    <meta name="description" content="本次压测针对考试系统的瓶颈进行了全面排查与优化，主要包括以下内容和结果：    1. **压测条件与问题发现**      - 测试规模为6k~10k用户，预热100秒，题目响应延迟5~195秒（平均100秒），初始仅使用1个Exam Pod（1核1G）。      - 进入考试阶段的峰值QPS为40（每1k用户），稳定后降至10（每1k用户）。      - 发现交卷时Exam Pod崩溃，内存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="考试压测及瓶颈排查">
 <meta property="og:url" content="http://example.com/2024/03/01/%E8%80%83%E8%AF%95%E5%8E%8B%E6%B5%8B%E5%8F%8A%E7%93%B6%E9%A2%88%E6%8E%92%E6%9F%A5/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="引入对整个考试系统再次进行压测，并给出排查瓶颈以及不断优化的过程 可能影响性能因素 代码（设计缓存是否命中） exam pod数量，pod的Xmx gateway 、usercenter 数量  redis  mysql 索引 本地网速  最简单查看是否是瓶颈的方式：cpu利用率 压测参数 人数x&#x3D;6k~10k  warm-up&#x3D;100s  题目延时5~195s，平均delay">
+<meta property="og:description" content="本次压测针对考试系统的瓶颈进行了全面排查与优化，主要包括以下内容和结果：    1. **压测条件与问题发现**      - 测试规模为6k~10k用户，预热100秒，题目响应延迟5~195秒（平均100秒），初始仅使用1个Exam Pod（1核1G）。      - 进入考试阶段的峰值QPS为40（每1k用户），稳定后降至10（每1k用户）。      - 发现交卷时Exam Pod崩溃，内存">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202403251636022.png">
 <meta property="article:published_time" content="2024-03-01T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T08:20:46.718Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="后端">
 <meta property="article:tag" content="java">
@@ -242,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          878 字
+          1.3k 字
         
       </span>
     
@@ -253,7 +253,7 @@
         
         
         
-          8 分钟
+          12 分钟
         
       </span>
     
@@ -317,7 +317,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>对整个考试系统再次进行压测，并给出排查瓶颈以及不断优化的过程</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>本次压测针对考试系统的瓶颈进行了全面排查与优化，主要包括以下内容和结果：    1. <strong>压测条件与问题发现</strong>      - 测试规模为6k<del>10k用户，预热100秒，题目响应延迟5</del>195秒（平均100秒），初始仅使用1个Exam Pod（1核1G）。      - 进入考试阶段的峰值QPS为40（每1k用户），稳定后降至10（每1k用户）。      - 发现交卷时Exam Pod崩溃，内存持续上升，怀疑内存泄漏。CPU在考试阶段利用率达40%，MySQL为20%。    2. <strong>内存泄漏排查与修复</strong>      - 通过<code>jmap</code>和MAT工具分析，发现<code>org.apache.catalina.session.StandardManager</code>占用了76%的内存，根源在于Spring Security默认使用HTTP Session存储用户认证信息（JSESSIONID），导致Session对象堆积。      - 解决：修改<code>ResourceServerConfig</code>，强制使用无状态策略（<code>SessionCreationPolicy.STATELESS</code>），完全依赖JWT鉴权。优化后内存泄漏问题消失。    3. <strong>MySQL瓶颈与缓存优化</strong>      - Gateway在每次请求中均会查询用户详情，导致MySQL负载过高（8k用户时RT爆炸）。      - 优化：在鉴权后通过Guava缓存用户信息，减少数据库查询。优化后MySQL负载趋稳，P95响应时间降至130ms。    4. <strong>资源分配与扩展性结论</strong>      - 最终配置：Exam Pod、UserCenter（3 Pod）、Gateway（5 Pod）。      - 系统性能提升显著，扩展性验证表明：只需水平扩展机器即可进一步提升并发能力。      - 注意：压测在本地环境进行，可能受限于带宽和硬件，建议后续使用云服务器标准化测试。    <strong>总结</strong>：通过修复内存泄漏、优化无状态设计、引入本地缓存，系统成功解决了OOM和高延迟问题，MySQL不再是瓶颈，整体并发能力大幅提升。</p>
+</blockquote>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>对整个考试系统再次进行压测，并给出排查瓶颈以及不断优化的过程</p>
 <h3 id="可能影响性能因素"><a href="#可能影响性能因素" class="headerlink" title="可能影响性能因素"></a><strong>可能影响性能因素</strong></h3><ul>
 <li>代码（设计缓存是否命中）</li>
 <li>exam pod数量，pod的Xmx</li>

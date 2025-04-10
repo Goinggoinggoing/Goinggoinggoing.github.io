@@ -19,12 +19,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="层次结构  MAC首部 + IP首部 + TCP首部 + TCP数据 物理层：通过媒介传输比特,确定机械及电气规范（比特Bit）数据链路层：将比特组装成帧和点到点的传递（帧Frame）网络层：负责数据包从源到宿的传递和网际互连（包PackeT）传输层：提供端到端的可靠报文传递和错误恢复（段Segment）会话层：建立、管理和终止会话（会话协议数据单元SPDU）表示层：对数据进行翻译、加密和压缩（表">
+    <meta name="description" content="这篇文章主要介绍了计算机网络通信的基础概念和技术原理，涵盖从物理层到应用层的各个层级，以及数据传输的相关机制。    1. **网络分层结构**：从物理层（比特传输）、数据链路层（帧组装）、网络层（数据包路由）、传输层（可靠数据传输）到会话层、表示层和应用层（协议数据处理），逐层解释其功能和作用。    2. **数据传输机制**：      - **HUB与交换机**：HUB采用广播方式发送数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络">
 <meta property="og:url" content="http://example.com/2021/09/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="层次结构  MAC首部 + IP首部 + TCP首部 + TCP数据 物理层：通过媒介传输比特,确定机械及电气规范（比特Bit）数据链路层：将比特组装成帧和点到点的传递（帧Frame）网络层：负责数据包从源到宿的传递和网际互连（包PackeT）传输层：提供端到端的可靠报文传递和错误恢复（段Segment）会话层：建立、管理和终止会话（会话协议数据单元SPDU）表示层：对数据进行翻译、加密和压缩（表">
+<meta property="og:description" content="这篇文章主要介绍了计算机网络通信的基础概念和技术原理，涵盖从物理层到应用层的各个层级，以及数据传输的相关机制。    1. **网络分层结构**：从物理层（比特传输）、数据链路层（帧组装）、网络层（数据包路由）、传输层（可靠数据传输）到会话层、表示层和应用层（协议数据处理），逐层解释其功能和作用。    2. **数据传输机制**：      - **HUB与交换机**：HUB采用广播方式发送数据">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213424.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213426.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213427.png">
 <meta property="article:published_time" content="2021-09-09T12:33:46.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T08:27:39.270Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机基础">
 <meta name="twitter:card" content="summary_large_image">
@@ -242,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          2.9k 字
         
       </span>
     
@@ -253,7 +253,7 @@
         
         
         
-          20 分钟
+          25 分钟
         
       </span>
     
@@ -317,7 +317,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png" srcset="/img/loading.gif" lazyload alt="image-20210808133147935" style="zoom:67%;" />
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章主要介绍了计算机网络通信的基础概念和技术原理，涵盖从物理层到应用层的各个层级，以及数据传输的相关机制。    1. <strong>网络分层结构</strong>：从物理层（比特传输）、数据链路层（帧组装）、网络层（数据包路由）、传输层（可靠数据传输）到会话层、表示层和应用层（协议数据处理），逐层解释其功能和作用。    2. <strong>数据传输机制</strong>：      - <strong>HUB与交换机</strong>：HUB采用广播方式发送数据，半双工工作；交换机通过MAC地址表定向转发数据，支持全双工。      - <strong>MAC地址与IP路由</strong>：数据包传递过程中，IP地址不变，而MAC地址会根据不同网络节点（交换机、路由器）动态变化。      - <strong>ARP协议</strong>：负责IP地址到MAC地址的转换，使用缓存优化查询效率。      - <strong>差错检测</strong>（CRC）、<strong>可靠传输</strong>（ARQ协议）及流量控制（滑动窗口、超时重传）。    3. <strong>网络互联与路由</strong>：      - 路由器负责不同子网间的数据转发，路由表包含目标网络、子网掩码、下一跳和接口信息。      - <strong>RIP协议</strong>（基于距离向量）和<strong>OSPF协议</strong>（基于链路状态）分别用于构建和优化路由表。    4. <strong>TCP&#x2F;IP关键机制</strong>：      - <strong>三次握手（建立连接）</strong>和<strong>四次挥手（终止连接）</strong>确保通信可靠性。      - <strong>拥塞控制</strong>（慢启动、拥塞避免、快重传、快恢复）和流量管理（接收窗口调节发送速度）。    5. <strong>应用层协议</strong>：HTTP（TCP&#x2F;80）、HTTPS（TCP&#x2F;443，加密+认证）、DNS（UDP&#x2F;53）、SMTP（TCP&#x2F;25）等，对比TCP（可靠）与UDP（高效）的适用场景。    6. <strong>HTTPS安全机制</strong>：结合非对称加密（证书验证服务器身份）和对称加密（数据传输），依赖CA机构确保公钥真实性。    7. <strong>Web请求流程</strong>：DNS解析、TCP连接、HTTP请求、服务器处理、资源加载和页面渲染，涉及状态码（2xx成功、3xx重定向、4xx客户端错误、5xx服务器错误）的应用。    整体围绕网络架构、通信协议、路由优化及安全传输展开，系统梳理了数据从传输到应用的关键技术点。</p>
+</blockquote>
+<h3 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h3><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304191213652.png" srcset="/img/loading.gif" lazyload alt="image-20210808133147935" style="zoom:67%;" />
 
 <p>MAC首部 + IP首部 + TCP首部 + TCP数据</p>
 <p>物理层：通过媒介传输比特,确定机械及电气规范（比特Bit）<br>数据链路层：将比特组装成帧和点到点的传递（帧Frame）<br>网络层：负责数据包从源到宿的传递和网际互连（包PackeT）<br>传输层：提供端到端的可靠报文传递和错误恢复（段Segment）<br>会话层：建立、管理和终止会话（会话协议数据单元SPDU）<br>表示层：对数据进行翻译、加密和压缩（表示协议数据单元PPDU）<br>应用层：允许访问OSI环境的手段（应用协议数据单元APDU）</p>

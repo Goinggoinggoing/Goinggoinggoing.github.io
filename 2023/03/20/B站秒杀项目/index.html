@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903367.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202303221903368.png">
 <meta property="article:published_time" content="2023-03-20T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T07:56:02.419Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="java项目">
 <meta name="twitter:card" content="summary_large_image">
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.2k 字
+          4.7k 字
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          36 分钟
+          40 分钟
         
       </span>
     
@@ -316,7 +316,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="B站秒杀项目"><a href="#B站秒杀项目" class="headerlink" title="B站秒杀项目"></a>B站秒杀项目</h1><ul>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这是一个秒杀系统的学习项目，核心目标是实现高性能、高并发的秒杀功能，同时解决超卖和重复抢购问题。项目基于Spring Boot框架，整合了MyBatis、Redis、RabbitMQ等技术，并逐步优化性能。    主要内容包括：    1. <strong>秒杀功能实现</strong>      - <strong>防止超卖</strong>：通过数据库乐观锁（update原子操作）和Redis预减库存（利用Redis原子性）实现。      - <strong>防止重复抢购</strong>：通过唯一索引（用户+商品ID）或Redis缓存验证。    2. <strong>优化策略</strong>      - <strong>减少数据库访问</strong>：使用Redis缓存库存、订单信息等。      - <strong>优化并发瓶颈</strong>：引入内存标记减少Redis访问，利用MQ异步处理请求，降低数据库压力。      - <strong>静态页面优化</strong>：采用前后端分离（页面静态化），通过Ajax加载动态数据，减少服务端渲染压力。    3. <strong>技术实现</strong>      - <strong>分布式会话管理</strong>：使用Redis存储用户Session或Token，支持多服务共享登录状态。      - <strong>压测与调优</strong>：JMeter模拟高并发请求，分析并优化QPS（从637提升至3209）。      - <strong>安全措施</strong>：验证码、接口限流（令牌桶算法）、隐藏秒杀地址等，防止恶意请求。    4. <strong>关键问题与解决方案</strong>      - <strong>超卖问题</strong>：Redis预减库存+数据库乐观锁双重保障，确保库存不超扣。      - <strong>性能瓶颈</strong>：本地化Redis（避免网络延迟）、MQ削峰填谷、内存标记优化。      - <strong>分布式锁</strong>：通过Redis+Lua脚本实现原子操作，避免并发问题。    5. <strong>系统扩展</strong>      - 支持动态调整商品库存（如Nacos配置下发）。      - 网关层限流（如Sentinel）保护后端服务。    该项目从基础实现逐步优化至高并发方案，涵盖数据库设计、缓存策略、异步处理、安全防护等核心要点，适用于学习分布式系统与高并发场景的解决方案。</p>
+</blockquote>
+<h1 id="B站秒杀项目"><a href="#B站秒杀项目" class="headerlink" title="B站秒杀项目"></a>B站秒杀项目</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1sf4y1L7KE">视频地址</a></li>
 <li>代码：<a target="_blank" rel="noopener" href="https://github.com/Goinggoinggoing/seckill-study">https://github.com/Goinggoinggoing/seckill-study</a></li>
 <li>项目来源：程序员来了666 <a target="_blank" rel="noopener" href="https://gitee.com/guizhizhe/seckill_demo">https://gitee.com/guizhizhe/seckill_demo</a> ， 添加了一些中间过程接口以及注释</li>

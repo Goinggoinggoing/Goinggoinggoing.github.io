@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="引入第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。 第一部分 进入内核前的苦力活 第二部分 大战前期的初始化工作 到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。 123456789101112void main(void) &#123;    &#x2F;&#x2F; 第二部分的内容，各种初始化工作    ...    &#x2F;&#x2F; 第三部分的内容，">
+    <meta name="description" content="这篇文章主要讲解了以下内容：  1. **内核态切换到用户态**：通过 &#96;move_to_user_mode&#96; 函数从内核态切换到用户态，利用中断返回机制模拟切换过程，确保代码在用户态下运行。  2. **进程创建（fork）**：通过 &#96;fork&#96; 系统调用创建新进程：    - &#96;find_empty_process&#96; 找到空闲的进程槽位。    - &#96;copy_process&#96; 复制当前进程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个新进程的诞生[linux源码趣读]">
 <meta property="og:url" content="http://example.com/2023/07/07/book/%E4%B8%80%E4%B8%AA%E6%96%B0%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%AF%9E%E7%94%9F[linux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB]/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="引入第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。 第一部分 进入内核前的苦力活 第二部分 大战前期的初始化工作 到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。 123456789101112void main(void) &#123;    &#x2F;&#x2F; 第二部分的内容，各种初始化工作    ...    &#x2F;&#x2F; 第三部分的内容，">
+<meta property="og:description" content="这篇文章主要讲解了以下内容：  1. **内核态切换到用户态**：通过 &#96;move_to_user_mode&#96; 函数从内核态切换到用户态，利用中断返回机制模拟切换过程，确保代码在用户态下运行。  2. **进程创建（fork）**：通过 &#96;fork&#96; 系统调用创建新进程：    - &#96;find_empty_process&#96; 找到空闲的进程槽位。    - &#96;copy_process&#96; 复制当前进程">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404182148396.png">
 <meta property="article:published_time" content="2023-07-07T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T11:16:29.376Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="linux">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.7k 字
+          5.2k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          40 分钟
+          44 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章主要讲解了以下内容：  1. <strong>内核态切换到用户态</strong>：通过 <code>move_to_user_mode</code> 函数从内核态切换到用户态，利用中断返回机制模拟切换过程，确保代码在用户态下运行。  2. <strong>进程创建（fork）</strong>：通过 <code>fork</code> 系统调用创建新进程：    - <code>find_empty_process</code> 找到空闲的进程槽位。    - <code>copy_process</code> 复制当前进程的上下文（task_struct）、内存管理信息（页表、段表）以及寄存器状态。    - 新进程与父进程共享相同的物理内存，但通过写时复制（Copy-On-Write）机制确保修改时分配新内存。  3. <strong>进程调度机制</strong>：    - <strong>时间片轮转</strong>：每个进程有一个时间片计数器（counter），时钟中断（10ms一次）减少计数器，归零时触发调度。    - <strong>优先级调度</strong>：进程的初始时间片由优先级（priority）决定，空闲时重新分配时间片。    - <strong>任务状态</strong>：进程可以是运行（TASK_RUNNING）、不可中断（TASK_UNINTERRUPTIBLE）等状态，确保合理调度。  4. <strong>内存管理</strong>：    - <strong>段式管理</strong>：每个进程通过 LDT（局部描述符表）映射到独立的线性地址空间。    - <strong>页式管理</strong>：通过页表将线性地址映射到物理地址，fork 时复制父进程页表，但设置为只读以实现写时复制。    - <strong>缺页中断</strong>：写操作触发缺页中断，处理程序 <code>do_wp_page</code> 分配新物理页并更新页表。  5. <strong>系统调用与中断</strong>：    - <strong>int 0x80</strong>：用户态通过软中断进入内核，由 <code>sys_call_table</code> 根据 eax 调用处理函数（如 <code>sys_fork</code>）。    - <strong>中断上下文切换</strong>：保存寄存器状态并通过 TSS（任务状态段）恢复新进程的上下文。  <strong>总结</strong>：文章详细描述了进程创建（fork）的完整流程，包括权限切换、内存复制、调度策略以及写时复制的实现机制，展示了操作系统如何管理多进程的并发执行和内存隔离。</p>
+</blockquote>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>第一部分和第二部分，为我们这个第三部分做了充足的铺垫工作。</p>
 <p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247499882&idx=1&sn=68fd16c5aeae15084be58afb1e5bd9e8&chksm=c2c5bac7f5b233d1c486fa57e9e3a2bc907a92ab69ff0344babab4d50bdaf76e7766b4b42914&scene=21#wechat_redirect">第一部分 进入内核前的苦力活</a></p>
 <p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzk0MjE3NDE0Ng==&mid=2247500983&idx=1&sn=ad4c430823c975df97f13de3fbe8c66e&chksm=c2c5be1af5b2370cad4ce3218c5294feee4ae2e4d28804398c1dc8ac252c8dfafbe419ccf58c&scene=21#wechat_redirect">第二部分 大战前期的初始化工作</a></p>
 <p>到了第三部分，简单说就是从内核态切换到用户态，然后通过 fork 创建出一个新的进程，再之后老进程进入死循环。</p>

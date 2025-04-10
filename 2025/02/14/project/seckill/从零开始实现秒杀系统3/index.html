@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从零开始实现秒杀系统（三）：RocketMQ消息队列篇引言在前两篇文章中，我们先后探讨了基于MySQL的秒杀系统实现（V1）和基于Redis优化的秒杀系统（V2）。虽然V2版本通过Redis预减库存和内存队列显著提升了系统性能，但我们仍面临着几个关键挑战：服务可靠性、数据一致性、系统扩展性以及高并发下的内存压力问题。 本文作为系列的第三篇，将介绍如何利用RocketMQ消息队列进一步优化秒杀系统，">
+    <meta name="description" content="本文是秒杀系统优化系列的第三篇，介绍如何利用RocketMQ消息队列解决V2版本遗留的问题。V2版本通过Redis预减库存和内存队列提升了性能，但仍存在服务可靠性差（宕机导致内存队列任务丢失）、数据一致性风险（Redis与数据库操作分离）、单机瓶颈（内存队列无法水平扩展）以及数据库行锁影响库存扣减性能等问题。  V3架构的核心优化是引入RocketMQ消息队列，关键改进包括：保留Redis预减库存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始实现秒杀系统（三）：RocketMQ消息队列篇">
 <meta property="og:url" content="http://example.com/2025/02/14/project/seckill/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F3/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="从零开始实现秒杀系统（三）：RocketMQ消息队列篇引言在前两篇文章中，我们先后探讨了基于MySQL的秒杀系统实现（V1）和基于Redis优化的秒杀系统（V2）。虽然V2版本通过Redis预减库存和内存队列显著提升了系统性能，但我们仍面临着几个关键挑战：服务可靠性、数据一致性、系统扩展性以及高并发下的内存压力问题。 本文作为系列的第三篇，将介绍如何利用RocketMQ消息队列进一步优化秒杀系统，">
+<meta property="og:description" content="本文是秒杀系统优化系列的第三篇，介绍如何利用RocketMQ消息队列解决V2版本遗留的问题。V2版本通过Redis预减库存和内存队列提升了性能，但仍存在服务可靠性差（宕机导致内存队列任务丢失）、数据一致性风险（Redis与数据库操作分离）、单机瓶颈（内存队列无法水平扩展）以及数据库行锁影响库存扣减性能等问题。  V3架构的核心优化是引入RocketMQ消息队列，关键改进包括：保留Redis预减库存">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027568.png">
 <meta property="article:published_time" content="2025-02-14T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-10T02:51:42.748Z">
+<meta property="article:modified_time" content="2025-04-10T12:18:56.103Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="java项目">
 <meta property="article:tag" content="秒杀系统">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          3k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          21 分钟
+          26 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="从零开始实现秒杀系统（三）：RocketMQ消息队列篇"><a href="#从零开始实现秒杀系统（三）：RocketMQ消息队列篇" class="headerlink" title="从零开始实现秒杀系统（三）：RocketMQ消息队列篇"></a>从零开始实现秒杀系统（三）：RocketMQ消息队列篇</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在前两篇文章中，我们先后探讨了基于MySQL的秒杀系统实现（V1）和基于Redis优化的秒杀系统（V2）。虽然V2版本通过Redis预减库存和内存队列显著提升了系统性能，但我们仍面临着几个关键挑战：服务可靠性、数据一致性、系统扩展性以及高并发下的内存压力问题。</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>本文是秒杀系统优化系列的第三篇，介绍如何利用RocketMQ消息队列解决V2版本遗留的问题。V2版本通过Redis预减库存和内存队列提升了性能，但仍存在服务可靠性差（宕机导致内存队列任务丢失）、数据一致性风险（Redis与数据库操作分离）、单机瓶颈（内存队列无法水平扩展）以及数据库行锁影响库存扣减性能等问题。  V3架构的核心优化是引入RocketMQ消息队列，关键改进包括：保留Redis预减库存机制但改为同步创建订单（不涉及行锁），将高争用的库存扣减操作异步化，通过事务消息确保操作执行可靠性，并实现三种消息消费模式（至少一次、至多一次、恰好一次）。主要工作流程为：先进行Redis库存校验和预减库存，发送半消息到RocketMQ后同步创建订单并确认消息，最终返回秒杀成功。消费者根据配置选择不同消费模式处理库存扣减。  技术实现上重点采用RocketMQ事务消息的两阶段提交机制：先发送半消息，执行本地订单创建事务，根据结果确认或回滚消息，并支持事务状态回查。文章详细展示了事务消息的生产者实现代码和事务监听器代码，后者包含本地事务执行和状态回查逻辑。针对不同业务场景，提供了三种库存扣减实现：简单但可能重复的至少一次模式、基于Redis幂等的至多一次模式，以及通过数据库事务和幂等表确保的恰好一次模式。  优化后的系统具备高可靠性（消息不丢失）、解耦性（订单与库存操作分离）、可扩展性（消费者水平扩展）和削峰填谷能力，同时通过事务消息和幂等设计保障数据一致性。文章也指出后续优化方向，包括限流保护、库存对账和监控告警体系建设。该系列完整展现了从基础MySQL实现到集成Redis缓存，最终引入消息队列的渐进式优化过程。</p>
+</blockquote>
+<h1 id="从零开始实现秒杀系统（三）：RocketMQ消息队列篇"><a href="#从零开始实现秒杀系统（三）：RocketMQ消息队列篇" class="headerlink" title="从零开始实现秒杀系统（三）：RocketMQ消息队列篇"></a>从零开始实现秒杀系统（三）：RocketMQ消息队列篇</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在前两篇文章中，我们先后探讨了基于MySQL的秒杀系统实现（V1）和基于Redis优化的秒杀系统（V2）。虽然V2版本通过Redis预减库存和内存队列显著提升了系统性能，但我们仍面临着几个关键挑战：服务可靠性、数据一致性、系统扩展性以及高并发下的内存压力问题。</p>
 <p>本文作为系列的第三篇，将介绍如何利用RocketMQ消息队列进一步优化秒杀系统，解决V2版本中的剩余问题，实现一个更可靠、更具扩展性的高性能秒杀系统。</p>
 <h2 id="V3版本架构改进"><a href="#V3版本架构改进" class="headerlink" title="V3版本架构改进"></a>V3版本架构改进</h2><h3 id="V2架构的问题回顾"><a href="#V2架构的问题回顾" class="headerlink" title="V2架构的问题回顾"></a>V2架构的问题回顾</h3><p>V2版本虽然性能显著提升，但存在以下问题：</p>
 <ol>

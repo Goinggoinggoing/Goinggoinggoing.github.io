@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="固定窗口临界突发问题：在窗口的边界，可能有大量流量  123456789101112131415161718192021222324252627282930313233343536public class FixedWindowRateLimiter &#123;    &#x2F;&#x2F; 每个窗口允许的最大请求数    private final int maxRequests;    &#x2F;&#x2F; 窗口大小，单位为">
+    <meta name="description" content="文章主要讨论了限流算法的几种实现方式及其特点。  首先提到固定窗口限流算法（Fixed Window），通过设定时间窗口内的最大请求数来限流。该方法实现简便，但存在临界突发问题，即在窗口边界可能出现流量突增的情况（如两个窗口交界处可能允许两倍流量通过）。  滑动窗口限流算法（Sliding Window）通过记录请求时间戳队列动态计算窗口内请求数，相比固定窗口更精确，但内存消耗大且清理过期数据可能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常见限流算法">
 <meta property="og:url" content="http://example.com/2024/07/10/TechDigest/%E5%B8%B8%E8%A7%81%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="固定窗口临界突发问题：在窗口的边界，可能有大量流量  123456789101112131415161718192021222324252627282930313233343536public class FixedWindowRateLimiter &#123;    &#x2F;&#x2F; 每个窗口允许的最大请求数    private final int maxRequests;    &#x2F;&#x2F; 窗口大小，单位为">
+<meta property="og:description" content="文章主要讨论了限流算法的几种实现方式及其特点。  首先提到固定窗口限流算法（Fixed Window），通过设定时间窗口内的最大请求数来限流。该方法实现简便，但存在临界突发问题，即在窗口边界可能出现流量突增的情况（如两个窗口交界处可能允许两倍流量通过）。  滑动窗口限流算法（Sliding Window）通过记录请求时间戳队列动态计算窗口内请求数，相比固定窗口更精确，但内存消耗大且清理过期数据可能">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410091910917.png">
 <meta property="article:published_time" content="2024-07-10T12:33:46.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:16:40.003Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="高并发">
 <meta property="article:tag" content="限流">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          973 字
+          1.4k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          9 分钟
+          12 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h2 id=""><a href="#" class="headerlink" title=""></a></h2><h3 id="固定窗口"><a href="#固定窗口" class="headerlink" title="固定窗口"></a>固定窗口</h3><p><strong>临界突发问题</strong>：在窗口的边界，可能有大量流量</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>文章主要讨论了限流算法的几种实现方式及其特点。  首先提到固定窗口限流算法（Fixed Window），通过设定时间窗口内的最大请求数来限流。该方法实现简便，但存在临界突发问题，即在窗口边界可能出现流量突增的情况（如两个窗口交界处可能允许两倍流量通过）。  滑动窗口限流算法（Sliding Window）通过记录请求时间戳队列动态计算窗口内请求数，相比固定窗口更精确，但内存消耗大且清理过期数据可能影响性能。  平滑滑动窗口（Smooth Sliding Window）进一步优化，将大窗口划分为多个子窗口，通过周期重置子窗口计数来平滑流量统计。使用锁保证线程安全，适合热点检测等场景。  漏桶算法（Leaky Bucket）以恒定速率处理请求，实现流量整形。通过控制漏水速率和桶容量来平滑流量，但对突发流量处理较严格。文中代码示例仅实现容量检查，未完全体现匀速处理特性。  令牌桶算法（Token Bucket）定期向桶添加令牌，允许突发流量消耗积累的令牌。通过控制令牌生成速率和桶容量实现灵活限流，适合需要容忍短期突发的场景。  各算法对比：固定窗口实现简单但有临界问题；滑动窗口精度高但资源消耗大；漏桶强制流量匀速；令牌桶允许突发但控制速率。选择时需权衡精度、性能和业务需求。</p>
+</blockquote>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h3 id="固定窗口"><a href="#固定窗口" class="headerlink" title="固定窗口"></a>固定窗口</h3><p><strong>临界突发问题</strong>：在窗口的边界，可能有大量流量</p>
 <p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410091809783.png" srcset="/img/loading.gif" lazyload alt="image-20241009180923079"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FixedWindowRateLimiter</span> &#123;<br><br>    <span class="hljs-comment">// 每个窗口允许的最大请求数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> maxRequests;<br>    <span class="hljs-comment">// 窗口大小，单位为毫秒</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> windowSizeInMillis;<br>    <span class="hljs-comment">// 记录当前窗口开始的时间</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> windowStart;<br>    <span class="hljs-comment">// 当前窗口内的请求计数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicInteger requestCount;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">FixedWindowRateLimiter</span><span class="hljs-params">(<span class="hljs-type">int</span> maxRequests, <span class="hljs-type">long</span> windowSizeInMillis)</span> &#123;<br>        <span class="hljs-built_in">this</span>.maxRequests = maxRequests;<br>        <span class="hljs-built_in">this</span>.windowSizeInMillis = windowSizeInMillis;<br>        <span class="hljs-built_in">this</span>.windowStart = System.currentTimeMillis();<br>        <span class="hljs-built_in">this</span>.requestCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicInteger</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">allowRequest</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">long</span> <span class="hljs-variable">currentTime</span> <span class="hljs-operator">=</span> System.currentTimeMillis();<br><br>        <span class="hljs-comment">// 判断当前时间是否已经进入新的窗口</span><br>        <span class="hljs-keyword">if</span> (currentTime - windowStart &gt;= windowSizeInMillis) &#123;<br>            <span class="hljs-comment">// 重置窗口</span><br>            windowStart = currentTime;<br>            requestCount.set(<span class="hljs-number">0</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 判断是否可以在当前窗口内处理请求</span><br>        <span class="hljs-keyword">if</span> (requestCount.incrementAndGet() &lt;= maxRequests) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 允许请求</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 拒绝请求</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 

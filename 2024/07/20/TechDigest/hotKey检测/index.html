@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="对于访问流量的热点检测，本质是如何从流式数据计算出topk。对于有限的数据项，可以简单地使用 Hashmap+Heap-Sort来对数据进行计数排序。但是对于海量数据以及有限的内存，该方法几乎是行不通的。因此我们需要使用更高效的数据结构和算法来实现。 Majority问题 数组中有一个数字出现的次数超过数组长度的一半 m &#x2F; 2，请找出这个数字。  169. 多数元素 - 力扣（Leet">
+    <meta name="description" content="摘要内容：  热点检测的核心是从流式数据中高效计算topk。传统Hashmap+堆排序适用于有限数据，但海量数据场景需更优算法。对于频率超过半数的问题，可以通过候选计数法解决（维护候选元素，相同则+1，不同则-1，扣减次数有限保证结果正确）。推广到频率超过m&#x2F;k的元素时，需维护k-1个候选集合，通过增减计数过滤低频项，结果可能出现假阳性但无假阴性。  优化算法层面： 1. **Count-Min">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hotKey检测">
 <meta property="og:url" content="http://example.com/2024/07/20/TechDigest/hotKey%E6%A3%80%E6%B5%8B/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="对于访问流量的热点检测，本质是如何从流式数据计算出topk。对于有限的数据项，可以简单地使用 Hashmap+Heap-Sort来对数据进行计数排序。但是对于海量数据以及有限的内存，该方法几乎是行不通的。因此我们需要使用更高效的数据结构和算法来实现。 Majority问题 数组中有一个数字出现的次数超过数组长度的一半 m &#x2F; 2，请找出这个数字。  169. 多数元素 - 力扣（Leet">
+<meta property="og:description" content="摘要内容：  热点检测的核心是从流式数据中高效计算topk。传统Hashmap+堆排序适用于有限数据，但海量数据场景需更优算法。对于频率超过半数的问题，可以通过候选计数法解决（维护候选元素，相同则+1，不同则-1，扣减次数有限保证结果正确）。推广到频率超过m&#x2F;k的元素时，需维护k-1个候选集合，通过增减计数过滤低频项，结果可能出现假阳性但无假阴性。  优化算法层面： 1. **Count-Min">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202410091919360.png">
 <meta property="article:published_time" content="2024-07-20T12:33:46.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:02:40.440Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="热点key">
 <meta property="article:tag" content="高并发">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          2.2k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          16 分钟
+          19 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>对于访问流量的热点检测，本质是如何从流式数据计算出topk。对于有限的数据项，可以简单地使用 Hashmap+Heap-Sort来对数据进行计数排序。但是对于海量数据以及有限的内存，该方法几乎是行不通的。因此我们需要使用更高效的数据结构和算法来实现。</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>摘要内容：  热点检测的核心是从流式数据中高效计算topk。传统Hashmap+堆排序适用于有限数据，但海量数据场景需更优算法。对于频率超过半数的问题，可以通过候选计数法解决（维护候选元素，相同则+1，不同则-1，扣减次数有限保证结果正确）。推广到频率超过m&#x2F;k的元素时，需维护k-1个候选集合，通过增减计数过滤低频项，结果可能出现假阳性但无假阴性。  优化算法层面： 1. <strong>Count-Min Sketch</strong>：通过多哈希函数映射到二维桶数组，取最小值降低哈希冲突影响，配合最小堆获取topk。 2. <strong>衰减改进（2018年）</strong>：引入指纹与指数衰减（如概率P &#x3D; b^(-C)），有效剔除低频干扰。 3. <strong>突发流量适应</strong>：原始算法因历史数据堆积难以快速检测突发热点（如新元素需长时间累积频次）。引入衰减因子（如Ci &#x3D; Ci&#x2F;n），通过等比数列求和平衡实时性与准确性。  系统实现（以Burning为例）： - <strong>架构分层</strong>：Client上报Key，Worker集群计算热点，Config中心（如etcd）存储规则，Admin管理台监控配置。 - <strong>关键能力</strong>：Client本地缓存热Key，Worker滑动窗口统计，Admin实时推送，Config保证一致性。 - <strong>优势</strong>：无状态Worker、长连接通信、动态规则配置，兼顾实时探测与资源效率。</p>
+</blockquote>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>对于访问流量的热点检测，本质是如何从流式数据计算出topk。对于有限的数据项，可以简单地使用 Hashmap+Heap-Sort来对数据进行计数排序。但是对于海量数据以及有限的内存，该方法几乎是行不通的。因此我们需要使用更高效的数据结构和算法来实现。</p>
 <h3 id="Majority问题"><a href="#Majority问题" class="headerlink" title="Majority问题"></a>Majority问题</h3><blockquote>
 <p>数组中有一个数字出现的次数超过数组长度的一半 m &#x2F; 2，请找出这个数字。</p>
 </blockquote>

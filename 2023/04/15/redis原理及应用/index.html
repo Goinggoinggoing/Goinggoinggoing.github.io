@@ -19,12 +19,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1cr4y1671t 链接https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1189u6u4icQYHg_9_7ovWmA?pwd&#x3D;eh11提取码：eh11 社交类项目  短信登陆 商户查询缓存：缓存雪崩 穿透 击穿 博客 优惠券秒杀：计算器 lua 分布式锁 队列 好友关注：set集合  项目搭建前后端分离 start ngi">
+    <meta name="description" content="这篇文章总结了Redis在社交类项目中的实际应用和技术要点，主要内容包括：  1. **短信登录与用户会话管理**    - 验证码和用户信息存储方案（Session vs Redis）    - 使用ThreadLocal保存用户信息    - 敏感信息处理（DTO对象转换）  2. **商户缓存解决方案**    - 缓存穿透（布隆过滤器&#x2F;空值缓存）    - 缓存雪崩（随机TTL&#x2F;多级缓存）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis应用及原理">
 <meta property="og:url" content="http://example.com/2023/04/15/redis%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1cr4y1671t 链接https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1189u6u4icQYHg_9_7ovWmA?pwd&#x3D;eh11提取码：eh11 社交类项目  短信登陆 商户查询缓存：缓存雪崩 穿透 击穿 博客 优惠券秒杀：计算器 lua 分布式锁 队列 好友关注：set集合  项目搭建前后端分离 start ngi">
+<meta property="og:description" content="这篇文章总结了Redis在社交类项目中的实际应用和技术要点，主要内容包括：  1. **短信登录与用户会话管理**    - 验证码和用户信息存储方案（Session vs Redis）    - 使用ThreadLocal保存用户信息    - 敏感信息处理（DTO对象转换）  2. **商户缓存解决方案**    - 缓存穿透（布隆过滤器&#x2F;空值缓存）    - 缓存雪崩（随机TTL&#x2F;多级缓存）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200622115.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20230325200816783.png">
@@ -114,7 +114,7 @@
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221335497.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240314221659158.png">
 <meta property="article:published_time" content="2023-04-15T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T11:09:03.363Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="reids">
 <meta property="article:tag" content="中间件">
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.9k 字
+          7.2k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          58 分钟
+          60 分钟
         
       </span>
     
@@ -400,7 +400,11 @@
             
               <div class="markdown-body">
                 
-                <p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cr4y1671t">https://www.bilibili.com/video/BV1cr4y1671t</a></p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章总结了Redis在社交类项目中的实际应用和技术要点，主要内容包括：  1. <strong>短信登录与用户会话管理</strong>    - 验证码和用户信息存储方案（Session vs Redis）    - 使用ThreadLocal保存用户信息    - 敏感信息处理（DTO对象转换）  2. <strong>商户缓存解决方案</strong>    - 缓存穿透（布隆过滤器&#x2F;空值缓存）    - 缓存雪崩（随机TTL&#x2F;多级缓存）    - 缓存击穿（互斥锁&#x2F;逻辑过期）  3. <strong>优惠券秒杀系统</strong>    - 分布式锁实现（Redis setnx&#x2F;Lua脚本）    - Redisson可重入锁特性    - 异步下单（消息队列）  4. <strong>关注功能实现</strong>    - Set集合存储关系  5. <strong>持久化与高可用</strong>    - RDB和AOF持久化机制    - 主从复制原理    - 哨兵和集群模式  6. <strong>高级特性</strong>    - 管道技术提升吞吐    - 慢查询优化    - 安全配置建议  7. <strong>数据结构优化</strong>    - SDS、ZipList等底层结构    - 内存占用优化策略  文章通过具体代码示例（如分布式锁、缓存策略等）展示了Redis在电商秒杀、社交等场景中的实际应用，并详细分析了各项技术的实现原理和优化思路。</p>
+</blockquote>
+<p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cr4y1671t">https://www.bilibili.com/video/BV1cr4y1671t</a></p>
 <p>链接<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1189u6u4icQYHg_9_7ovWmA?pwd=eh11">https://pan.baidu.com/s/1189u6u4icQYHg_9_7ovWmA?pwd=eh11</a><br>提取码：eh11</p>
 <p>社交类项目</p>
 <ul>

@@ -19,19 +19,19 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="原文链接：高性能短链设计 - 掘金 (juejin.cn) 介绍将长连接转为一个短连接，并且再访问时再转换回来 短链：   最终长链  可以看到，短信中的是短链，但最后变成了长链；使用短链的好处  再具有文字限制的地方（微博），用短链可以占据更少的文字 短链对应转的二维码不密集，更容易识别  跳转的基本实现：请求短链时，会返回状态码302（临时重定向：每次都使用短链请求，易于点击数统计）以及长链的">
+    <meta name="description" content="这篇文章主要讨论了短链接服务的实现原理和技术方案。以下是关键内容总结：  1. **短链接的作用**：在文字限制场景（如微博）节省空间，生成的二维码更易识别；通过302重定向实现跳转并统计点击数。  2. **生成短链接的核心方法**：      - 使用非加密哈希函数（如MurmurHash的32位版本）将长链转为数字，再通过62进制编码缩短字符长度。      - 为长链的MD5建立数据库唯一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高性能短链设计">
 <meta property="og:url" content="http://example.com/2023/12/27/TechDigest/%E9%AB%98%E6%80%A7%E8%83%BD%E7%9F%AD%E9%93%BE%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="原文链接：高性能短链设计 - 掘金 (juejin.cn) 介绍将长连接转为一个短连接，并且再访问时再转换回来 短链：   最终长链  可以看到，短信中的是短链，但最后变成了长链；使用短链的好处  再具有文字限制的地方（微博），用短链可以占据更少的文字 短链对应转的二维码不密集，更容易识别  跳转的基本实现：请求短链时，会返回状态码302（临时重定向：每次都使用短链请求，易于点击数统计）以及长链的">
+<meta property="og:description" content="这篇文章主要讨论了短链接服务的实现原理和技术方案。以下是关键内容总结：  1. **短链接的作用**：在文字限制场景（如微博）节省空间，生成的二维码更易识别；通过302重定向实现跳转并统计点击数。  2. **生成短链接的核心方法**：      - 使用非加密哈希函数（如MurmurHash的32位版本）将长链转为数字，再通过62进制编码缩短字符长度。      - 为长链的MD5建立数据库唯一">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
 <meta property="article:published_time" content="2023-12-27T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T09:28:25.541Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="文章精读">
 <meta property="article:tag" content="系统架构">
+<meta property="article:tag" content="文章精读">
 <meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.6k 字
         
       </span>
     
@@ -251,7 +251,7 @@
         
         
         
-          11 分钟
+          14 分钟
         
       </span>
     
@@ -315,7 +315,11 @@
             
               <div class="markdown-body">
                 
-                <p>原文链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904090602848270">高性能短链设计 - 掘金 (juejin.cn)</a></p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章主要讨论了短链接服务的实现原理和技术方案。以下是关键内容总结：  1. <strong>短链接的作用</strong>：在文字限制场景（如微博）节省空间，生成的二维码更易识别；通过302重定向实现跳转并统计点击数。  2. <strong>生成短链接的核心方法</strong>：      - 使用非加密哈希函数（如MurmurHash的32位版本）将长链转为数字，再通过62进制编码缩短字符长度。      - 为长链的MD5建立数据库唯一索引，避免重复生成；若哈希冲突则添加标识符重新计算。  3. <strong>存储设计</strong>：      - MySQL表中存储长短链映射关系，包含长链MD5字段加速查询。      - 配合布隆过滤器快速判断是否存在，减少数据库查询压力。  4. <strong>分布式ID生成方案对比</strong>：      - <strong>UUID</strong>：无需中心化但可能影响插入性能。      - <strong>Redis INCR</strong>：性能高但需考虑持久化成本。      - <strong>Snowflake</strong>：需处理时钟回拨问题。      - <strong>MySQL自增ID</strong>：通过预分配号段（如区间步长+版本号控制并发）缓解高并发写入压力。  整体流程：用户访问短链→查询数据库获取长链→302跳转。技术关键点在于高效无冲突的哈希转换、唯一ID分配及高并发存储优化。</p>
+</blockquote>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904090602848270">高性能短链设计 - 掘金 (juejin.cn)</a></p>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>将长连接转为一个短连接，并且再访问时再转换回来</p>
 <p>短链：</p>
 <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240318150323802.png" srcset="/img/loading.gif" lazyload alt="image-20240318150323802" style="zoom:50%;" />
@@ -424,9 +428,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
-      
         <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" class="print-no-link">#系统架构</a>
+      
+        <a href="/tags/%E6%96%87%E7%AB%A0%E7%B2%BE%E8%AF%BB/" class="print-no-link">#文章精读</a>
       
         <a href="/tags/%E9%A1%B9%E7%9B%AE/" class="print-no-link">#项目</a>
       

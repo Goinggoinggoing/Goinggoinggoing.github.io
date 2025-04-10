@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从零开始实现秒杀系统（四）：系统优化篇引言在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。 本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。 系统优化">
+    <meta name="description" content="本文介绍了秒杀系统的关键优化技术，重点解决高并发下系统的稳定性、性能和数据一致性问题。主要优化措施包括：    1. **分布式限流**：基于Redis的令牌桶算法实现精准流量控制，通过注解和AOP实现接口级限流，防止瞬时流量击垮系统。    2. **订单超时处理**：利用RocketMQ延时消息实现未支付订单的自动取消和库存释放，确保库存数据准确性。    3. **多级缓存优化**：引入Gu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始实现秒杀系统（四）：系统优化篇">
 <meta property="og:url" content="http://example.com/2025/02/21/project/seckill/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F4/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="从零开始实现秒杀系统（四）：系统优化篇引言在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。 本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。 系统优化">
+<meta property="og:description" content="本文介绍了秒杀系统的关键优化技术，重点解决高并发下系统的稳定性、性能和数据一致性问题。主要优化措施包括：    1. **分布式限流**：基于Redis的令牌桶算法实现精准流量控制，通过注解和AOP实现接口级限流，防止瞬时流量击垮系统。    2. **订单超时处理**：利用RocketMQ延时消息实现未支付订单的自动取消和库存释放，确保库存数据准确性。    3. **多级缓存优化**：引入Gu">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027941.png">
 <meta property="article:published_time" content="2025-02-21T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T12:19:45.766Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="java项目">
 <meta property="article:tag" content="秒杀系统">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k 字
+          3.3k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          25 分钟
+          28 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h1 id="从零开始实现秒杀系统（四）：系统优化篇"><a href="#从零开始实现秒杀系统（四）：系统优化篇" class="headerlink" title="从零开始实现秒杀系统（四）：系统优化篇"></a>从零开始实现秒杀系统（四）：系统优化篇</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>本文介绍了秒杀系统的关键优化技术，重点解决高并发下系统的稳定性、性能和数据一致性问题。主要优化措施包括：    1. <strong>分布式限流</strong>：基于Redis的令牌桶算法实现精准流量控制，通过注解和AOP实现接口级限流，防止瞬时流量击垮系统。    2. <strong>订单超时处理</strong>：利用RocketMQ延时消息实现未支付订单的自动取消和库存释放，确保库存数据准确性。    3. <strong>多级缓存优化</strong>：引入Guava本地缓存与Redis形成两级缓存，加速库存耗尽判断，减少Redis访问压力。    4. <strong>库存对账机制</strong>：通过动态水位线策略对Redis与数据库库存进行一致性校验，包括核心公式”Redis库存 + 预占库存 &#x3D; 数据库库存”，并实现自动重试和告警功能，确保数据最终一致。    这些技术共同提升了系统的健壮性、可靠性和响应速度，使其能有效应对海量并发请求，同时保持高性能和数据准确性。</p>
+</blockquote>
+<h1 id="从零开始实现秒杀系统（四）：系统优化篇"><a href="#从零开始实现秒杀系统（四）：系统优化篇" class="headerlink" title="从零开始实现秒杀系统（四）：系统优化篇"></a>从零开始实现秒杀系统（四）：系统优化篇</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在前三篇文章中，我们从基础版本开始，通过引入Redis缓存和RocketMQ消息队列，逐步构建了一个高性能的秒杀系统。然而，在面对海量用户同时抢购时，系统仍然面临着几个关键挑战：如何有效控制流量、如何保证数据一致性、如何处理超时订单，以及如何进一步提升系统性能。</p>
 <p>本文作为系列的第四篇，将介绍几种关键的系统优化技术，使我们的秒杀系统更加健壮和高效。</p>
 <h2 id="系统优化核心技术"><a href="#系统优化核心技术" class="headerlink" title="系统优化核心技术"></a>系统优化核心技术</h2><h3 id="一、基于Redis的分布式限流保护"><a href="#一、基于Redis的分布式限流保护" class="headerlink" title="一、基于Redis的分布式限流保护"></a>一、基于Redis的分布式限流保护</h3><p>在高并发场景下，没有限流保护的系统很容易被瞬时流量击垮。我们实现了一个基于Redis的分布式令牌桶限流机制，可以有效控制接口的访问频率。</p>
 <p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027938.png" srcset="/img/loading.gif" lazyload alt="image-20250310162452284"></p>

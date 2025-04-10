@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="DDos：Distributed Denial of Service 阳谋，大家都知道怎么发生的，但难以防治  发起攻击的为僵尸网络  木马感染 直接购买   1999年8月17日明尼苏达大学服务器被200多台服务器攻击，攻击设备是被感染了 攻击方式在网络协议的每一层，都可能遭受到攻击  ICMP Flood:攻击者发送大量的 ICMP（互联网控制消息协议）数据包到目标服务器，消耗其带宽和处理能">
+    <meta name="description" content="分布式拒绝服务（DDoS）攻击通过僵尸网络（如木马感染或直接购买受控设备）发起，其特点在于利用网络协议的每一层进行攻击，属于“阳谋”——攻击原理公开但防御困难。典型攻击方式包括：    1. **带宽耗尽型攻击**：      - **ICMP&#x2F;UDP洪泛**：伪造大量数据包占用目标带宽。      - **DNS放大攻击**：利用DNS协议反射和放大流量。      - **IP伪造反射攻击**">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DDoS技术鉴赏">
 <meta property="og:url" content="http://example.com/2023/07/01/TechDigest/DDoS%E6%8A%80%E6%9C%AF%E9%89%B4%E8%B5%8F/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="DDos：Distributed Denial of Service 阳谋，大家都知道怎么发生的，但难以防治  发起攻击的为僵尸网络  木马感染 直接购买   1999年8月17日明尼苏达大学服务器被200多台服务器攻击，攻击设备是被感染了 攻击方式在网络协议的每一层，都可能遭受到攻击  ICMP Flood:攻击者发送大量的 ICMP（互联网控制消息协议）数据包到目标服务器，消耗其带宽和处理能">
+<meta property="og:description" content="分布式拒绝服务（DDoS）攻击通过僵尸网络（如木马感染或直接购买受控设备）发起，其特点在于利用网络协议的每一层进行攻击，属于“阳谋”——攻击原理公开但防御困难。典型攻击方式包括：    1. **带宽耗尽型攻击**：      - **ICMP&#x2F;UDP洪泛**：伪造大量数据包占用目标带宽。      - **DNS放大攻击**：利用DNS协议反射和放大流量。      - **IP伪造反射攻击**">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404121750241.png">
 <meta property="article:published_time" content="2023-07-01T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T08:36:33.509Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary_large_image">
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          799 字
+          1.1k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          7 分钟
+          10 分钟
         
       </span>
     
@@ -313,7 +313,11 @@
             
               <div class="markdown-body">
                 
-                <ul>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>分布式拒绝服务（DDoS）攻击通过僵尸网络（如木马感染或直接购买受控设备）发起，其特点在于利用网络协议的每一层进行攻击，属于“阳谋”——攻击原理公开但防御困难。典型攻击方式包括：    1. <strong>带宽耗尽型攻击</strong>：      - <strong>ICMP&#x2F;UDP洪泛</strong>：伪造大量数据包占用目标带宽。      - <strong>DNS放大攻击</strong>：利用DNS协议反射和放大流量。      - <strong>IP伪造反射攻击</strong>：将源IP设为受害者，诱使中间服务器（如DNS）向目标回送响应流量。    2. <strong>资源耗尽型攻击</strong>：      - <strong>TCP SYN Flood</strong>：伪造IP发送大量半连接请求，耗尽服务器队列资源（半连接超时需63秒）。      - <strong>TCP连接耗尽</strong>：建立大量完整连接（需三次握手，无法伪造IP）。      - <strong>HTTP请求攻击</strong>：直接消耗服务器计算和I&#x2F;O资源。    <strong>防御措施</strong>：   - 路由器检测源IP（实际较难实现）。   - 使用CDN分散流量。   - 部署流量清洗设备，结合IP信誉库与算法识别异常流量。    历史案例：1999年明尼苏达大学遭200台受感染服务器攻击，早期暴露了DDoS的威胁性。攻击本质是资源消耗与协议漏洞利用的博弈。</p>
+</blockquote>
+<ul>
 <li>DDos：Distributed Denial of Service</li>
 <li>阳谋，大家都知道怎么发生的，但难以防治</li>
 </ul>

@@ -19,12 +19,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="软件   硬件  1.冯诺依曼ENIAC手动接线代表指令。冯诺依曼将指令存储起来   运算器为中心，数据要经过运算器。 现代的将存储器为中心  主存储器取存数据的程，现代这两个寄存器继承到了cpu里面  通过译码器将地址转为one hot，1的那个为接通  运算器 控制器 举例a * b + c 的执行过程，高级语言转为指令存放到内存中。这里的指令是单地址指令 根据pc从内存取指令(初始">
+    <meta name="description" content="这篇文章主要介绍了计算机组成原理的基础知识，内容涵盖以下核心内容：    1. **计算机体系结构**：从ENIAC手动接线到冯·诺依曼结构（指令存储、运算器为中心），再到现代以存储器为中心的架构演变。介绍指令执行流程（取指、分析、执行）及高级语言到机器指令的转换。    2. **数据表示与运算**：包括数值转换（十进制、二进制、十六进制）、校验方式（奇偶校验、海明码、循环冗余校验CRC），以及">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机组成原理">
 <meta property="og:url" content="http://example.com/2021/09/08/%E6%9C%BA%E7%BB%84/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="软件   硬件  1.冯诺依曼ENIAC手动接线代表指令。冯诺依曼将指令存储起来   运算器为中心，数据要经过运算器。 现代的将存储器为中心  主存储器取存数据的程，现代这两个寄存器继承到了cpu里面  通过译码器将地址转为one hot，1的那个为接通  运算器 控制器 举例a * b + c 的执行过程，高级语言转为指令存放到内存中。这里的指令是单地址指令 根据pc从内存取指令(初始">
+<meta property="og:description" content="这篇文章主要介绍了计算机组成原理的基础知识，内容涵盖以下核心内容：    1. **计算机体系结构**：从ENIAC手动接线到冯·诺依曼结构（指令存储、运算器为中心），再到现代以存储器为中心的架构演变。介绍指令执行流程（取指、分析、执行）及高级语言到机器指令的转换。    2. **数据表示与运算**：包括数值转换（十进制、二进制、十六进制）、校验方式（奇偶校验、海明码、循环冗余校验CRC），以及">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062002396.png">
@@ -122,7 +122,7 @@
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012904.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062012905.png">
 <meta property="article:published_time" content="2021-09-08T12:33:46.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T08:13:44.959Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机基础">
 <meta name="twitter:card" content="summary_large_image">
@@ -332,7 +332,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k 字
+          3.2k 字
         
       </span>
     
@@ -343,7 +343,7 @@
         
         
         
-          24 分钟
+          27 分钟
         
       </span>
     
@@ -407,7 +407,11 @@
             
               <div class="markdown-body">
                 
-                <p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png" srcset="/img/loading.gif" lazyload alt="image-20210531150601852"></p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章主要介绍了计算机组成原理的基础知识，内容涵盖以下核心内容：    1. <strong>计算机体系结构</strong>：从ENIAC手动接线到冯·诺依曼结构（指令存储、运算器为中心），再到现代以存储器为中心的架构演变。介绍指令执行流程（取指、分析、执行）及高级语言到机器指令的转换。    2. <strong>数据表示与运算</strong>：包括数值转换（十进制、二进制、十六进制）、校验方式（奇偶校验、海明码、循环冗余校验CRC），以及定点数、浮点数（IEEE 754标准）的表示与运算规则（补码、移位、溢出判断）。    3. <strong>存储系统</strong>：存储器层次结构（Cache、主存、辅存）、DRAM刷新机制、存储器扩展技术（字&#x2F;位扩展），以及Cache映射方式（全相联、直接映射、组相联）和替换算法（FIFO、LRU等）。    4. <strong>中央处理器（CPU）</strong>：组成（ALU、CU、寄存器、中断系统）、指令周期（取指、间址、执行、中断）、控制方式（同步&#x2F;异步&#x2F;联合）及微程序控制（水平型&#x2F;垂直型微指令）。    5. <strong>总线与I&#x2F;O系统</strong>：总线分类（数据&#x2F;地址&#x2F;控制）、仲裁方式（链式查询、计数器定时、独立请求）、I&#x2F;O控制（程序查询、中断、DMA、通道技术）及外部设备（磁盘、SSD、光盘的存取原理）。    全文贯穿硬件与软件的协同设计思想，强调通过优化结构（如流水线、Cache、总线协议）提升性能，并解析了计算机从底层数据存储到高层指令执行的全流程逻辑。</p>
+</blockquote>
+<p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304061952053.png" srcset="/img/loading.gif" lazyload alt="image-20210531150601852"></p>
 <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202304062002396.png" srcset="/img/loading.gif" lazyload alt="image-20210531111032467" style="zoom: 67%;" />
 
 

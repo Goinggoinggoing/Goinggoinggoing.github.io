@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="11&#x2F;10 ~ 11&#x2F;23 重构原因 原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况 原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方  重构基本思想 考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可">
+    <meta name="description" content="文章摘要：    该技术文档描述了在线考试系统的优化过程，主要解决原有系统在高并发场景下的性能问题。原系统存在Redis缓存使用不合理、代码耦合度高、考试模式分散等问题，导致30人并发就可能出现无法进入考试或提交失败的情况。优化措施包括：    1. **Redis缓存重构**：区分共享数据（题目、考试信息）和个人答题数据，调整缓存时间；删除冗余的预热和判活逻辑，将定时缓存改为上下题切换时触发，减">
 <meta property="og:type" content="article">
 <meta property="og:title" content="考试重构-压测">
 <meta property="og:url" content="http://example.com/2023/11/23/%E8%80%83%E8%AF%95%E9%87%8D%E6%9E%84-%E5%8E%8B%E6%B5%8B/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="11&#x2F;10 ~ 11&#x2F;23 重构原因 原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况 原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方  重构基本思想 考试数据分为共享数据（题目、考试等）和个人做题数据，共享数据使用redis进行缓存，缓存时间可">
+<meta property="og:description" content="文章摘要：    该技术文档描述了在线考试系统的优化过程，主要解决原有系统在高并发场景下的性能问题。原系统存在Redis缓存使用不合理、代码耦合度高、考试模式分散等问题，导致30人并发就可能出现无法进入考试或提交失败的情况。优化措施包括：    1. **Redis缓存重构**：区分共享数据（题目、考试信息）和个人答题数据，调整缓存时间；删除冗余的预热和判活逻辑，将定时缓存改为上下题切换时触发，减">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/image-20240325202455624.png">
 <meta property="article:published_time" content="2023-11-23T11:33:46.000Z">
-<meta property="article:modified_time" content="2025-04-10T02:50:51.989Z">
+<meta property="article:modified_time" content="2025-04-10T08:24:54.355Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="后端">
 <meta property="article:tag" content="java">
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k 字
+          2k 字
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          13 分钟
+          17 分钟
         
       </span>
     
@@ -316,7 +316,11 @@
             
               <div class="markdown-body">
                 
-                <p>11&#x2F;10 ~ 11&#x2F;23</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>文章摘要：    该技术文档描述了在线考试系统的优化过程，主要解决原有系统在高并发场景下的性能问题。原系统存在Redis缓存使用不合理、代码耦合度高、考试模式分散等问题，导致30人并发就可能出现无法进入考试或提交失败的情况。优化措施包括：    1. <strong>Redis缓存重构</strong>：区分共享数据（题目、考试信息）和个人答题数据，调整缓存时间；删除冗余的预热和判活逻辑，将定时缓存改为上下题切换时触发，减少无效负载。   2. <strong>代码结构优化</strong>：通过多态设计（如工厂模式）统一处理练习、考试、模拟考试等不同模式，替换原有的条件表达式逻辑，降低耦合性。   3. <strong>缓存策略改进</strong>：采用一个Redis key存储全部答案列表（而非每题一个key），避免考试开始&#x2F;结束时遍历插入和读取的开销。   4. <strong>引入消息队列</strong>：通过MQ异步处理交卷请求，先更新Redis确保快速响应，再异步持久化到数据库，缓解并发压力。   5. <strong>性能压测与瓶颈分析</strong>：      - 测试发现动态扩容会瞬间导致系统崩溃，需提前预扩容Pod。      - 高并发下数据库成为瓶颈（非预期SQL查询），需优化全链路监控（如SkyWalking）以定位慢查询。    关键结论：系统优化需兼顾自身代码和全链路资源（如MySQL、Gateway），CPU利用率和可观测性工具是排查性能瓶颈的核心手段。</p>
+</blockquote>
+<p>11&#x2F;10 ~ 11&#x2F;23</p>
 <h3 id="重构原因"><a href="#重构原因" class="headerlink" title="重构原因"></a>重构原因</h3><ul>
 <li>原来考试系统bug很多，redis使用也不合理，30人的考试就可能存在有人进不去考试、交不了卷的情况</li>
 <li>原来的代码耦合性高，练习模式、考试模式可能开始考试用的不同函数、进入考试用的不同的函数，有时候改一个地方的功能影响到了另外的地方</li>

@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="引入在上一回中，跳转到操作系统的骨架代码main.c中的main方法了, 数一数看，总共也就 20 几行代码。但这的确是操作系统启动流程的全部秘密了 1234567891011121314151617181920212223242526272829303132333435363738void main(void) &#123;    &#x2F;&#x2F; 一些参数的取值和计算。包括根设备 ROOT_DEV，之前在">
+    <meta name="description" content="这篇文章详细介绍了操作系统启动过程中 &#96;main.c&#96; 中的 &#96;main&#96; 方法的执行流程。主要内容如下：  1. **内存边界设置**：根据内存大小设置 &#96;memory_end&#96; 和 &#96;buffer_memory_end&#96;，标记内存使用的范围。 2. **内存管理初始化**：&#96;mem_init&#96; 初始化内存分页管理，使用 &#96;mem_map&#96; 表记录内存页使用状态，方便后续的内存申请与释放。 3.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大战前的初始化工作[linux源码趣读]">
 <meta property="og:url" content="http://example.com/2023/07/01/book/%E5%A4%A7%E6%88%98%E5%89%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%B7%A5%E4%BD%9C[linux%E6%BA%90%E7%A0%81%E8%B6%A3%E8%AF%BB]/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="引入在上一回中，跳转到操作系统的骨架代码main.c中的main方法了, 数一数看，总共也就 20 几行代码。但这的确是操作系统启动流程的全部秘密了 1234567891011121314151617181920212223242526272829303132333435363738void main(void) &#123;    &#x2F;&#x2F; 一些参数的取值和计算。包括根设备 ROOT_DEV，之前在">
+<meta property="og:description" content="这篇文章详细介绍了操作系统启动过程中 &#96;main.c&#96; 中的 &#96;main&#96; 方法的执行流程。主要内容如下：  1. **内存边界设置**：根据内存大小设置 &#96;memory_end&#96; 和 &#96;buffer_memory_end&#96;，标记内存使用的范围。 2. **内存管理初始化**：&#96;mem_init&#96; 初始化内存分页管理，使用 &#96;mem_map&#96; 表记录内存页使用状态，方便后续的内存申请与释放。 3.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202404151351835.png">
 <meta property="article:published_time" content="2023-07-01T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T11:19:36.198Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="linux">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.8k 字
+          6.2k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          49 分钟
+          52 分钟
         
       </span>
     
@@ -314,7 +314,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>在上一回中，跳转到操作系统的骨架代码main.c中的main方法了, 数一数看，总共也就 20 几行代码。但这的确是操作系统启动流程的全部秘密了</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>这篇文章详细介绍了操作系统启动过程中 <code>main.c</code> 中的 <code>main</code> 方法的执行流程。主要内容如下：  1. <strong>内存边界设置</strong>：根据内存大小设置 <code>memory_end</code> 和 <code>buffer_memory_end</code>，标记内存使用的范围。 2. <strong>内存管理初始化</strong>：<code>mem_init</code> 初始化内存分页管理，使用 <code>mem_map</code> 表记录内存页使用状态，方便后续的内存申请与释放。 3. <strong>中断初始化</strong>：<code>trap_init</code> 设置了各类中断处理函数，包括时钟中断（<code>timer_interrupt</code>）和键盘中断（<code>keyboard_interrupt</code>），并通过 <code>sti()</code> 开启中断响应。 4. <strong>进程调度初始化</strong>：<code>sched_init</code> 设置任务状态段（TSS）和局部描述符表（LDT），初始化 <code>task_struct</code> 数组，并为时钟中断和系统调用（<code>0x80</code> 中断）配置处理函数，为多进程调度奠定基础。 5. <strong>字符设备与块设备初始化</strong>：<code>tty_init</code> 负责控制台初始化（显存映射、光标设置），<code>blk_dev_init</code> 初始化块设备请求队列，<code>hd_init</code> 配置硬盘读写相关中断与请求处理函数。 6. <strong>缓冲管理</strong>：<code>buffer_init</code> 建立缓冲区与哈希表，作为用户进程与硬盘间的桥梁，优化数据读取效率。 7. <strong>切换到用户态</strong>：<code>move_to_user_mode</code> 创建第一个进程（<code>init</code>），最终进入 <code>shell</code> 等待用户输入。  文章通过源码逐层解析，展示了操作系统如何通过中断驱动、内存管理和进程调度等核心机制逐步启动，并最终为用户提供交互环境。</p>
+</blockquote>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>在上一回中，跳转到操作系统的骨架代码main.c中的main方法了, 数一数看，总共也就 20 几行代码。但这的确是操作系统启动流程的全部秘密了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-comment">// 一些参数的取值和计算。包括根设备 ROOT_DEV，之前在汇编语言中获取的各个设备的参数信息 drive_info，以及通过计算得到的内存边界  在上一回中setup.s调用BIOS中断获取并放到约定好的0x90000 </span><br>    ROOT_DEV = ORIG_ROOT_DEV;<br>    drive_info = DRIVE_INFO;<br>    memory_end = (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">20</span>) + (EXT_MEM_K&lt;&lt;<span class="hljs-number">10</span>);<br>    memory_end &amp;= <span class="hljs-number">0xfffff000</span>;<br>    <span class="hljs-keyword">if</span> (memory_end &gt; <span class="hljs-number">16</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>)<br>        memory_end = <span class="hljs-number">16</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>;<br>    <span class="hljs-keyword">if</span> (memory_end &gt; <span class="hljs-number">12</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>) <br>        buffer_memory_end = <span class="hljs-number">4</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (memory_end &gt; <span class="hljs-number">6</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>)<br>        buffer_memory_end = <span class="hljs-number">2</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>;<br>    <span class="hljs-keyword">else</span><br>        buffer_memory_end = <span class="hljs-number">1</span>*<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>;<br>    main_memory_start = buffer_memory_end;<br>    <br>	<span class="hljs-comment">// 内存初始化 mem_init，中断初始化 trap_init、进程调度初始化 sched_init 等等。我们知道学操作系统知识的时候，其实就分成这么几块来学的，看来在操作系统源码上看，也确实是这么划分的，那我们之后照着源码慢慢品，就好了。</span><br>    mem_init(main_memory_start,memory_end);<br>    trap_init();<br>    blk_dev_init();<br>    chr_dev_init();<br>    tty_init();<br>    time_init();<br>    sched_init();<br>    buffer_init(buffer_memory_end);<br>    hd_init();<br>    floppy_init();<br>    <br>	<span class="hljs-comment">// 切换到用户态模式 这个 init 函数里会创建出一个进程，设置终端的标准 IO，并且再创建出一个执行 shell 程序的进程用来接受用户的命令，到这里其实就出现了我们熟悉的shell画面</span><br>    sti();<br>    move_to_user_mode();<br>    <span class="hljs-keyword">if</span> (!fork()) &#123;<br>        init();<br>    &#125;<br>    <br>	<span class="hljs-comment">// 死循环，如果没有任何任务可以运行，操作系统会一直陷入这个死循环无法自拔。</span><br>    <span class="hljs-keyword">for</span>(;;) pause();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 

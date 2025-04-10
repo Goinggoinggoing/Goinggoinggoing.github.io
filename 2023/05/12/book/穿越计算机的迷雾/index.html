@@ -19,12 +19,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="bit入门如何用电来表达一个数字：  1v为1  、2v为2… 但难以计算到底是几v 开关，0代表无 1代表有。二进制  如何对二进制实现加法  对于每一位 两个输入一个进位 一个输出一个进位   多位串联起来 低位的进位传递给高位    电与磁电能生磁，通过电流通断规律控制衔铁臂上下运动画出莫尔斯电报 ​	距离太远？继电器实现不同回路的继电 磁生电，线圈切割磁感线产生电流：话筒  声波-&gt;">
+    <meta name="description" content="文章摘要：    文章从基础的电信号表达数字开始，逐步揭示了现代计算机的基本原理。主要包含以下内容：    1. **数字表达与二进制**：电压直接表示数字（如1V代表1）不精确，转而采用二进制（开关状态表示0和1），并介绍二进制加法器的实现逻辑（逐位计算，进位传递）。    2. **电与磁的转换**：电能生磁（用于莫尔斯电报和继电器远距传输），磁也能生电（实现话筒和扬声器的声电转换）。交流电因">
 <meta property="og:type" content="article">
 <meta property="og:title" content="穿越计算机的迷雾">
 <meta property="og:url" content="http://example.com/2023/05/12/book/%E7%A9%BF%E8%B6%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E8%BF%B7%E9%9B%BE/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="bit入门如何用电来表达一个数字：  1v为1  、2v为2… 但难以计算到底是几v 开关，0代表无 1代表有。二进制  如何对二进制实现加法  对于每一位 两个输入一个进位 一个输出一个进位   多位串联起来 低位的进位传递给高位    电与磁电能生磁，通过电流通断规律控制衔铁臂上下运动画出莫尔斯电报 ​	距离太远？继电器实现不同回路的继电 磁生电，线圈切割磁感线产生电流：话筒  声波-&gt;">
+<meta property="og:description" content="文章摘要：    文章从基础的电信号表达数字开始，逐步揭示了现代计算机的基本原理。主要包含以下内容：    1. **数字表达与二进制**：电压直接表示数字（如1V代表1）不精确，转而采用二进制（开关状态表示0和1），并介绍二进制加法器的实现逻辑（逐位计算，进位传递）。    2. **电与磁的转换**：电能生磁（用于莫尔斯电报和继电器远距传输），磁也能生电（实现话筒和扬声器的声电转换）。交流电因">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450617.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450618.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450649.png">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202305121450650.png">
 <meta property="article:published_time" content="2023-05-12T07:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T11:20:45.136Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="计算机体系结构">
 <meta name="twitter:card" content="summary_large_image">
@@ -270,7 +270,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k 字
+          2.3k 字
         
       </span>
     
@@ -281,7 +281,7 @@
         
         
         
-          16 分钟
+          20 分钟
         
       </span>
     
@@ -345,7 +345,11 @@
             
               <div class="markdown-body">
                 
-                <h3 id="bit入门"><a href="#bit入门" class="headerlink" title="bit入门"></a>bit入门</h3><p>如何用电来表达一个数字：</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>文章摘要：    文章从基础的电信号表达数字开始，逐步揭示了现代计算机的基本原理。主要包含以下内容：    1. <strong>数字表达与二进制</strong>：电压直接表示数字（如1V代表1）不精确，转而采用二进制（开关状态表示0和1），并介绍二进制加法器的实现逻辑（逐位计算，进位传递）。    2. <strong>电与磁的转换</strong>：电能生磁（用于莫尔斯电报和继电器远距传输），磁也能生电（实现话筒和扬声器的声电转换）。交流电因其易产生、易变压和低损耗成为电力传输主流。    3. <strong>逻辑门与电路设计</strong>：介绍与、或、非、异或等基本逻辑门，通过组合门电路实现加法器、寄存器等核心组件，逐步构建运算器。    4. <strong>存储技术演进</strong>：从继电器到晶体管，再到DRAM（电容存储）和SRAM（触发器存储），以及现代硬盘和固态存储的原理。    5. <strong>计算机核心架构</strong>：      - <strong>寄存器与总线</strong>：存储中间数据，通过总线控制实现数据流通。      - <strong>控制器与指令集</strong>：解析指令，协调运算器和存储器的操作，自动化执行流程。      - <strong>存储器层次</strong>：包括高速缓存（SRAM）、内存（DRAM）和外存（磁盘、固态硬盘）。    6. <strong>扩展技术</strong>：如流水线提升CPU效率，中断机制处理输入输出请求，以及程序计数器和地址寄存器的协同工作。    最终，通过振荡器替代手动操作实现全自动计算，完成从简单电路到通用计算机的演进。</p>
+</blockquote>
+<h3 id="bit入门"><a href="#bit入门" class="headerlink" title="bit入门"></a>bit入门</h3><p>如何用电来表达一个数字：</p>
 <ul>
 <li>1v为1  、2v为2… 但难以计算到底是几v</li>
 <li>开关，0代表无 1代表有。二进制</li>

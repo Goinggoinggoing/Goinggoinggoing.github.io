@@ -19,16 +19,16 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MQ有哪些优点，为什么需要MQ？ 优点异步一个秒杀系统包含很多步骤，有的很重要，有的不重要。借助MQ可以只保留核心流程，提升系统性能  流量扩展流量：web前端可以上千万请求，但数据库（分库分表）是万级别水平 简单实现，压测评估流量，并引入限流算法：  固定窗口 滑动窗口 漏桶算法 令牌桶算法  加入异步后，秒杀流程  收到请求后，将整个请求加入MQ MQ消费者异步完成秒杀过程，处理响应 轮询秒杀">
+    <meta name="description" content="消息队列（MQ）的核心优势在于解耦、异步处理和流量削峰。在秒杀系统中，MQ能够将非核心流程异步化，大幅提升系统吞吐量，通过削峰填谷缓解数据库压力（前端千万级请求 vs 数据库万级处理能力）。引入MQ需权衡响应时间延长、系统复杂度增加及运维成本。    微服务间通信模式包括调用链、聚合器和事件驱动，其中基于事件的异步通信（如订单状态变更通知）能实现上下游解耦，灵活扩展。主流MQ需具备可靠性（消息不丢">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1.为什么要引入MQ-MQ">
 <meta property="og:url" content="http://example.com/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="MQ有哪些优点，为什么需要MQ？ 优点异步一个秒杀系统包含很多步骤，有的很重要，有的不重要。借助MQ可以只保留核心流程，提升系统性能  流量扩展流量：web前端可以上千万请求，但数据库（分库分表）是万级别水平 简单实现，压测评估流量，并引入限流算法：  固定窗口 滑动窗口 漏桶算法 令牌桶算法  加入异步后，秒杀流程  收到请求后，将整个请求加入MQ MQ消费者异步完成秒杀过程，处理响应 轮询秒杀">
+<meta property="og:description" content="消息队列（MQ）的核心优势在于解耦、异步处理和流量削峰。在秒杀系统中，MQ能够将非核心流程异步化，大幅提升系统吞吐量，通过削峰填谷缓解数据库压力（前端千万级请求 vs 数据库万级处理能力）。引入MQ需权衡响应时间延长、系统复杂度增加及运维成本。    微服务间通信模式包括调用链、聚合器和事件驱动，其中基于事件的异步通信（如订单状态变更通知）能实现上下游解耦，灵活扩展。主流MQ需具备可靠性（消息不丢">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202409231924366.png">
 <meta property="article:published_time" content="2024-06-10T12:33:46.000Z">
-<meta property="article:modified_time" content="2025-03-10T14:00:27.000Z">
+<meta property="article:modified_time" content="2025-04-10T11:27:40.732Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="消息队列">
 <meta name="twitter:card" content="summary_large_image">
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2.2k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          15 分钟
+          19 分钟
         
       </span>
     
@@ -313,7 +313,11 @@
             
               <div class="markdown-body">
                 
-                <p>MQ有哪些优点，为什么需要MQ？</p>
+                <blockquote>
+<p><strong>GPT摘要</strong></p>
+<p>消息队列（MQ）的核心优势在于解耦、异步处理和流量削峰。在秒杀系统中，MQ能够将非核心流程异步化，大幅提升系统吞吐量，通过削峰填谷缓解数据库压力（前端千万级请求 vs 数据库万级处理能力）。引入MQ需权衡响应时间延长、系统复杂度增加及运维成本。    微服务间通信模式包括调用链、聚合器和事件驱动，其中基于事件的异步通信（如订单状态变更通知）能实现上下游解耦，灵活扩展。主流MQ需具备可靠性（消息不丢失）、高可用（集群容灾）和高性能。    典型MQ对比：   - <strong>RabbitMQ</strong>：轻量级，擅长灵活路由，但消息堆积能力弱（几万TPS），适合简单场景。   - <strong>RocketMQ</strong>：低延迟、强一致性，适合订单&#x2F;物流等分布式事务场景，经双十一验证。   - <strong>Kafka</strong>：大数据生态优，支持百万级日志吞吐，但实时性可能受批量设计影响。    消息投递语义：   - <strong>至少一次（At-Least-Once）</strong>：通过ACK重试确保不丢，需消费者幂等处理（如唯一ID+版本检查）。   - <strong>精确一次（Exactly-Once）</strong>：依赖事务或幂等，实现成本高（如金融交易）。   - <strong>至多一次（At-Most-Once）</strong>：可能丢消息，适合非关键场景（如缓存更新）。    最佳实践为“At-Least-Once + 幂等”，结合同步刷盘（保障可靠性）和半数以上节点复制（提高可用性）。突发流量可通过扩容消费者、降级非核心服务应急，后续优化分区数量及消费端性能。消息有序性可通过递增ID或时间戳部分保证。    总之，MQ选型需权衡业务需求（一致性&#x2F;实时性&#x2F;吞吐量），并配套容错机制（如DLedger集群、手动提交offset）确保稳定运行。</p>
+</blockquote>
+<p>MQ有哪些优点，为什么需要MQ？</p>
 <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>一个秒杀系统包含很多步骤，有的很重要，有的不重要。借助MQ可以只保留核心流程，提升系统性能</p>
 <p><img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202409231924357.png" srcset="/img/loading.gif" lazyload alt="image-20240910141247065"></p>
 <h3 id="流量扩展"><a href="#流量扩展" class="headerlink" title="流量扩展"></a>流量扩展</h3><p>流量：web前端可以上千万请求，但数据库（分库分表）是万级别水平</p>
