@@ -233,6 +233,39 @@
   <div class="row mx-auto index-card">
     
     
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/05/15/book/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/05/15/book/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" target="_self">
+        <div>
+          这本书涵盖了计算机网络协议栈和服务器编程的核心知识，部分内容在APUE和UNP中也有涉及，但也补充了epoll、Reactor/Proactor模式和进程池等高级主题。以下是主要内容的简要概述：  ### 网络协议栈 1. **数据链路层**：负责局域网内相邻设备的通讯，基于MAC地址，确保数据在物理介质上的可靠传输。 2. **网络层**：实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-05-15 10:45" pubdate>
+              2025-05-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2025/02/21/project/seckill/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F4/" target="_self">
           <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202503102027941.png" srcset="/img/loading.gif" lazyload alt="从零开始实现秒杀系统（四）：系统优化篇">
@@ -829,80 +862,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-06-17 20:33" pubdate>
               2024-06-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%BC%80%E5%8F%91/" class="category-chain-item">开发</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%BC%80%E5%8F%91/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="category-chain-item">中间件</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">#消息队列</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-          <img src="https://proxy.bytewaver.top/proxy/raw.githubusercontent.com/Goinggoinggoing/image/main/blogimg/202409231924366.png" srcset="/img/loading.gif" lazyload alt="1.为什么要引入MQ-MQ">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-          1.为什么要引入MQ-MQ
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/06/10/TechDigest/mq/1.%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5MQ-MQ/" target="_self">
-        <div>
-          消息队列（MQ）的核心优势在于解耦、异步处理和流量削峰。在秒杀系统中，MQ能够将非核心流程异步化，大幅提升系统吞吐量，通过削峰填谷缓解数据库压力（前端千万级请求 vs 数据库万级处理能力）。引入MQ需权衡响应时间延长、系统复杂度增加及运维成本。    微服务间通信模式包括调用链、聚合器和事件驱动，其中基于事件的异步通信（如订单状态变更通知）能实现上下游解耦，灵活扩展。主流MQ需具备可靠性（消息不丢
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-06-10 20:33" pubdate>
-              2024-06-10
             </time>
           </div>
         
