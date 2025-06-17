@@ -19,12 +19,12 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这本书涵盖了计算机网络协议栈和服务器编程的核心知识，部分内容在APUE和UNP中也有涉及，但也补充了epoll、Reactor&#x2F;Proactor模式和进程池等高级主题。以下是主要内容的简要概述：  ### 网络协议栈 1. **数据链路层**：负责局域网内相邻设备的通讯，基于MAC地址，确保数据在物理介质上的可靠传输。 2. **网络层**：实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地">
+    <meta name="description" content="这本书涵盖了计算机网络和服务器编程的核心知识，内容涵盖了TCP协议栈、服务器编程、服务器性能优化检测等方面，同时扩展了一些高级主题，如epoll、Reactor&#x2F;Proactor模式和进程池等。  书中首先详细介绍了TCP协议栈，包括数据链路层、网络层、传输层和应用层的功能。数据链路层负责局域网内的设备通信，基于MAC地址；网络层实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地址标识设备，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xun&#39;s Blog">
 <meta property="og:url" content="http://example.com/2025/05/15/book/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Xun&#39;s Blog">
-<meta property="og:description" content="这本书涵盖了计算机网络协议栈和服务器编程的核心知识，部分内容在APUE和UNP中也有涉及，但也补充了epoll、Reactor&#x2F;Proactor模式和进程池等高级主题。以下是主要内容的简要概述：  ### 网络协议栈 1. **数据链路层**：负责局域网内相邻设备的通讯，基于MAC地址，确保数据在物理介质上的可靠传输。 2. **网络层**：实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地">
+<meta property="og:description" content="这本书涵盖了计算机网络和服务器编程的核心知识，内容涵盖了TCP协议栈、服务器编程、服务器性能优化检测等方面，同时扩展了一些高级主题，如epoll、Reactor&#x2F;Proactor模式和进程池等。  书中首先详细介绍了TCP协议栈，包括数据链路层、网络层、传输层和应用层的功能。数据链路层负责局域网内的设备通信，基于MAC地址；网络层实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地址标识设备，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B.assets/image-20240329150618349.png">
 <meta property="og:image" content="http://example.com/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B.assets/image-20250515105703672.png">
@@ -241,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          953 字
+          788 字
         
       </span>
     
@@ -252,7 +252,7 @@
         
         
         
-          8 分钟
+          7 分钟
         
       </span>
     
@@ -318,7 +318,7 @@
                 
                 <blockquote>
 <p><strong>GPT摘要</strong></p>
-<p>这本书涵盖了计算机网络协议栈和服务器编程的核心知识，部分内容在APUE和UNP中也有涉及，但也补充了epoll、Reactor&#x2F;Proactor模式和进程池等高级主题。以下是主要内容的简要概述：  ### 网络协议栈 1. <strong>数据链路层</strong>：负责局域网内相邻设备的通讯，基于MAC地址，确保数据在物理介质上的可靠传输。 2. <strong>网络层</strong>：实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地址标识设备，并通过路由器在不同网络间转发数据包。 3. <strong>传输层</strong>：提供端到端（进程到进程）的通信服务，通过端口号区分应用程序，实现可靠性传输（TCP）或高效传输（UDP），并提供流量控制、拥塞控制和错误恢复等功能。 4. <strong>应用层</strong>：直接面向用户和应用程序，提供具体的网络服务，定义数据格式和交互规则，如HTTP请求&#x2F;响应模型。  ### 服务器编程 1. <strong>TCP协议栈</strong>：详细讲解了TCP协议的实现和相关知识。 2. <strong>服务器编程框架</strong>：    - <strong>API</strong>：介绍了与网络编程相关的API接口。    - <strong>程序框架</strong>：探讨了服务器程序的整体架构设计。    - <strong>I&#x2F;O单元</strong>：分析了输入&#x2F;输出操作的实现细节。    - <strong>逻辑单元</strong>：讨论了多线程和多进程在服务器编程中的应用。 3. <strong>性能优化与检测</strong>：涵盖了服务器性能优化的方法和性能检测技术。  ### Socket API - <strong>send</strong>：将应用程序数据从用户缓冲区复制到TCP&#x2F;UDP内核缓冲区。 - <strong>read</strong>：从TCP&#x2F;UDP内核缓冲区复制数据到用户缓冲区。  ### UDP特性 - <strong>无状态</strong>：UDP不维护连接状态。 - <strong>无连接</strong>：UDP传输不需要建立连接。 - <strong>不可靠</strong>：UDP不保证数据的可靠传输。  这本书系统地介绍了网络协议栈和服务器编程的核心知识，同时补充了高级主题，如epoll、Reactor&#x2F;Proactor模式和进程池，为深入理解网络编程提供了</p>
+<p>这本书涵盖了计算机网络和服务器编程的核心知识，内容涵盖了TCP协议栈、服务器编程、服务器性能优化检测等方面，同时扩展了一些高级主题，如epoll、Reactor&#x2F;Proactor模式和进程池等。  书中首先详细介绍了TCP协议栈，包括数据链路层、网络层、传输层和应用层的功能。数据链路层负责局域网内的设备通信，基于MAC地址；网络层实现跨网络传输，核心任务是路由选择和逻辑寻址，使用IP地址标识设备，并通过路由器转发数据包；传输层提供端到端的通信服务，通过端口号区分应用程序，实现可靠性传输（如TCP）或高效传输（如UDP），并提供流量控制、拥塞控制等功能；应用层直接面向用户和应用程序，定义数据格式和交互规则，如HTTP请求&#x2F;响应模型。  在服务器编程部分，书中分章节详细阐述了API、程序框架、I&#x2F;O单元、逻辑单元以及多线程和多进程的实现。此外，还探讨了服务器性能优化和检测方法。  书中还介绍了操作系统提供的Socket API，如send和read函数的作用，以及UDP的无状态、无连接、不可靠特性。这些内容为深入理解网络通信和服务器编程提供了全面的理论支持和实践指导。</p>
 </blockquote>
 <p>大部分内容APUE和UNP里面都有讲过，不过这本书也讲到了那两本书里面所没有的知识，比如epoll、Reactor&#x2F;Proactor模式和进程池等东西。</p>
 <ul>
@@ -385,6 +385,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/05/20/cpp/cpp/" title="cpp基础">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">cpp基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
